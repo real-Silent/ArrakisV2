@@ -1,0 +1,120 @@
+﻿using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
+using UnityEngine.UI;
+
+namespace Arrakis.Notifications
+{
+    public class NotificationManager : MonoBehaviour
+    {
+        public static NotificationManager instance;
+        public GameObject HUDObj;
+        public GameObject HUDObj2;
+        private GameObject MainCamera;
+        private Material AlertText = new Material(Shader.Find("GUI/Text Shader"));
+        public static Text NotifiText;
+        private bool HasInit;
+        public static float notificationDecayTime = 1f;
+        private static List<Notification> activeNotifications = new List<Notification>();
+
+        public void Start()
+        {
+            instance = this;
+        }
+
+        private void Init()
+        {
+            MainCamera = Camera.main.gameObject;
+            HUDObj = new GameObject("HUD");
+            HUDObj2 = new GameObject("HUD_PARENT");
+            HUDObj.transform.SetParent(HUDObj2.transform);
+            HUDObj.AddComponent<Canvas>();
+            HUDObj.AddComponent<CanvasScaler>();
+            HUDObj.AddComponent<GraphicRaycaster>();
+            Canvas canvas = HUDObj.GetComponent<Canvas>();
+            canvas.renderMode = RenderMode.WorldSpace;
+            canvas.worldCamera = MainCamera.GetComponent<Camera>();
+            RectTransform rect = HUDObj.GetComponent<RectTransform>();
+            rect.sizeDelta = new Vector2(5f, 5f);
+            HUDObj2.transform.position = MainCamera.transform.position;
+            rect.localPosition = new Vector3(0f, 0f, 1.6f);
+            HUDObj.transform.localScale = Vector3.one;
+            rect.rotation = Quaternion.Euler(0f, -270f, 0f);
+            NotifiText = CreateText("Notifications", new Vector2(450f, 210f), TextAnchor.LowerLeft, new Vector3(-1f, -1f, -0.5f), 25); // 30
+        }
+
+        private Text CreateText(string name, Vector2 size, TextAnchor anchor, Vector3 pos, int fontSize)
+        {
+            GameObject obj = new GameObject(name);
+            obj.transform.SetParent(HUDObj.transform);
+            Text txt = obj.AddComponent<Text>();
+            txt.text = "";
+            txt.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
+            txt.fontSize = fontSize;
+            txt.fontStyle = Settings.currentStyle;
+            txt.alignment = anchor;
+            txt.rectTransform.sizeDelta = size;
+            txt.rectTransform.localScale = new Vector3(0.0033f, 0.0033f, 0.0033f);
+            txt.rectTransform.localPosition = pos;
+            txt.material = AlertText;
+            txt.supportRichText = true;
+            return txt;
+        }
+
+        public void FixedUpdate()
+        {
+            try
+            {
+                if (!HasInit && Camera.main != null)
+                {
+                    Init();
+                    HasInit = true;
+                }
+                if (!HasInit) return;
+                HUDObj.GetComponent<CanvasScaler>().dynamicPixelsPerUnit = 2f;
+                HUDObj2.transform.position = MainCamera.transform.position;
+                HUDObj2.transform.rotation = MainCamera.transform.rotation;
+                float time = Time.time;
+                activeNotifications.RemoveAll(n => time >= n.Delay);
+                NotifiText.text = string.Concat(activeNotifications.Select(n => n.Text));
+                try
+                {
+                    NotifiText.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
+                    NotifiText.fontStyle = FontStyle.Italic;
+                }
+                catch { }
+            }
+            catch { }
+        }
+
+        public static void SendNotification(string text, float duration = -1f)
+        {
+            if (!Settings.disableNotifications)
+            {
+                if (NotifiText == null) return;
+                if (duration < 0)
+                    duration = notificationDecayTime;
+                if (!text.EndsWith("\n"))
+                    text += "\n";
+                activeNotifications.Add(new Notification
+                {
+                    Text = text,
+                    Delay = Time.time + duration
+                });
+            }
+        }
+
+        public static void ClearAllNotifications()
+        {
+            activeNotifications.Clear();
+            if (NotifiText != null)
+                NotifiText.text = "";
+        }
+    }
+
+    class Notification
+    {
+        public string Text;
+        public float Delay;
+    }
+}

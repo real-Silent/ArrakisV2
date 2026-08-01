@@ -1,0 +1,189 @@
+﻿using ExitGames.Client.Photon;
+using GorillaNetworking;
+using GorillaTag.CosmeticSystem;
+using Photon.Pun;
+using Photon.Realtime;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
+using UnityEngine.InputSystem;
+
+namespace Arrakis.Mods
+{
+    public class Projectiles
+    {
+        public static void SnowballGun()
+        {
+            if (ControllerInputPoller.instance.rightGrab || Mouse.current.leftButton.isPressed)
+                SpawnProjectile("SnowballRightAnchor", GorillaTagger.Instance.rightHandTransform.position, -GorillaTagger.Instance.rightHandTransform.up * 50f, Settings.projectileColor);
+            else
+                cachedThrow.SetSnowballActiveLocal(false);
+        }
+
+        public static void GrowingSnowballGun()
+        {
+            if (ControllerInputPoller.instance.rightGrab || Mouse.current.leftButton.isPressed)
+                SpawnProjectile("GrowingSnowballRightAnchor", GorillaTagger.Instance.rightHandTransform.position, -GorillaTagger.Instance.rightHandTransform.up * 50f, Settings.allowbigsnowballcolor ? Settings.projectileColor : Color.white, 5);
+            else
+            {
+                cachedThrow.SetSnowballActiveLocal(false);
+                cachedGThrow.SetSnowballActiveLocal(false);
+            }
+        }
+        public static void WaterBalloonGun()
+        {
+            if (ControllerInputPoller.instance.rightGrab || Mouse.current.leftButton.isPressed)
+                SpawnProjectile("WaterBalloonRightAnchor", GorillaTagger.Instance.rightHandTransform.position, -GorillaTagger.Instance.rightHandTransform.up * 50f, Settings.projectileColor);
+            else
+                cachedThrow.SetSnowballActiveLocal(false);
+        }
+        public static void LavaRockGun()
+        {
+            if (ControllerInputPoller.instance.rightGrab || Mouse.current.leftButton.isPressed)
+                SpawnProjectile("LavaRockAnchor", GorillaTagger.Instance.rightHandTransform.position, -GorillaTagger.Instance.rightHandTransform.up * 50f, Settings.projectileColor);
+            else
+                cachedThrow.SetSnowballActiveLocal(false);
+        }
+        public static void BucketGiftGun()
+        {
+            if (ControllerInputPoller.instance.rightGrab || Mouse.current.leftButton.isPressed)
+                SpawnProjectile("BucketGiftFunctionalAnchor_Right", GorillaTagger.Instance.rightHandTransform.position, -GorillaTagger.Instance.rightHandTransform.up * 50f, Settings.projectileColor);
+            else
+                cachedThrow.SetSnowballActiveLocal(false);
+        }
+        public static void CandyGun()
+        {
+            if (ControllerInputPoller.instance.rightGrab || Mouse.current.leftButton.isPressed)
+                SpawnProjectile("ScienceCandyRightAnchor", GorillaTagger.Instance.rightHandTransform.position, -GorillaTagger.Instance.rightHandTransform.up * 50f, Settings.projectileColor);
+            else
+                cachedThrow.SetSnowballActiveLocal(false);
+        }
+        public static void FishFoodGun()
+        {
+            if (ControllerInputPoller.instance.rightGrab || Mouse.current.leftButton.isPressed)
+                SpawnProjectile("FishFoodRightAnchor", GorillaTagger.Instance.rightHandTransform.position, -GorillaTagger.Instance.rightHandTransform.up * 50f, Settings.projectileColor);
+            else
+                cachedThrow.SetSnowballActiveLocal(false);
+        }
+        public static void HotdogGun()
+        {
+            if (ControllerInputPoller.instance.rightGrab || Mouse.current.leftButton.isPressed)
+                SpawnProjectile("HotDogRightAnchor", GorillaTagger.Instance.rightHandTransform.position, -GorillaTagger.Instance.rightHandTransform.up * 50f, Settings.projectileColor);
+            else
+                cachedThrow.SetSnowballActiveLocal(false);
+        }
+
+
+        private static SnowballThrowable cachedThrow = null;
+        private static GrowingSnowballThrowable cachedGThrow = null;
+        private static float delay = 0f;
+        public static void SpawnProjectile(string projectileName, Vector3 position, Vector3 velocity, Color color, int scale = 0) // i made this cause yea -nova
+        {
+            try
+            {
+                color.a = 255;
+                SnowballThrowable throwable = GetProjectile(projectileName);
+                if (throwable != null)
+                {
+                    if (!throwable.gameObject.activeSelf)
+                    {
+                        throwable.SetSnowballActiveLocal(true);
+                        throwable.transform.position = GorillaTagger.Instance.rightHandTransform.position;
+                        throwable.transform.rotation = GorillaTagger.Instance.rightHandTransform.rotation;
+                        cachedThrow = throwable;
+                    }
+                    if (Time.time > delay)
+                    {
+                        if (projectileName.Contains("Growing"))
+                        {
+                            GrowingSnowballThrowable growing = throwable as GrowingSnowballThrowable;
+                            cachedGThrow = growing;
+                            if (NetworkSystem.Instance.InRoom)
+                            {
+                                PhotonNetwork.RaiseEvent(176, new object[] { growing.changeSizeEvent._eventId, scale }, new RaiseEventOptions { Receivers = ReceiverGroup.All }, new SendOptions { Encrypt = true, Reliability = false });
+                                PhotonNetwork.RaiseEvent(176, new object[] { growing.snowballThrowEvent._eventId, position, velocity, GetIncrement(position, velocity, scale) }, new RaiseEventOptions { Receivers = ReceiverGroup.All }, new SendOptions { Encrypt = true, Reliability = false });
+                            }
+                        }
+                        else
+                        {
+                            if (NetworkSystem.Instance.InRoom)
+                            {
+                                Color32 c = color;
+                                int ps = projectileName == "SlingshotProjectile" ? 0 : (projectileName.ToLower().Contains("left") ? 1 : 2);
+                                object[] senddata = new object[]
+                                {
+                                    position, velocity, ps, GetIncrement(position, velocity, throwable.transform.lossyScale.x),
+                                    true, c.r, c.g, c.b, c.a
+                                };
+                                object[] eventdata = new object[]
+                                {
+                                    NetworkSystem.Instance.ServerTimestamp, 0, senddata
+                                };
+                                PhotonNetwork.RaiseEvent(3, eventdata, new RaiseEventOptions { Receivers = ReceiverGroup.All }, SendOptions.SendReliable);
+                            }
+                        }
+                        delay = Time.time + 1.0f;
+                    }
+                }
+            }
+            catch { }
+        }
+
+        private static int increment;
+        private static int GetIncrement(Vector3 pos, Vector3 velo, float scale) // i made this cause yea -nova
+        {
+            try
+            {
+                GameObject g = new GameObject();
+                SlingshotProjectile p = g.AddComponent<SlingshotProjectile>();
+                int d = ProjectileTracker.AddAndIncrementLocalProjectile(p, velo, pos, scale);
+                increment = d;
+                GameObject.Destroy(g);
+                return increment;
+            }
+            catch { increment++; return increment; }
+        }
+
+
+        public static Dictionary<string, SnowballThrowable> snowballs;
+        private static bool loaded;
+        public static SnowballThrowable GetProjectile(string projectileName) // Credits seralyth for this
+        {
+            if (CosmeticsV2Spawner_Dirty.isPrepared)
+            {
+                var throwables = ((AllCosmeticsArraySO)CosmeticsController.instance.v2_allCosmeticsInfoAssetRef.Asset).sturdyAssetRefs.Where(x => x.obj != null && x.obj.info.isThrowable).Select(x => x.obj.info.playFabID).Distinct().ToList();
+                if (snowballs == null || snowballs.Count != (throwables.Count - 3))
+                {
+                    if (!CosmeticsV2Spawner_Dirty.isPrepared)
+                        return null;
+                    if (!GorillaComputer.instance.isConnectedToMaster)
+                        return null;
+                    if (!loaded && (CosmeticsV2Spawner_Dirty.materialIndexToSnowballThrowablePlayfabIdStringLeft.Count >= 1 && CosmeticsV2Spawner_Dirty.materialIndexToSnowballThrowablePlayfabIdStringRight.Count >= 1))
+                    {
+                        loaded = true;
+                        CosmeticsV2Spawner_Dirty.materialIndexToSnowballThrowablePlayfabIdStringLeft.ForEach(v => VRRig.LocalRig.cosmeticsObjectRegistry.Cosmetic(v.Value));
+                        CosmeticsV2Spawner_Dirty.materialIndexToSnowballThrowablePlayfabIdStringRight.ForEach(v => VRRig.LocalRig.cosmeticsObjectRegistry.Cosmetic(v.Value));
+                        return null;
+                    }
+                    snowballs = new Dictionary<string, SnowballThrowable>();
+                    foreach (SnowballMaker Maker in new[] { SnowballMaker.leftHandInstance, SnowballMaker.rightHandInstance })
+                    {
+                        foreach (SnowballThrowable Throwable in Maker.snowballs)
+                        {
+                            try
+                            {
+                                snowballs.Add(Throwable.transform.parent.gameObject.name, Throwable);
+                            }
+                            catch { }
+                        }
+                    }
+                }
+                projectileName += "(Clone)";
+                if (!snowballs.TryGetValue(projectileName, out var projectile))
+                    return null;
+                return projectile;
+            }
+            return null;
+        }
+    }
+}

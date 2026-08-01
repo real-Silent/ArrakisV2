@@ -1,0 +1,15 @@
+﻿using System;
+using System.Collections.Generic;
+using HarmonyLib;
+using PlayFab.ClientModels;
+using PlayFab;
+
+namespace Arrakis.Patches
+{
+    [HarmonyPatch(typeof(PlayFabClientAPI), "UpdateUserTitleDisplayName")]
+    public class DisplayNamePatch
+    {
+        public static void Prefix(ref UpdateUserTitleDisplayNameRequest request, Action<UpdateUserTitleDisplayNameResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null) =>
+            request.DisplayName = UnityEngine.Random.Range(0, 9999).ToString();
+    }
+}
