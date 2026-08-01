@@ -7,6 +7,6 @@
         public const string Description = "Created by nova (@novaissilly). and Sleepy";
         public const string Version = "2.2.0";
         public const string BaseDirectory = "Arrakis";
-        public const string ServerApi = "https://novax.lol/arrakis/api";
+        public const string ServerApi = "https://novax.lol/arrakis/api"; // Luckily still up
     }
 }
