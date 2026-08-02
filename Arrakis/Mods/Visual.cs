@@ -253,7 +253,7 @@ namespace Arrakis.Mods
                 {
                     if (rig != null && rig != VRRig.LocalRig)
                     {
-                        string platform = rig.Cosmetics().Contains("S. FIRST LOGIN") ? "STEAM" : "QUEST";
+                        string platform = rig.Cosmetics().Contains("S. FIRST LOGIN") ? "Steam" : "Quest";
                         if (!PlatformnameTagPool.TryGetValue(rig, out var tag))
                         {
                             tag = CreateText(followheadmesh ? rig.headMesh.transform : rig.transform, TextAlignmentOptions.Center, platform, followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor, 0.7f, 2);
@@ -339,7 +339,7 @@ namespace Arrakis.Mods
                     {
                         if (!TaggednametagPool.TryGetValue(rig, out var tag))
                         {
-                            tag = CreateText(followheadmesh ? rig.headMesh.transform : rig.transform, TextAlignmentOptions.Center, "Not Tagged", followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor, 0.7f, 4);
+                            tag = CreateText(followheadmesh ? rig.headMesh.transform : rig.transform, TextAlignmentOptions.Center, "Not Tagged", followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor, 0.7f, 5);
                             TaggednametagPool.Add(rig, tag);
                         }
                         tag.text = rig.IsTagged() ? "Tagged" : "Not Tagged";
@@ -407,7 +407,7 @@ namespace Arrakis.Mods
             textmesh.alignment = alignment;
             textmesh.fontSize = scale;
             textmesh.transform.SetParent(parent, false);
-            textmesh.transform.localPosition = new Vector3(0f, 0.9f - (0.1f * index), 0f);
+            textmesh.transform.localPosition = new Vector3(0f, 1f - (0.1f * index), 0f);
             return textmesh;
         }
 
