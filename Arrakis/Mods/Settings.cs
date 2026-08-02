@@ -1,12 +1,12 @@
 ﻿using Arrakis.Classes;
 using Arrakis.Menu;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
 using static Arrakis.Menu.Main;
-using Newtonsoft.Json;
 
 namespace Arrakis
 {
@@ -90,7 +90,7 @@ namespace Arrakis
 
         public static void ChangeMenuTheme()
         {
-            currentTheme = (currentTheme + 1) % 13; // Always make this number above the last case so if its case 14: make it 15
+            currentTheme = (currentTheme + 1) % 15; // Always make this number above the last case so if its case 14: make it 15
             switch (currentTheme)
             {
                 case 0: // Default
@@ -180,6 +180,20 @@ namespace Arrakis
                 case 12: // Dark Grey
                     backgroundColor = new ExtGradient { colors = ExtGradient.GetSolidGradient(new Color(0.1f, 0.1f, 0.1f)) };
                     buttonColors[0] = new ExtGradient { colors = ExtGradient.GetSolidGradient(new Color(0.1f, 0.1f, 0.1f)) };
+                    buttonColors[1] = new ExtGradient { colors = ExtGradient.GetSolidGradient(Color.black) };
+                    textColors[0] = Color.white;
+                    textColors[1] = Color.white;
+                    break;
+                case 13: // Yellow
+                    backgroundColor = new ExtGradient { colors = ExtGradient.GetSolidGradient(Color.yellow) };
+                    buttonColors[0] = new ExtGradient { colors = ExtGradient.GetSolidGradient(Color.yellow) };
+                    buttonColors[1] = new ExtGradient { colors = ExtGradient.GetSolidGradient(Color.black) };
+                    textColors[0] = Color.white;
+                    textColors[1] = Color.white;
+                    break;
+                case 14: // Cyan
+                    backgroundColor = new ExtGradient { colors = ExtGradient.GetSolidGradient(Color.cyan) };
+                    buttonColors[0] = new ExtGradient { colors = ExtGradient.GetSolidGradient(Color.cyan) };
                     buttonColors[1] = new ExtGradient { colors = ExtGradient.GetSolidGradient(Color.black) };
                     textColors[0] = Color.white;
                     textColors[1] = Color.white;
