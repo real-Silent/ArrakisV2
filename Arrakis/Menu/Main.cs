@@ -143,7 +143,7 @@ namespace Arrakis.Menu
             {
                 try
                 {
-                    TrailRenderer trail = menu.AddComponent<TrailRenderer>();
+                    TrailRenderer trail = menu.GetOrAddComponent<TrailRenderer>();
                     trail.startColor = backgroundColor.GetColor(0);
                     trail.endColor = backgroundColor.GetColor(1);
                     trail.startWidth = 0.025f;
@@ -159,7 +159,7 @@ namespace Arrakis.Menu
             {
                 try
                 {
-                    TrailRenderer trail = reference.AddComponent<TrailRenderer>();
+                    TrailRenderer trail = reference.GetOrAddComponent<TrailRenderer>();
                     trail.startColor = backgroundColor.GetColor(0);
                     trail.endColor = backgroundColor.GetColor(1);
                     trail.startWidth = 0.025f;
