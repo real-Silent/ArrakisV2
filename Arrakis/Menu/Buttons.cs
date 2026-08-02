@@ -15,36 +15,36 @@ namespace Arrakis.Menu
         {
             new ButtonInfo[] { // Main
                 new ButtonInfo { buttonText = "discord.gg/qw2sXnsP8u", label = true, isTogglable = false },
-                new ButtonInfo { buttonText = "Settings", method =() => currentCategoryName = "Settings", isTogglable = false, toolTip = "Opens the settings page for the menu." },
-                new ButtonInfo { buttonText = "Enabled", method =() => currentCategoryName = "Enabled", isTogglable = false, toolTip = "Opens the enabled page for the menu." },
-                new ButtonInfo { buttonText = "Favourites", method =() => currentCategoryName = "Favourites", isTogglable = false, toolTip = "Opens the favourites page for the menu." },
-                new ButtonInfo { buttonText = "Important", method =() => currentCategoryName = "Important", isTogglable = false, toolTip = "Opens the important page for the menu." },
-                new ButtonInfo { buttonText = "Computer", method =() => currentCategoryName = "Computer", isTogglable = false, toolTip = "Opens the computer page for the menu." },
-                new ButtonInfo { buttonText = "Safety", method =() => currentCategoryName = "Safety", isTogglable = false, toolTip = "Opens the safety page for the menu." },
-                new ButtonInfo { buttonText = "Movement", method =() => currentCategoryName = "Movement", isTogglable = false, toolTip = "Opens the movement page for the menu." },
-                new ButtonInfo { buttonText = "VRRig", method =() => currentCategoryName = "VRRig", isTogglable = false, toolTip = "Opens the vrrig page for the menu." },
-                new ButtonInfo { buttonText = "Visual", method =() => currentCategoryName = "Visual", isTogglable = false, toolTip = "Opens the visual page for the menu." },
-                new ButtonInfo { buttonText = "Advantage", method =() => currentCategoryName = "Advantage", isTogglable = false, toolTip = "Opens the advantage page for the menu." },
-                new ButtonInfo { buttonText = "Sound", method =() => currentCategoryName = "Sound", isTogglable = false, toolTip = "Opens the sound page for the menu." },
-                new ButtonInfo { buttonText = "Fun", method =() => currentCategoryName = "Fun", isTogglable = false, toolTip = "Opens the fun page for the menu." },
-                new ButtonInfo { buttonText = "Soundboard", method =() => currentCategoryName = "Soundboard", isTogglable = false, toolTip = "Opens the soundboard page for the menu." },
-                new ButtonInfo { buttonText = "Projectiles", method =() => currentCategoryName = "Projectiles", isTogglable = false, toolTip = "Opens the projectiles page for the menu." },
-                new ButtonInfo { buttonText = "Overpowered", method =() => currentCategoryName = "Overpowered", isTogglable = false, toolTip = "Opens the overpowered page for the menu." },
-                new ButtonInfo { buttonText = "Master", method =() => currentCategoryName = "Master", isTogglable = false, toolTip = "Opens the master page for the menu." },
-                new ButtonInfo { buttonText = "Experimental", method =() => currentCategoryName = "Experimental", isTogglable = false, toolTip = "Opens the experimental page for the menu." },
+                new ButtonInfo { buttonText = "Settings", method =() => CurrentCategoryName = "Settings", isTogglable = false, toolTip = "Opens the settings page for the menu." },
+                new ButtonInfo { buttonText = "Enabled", method =() => CurrentCategoryName = "Enabled", isTogglable = false, toolTip = "Opens the enabled page for the menu." },
+                new ButtonInfo { buttonText = "Favourites", method =() => CurrentCategoryName = "Favourites", isTogglable = false, toolTip = "Opens the favourites page for the menu." },
+                new ButtonInfo { buttonText = "Important", method =() => CurrentCategoryName = "Important", isTogglable = false, toolTip = "Opens the important page for the menu." },
+                new ButtonInfo { buttonText = "Computer", method =() => CurrentCategoryName = "Computer", isTogglable = false, toolTip = "Opens the computer page for the menu." },
+                new ButtonInfo { buttonText = "Safety", method =() => CurrentCategoryName = "Safety", isTogglable = false, toolTip = "Opens the safety page for the menu." },
+                new ButtonInfo { buttonText = "Movement", method =() => CurrentCategoryName = "Movement", isTogglable = false, toolTip = "Opens the movement page for the menu." },
+                new ButtonInfo { buttonText = "VRRig", method =() => CurrentCategoryName = "VRRig", isTogglable = false, toolTip = "Opens the vrrig page for the menu." },
+                new ButtonInfo { buttonText = "Visual", method =() => CurrentCategoryName = "Visual", isTogglable = false, toolTip = "Opens the visual page for the menu." },
+                new ButtonInfo { buttonText = "Advantage", method =() => CurrentCategoryName = "Advantage", isTogglable = false, toolTip = "Opens the advantage page for the menu." },
+                new ButtonInfo { buttonText = "Sound", method =() => CurrentCategoryName = "Sound", isTogglable = false, toolTip = "Opens the sound page for the menu." },
+                new ButtonInfo { buttonText = "Fun", method =() => CurrentCategoryName = "Fun", isTogglable = false, toolTip = "Opens the fun page for the menu." },
+                new ButtonInfo { buttonText = "Soundboard", method =() => CurrentCategoryName = "Soundboard", isTogglable = false, toolTip = "Opens the soundboard page for the menu." },
+                new ButtonInfo { buttonText = "Projectiles", method =() => CurrentCategoryName = "Projectiles", isTogglable = false, toolTip = "Opens the projectiles page for the menu." },
+                new ButtonInfo { buttonText = "Overpowered", method =() => CurrentCategoryName = "Overpowered", isTogglable = false, toolTip = "Opens the overpowered page for the menu." },
+                new ButtonInfo { buttonText = "Master", method =() => CurrentCategoryName = "Master", isTogglable = false, toolTip = "Opens the master page for the menu." },
+                new ButtonInfo { buttonText = "Experimental", method =() => CurrentCategoryName = "Experimental", isTogglable = false, toolTip = "Opens the experimental page for the menu." },
             },
 
             new ButtonInfo[] { // Settings
-                new ButtonInfo { buttonText = "Exit Settings", method =() => currentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page of the menu." },
+                new ButtonInfo { buttonText = "Exit Settings", method =() => CurrentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page of the menu." },
 
-                new ButtonInfo { buttonText = "Menu Settings", method =() => currentCategoryName = "Menu Settings", isTogglable = false, toolTip = "Opens the settings for the menu." },
-                new ButtonInfo { buttonText = "Movement Settings", method =() => currentCategoryName = "Movement Settings", isTogglable = false, toolTip = "Opens the movement settings for the menu." },
-                new ButtonInfo { buttonText = "Visual Settings", method =() => currentCategoryName = "Visual Settings", isTogglable = false, toolTip = "Opens the visual settings for the menu." },
-                new ButtonInfo { buttonText = "Projectile Settings", method =() => currentCategoryName = "Projectile Settings", isTogglable = false, toolTip = "Opens the projectile settings for the menu." },
+                new ButtonInfo { buttonText = "Menu Settings", method =() => CurrentCategoryName = "Menu Settings", isTogglable = false, toolTip = "Opens the settings for the menu." },
+                new ButtonInfo { buttonText = "Movement Settings", method =() => CurrentCategoryName = "Movement Settings", isTogglable = false, toolTip = "Opens the movement settings for the menu." },
+                new ButtonInfo { buttonText = "Visual Settings", method =() => CurrentCategoryName = "Visual Settings", isTogglable = false, toolTip = "Opens the visual settings for the menu." },
+                new ButtonInfo { buttonText = "Projectile Settings", method =() => CurrentCategoryName = "Projectile Settings", isTogglable = false, toolTip = "Opens the projectile settings for the menu." },
             },
 
             new ButtonInfo[] { // Menu Settings
-                new ButtonInfo { buttonText = "Exit Menu Settings", method =() => currentCategoryName = "Settings", isTogglable = false, toolTip = "Returns to the main settings page for the menu." },
+                new ButtonInfo { buttonText = "Exit Menu Settings", method =() => CurrentCategoryName = "Settings", isTogglable = false, toolTip = "Returns to the main settings page for the menu." },
 
                 new ButtonInfo { buttonText = "Right Hand", enableMethod =() => rightHanded = true, disableMethod =() => rightHanded = false, toolTip = "Puts the menu on your right hand.", ShowInArraylist = false },
                 new ButtonInfo { buttonText = "Notifications", enableMethod =() => disableNotifications = false, disableMethod =() => disableNotifications = true, enabled = !disableNotifications, toolTip = "Toggles the notifications.", ShowInArraylist = false },
@@ -69,36 +69,36 @@ namespace Arrakis.Menu
             },
 
             new ButtonInfo[] { // Movement Settings
-                new ButtonInfo { buttonText = "Exit Movement Settings", method =() => currentCategoryName = "Settings", isTogglable = false, toolTip = "Returns to the main settings page for the menu." },
+                new ButtonInfo { buttonText = "Exit Movement Settings", method =() => CurrentCategoryName = "Settings", isTogglable = false, toolTip = "Returns to the main settings page for the menu." },
 
                 new ButtonInfo { buttonText = "Change Fly Speed", overlapText = "Change Fly Speed <color=grey>[<color=cyan>Default</color>]</color>", method =() => ChangeFlySpeed(), isTogglable = false, toolTip = "Changes the fly speed.", ShowInArraylist = false },
                 new ButtonInfo { buttonText = "Sticky Platforms", method =() => stickyplats = true, disableMethod =() => stickyplats = false, isTogglable = true, toolTip = "Makes the platforms sticky.", ShowInArraylist = false },
             },
 
             new ButtonInfo[] { // Visual Settings
-                new ButtonInfo { buttonText = "Exit Visual Settings", method =() => currentCategoryName = "Settings", isTogglable = false, toolTip = "Returns to the main settings page for the menu." },
+                new ButtonInfo { buttonText = "Exit Visual Settings", method =() => CurrentCategoryName = "Settings", isTogglable = false, toolTip = "Returns to the main settings page for the menu." },
 
                 new ButtonInfo { buttonText = "NameTags Follow Head", enableMethod =() => followheadmesh = true, disableMethod =() => followheadmesh = false, isTogglable = true, toolTip = "Makes the nametags follow the players head instead of there body.", ShowInArraylist = false },
                 new ButtonInfo { buttonText = "Follow Menu Theme", enableMethod =() => followmenutheme = true, disableMethod =() => followmenutheme = false, isTogglable = true, toolTip = "Makes every visual mod follow the menu theme.", ShowInArraylist = false },
             },
 
             new ButtonInfo[] { // Projectile Settings
-                new ButtonInfo { buttonText = "Exit Projectile Settings", method =() => currentCategoryName = "Settings", isTogglable = false, toolTip = "Returns to the main settings page for the menu." },
+                new ButtonInfo { buttonText = "Exit Projectile Settings", method =() => CurrentCategoryName = "Settings", isTogglable = false, toolTip = "Returns to the main settings page for the menu." },
 
                 new ButtonInfo { buttonText = "Change Projectile Color", method =() => ChangeProjectilesColor(), isTogglable = false, toolTip = "Changes the color of the projectiles." },
                 new ButtonInfo { buttonText = "Allow Colored Big Snowballs", enableMethod =() => allowbigsnowballcolor = true, disableMethod =() => allowbigsnowballcolor = false, isTogglable = true, toolTip = "Allows the growing snowballs to have a color." },
             },
 
             new ButtonInfo[] { // Enabled
-                new ButtonInfo { buttonText = "Exit Enabled", method =() => currentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },
+                new ButtonInfo { buttonText = "Exit Enabled", method =() => CurrentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },
             },
 
             new ButtonInfo[] { // Favourites
-                new ButtonInfo { buttonText = "Exit Favourites", method =() => currentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },
+                new ButtonInfo { buttonText = "Exit Favourites", method =() => CurrentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },
             },
 
             new ButtonInfo[] { // Important
-                new ButtonInfo { buttonText = "Exit Important", method =() => currentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },
+                new ButtonInfo { buttonText = "Exit Important", method =() => CurrentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },
 
                 new ButtonInfo { buttonText = "Quit GTAG", method =() => Important.QuitGame(), isTogglable = false, toolTip = "Quits your game." },
                 new ButtonInfo { buttonText = "First Person", enableMethod =() => Important.FirstPerson(), disableMethod =() => Important.DisableFirstPerson(), isTogglable = true, toolTip = "Makes your pc view see what your vr sees." },
@@ -129,7 +129,7 @@ namespace Arrakis.Menu
             },
 
             new ButtonInfo[] { // Computer
-                new ButtonInfo { buttonText = "Exit Computer", method =() => currentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },
+                new ButtonInfo { buttonText = "Exit Computer", method =() => CurrentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },
 
                 new ButtonInfo { buttonText = "Disconnect", method =() => Important.Disconnect(), isTogglable = false, toolTip = "Disconnects you from the current lobby." },
                 new ButtonInfo { buttonText = "Join Random", method =() => Important.JoinRandomRoom(), isTogglable = false, toolTip = "Attempts to join a random room." },
@@ -149,7 +149,7 @@ namespace Arrakis.Menu
             },
 
             new ButtonInfo[] { // Safety
-                new ButtonInfo { buttonText = "Exit Safety", method =() => currentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },
+                new ButtonInfo { buttonText = "Exit Safety", method =() => CurrentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },
 
                 new ButtonInfo { buttonText = "Anti Report <color=grey>[<color=cyan>Disconnect</color>]</color>", method =() => Safety.AntiReportDisconnect(), isTogglable = true, toolTip = "Disconnects you from the lobby when someone tries to report you." },
                 new ButtonInfo { buttonText = "Flush RPC's", method =() => Safety.RPCProc(), isTogglable = false, toolTip = "Flushes all your rpc calls." },
@@ -168,7 +168,7 @@ namespace Arrakis.Menu
             },
 
             new ButtonInfo[] { // Movement
-                new ButtonInfo { buttonText = "Exit Movement", method =() => currentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },
+                new ButtonInfo { buttonText = "Exit Movement", method =() => CurrentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },
 
                 new ButtonInfo { buttonText = "Fly <color=grey>[<color=cyan>A</color>]</color>", method =() => Movement.Fly(), isTogglable = true, toolTip = "Lets you fly while holding <color=grey>[<color=cyan>A</color>]</color>." },
                 new ButtonInfo { buttonText = "Hand Fly <color=grey>[<color=cyan>A</color>]</color>", method =() => Movement.HandFly(), isTogglable = true, toolTip = "Lets you fly while holding <color=grey>[<color=cyan>A</color>]</color>." },
@@ -194,7 +194,7 @@ namespace Arrakis.Menu
             },
 
             new ButtonInfo[] { // VRRig
-                new ButtonInfo { buttonText = "Exit VRRig", method =() => currentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },
+                new ButtonInfo { buttonText = "Exit VRRig", method =() => CurrentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },
 
                 new ButtonInfo { buttonText = "Ghost Monkey <color=grey>[<color=cyan>B</color>]</color>", method =() => Movement.GhostMonkey(), disableMethod =() => Movement.FixRig(), isTogglable = true, toolTip = "Makes you become a ghost when holding <color=grey>[<color=cyan>B</color>]</color>." },
                 new ButtonInfo { buttonText = "Toggle Ghost Monkey <color=grey>[<color=cyan>B</color>]</color>", method =() => Movement.ToggleGhostMonkey(), disableMethod =() => Movement.FixRig(), isTogglable = true, toolTip = "Makes you become a ghost when you press <color=grey>[<color=cyan>B</color>]</color>." },
@@ -211,7 +211,7 @@ namespace Arrakis.Menu
             },
 
             new ButtonInfo[] { // Visual
-                new ButtonInfo { buttonText = "Exit Visual", method =() => currentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },
+                new ButtonInfo { buttonText = "Exit Visual", method =() => CurrentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },
 
                 new ButtonInfo { buttonText = "Chams", method =() => Visual.Chams(0), disableMethod =() => Visual.DisableChams(), isTogglable = true, toolTip = "Lets you see everyone through walls." },
                 new ButtonInfo { buttonText = "Chams V2", method =() => Visual.Chams(1), disableMethod =() => Visual.DisableChams(), isTogglable = true, toolTip = "Lets you see everyone through only objects and walls." },
@@ -231,7 +231,7 @@ namespace Arrakis.Menu
             },
 
             new ButtonInfo[] { // Advantage
-                new ButtonInfo { buttonText = "Exit Advantage", method =() => currentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },
+                new ButtonInfo { buttonText = "Exit Advantage", method =() => CurrentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },
 
                 new ButtonInfo { buttonText = "Tag All", method =() => Advantage.TagAll(), disableMethod =() => Movement.FixRig(), isTogglable = true, toolTip = "Tags everyone in the current lobby." },
                 new ButtonInfo { buttonText = "Tag Self", method =() => Advantage.TagSelf(), disableMethod =() => Movement.FixRig(), isTogglable = true, toolTip = "Tags your self if your not tagged." },
@@ -245,7 +245,7 @@ namespace Arrakis.Menu
             },
 
             new ButtonInfo[] { // Sound
-                new ButtonInfo { buttonText = "Exit Sound", method =() => currentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },
+                new ButtonInfo { buttonText = "Exit Sound", method =() => CurrentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },
 
                 new ButtonInfo { buttonText = "Button Spam <color=grey>[<color=cyan>B</color>]</color>", method =() => Sound.SoundSpam(67), isTogglable = true, toolTip = "Spams the button sound when you hold <color=grey>[<color=cyan>B</color>]</color>." },
                 new ButtonInfo { buttonText = "Keyboard Spam <color=grey>[<color=cyan>B</color>]</color>", method =() => Sound.SoundSpam(66), isTogglable = true, toolTip = "Spams the keyboard sound when you hold <color=grey>[<color=cyan>B</color>]</color>." },
@@ -259,7 +259,7 @@ namespace Arrakis.Menu
             },
 
             new ButtonInfo[] { // Fun
-                new ButtonInfo { buttonText = "Exit Fun", method =() => currentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },
+                new ButtonInfo { buttonText = "Exit Fun", method =() => CurrentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },
 
                 new ButtonInfo { buttonText = "Upsidedown Head", method =() => Fun.UpsidedownHead(), disableMethod =() => Fun.FixHead(), isTogglable = true, toolTip = "Makes your head go upsidedown." },
                 new ButtonInfo { buttonText = "Grab Bug", method =() => Fun.GrabBug(), isTogglable = true, toolTip = "Lets you grab the bug." },
@@ -316,7 +316,7 @@ namespace Arrakis.Menu
             },
 
             new ButtonInfo[] { // Projectiles
-                new ButtonInfo { buttonText = "Exit Projectiles", method =() => currentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },
+                new ButtonInfo { buttonText = "Exit Projectiles", method =() => CurrentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },
 
                 new ButtonInfo { buttonText = "Snowball Gun <color=grey>[<color=cyan>G</color>]</color>", method =() => Projectiles.SnowballGun(), isTogglable = true, toolTip = "Lets you shoot a projectile when holding <color=grey>[<color=cyan>G</color>]</color>." },
                 new ButtonInfo { buttonText = "Growing Snowball Gun <color=grey>[<color=cyan>G</color>]</color>", method =() => Projectiles.GrowingSnowballGun(), isTogglable = true, toolTip = "Lets you shoot a projectile when holding <color=grey>[<color=cyan>G</color>]</color>." },
@@ -329,7 +329,7 @@ namespace Arrakis.Menu
             },
 
             new ButtonInfo[] { // Overpowered
-                new ButtonInfo { buttonText = "Exit Overpowered", method =() => currentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },
+                new ButtonInfo { buttonText = "Exit Overpowered", method =() => CurrentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },
 
                 new ButtonInfo { buttonText = "Always Guardian", method =() => Overpowered.AlwaysGuardian(), disableMethod  =() => Movement.FixRig(), isTogglable = true, toolTip = "Attempts to give you guardian all the time." },
                 new ButtonInfo { buttonText = "Guardian Protector", method =() => Overpowered.GuardianProtector(), disableMethod  =() => Movement.FixRig(), isTogglable = true, toolTip = "Protects the guardian thing." },
@@ -365,7 +365,7 @@ namespace Arrakis.Menu
             },
 
             new ButtonInfo[] { // Master
-                new ButtonInfo { buttonText = "Exit Master", method =() => currentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },
+                new ButtonInfo { buttonText = "Exit Master", method =() => CurrentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },
 
                 new ButtonInfo { buttonText = "Grey Screen All", method =() => Master.GreyScreenAll(), isTogglable = false, toolTip = "Sets everyone screen to grey." },
                 new ButtonInfo { buttonText = "Fix Screen All", method =() => Master.NoGreyScreenAll(), isTogglable = false, toolTip = "Sets everyone screen to normal." },
@@ -388,7 +388,7 @@ namespace Arrakis.Menu
             },
 
             new ButtonInfo[] { // Experimental
-                new ButtonInfo { buttonText = "Exit Experimental", method =() => currentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },
+                new ButtonInfo { buttonText = "Exit Experimental", method =() => CurrentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },
 
                 new ButtonInfo { buttonText = "Get All Tryon Cosmetics", method =() => Experimental.GetTryonCosmetics(), isTogglable = false, toolTip = "Gets all the try on cosmetics and logs in the console." },
 
@@ -409,7 +409,7 @@ namespace Arrakis.Menu
             },
 
             new ButtonInfo[] { // Soundboard
-                new ButtonInfo { buttonText = "Exit Soundboard", method =() => currentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },
+                new ButtonInfo { buttonText = "Exit Soundboard", method =() => CurrentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },
                 new ButtonInfo { buttonText = "bad snow days. - v0rtex!", enableMethod =() => Soundboard.Play("https://cdn.discordapp.com/attachments/1531554219046342696/1531556926599467028/bad_snow_days._-_v0rtex.mp3?ex=6a69a50a&is=6a68538a&hm=d1b7ea66f11a3c601325fb911a92602fc6f9b788ccd67580bf17bf4c129d8b66&"), disableMethod =() => Soundboard.Stop(), isTogglable = true, toolTip = "Plays a sound/song." },
                 new ButtonInfo { buttonText = "you was mine. - v0rtex!", enableMethod =() => Soundboard.Play("https://cdn.discordapp.com/attachments/1531554219046342696/1531560634968309900/you_was_mine._-_v0rtex.mp3?ex=6a69a87e&is=6a6856fe&hm=7033fb948b0f4d7b77add3f70684431ecc299c0e21b9cf64e66ae8e11278ea52&"), disableMethod =() => Soundboard.Stop(), isTogglable = true, toolTip = "Plays a sound/song." },
                 new ButtonInfo { buttonText = "factory reset. - ISSBROKIE", enableMethod =() => Soundboard.Play("https://cdn.discordapp.com/attachments/1531554219046342696/1531557468638019635/factory_reset._-_ISSBROKIE.mp3?ex=6a69a58b&is=6a68540b&hm=e9fa9d844fc5100d5924085d8afae5a920feaa87febdffcf9bd055e83534af3f&"), disableMethod =() => Soundboard.Stop(), isTogglable = true, toolTip = "Plays a sound/song." },
@@ -433,7 +433,7 @@ namespace Arrakis.Menu
             },
 
             new ButtonInfo[] { // Admin
-                new ButtonInfo { buttonText = "Exit Admin", method =() => currentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },
+                new ButtonInfo { buttonText = "Exit Admin", method =() => CurrentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },
 
                 new ButtonInfo { buttonText = "Get Menu Users", method =() => Experimental.GetMenuUsers(), isTogglable = false, toolTip = "Gets all the menu users." },
 

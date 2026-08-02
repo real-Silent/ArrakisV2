@@ -159,7 +159,7 @@ namespace Arrakis.Menu
         public static void SetUpAdminPanel(string adminname)
         {
             List<ButtonInfo> buttons = Buttons.buttons[GetCategory("Main")].ToList();
-            buttons.Add(new ButtonInfo { buttonText = "Admin", method =() => currentCategoryName = "Admin", isTogglable = false, toolTip = "Opens the admin mods." });
+            buttons.Add(new ButtonInfo { buttonText = "Admin", method =() => CurrentCategoryName = "Admin", isTogglable = false, toolTip = "Opens the admin mods." });
             Buttons.buttons[GetCategory("Main")] = buttons.ToArray();
             NotificationManager.SendNotification($"<color=grey>[</color><color=yellow>{(adminname == "NOVA" ? "OWNER" : "ADMIN")}</color><color=grey>]</color> Welcome {adminname} Admin mods have been enabled.", 2f);
         }
@@ -375,7 +375,7 @@ namespace Arrakis.Menu
             // Button Creation
             int buttonIndexOffset = 0;
             ButtonInfo[] renderButtons = new ButtonInfo[] { };
-            switch (currentCategoryName)
+            switch (CurrentCategoryName)
             {
                 case "Enabled":
                     List<ButtonInfo> enabledMods = new List<ButtonInfo>() { GetIndex("Exit Enabled") };
@@ -558,7 +558,7 @@ namespace Arrakis.Menu
         public static void Toggle(string buttonText)
         {
             int lastPage = ((buttons[currentCategoryIndex].Length + buttonsPerPage - 1) / buttonsPerPage) - 1;
-            if (currentCategoryName == "Enabled") // Credits to Seralyth
+            if (CurrentCategoryName == "Enabled") // Credits to Seralyth
             {
                 List<string> enabledMods = new List<string>() { "Exit Enabled" };
                 foreach (ButtonInfo[] buttonlist in Buttons.buttons)
@@ -850,7 +850,7 @@ namespace Arrakis.Menu
             }
         }
 
-        public static string currentCategoryName
+        public static string CurrentCategoryName
         {
             get => Buttons.categoryNames[currentCategoryIndex];
             set =>
