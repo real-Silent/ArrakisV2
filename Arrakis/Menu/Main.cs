@@ -59,24 +59,33 @@ namespace Arrakis.Menu
                         GameObject.Find("Shoulder Camera").transform.Find("CM vcam1").gameObject.SetActive(true);
 
                         Rigidbody comp = menu.GetOrAddComponent<Rigidbody>();
-                        if (rightHanded)
-                        {
-                            comp.linearVelocity = GTPlayer.Instance.RightHand.velocityTracker.GetAverageVelocity(true, 0);
-                            comp.angularVelocity = GameObject.Find("Player Objects/Player VR Controller/GorillaPlayer/TurnParent/RightHand Controller").GetOrAddComponent<GorillaVelocityEstimator>().angularVelocity;
-                        }
-                        else
-                        {
-                            comp.linearVelocity = GTPlayer.Instance.LeftHand.velocityTracker.GetAverageVelocity(true, 0);
-                            comp.angularVelocity = GameObject.Find("Player Objects/Player VR Controller/GorillaPlayer/TurnParent/LeftHand Controller").GetOrAddComponent<GorillaVelocityEstimator>().angularVelocity;
-                        }
 
-                        if (menuanimation)
+                        if (!disablemenudrop)
                         {
-                            CRunner.instance.StartCoroutine(CloseMenu());
+                            if (rightHanded)
+                            {
+                                comp.linearVelocity = GTPlayer.Instance.RightHand.velocityTracker.GetAverageVelocity(true, 0);
+                                comp.angularVelocity = GameObject.Find("Player Objects/Player VR Controller/GorillaPlayer/TurnParent/RightHand Controller").GetOrAddComponent<GorillaVelocityEstimator>().angularVelocity;
+                            }
+                            else
+                            {
+                                comp.linearVelocity = GTPlayer.Instance.LeftHand.velocityTracker.GetAverageVelocity(true, 0);
+                                comp.angularVelocity = GameObject.Find("Player Objects/Player VR Controller/GorillaPlayer/TurnParent/LeftHand Controller").GetOrAddComponent<GorillaVelocityEstimator>().angularVelocity;
+                            }
+
+                            if (menuanimation)
+                            {
+                                CRunner.instance.StartCoroutine(CloseMenu());
+                            }
+                            else
+                            {
+                                Destroy(menu, 2f);
+                                menu = null;
+                            }
                         }
-                        else
+                        else 
                         {
-                            Destroy(menu, 2f);
+                            Destroy(menu);
                             menu = null;
                         }
 
