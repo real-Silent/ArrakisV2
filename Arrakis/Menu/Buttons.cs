@@ -17,6 +17,7 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "discord.gg/qw2sXnsP8u", label = true, isTogglable = false },
                 new ButtonInfo { buttonText = "Settings", method =() => currentCategoryName = "Settings", isTogglable = false, toolTip = "Opens the settings page for the menu." },
                 new ButtonInfo { buttonText = "Enabled", method =() => currentCategoryName = "Enabled", isTogglable = false, toolTip = "Opens the enabled page for the menu." },
+                new ButtonInfo { buttonText = "Favourites", method =() => currentCategoryName = "Favourites", isTogglable = false, toolTip = "Opens the favourites page for the menu." },
                 new ButtonInfo { buttonText = "Important", method =() => currentCategoryName = "Important", isTogglable = false, toolTip = "Opens the important page for the menu." },
                 new ButtonInfo { buttonText = "Computer", method =() => currentCategoryName = "Computer", isTogglable = false, toolTip = "Opens the computer page for the menu." },
                 new ButtonInfo { buttonText = "Safety", method =() => currentCategoryName = "Safety", isTogglable = false, toolTip = "Opens the safety page for the menu." },
@@ -90,6 +91,10 @@ namespace Arrakis.Menu
 
             new ButtonInfo[] { // Enabled
                 new ButtonInfo { buttonText = "Exit Enabled", method =() => currentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },
+            },
+
+            new ButtonInfo[] { // Favourites
+                new ButtonInfo { buttonText = "Exit Favourites", method =() => currentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },
             },
 
             new ButtonInfo[] { // Important
@@ -451,6 +456,7 @@ namespace Arrakis.Menu
             "Visual Settings",
             "Projectile Settings",
             "Enabled",
+            "Favourites",
             "Important",
             "Computer",
             "Safety",

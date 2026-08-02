@@ -375,14 +375,19 @@ namespace Arrakis.Menu
             // Button Creation
             int buttonIndexOffset = 0;
             ButtonInfo[] renderButtons = new ButtonInfo[] { };
-            if (currentCategoryName == "Enabled")
+            switch (currentCategoryName)
             {
-                List<ButtonInfo> enabledMods = new List<ButtonInfo>() { GetIndex("Exit Enabled") };
-                enabledMods.AddRange(Buttons.buttons.SelectMany(buttonlist => buttonlist).Where(v => v.enabled));
-                renderButtons = enabledMods.ToArray();
+                case "Enabled":
+                    List<ButtonInfo> enabledMods = new List<ButtonInfo>() { GetIndex("Exit Enabled") };
+                    enabledMods.AddRange(Buttons.buttons.SelectMany(buttonlist => buttonlist).Where(v => v.enabled));
+                    renderButtons = enabledMods.ToArray();
+                    break;
+                case "Favourites":
+                    break;
+                default:
+                    renderButtons = Buttons.buttons[currentCategoryIndex];
+                    break;
             }
-            else
-                renderButtons = Buttons.buttons[currentCategoryIndex];
             renderButtons = renderButtons.Skip(pageNumber * (buttonsPerPage - buttonIndexOffset)).Take(buttonsPerPage - buttonIndexOffset).ToArray();
             for (int i = 0; i < renderButtons.Length; i++)
                 AddButton((i + buttonIndexOffset) * 0.1f + (0.1f / 10), i, renderButtons[i]);
