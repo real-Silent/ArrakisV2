@@ -28,6 +28,7 @@ namespace Arrakis
             holder.AddComponent<PcGui>();
             holder.AddComponent<Admin>();
             holder.AddComponent<UserCount>();
+            holder.AddComponent<Boards>();
 
             if (!Directory.Exists(PluginInfo.BaseDirectory))
                 Directory.CreateDirectory(PluginInfo.BaseDirectory);

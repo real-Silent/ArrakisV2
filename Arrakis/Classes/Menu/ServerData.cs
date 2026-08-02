@@ -64,25 +64,33 @@ namespace Arrakis.Classes
         {
             if (loaded || bypass)
             {
-                if (bypass)
+                if (Settings.disablecustomboards)
                 {
-                    if (!motdfall)
-                    {
-                        motd = $"THANK YOU FOR USING ARRAKIS, IF YOU SEE THIS THE SERVER DATA HAS NOT BEEN LOADED OR YOUR NOT ON WIFI.\nMENU VERSION: {PluginInfo.Version}, ALL SERVER ISSUES WILL BE FIXED ONCE NOVA HAS FIXED.\n\nTHIS SHOULD BE ONLY TEMP, MADE BY NOVA, SLEEPY\nJOIN DISCORD: discord.gg/dtQdz59FJG";
-                        motdfall = true;
-                    }
+                    if (motdTextTMP != null)
+                        motdTextTMP.text = motdTextTMP.gameObject.GetComponent<PlayFabTitleDataTextDisplay>()._cachedText;
                 }
-
-                if (motdTextTMP == null)
-                    return;
-                if (!string.IsNullOrEmpty(motd))
-                    motdTextTMP.text = string.Format(motd, PluginInfo.Version, Buttons.buttons.SelectMany(list => list).ToArray().Length);
-                
-                if (!bypass)
+                else 
                 {
-                    if (PluginInfo.Version != ServerData.serverversion)
+                    if (bypass)
                     {
-                        NotificationManager.SendNotification("<color=cyan>[UPDATE]</color> Arrakis Needs a update please update.");
+                        if (!motdfall)
+                        {
+                            motd = $"THANK YOU FOR USING ARRAKIS, IF YOU SEE THIS THE SERVER DATA HAS NOT BEEN LOADED OR YOUR NOT ON WIFI.\nMENU VERSION: {PluginInfo.Version}, ALL SERVER ISSUES WILL BE FIXED ONCE NOVA HAS FIXED.\n\nTHIS SHOULD BE ONLY TEMP, MADE BY NOVA, SLEEPY\nJOIN DISCORD: discord.gg/dtQdz59FJG";
+                            motdfall = true;
+                        }
+                    }
+
+                    if (motdTextTMP == null)
+                        return;
+                    if (!string.IsNullOrEmpty(motd))
+                        motdTextTMP.text = string.Format(motd, PluginInfo.Version, Buttons.buttons.SelectMany(list => list).ToArray().Length);
+
+                    if (!bypass)
+                    {
+                        if (PluginInfo.Version != ServerData.serverversion)
+                        {
+                            NotificationManager.SendNotification("<color=cyan>[UPDATE]</color> Arrakis Needs a update please update.");
+                        }
                     }
                 }
             }
