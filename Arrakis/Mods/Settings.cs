@@ -130,6 +130,7 @@ namespace Arrakis
                     buttonColors[1] = new ExtGradient { colors = ExtGradient.GetSolidGradient(Color.red) };
                     textColors[0] = Color.white;
                     textColors[1] = Color.white;
+                    GetIndex("Change Menu Theme").overlapText = "Change Menu Theme <color=grey>[<color=cyan>Default</color>]</color>";
                     break;
                 case 1: // Blue
                     backgroundColor = new ExtGradient { colors = ExtGradient.GetSolidGradient(Color.blue) };
@@ -137,6 +138,7 @@ namespace Arrakis
                     buttonColors[1] = new ExtGradient { colors = ExtGradient.GetSolidGradient(Color.red) };
                     textColors[0] = Color.white;
                     textColors[1] = Color.white;
+                    GetIndex("Change Menu Theme").overlapText = "Change Menu Theme <color=grey>[<color=cyan>Blue</color>]</color>";
                     break;
                 case 2: // Red
                     backgroundColor = new ExtGradient { colors = ExtGradient.GetSolidGradient(Color.red) };
@@ -144,6 +146,7 @@ namespace Arrakis
                     buttonColors[1] = new ExtGradient { colors = ExtGradient.GetSolidGradient(Color.blue) };
                     textColors[0] = Color.white;
                     textColors[1] = Color.white;
+                    GetIndex("Change Menu Theme").overlapText = "Change Menu Theme <color=grey>[<color=cyan>Red</color>]</color>";
                     break;
                 case 3: // Transparent
                     backgroundColor = new ExtGradient { transparent = true };
@@ -151,6 +154,7 @@ namespace Arrakis
                     buttonColors[1] = new ExtGradient { colors = ExtGradient.GetSolidGradient(Color.red) };
                     textColors[0] = Color.white;
                     textColors[1] = Color.white;
+                    GetIndex("Change Menu Theme").overlapText = "Change Menu Theme <color=grey>[<color=cyan>Transparent</color>]</color>";
                     break;
                 case 4: // Pastel
                     backgroundColor = new ExtGradient { pastelRainbow = true };
@@ -158,6 +162,7 @@ namespace Arrakis
                     buttonColors[1] = new ExtGradient { colors = ExtGradient.GetSolidGradient(Color.red) };
                     textColors[0] = Color.white;
                     textColors[1] = Color.white;
+                    GetIndex("Change Menu Theme").overlapText = "Change Menu Theme <color=grey>[<color=cyan>Pastel</color>]</color>";
                     break;
                 case 5: // Black Grey Fade
                     backgroundColor = new ExtGradient { colors = ExtGradient.GetSimpleGradient(Color.black, Color.grey) };
@@ -165,6 +170,7 @@ namespace Arrakis
                     buttonColors[1] = new ExtGradient { colors = ExtGradient.GetSolidGradient(Color.red) };
                     textColors[0] = Color.white;
                     textColors[1] = Color.white;
+                    GetIndex("Change Menu Theme").overlapText = "Change Menu Theme <color=grey>[<color=cyan>BG Fade</color>]</color>";
                     break;
                 case 6: // White Black Fade
                     backgroundColor = new ExtGradient { colors = ExtGradient.GetSimpleGradient(Color.white, Color.black) };
@@ -172,6 +178,7 @@ namespace Arrakis
                     buttonColors[1] = new ExtGradient { colors = ExtGradient.GetSolidGradient(Color.red) };
                     textColors[0] = Color.white;
                     textColors[1] = Color.white;
+                    GetIndex("Change Menu Theme").overlapText = "Change Menu Theme <color=grey>[<color=cyan>WB Fade</color>]</color>";
                     break;
                 case 7: // Full Black
                     backgroundColor = new ExtGradient { colors = ExtGradient.GetSolidGradient(Color.black) };
@@ -179,6 +186,7 @@ namespace Arrakis
                     buttonColors[1] = new ExtGradient { colors = ExtGradient.GetSolidGradient(Color.black) };
                     textColors[0] = Color.white;
                     textColors[1] = Color.grey;
+                    GetIndex("Change Menu Theme").overlapText = "Change Menu Theme <color=grey>[<color=cyan>Black</color>]</color>";
                     break;
                 case 8: // Full White
                     backgroundColor = new ExtGradient { colors = ExtGradient.GetSolidGradient(Color.white) };
@@ -186,6 +194,7 @@ namespace Arrakis
                     buttonColors[1] = new ExtGradient { colors = ExtGradient.GetSolidGradient(Color.white) };
                     textColors[0] = Color.black;
                     textColors[1] = Color.grey;
+                    GetIndex("Change Menu Theme").overlapText = "Change Menu Theme <color=grey>[<color=cyan>White</color>]</color>";
                     break;
                 case 9: // Rainbow
                     backgroundColor = new ExtGradient { rainbow = true };
@@ -193,6 +202,7 @@ namespace Arrakis
                     buttonColors[1] = new ExtGradient { colors = ExtGradient.GetSolidGradient(Color.red) };
                     textColors[0] = Color.white;
                     textColors[1] = Color.white;
+                    GetIndex("Change Menu Theme").overlapText = "Change Menu Theme <color=grey>[<color=cyan>Rainbow</color>]</color>";
                     break;
                 case 10: // Porn Hub cause sleepy wanted it -nova
                     backgroundColor = new ExtGradient { colors = ExtGradient.GetSimpleGradient(Color.orange, Color.black) };
@@ -200,6 +210,7 @@ namespace Arrakis
                     buttonColors[1] = new ExtGradient { colors = ExtGradient.GetSolidGradient(Color.orange) };
                     textColors[0] = Color.orange;
                     textColors[1] = Color.black;
+                    GetIndex("Change Menu Theme").overlapText = "Change Menu Theme <color=grey>[<color=cyan>PH</color>]</color>";
                     break;
                 case 11: // Grey
                     backgroundColor = new ExtGradient { colors = ExtGradient.GetSolidGradient(Color.grey) };
@@ -207,6 +218,7 @@ namespace Arrakis
                     buttonColors[1] = new ExtGradient { colors = ExtGradient.GetSolidGradient(Color.black) };
                     textColors[0] = Color.white;
                     textColors[1] = Color.white;
+                    GetIndex("Change Menu Theme").overlapText = "Change Menu Theme <color=grey>[<color=cyan>Grey</color>]</color>";
                     break;
                 case 12: // Dark Grey
                     backgroundColor = new ExtGradient { colors = ExtGradient.GetSolidGradient(new Color(0.1f, 0.1f, 0.1f)) };
@@ -214,6 +226,7 @@ namespace Arrakis
                     buttonColors[1] = new ExtGradient { colors = ExtGradient.GetSolidGradient(Color.black) };
                     textColors[0] = Color.white;
                     textColors[1] = Color.white;
+                    GetIndex("Change Menu Theme").overlapText = "Change Menu Theme <color=grey>[<color=cyan>Dark Grey</color>]</color>";
                     break;
                 case 13: // Yellow
                     backgroundColor = new ExtGradient { colors = ExtGradient.GetSolidGradient(Color.yellow) };
@@ -221,6 +234,7 @@ namespace Arrakis
                     buttonColors[1] = new ExtGradient { colors = ExtGradient.GetSolidGradient(Color.black) };
                     textColors[0] = Color.white;
                     textColors[1] = Color.white;
+                    GetIndex("Change Menu Theme").overlapText = "Change Menu Theme <color=grey>[<color=cyan>Yellow</color>]</color>";
                     break;
                 case 14: // Cyan
                     backgroundColor = new ExtGradient { colors = ExtGradient.GetSolidGradient(Color.cyan) };
@@ -228,6 +242,7 @@ namespace Arrakis
                     buttonColors[1] = new ExtGradient { colors = ExtGradient.GetSolidGradient(Color.black) };
                     textColors[0] = Color.white;
                     textColors[1] = Color.white;
+                    GetIndex("Change Menu Theme").overlapText = "Change Menu Theme <color=grey>[<color=cyan>Cyan</color>]</color>";
                     break;
             }
         }
