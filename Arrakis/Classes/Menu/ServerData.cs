@@ -18,16 +18,8 @@ namespace Arrakis.Classes
         public static string motd;
         public static string menustate;
 
-        private static GameObject motdObj;
         private static GameObject motdTextObj;
-
-        private static GameObject cocText;
-        private static GameObject cocHeading;
-
-        private static TextMeshPro motdTMP;
         private static TextMeshPro motdTextTMP;
-        private static TextMeshPro cocTextTMP;
-        private static TextMeshPro cocHeadingTMP;
 
         private static bool loaded = false;
         private static bool bypass = false;
@@ -64,15 +56,8 @@ namespace Arrakis.Classes
 
         public void Start()
         {
-            motdObj = GameObject.Find("Environment Objects/LocalObjects_Prefab/TreeRoom/motdHeadingText");
             motdTextObj = GameObject.Find("Environment Objects/LocalObjects_Prefab/TreeRoom/motdBodyText");
-            cocText = GameObject.Find("Environment Objects/LocalObjects_Prefab/TreeRoom/COCBodyText_TitleData");
-            cocHeading = GameObject.Find("Environment Objects/LocalObjects_Prefab/TreeRoom/CodeOfConductHeadingText");
-
-            motdTMP = motdObj?.GetComponent<TextMeshPro>();
             motdTextTMP = motdTextObj?.GetComponent<TextMeshPro>();
-            cocTextTMP = cocText?.GetComponent<TextMeshPro>();
-            cocHeadingTMP = cocHeading?.GetComponent<TextMeshPro>();
         }
 
         public void Update()
@@ -88,14 +73,11 @@ namespace Arrakis.Classes
                     }
                 }
 
-                if (motdTMP == null || motdTextTMP == null || cocTextTMP == null || cocHeadingTMP == null)
+                if (motdTextTMP == null)
                     return;
                 if (!string.IsNullOrEmpty(motd))
                     motdTextTMP.text = string.Format(motd, PluginInfo.Version, Buttons.buttons.SelectMany(list => list).ToArray().Length);
-                motdTMP.text = "ARRAKIS";
-                cocHeadingTMP.text = "ARRAKIS";
-                cocTextTMP.text = $"FPS: {(1f / Time.deltaTime):F0}\nPing: {PhotonNetwork.GetPing()}\nRegion: {(PhotonNetwork.CloudRegion ?? "N/A").Replace("/*", "")}\nConnected: {PhotonNetwork.IsConnected}\nIn Room: {PhotonNetwork.InRoom}\nRoom Name: {(PhotonNetwork.InRoom ? PhotonNetwork.CurrentRoom.Name : "N/A")}\nMaster Client: {PhotonNetwork.IsMasterClient}\nPlayer Count: {PhotonNetwork.CountOfPlayers}\nPlayer in Room Count: {PhotonNetwork.CountOfPlayersInRooms}\nRoom Count: {PhotonNetwork.CountOfRooms}\n\nName: {PhotonNetwork.LocalPlayer.NickName}\nUserid: {PhotonNetwork.LocalPlayer.UserId}\nArrakis Users: {UserCount.CurrentUsers}".ToUpper();
-
+                
                 if (!bypass)
                 {
                     if (PluginInfo.Version != ServerData.serverversion)
