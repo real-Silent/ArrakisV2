@@ -17,7 +17,7 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "discord.gg/qw2sXnsP8u", label = true, isTogglable = false },
                 new ButtonInfo { buttonText = "Settings", method =() => CurrentCategoryName = "Settings", isTogglable = false, toolTip = "Opens the settings page for the menu." },
                 new ButtonInfo { buttonText = "Enabled", method =() => CurrentCategoryName = "Enabled", isTogglable = false, toolTip = "Opens the enabled page for the menu." },
-                new ButtonInfo { buttonText = "Favorites", method =() => CurrentCategoryName = "Favorites", isTogglable = false, toolTip = "Opens the Favorites page for the menu." },
+                new ButtonInfo { buttonText = "Favorites", method =() => CurrentCategoryName = "Favorites", isTogglable = false, toolTip = "Opens the favorites page for the menu." },
                 new ButtonInfo { buttonText = "Important", method =() => CurrentCategoryName = "Important", isTogglable = false, toolTip = "Opens the important page for the menu." },
                 new ButtonInfo { buttonText = "Computer", method =() => CurrentCategoryName = "Computer", isTogglable = false, toolTip = "Opens the computer page for the menu." },
                 new ButtonInfo { buttonText = "Safety", method =() => CurrentCategoryName = "Safety", isTogglable = false, toolTip = "Opens the safety page for the menu." },
