@@ -163,6 +163,13 @@ namespace Arrakis
                     textColors[0] = Color.white;
                     textColors[1] = Color.white;
                     break;
+                case 10: // Porn Hub cause sleepy wanted it -nova
+                    backgroundColor = new ExtGradient { colors = ExtGradient.GetSimpleGradient(Color.orange, Color.black) };
+                    buttonColors[0] = new ExtGradient { colors = ExtGradient.GetSolidGradient(Color.black) };
+                    buttonColors[1] = new ExtGradient { colors = ExtGradient.GetSolidGradient(Color.orange) };
+                    textColors[0] = Color.orange;
+                    textColors[1] = Color.black;
+                    break;
             }
         }
 
