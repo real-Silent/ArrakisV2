@@ -253,7 +253,7 @@ namespace Arrakis.Mods
                 {
                     if (rig != null && rig != VRRig.LocalRig)
                     {
-                        string platform = rig.IsSteam() ? "STEAM" : "QUEST";
+                        string platform = rig.Cosmetics().Contains("S. FIRST LOGIN") ? "STEAM" : "QUEST";
                         if (!PlatformnameTagPool.TryGetValue(rig, out var tag))
                         {
                             tag = CreateText(followheadmesh ? rig.headMesh.transform : rig.transform, TextAlignmentOptions.Center, platform, followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor, 0.7f, 2);

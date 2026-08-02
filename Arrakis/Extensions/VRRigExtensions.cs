@@ -1,4 +1,5 @@
 ﻿using Photon.Pun;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Arrakis.Extensions
@@ -13,7 +14,7 @@ namespace Arrakis.Extensions
             rig != null && VRRigCache.ActiveRigs.Contains(rig);
         public static Photon.Realtime.Player GetPhotonPlayer(this VRRig rig) =>
             rig.Creator.GetPlayerRef();
-        public static NetPlayer GetNetPlayer(this VRRig rig) =>
+        public static NetPlayer GetPlayer(this VRRig rig) =>
             rig.Creator;
         public static string GetNickName(this VRRig rig) =>
             rig.Creator.NickName;
@@ -43,6 +44,13 @@ namespace Arrakis.Extensions
             if (suspiciouslyPC > suspiciouslySteam && suspiciouslyPC > suspiciouslyQuest) return "PC";
             if (suspiciouslyQuest > suspiciouslySteam && suspiciouslyQuest > suspiciouslyPC) return "Standalone";
             return "Standalone";
+        }
+        public static bool IsTagged(this VRRig rig) 
+        {
+            if (rig == null) return false;
+            List<NetPlayer> infectedPlayers = ((GorillaTagManager)GorillaGameManager.instance).currentInfected;
+            NetPlayer targetPlayer = rig.GetPlayer();
+            return infectedPlayers.Contains(targetPlayer);
         }
     }
 }
