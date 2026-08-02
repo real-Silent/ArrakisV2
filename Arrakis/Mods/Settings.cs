@@ -1,5 +1,6 @@
 ﻿using Arrakis.Classes;
 using Arrakis.Menu;
+using GorillaLocomotion;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -64,22 +65,55 @@ namespace Arrakis
         public static bool FloatMenu = false;
         public static int buttonsound = 67;
         private static int clicksound = 0;
-        public static void ChangeClickSound()
+        public static void ChangeClickSound() // Making it get its name from GTPlayer.Instance.materialData[buttonsound].matName
         {
             clicksound = (clicksound + 1) % 11;
             switch (clicksound)
             {
-                case 0: buttonsound = 67; break;
-                case 1: buttonsound = 66; break;
-                case 2: buttonsound = 8; break;
-                case 3: buttonsound = 84; break;
-                case 4: buttonsound = 32; break;
-                case 5: buttonsound = 106; break;
-                case 6: buttonsound = 189; break;
-                case 7: buttonsound = 22; break;
-                case 8: buttonsound = 43; break;
-                case 9: buttonsound = 210; break;
-                case 10: buttonsound = 217; break;
+                case 0: 
+                    buttonsound = 67;
+                    GetIndex("Change Click Sound").overlapText = $"Change Click Sound <color=grey>[<color=cyan>{GTPlayer.Instance.materialData[buttonsound].matName}</color>]</color>";
+                    break;
+                case 1: 
+                    buttonsound = 66;
+                    GetIndex("Change Click Sound").overlapText = $"Change Click Sound <color=grey>[<color=cyan>{GTPlayer.Instance.materialData[buttonsound].matName}</color>]</color>";
+                    break;
+                case 2: 
+                    buttonsound = 8;
+                    GetIndex("Change Click Sound").overlapText = $"Change Click Sound <color=grey>[<color=cyan>{GTPlayer.Instance.materialData[buttonsound].matName}</color>]</color>";
+                    break;
+                case 3:
+                    buttonsound = 84;
+                    GetIndex("Change Click Sound").overlapText = $"Change Click Sound <color=grey>[<color=cyan>{GTPlayer.Instance.materialData[buttonsound].matName}</color>]</color>";
+                    break;
+                case 4:
+                    buttonsound = 32;
+                    GetIndex("Change Click Sound").overlapText = $"Change Click Sound <color=grey>[<color=cyan>{GTPlayer.Instance.materialData[buttonsound].matName}</color>]</color>";
+                    break;
+                case 5:
+                    buttonsound = 106;
+                    GetIndex("Change Click Sound").overlapText = $"Change Click Sound <color=grey>[<color=cyan>{GTPlayer.Instance.materialData[buttonsound].matName}</color>]</color>";
+                    break;
+                case 6:
+                    buttonsound = 189;
+                    GetIndex("Change Click Sound").overlapText = $"Change Click Sound <color=grey>[<color=cyan>{GTPlayer.Instance.materialData[buttonsound].matName}</color>]</color>";
+                    break;
+                case 7:
+                    buttonsound = 22;
+                    GetIndex("Change Click Sound").overlapText = $"Change Click Sound <color=grey>[<color=cyan>{GTPlayer.Instance.materialData[buttonsound].matName}</color>]</color>";
+                    break;
+                case 8: 
+                    buttonsound = 43;
+                    GetIndex("Change Click Sound").overlapText = $"Change Click Sound <color=grey>[<color=cyan>{GTPlayer.Instance.materialData[buttonsound].matName}</color>]</color>";
+                    break;
+                case 9: 
+                    buttonsound = 210;
+                    GetIndex("Change Click Sound").overlapText = $"Change Click Sound <color=grey>[<color=cyan>{GTPlayer.Instance.materialData[buttonsound].matName}</color>]</color>"; 
+                    break;
+                case 10: 
+                    buttonsound = 217;
+                    GetIndex("Change Click Sound").overlapText = $"Change Click Sound <color=grey>[<color=cyan>{GTPlayer.Instance.materialData[buttonsound].matName}</color>]</color>";
+                    break;
             }
         }
 
@@ -242,7 +276,7 @@ namespace Arrakis
                     buttonColors[1] = new ExtGradient { colors = ExtGradient.GetSolidGradient(Color.black) };
                     textColors[0] = Color.white;
                     textColors[1] = Color.white;
-                    GetIndex("Change Menu Theme").overlapText = "Change Menu Theme <color=grey>[<color=cyan>Cyan</color>]</color>";
+                    GetIndex("Change Menu Theme").overlapText = "Change Menu Theme <color=grey>[<color=black>Cyan</color>]</color>";
                     break;
             }
         }
@@ -256,15 +290,19 @@ namespace Arrakis
             {
                 case 0:
                     currentStyle = FontStyle.Italic;
+                    GetIndex("Change Font Style").overlapText = "Change Font Style <color=grey>[<color=cyan>Italic</color>]</color>";
                     break;
                 case 1:
                     currentStyle = FontStyle.Bold;
+                    GetIndex("Change Font Style").overlapText = "Change Font Style <color=grey>[<color=cyan>Bold</color>]</color>";
                     break;
                 case 2:
                     currentStyle = FontStyle.Normal;
+                    GetIndex("Change Font Style").overlapText = "Change Font Style <color=grey>[<color=cyan>Normal</color>]</color>";
                     break;
                 case 3:
-                    currentStyle = FontStyle.BoldAndItalic  ;
+                    currentStyle = FontStyle.BoldAndItalic;
+                    GetIndex("Change Font Style").overlapText = "Change Font Style <color=grey>[<color=cyan>Bold & Italic</color>]</color>";
                     break;
             }
         }
