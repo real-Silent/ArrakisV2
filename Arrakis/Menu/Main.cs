@@ -156,6 +156,23 @@ namespace Arrakis.Menu
             shouldBePC = !XRSettings.isDeviceActive;
         }
 
+        public static ButtonInfo[] StringsToInfos(string[] array) =>
+            array.Select(GetIndex).ToArray();
+
+        public static void ReloadMenu()
+        {
+            if (menu != null)
+            {
+                Destroy(menu);
+                menu = null;
+                CreateMenu();
+            }
+            if (reference == null) return;
+            Destroy(reference);
+            reference = null;
+            CreateReference();
+        }
+
         public static void SetUpAdminPanel(string adminname)
         {
             List<ButtonInfo> buttons = Buttons.buttons[GetCategory("Main")].ToList();
@@ -378,13 +395,14 @@ namespace Arrakis.Menu
             switch (CurrentCategoryName)
             {
                 case "Enabled":
-                    List<ButtonInfo> enabledMods = new List<ButtonInfo>() { GetIndex("Exit Enabled") };
+                    enabledMods = new List<ButtonInfo>() { GetIndex("Exit Enabled") };
                     enabledMods.AddRange(Buttons.buttons.SelectMany(buttonlist => buttonlist).Where(v => v.enabled));
                     renderButtons = enabledMods.ToArray();
                     break;
                 case "Favorites":
-                    List<ButtonInfo> favMods = new List<ButtonInfo>() { GetIndex("Exit Favorites") };
-                    //favMods.AddRange(FavoritesMods.SelectMany(list => list));
+                    foreach (var favoriteMod in favorites.Where(favoriteMod => GetIndex(favoriteMod) == null).ToList())
+                        favorites.Remove(favoriteMod);
+                    renderButtons = StringsToInfos(favorites.ToArray());
                     break;
                 default:
                     renderButtons = Buttons.buttons[currentCategoryIndex];
@@ -573,6 +591,28 @@ namespace Arrakis.Menu
                 }
                 lastPage = ((enabledMods.Count + buttonsPerPage - 1) / buttonsPerPage) - 1;
             }
+
+            if (ControllerInputPoller.instance.leftGrab || Keyboard.current.gKey.isPressed)
+            {
+                if (buttonText != "Exit Favorites" && buttonText != "Favorites")
+                {
+                    if (favorites.Contains(buttonText))
+                    {
+                        favorites.Remove(buttonText);
+                        VRRig.LocalRig.PlayHandTapLocal(35, rightHanded, 0.6f);
+                        NotificationManager.SendNotification("<color=grey>[</color><color=cyan>FAVORITES</color><color=grey>]</color> Removed from favorites.");
+                    }
+                    else
+                    {
+                        favorites.Add(buttonText);
+                        VRRig.LocalRig.PlayHandTapLocal(35, rightHanded, 0.6f);
+                        NotificationManager.SendNotification("<color=grey>[</color><color=cyan>FAVORITES</color><color=grey>]</color> Added to favorites.");
+                    }
+                    ReloadMenu();
+                    return;
+                }
+            }
+
             if (buttonText == "PreviousPage")
             {
                 pageNumber--;
@@ -619,7 +659,7 @@ namespace Arrakis.Menu
                         CustomConsole.Log(buttonText + " does not exist", CustomConsole.LogType.Warning);
                 }
             }
-            RecreateMenu();
+            ReloadMenu();
         }
 
         private static readonly Dictionary<string, (int Category, int Index)> cacheGetIndex = new Dictionary<string, (int Category, int Index)>(); // Looping through 800 elements is not a light task :/
@@ -824,7 +864,7 @@ namespace Arrakis.Menu
         public static GameObject canvasObject;
 
         public static List<ButtonInfo> enabledMods = new List<ButtonInfo>() { };
-        public static List<ButtonInfo> FavoritesMods = new List<ButtonInfo>() { };
+        public static readonly List<string> favorites = new List<string> { "Exit Favorites" };
 
         public static SphereCollider buttonCollider;
         public static Camera TPC;

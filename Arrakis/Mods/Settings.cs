@@ -244,6 +244,7 @@ namespace Arrakis
             public int currentprojectilecolor { get; set; }
             public bool allowbigsnowballcolor { get; set; }
             public List<string> enabledMods { get; set; } = new List<string>();
+            public List<string> favorites { get; set; } = new List<string>();
         }
 
         public static void SaveSettings()
@@ -258,7 +259,8 @@ namespace Arrakis
                 currentFlySpeed = currentFlySpeed,
                 currentDigSize = currentDigSize,
                 currentprojectilecolor = currentprojectilecolor,
-                enabledMods = Buttons.buttons.SelectMany(x => x).Where(x => x.enabled).Select(x => x.buttonText).ToList()
+                enabledMods = Buttons.buttons.SelectMany(x => x).Where(x => x.enabled).Select(x => x.buttonText).ToList(),
+                favorites = favorites
             };
             settings.enabledMods = Buttons.buttons.SelectMany(x => x).Where(x => x.enabled).Select(x => x.buttonText).ToList();
             File.WriteAllText(Path.Combine(PluginInfo.BaseDirectory, "SavedSettings.json"), JsonConvert.SerializeObject(settings, Formatting.Indented));
@@ -299,6 +301,10 @@ namespace Arrakis
                     if (button.enabled != shouldBeEnabled)
                         Toggle(button.buttonText);
                 }
+
+                favorites.Clear();
+                foreach (var fav in settings.favorites)
+                    favorites.Add(fav);
             }
             catch (Exception ex)
             {
