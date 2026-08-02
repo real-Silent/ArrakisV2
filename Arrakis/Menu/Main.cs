@@ -130,6 +130,38 @@ namespace Arrakis.Menu
                 CustomConsole.Log(e.ToString(), CustomConsole.LogType.Error);
             }
 
+            if (menutrail)
+            {
+                try
+                {
+                    TrailRenderer trail = menu.AddComponent<TrailRenderer>();
+                    trail.startColor = backgroundColor.GetColor(0);
+                    trail.endColor = backgroundColor.GetColor(1);
+                    trail.startWidth = 0.025f;
+                    trail.endWidth = 0f;
+                    trail.minVertexDistance = 0.05f;
+                    trail.material.shader = Shader.Find("Sprites/Default");
+                    trail.time = 2f;
+                }
+                catch { }
+            }
+
+            if (pointertrail)
+            {
+                try
+                {
+                    TrailRenderer trail = reference.AddComponent<TrailRenderer>();
+                    trail.startColor = backgroundColor.GetColor(0);
+                    trail.endColor = backgroundColor.GetColor(1);
+                    trail.startWidth = 0.025f;
+                    trail.endWidth = 0f;
+                    trail.minVertexDistance = 0.05f;
+                    trail.material.shader = Shader.Find("Sprites/Default");
+                    trail.time = 2f;
+                }
+                catch { }
+            }
+
             try
             {
                 // FPS Counter
