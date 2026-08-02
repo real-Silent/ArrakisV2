@@ -45,6 +45,7 @@ namespace Arrakis
         public static bool menuanimation = false;
         public static bool menutrail = false;
         public static bool pointertrail = false;
+        public static bool disablepointer = false;
 
         public static KeyCode keyboardButton = KeyCode.Q;
 

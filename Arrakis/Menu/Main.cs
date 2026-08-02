@@ -634,6 +634,8 @@ namespace Arrakis.Menu
                 rightReference.transform.parent = GorillaTagger.Instance.rightHandTransform;
                 rightReference.transform.localPosition = new Vector3(0f, -0.1f, 0f);
                 rightReference.transform.localScale = new Vector3(0.01f, 0.01f, 0.01f);
+                rightReference.GetComponent<Renderer>().enabled = !disablepointer;
+                leftReference.GetComponent<Renderer>().enabled = !disablepointer;
                 rightReference.GetComponent<Renderer>().material.color = backgroundColor.colors[0].color;
                 rightReference.AddComponent<ColorChanger>().colors = backgroundColor;
                 leftButtonCollider = leftReference.GetComponent<SphereCollider>();
@@ -646,6 +648,7 @@ namespace Arrakis.Menu
                 reference.transform.localPosition = new Vector3(0f, -0.1f, 0f);
                 reference.transform.localScale = new Vector3(0.01f, 0.01f, 0.01f);
                 reference.GetComponent<Renderer>().material.color = backgroundColor.colors[0].color;
+                reference.GetComponent<Renderer>().enabled = !disablepointer;
                 buttonCollider = reference.GetComponent<SphereCollider>();
                 ColorChanger colorChanger = reference.AddComponent<ColorChanger>();
                 colorChanger.colors = backgroundColor;
