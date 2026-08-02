@@ -162,8 +162,7 @@ namespace Arrakis.Menu
             }
             string text = $"Arrakis | FPS: {Mathf.RoundToInt(fps)} | Ping: {GetPing()} | {players}/{maxPlayers}";
             GUI.Label(infoRect, text, fpsStyle);
-            float hue = Mathf.PingPong(Time.time * 0.5f, 1f);
-            Color lineColor = Color.HSVToRGB(hue, 1f, 1f);
+            Color lineColor = backgroundColor.GetCurrentColor();
             GUI.color = lineColor;
             GUI.DrawTexture(new Rect(infoRect.x, infoRect.yMax - 3, infoRect.width, 3), Texture2D.whiteTexture);
             GUI.color = Color.white;
