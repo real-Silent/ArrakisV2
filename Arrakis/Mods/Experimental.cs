@@ -391,7 +391,7 @@ namespace Arrakis.Mods
                 RaycastHit Ray = GunData.Ray;
                 if (lockTarget != null && gunLocked)
                 {
-                    VStumpCrashPlayer(lockTarget.OwningNetPlayer.ActorNumber);
+                    VStumpCrashPlayer(lockTarget.Creator.ActorNumber);
                 }
                 if (GetGunInput(true))
                 {

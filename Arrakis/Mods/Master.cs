@@ -62,7 +62,7 @@ namespace Arrakis.Mods
             {
                 foreach (NetPlayer plr in NetworkSystem.Instance.PlayerListOthers)
                 {
-                    foreach (GorillaTagManager tag in GameObject.FindObjectsOfType<GorillaTagManager>())
+                    foreach (GorillaTagManager tag in GameObject.FindObjectsByType<GorillaTagManager>(FindObjectsSortMode.None))
                     {
                         tag.currentInfected.Remove(plr);
                         tag.InfectionRoundEnd();
@@ -79,7 +79,7 @@ namespace Arrakis.Mods
         {
             if (PhotonNetwork.LocalPlayer.IsMasterClient)
             {
-                foreach (GorillaTagManager tag in GameObject.FindObjectsOfType<GorillaTagManager>())
+                foreach (GorillaTagManager tag in GameObject.FindObjectsByType<GorillaTagManager>(FindObjectsSortMode.None))
                 {
                     tag.currentInfected.Remove(NetworkSystem.Instance.LocalPlayer);
                     tag.InfectionRoundEnd();
@@ -245,7 +245,7 @@ namespace Arrakis.Mods
                         VRRig rig = Ray.collider.GetComponentInParent<VRRig>();
                         if (rig != null && rig != VRRig.LocalRig)
                         {
-                            foreach (GorillaTagManager tag in GameObject.FindObjectsOfType<GorillaTagManager>())
+                            foreach (GorillaTagManager tag in GameObject.FindObjectsByType<GorillaTagManager>(FindObjectsSortMode.None))
                             {
                                 if (tag.currentInfected.Contains(rig.Creator))
                                 {

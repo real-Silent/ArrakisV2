@@ -503,7 +503,7 @@ namespace Arrakis.Mods
             {
                 List<CosmeticsController.CosmeticItem> hats = CosmeticsController.instance.allCosmetics.Where(x => x.itemCategory == CosmeticsController.CosmeticCategory.Hat && x.canTryOn).ToList();
                 CosmeticsController.CosmeticItem item = hats[chi];
-                foreach (FittingRoomButton button in GameObject.FindObjectsOfType<FittingRoomButton>())
+                foreach (FittingRoomButton button in GameObject.FindObjectsByType<FittingRoomButton>(FindObjectsSortMode.None))
                 {
                     button.currentCosmeticItem = item;
                     button.ButtonActivationWithHand(false);
@@ -519,7 +519,7 @@ namespace Arrakis.Mods
             {
                 List<CosmeticsController.CosmeticItem> hats = CosmeticsController.instance.allCosmetics.Where(x => x.itemCategory == CosmeticsController.CosmeticCategory.Badge && x.canTryOn).ToList();
                 CosmeticsController.CosmeticItem item = hats[chi];
-                foreach (FittingRoomButton button in GameObject.FindObjectsOfType<FittingRoomButton>())
+                foreach (FittingRoomButton button in GameObject.FindObjectsByType<FittingRoomButton>(FindObjectsSortMode.None))
                 {
                     button.currentCosmeticItem = item;
                     button.ButtonActivationWithHand(false);
@@ -535,7 +535,7 @@ namespace Arrakis.Mods
             {
                 List<CosmeticsController.CosmeticItem> hats = CosmeticsController.instance.allCosmetics.Where(x => x.itemCategory == CosmeticsController.CosmeticCategory.Face && x.canTryOn).ToList();
                 CosmeticsController.CosmeticItem item = hats[chi];
-                foreach (FittingRoomButton button in GameObject.FindObjectsOfType<FittingRoomButton>())
+                foreach (FittingRoomButton button in GameObject.FindObjectsByType<FittingRoomButton>(FindObjectsSortMode.None))
                 {
                     button.currentCosmeticItem = item;
                     button.ButtonActivationWithHand(false);
@@ -551,7 +551,7 @@ namespace Arrakis.Mods
             {
                 List<CosmeticsController.CosmeticItem> hats = CosmeticsController.instance.allCosmetics.Where(x => x.itemCategory == CosmeticsController.CosmeticCategory.Arms && x.canTryOn).ToList();
                 CosmeticsController.CosmeticItem item = hats[chi];
-                foreach (FittingRoomButton button in GameObject.FindObjectsOfType<FittingRoomButton>())
+                foreach (FittingRoomButton button in GameObject.FindObjectsByType<FittingRoomButton>(FindObjectsSortMode.None))
                 {
                     button.currentCosmeticItem = item;
                     button.ButtonActivationWithHand(false);

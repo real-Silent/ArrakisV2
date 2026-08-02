@@ -1,7 +1,6 @@
 ﻿using Arrakis.Classes;
 using Arrakis.Extensions;
 using Arrakis.Menu;
-using Arrakis.Notifications;
 using GorillaExtensions;
 using System.Collections.Generic;
 using System.Linq;
