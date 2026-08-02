@@ -375,6 +375,54 @@ namespace Arrakis.Mods
             textmesh.transform.localPosition = new Vector3(0f, 0.9f - (0.1f * index), 0f);
             return textmesh;
         }
+
+        static readonly List<GameObject> allLeaves = new List<GameObject>();
+        public static void NoLeaves()
+        {
+            GameObject Forest = GameObject.Find("Environment Objects/LocalObjects_Prefab/Forest");
+            if (Forest != null)
+            {
+                for (int i = 0; i < Forest.transform.childCount; i++)
+                {
+                    GameObject v = Forest.transform.GetChild(i).gameObject;
+                    if (v.name.Contains(LeavesName))
+                    {
+                        v.SetActive(false);
+                        allLeaves.Add(v);
+                    }
+                }
+            }
+        }
+        public static void DisableNoLeaves()
+        {
+            foreach (GameObject l in allLeaves)
+                l.SetActive(true);
+            allLeaves.Clear();
+        }
+
+        public static string _leavesName;
+        public static string LeavesName
+        {
+            get
+            {
+                if (_leavesName == null)
+                {
+                    var forest = GameObject.Find("Environment Objects/LocalObjects_Prefab/Forest");
+                    _leavesName = forest.GetComponentsInChildren<Transform>(true)
+                    .Where(t => t.name.StartsWith("UnityTempFile") && t.parent != null && t.parent == forest.transform)
+                    .GroupBy(t => t.name).Where(g => g.Count() == 3)
+                    .OrderByDescending(g => g.First().GetSiblingIndex()).FirstOrDefault()?.Key ?? "UnityTempFile";
+                }
+                return _leavesName;
+            }
+        }
+
+        public static void ClearWeather()
+        {
+            for (int i = 0; i < BetterDayNightManager.instance.weatherCycle.Length; i++)
+                BetterDayNightManager.instance.weatherCycle[i] = BetterDayNightManager.WeatherType.None;
+        }
+
         public static void Snowfall(bool toggle) =>
             GameObject.Find("Environment Objects/LocalObjects_Prefab/Forest/Environment/WeatherDayNight/snow/").SetActive(toggle);
         public static void Rain(bool toggle) =>
