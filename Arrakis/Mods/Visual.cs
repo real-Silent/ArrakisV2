@@ -414,7 +414,7 @@ namespace Arrakis.Mods
         {
             if (arraylistHub == null)
             {
-                (arraylistHub, arraylistText) = CreateTextGUI("", "ArraylistHud", TextAnchor.UpperLeft, new Vector3(0f, 0.4f, 3.6f));
+                (arraylistHub, arraylistText) = CreateTextGUI("", "ArraylistHud", TextAnchor.UpperLeft, new Vector3(0f, 0.2f, 3.6f));
             }
             if (arraylistText != null)
                 arraylistText.alignment = fliparraylist ? TextAnchor.UpperRight : TextAnchor.UpperLeft;
