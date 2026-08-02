@@ -385,7 +385,7 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Spaz Grey Screen All", method =() => Master.SpazGreyScreenAll(), isTogglable = true, toolTip = "Spazes the grey screen on everyone." },
                 new ButtonInfo { buttonText = "Untag All", method =() => Master.UntagAll(), isTogglable = false, toolTip = "Untags everyone in the current lobby." },
                 new ButtonInfo { buttonText = "Untag Self", method =() => Master.UntagSelf(), isTogglable = false, toolTip = "Untags your self." },
-                new ButtonInfo { buttonText = "Untag Gun", method =() => Master.UntagGun(), isTogglable = false, toolTip = "Untags the person you shoot." },
+                new ButtonInfo { buttonText = "Untag Gun", method =() => Master.UntagGun(), isTogglable = true, toolTip = "Untags the person you shoot." },
                 new ButtonInfo { buttonText = "Become Guardian", method =() => Master.BecomeGuardian(), isTogglable = false, toolTip = "Makes you guardian." },
                 new ButtonInfo { buttonText = "Unguardian Self", method =() => Master.NoGuardian(), isTogglable = false, toolTip = "Removes you from being guardian." },
                 new ButtonInfo { buttonText = "Set Guardian Gun", method =() => Master.SetGuardianGun(), isTogglable = true, toolTip = "Makes who you shoot guardian." },
