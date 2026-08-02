@@ -82,6 +82,27 @@ namespace Arrakis
             }
         }
 
+        public static float buttonclickvolume = 0.4f;
+        private static int buttonclickvolumeindex = 0;
+        public static void ChangeButtonClickVolume()
+        {
+            buttonclickvolumeindex = (buttonclickvolumeindex + 1) % 10;
+            switch (buttonclickvolumeindex)
+            {
+                case 0: buttonclickvolume = 0.1f; break;
+                case 1: buttonclickvolume = 0.2f; break;
+                case 2: buttonclickvolume = 0.3f; break;
+                case 3: buttonclickvolume = 0.4f; break;
+                case 4: buttonclickvolume = 0.5f; break;
+                case 5: buttonclickvolume = 0.6f; break;
+                case 6: buttonclickvolume = 0.7f; break;
+                case 7: buttonclickvolume = 0.8f; break;
+                case 8: buttonclickvolume = 0.9f; break;
+                case 9: buttonclickvolume = 1f; break;
+            }
+            GetIndex("Change Click Volume").overlapText = $"Change Click Volume <color=grey>[<color=cyan>{buttonclickvolume}f</color>]</color>";
+        }
+
         public static void FreezePlayerInMenu()
         {
             if (menu != null)
@@ -281,6 +302,7 @@ namespace Arrakis
         public class SavedSettings
         {
             public int clicksound { get; set; }
+            public int buttonclickvolumeindex { get; set; }
             public int currentTheme { get; set; }
             public int fontstyle { get; set; }
             public int currentFlySpeed { get; set; }
@@ -297,6 +319,7 @@ namespace Arrakis
             SavedSettings settings = new SavedSettings
             {
                 clicksound = clicksound,
+                buttonclickvolumeindex = buttonclickvolumeindex,
                 currentTheme = currentTheme,
                 fontstyle = fontstyle,
                 currentFlySpeed = currentFlySpeed,
@@ -322,6 +345,9 @@ namespace Arrakis
                 clicksound = settings.clicksound - 1;
                 ChangeClickSound();
 
+                buttonclickvolumeindex = settings.buttonclickvolumeindex - 1;
+                ChangeButtonClickVolume();
+
                 currentTheme = settings.currentTheme - 1;
                 ChangeMenuTheme();
 
@@ -344,7 +370,6 @@ namespace Arrakis
                     if (button.enabled != shouldBeEnabled)
                         Toggle(button.buttonText);
                 }
-
                 favorites.Clear();
                 foreach (var fav in settings.favorites)
                     favorites.Add(fav);

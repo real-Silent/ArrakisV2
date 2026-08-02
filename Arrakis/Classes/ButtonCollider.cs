@@ -14,7 +14,7 @@ namespace Arrakis.Classes
 			{
                 buttonCooldown = Time.time + 0.2f;
                 GorillaTagger.Instance.StartVibration(rightHanded, GorillaTagger.Instance.tagHapticStrength / 2f, GorillaTagger.Instance.tagHapticDuration / 2f);
-                VRRig.LocalRig.PlayHandTapLocal(buttonsound, rightHanded, 0.4f);
+                VRRig.LocalRig.PlayHandTapLocal(buttonsound, rightHanded, buttonclickvolume);
 				Toggle(relatedText);
             }
 		}
