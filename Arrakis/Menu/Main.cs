@@ -382,7 +382,9 @@ namespace Arrakis.Menu
                     enabledMods.AddRange(Buttons.buttons.SelectMany(buttonlist => buttonlist).Where(v => v.enabled));
                     renderButtons = enabledMods.ToArray();
                     break;
-                case "Favourites":
+                case "Favorites":
+                    List<ButtonInfo> favMods = new List<ButtonInfo>() { GetIndex("Exit Favorites") };
+                    //favMods.AddRange(FavoritesMods.SelectMany(list => list));
                     break;
                 default:
                     renderButtons = Buttons.buttons[currentCategoryIndex];
@@ -822,6 +824,7 @@ namespace Arrakis.Menu
         public static GameObject canvasObject;
 
         public static List<ButtonInfo> enabledMods = new List<ButtonInfo>() { };
+        public static List<ButtonInfo> FavoritesMods = new List<ButtonInfo>() { };
 
         public static SphereCollider buttonCollider;
         public static Camera TPC;

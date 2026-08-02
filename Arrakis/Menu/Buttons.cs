@@ -17,7 +17,7 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "discord.gg/qw2sXnsP8u", label = true, isTogglable = false },
                 new ButtonInfo { buttonText = "Settings", method =() => CurrentCategoryName = "Settings", isTogglable = false, toolTip = "Opens the settings page for the menu." },
                 new ButtonInfo { buttonText = "Enabled", method =() => CurrentCategoryName = "Enabled", isTogglable = false, toolTip = "Opens the enabled page for the menu." },
-                new ButtonInfo { buttonText = "Favourites", method =() => CurrentCategoryName = "Favourites", isTogglable = false, toolTip = "Opens the favourites page for the menu." },
+                new ButtonInfo { buttonText = "Favorites", method =() => CurrentCategoryName = "Favorites", isTogglable = false, toolTip = "Opens the Favorites page for the menu." },
                 new ButtonInfo { buttonText = "Important", method =() => CurrentCategoryName = "Important", isTogglable = false, toolTip = "Opens the important page for the menu." },
                 new ButtonInfo { buttonText = "Computer", method =() => CurrentCategoryName = "Computer", isTogglable = false, toolTip = "Opens the computer page for the menu." },
                 new ButtonInfo { buttonText = "Safety", method =() => CurrentCategoryName = "Safety", isTogglable = false, toolTip = "Opens the safety page for the menu." },
@@ -93,8 +93,8 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Exit Enabled", method =() => CurrentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },
             },
 
-            new ButtonInfo[] { // Favourites
-                new ButtonInfo { buttonText = "Exit Favourites", method =() => CurrentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },
+            new ButtonInfo[] { // Favorites
+                new ButtonInfo { buttonText = "Exit Favorites", method =() => CurrentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },
             },
 
             new ButtonInfo[] { // Important
@@ -456,7 +456,7 @@ namespace Arrakis.Menu
             "Visual Settings",
             "Projectile Settings",
             "Enabled",
-            "Favourites",
+            "Favorites",
             "Important",
             "Computer",
             "Safety",
