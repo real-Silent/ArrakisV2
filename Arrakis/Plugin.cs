@@ -29,8 +29,11 @@ namespace Arrakis
             holder.AddComponent<Admin>();
             holder.AddComponent<UserCount>();
 
-            if (!Directory.Exists("Arrakis"))
-                Directory.CreateDirectory("Arrakis");
+            if (!Directory.Exists(PluginInfo.BaseDirectory))
+                Directory.CreateDirectory(PluginInfo.BaseDirectory);
+
+            if (!File.Exists($"{PluginInfo.BaseDirectory}/CustomTitle.txt"))
+                File.WriteAllText($"{PluginInfo.BaseDirectory}/CustomTitle.txt", "your title");
 
             Settings.LoadSettings();
             Patches.CosmeticPatch.enabled = true;

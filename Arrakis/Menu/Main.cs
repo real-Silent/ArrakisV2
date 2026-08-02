@@ -9,6 +9,7 @@ using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -323,10 +324,20 @@ namespace Arrakis.Menu
                 }
             }.AddComponent<Text>();
             text.font = currentFont;
-            // if (File.Exists("Arrakis/title.txt")) make menu title be this otherwise default
-            // gonna kill u sleper -nova
-            // nova please dont kill me for this (also keep it its a 0.2 or 0.02 chance) -sleepy
-            text.text = (RareChance ? "Femboy Lover Menu UwU" : PluginInfo.Name) + " <color=grey>[</color><color=white>" + (pageNumber + 1).ToString() + "</color><color=grey>]</color>";
+            if (!disablemenutitle)
+            {
+                if (custommenutitle)
+                {
+                    if (!File.Exists($"{PluginInfo.BaseDirectory}/CustomTitle.txt"))
+                        File.WriteAllText($"{PluginInfo.BaseDirectory}/CustomTitle.txt", "your title");
+                    else
+                        text.text = File.ReadAllText($"{PluginInfo.BaseDirectory}/CustomTitle.txt") + (disablepagenumber ? "" : " <color=grey>[</color><color=white>" + (pageNumber + 1).ToString() + "</color><color=grey>]</color>");
+                }
+                else
+                    text.text = (RareChance ? "Femboy Lover Menu UwU" : PluginInfo.Name) + (disablepagenumber ? "" : " <color=grey>[</color><color=white>" + (pageNumber + 1).ToString() + "</color><color=grey>]</color>");
+            }
+            else
+                text.text = "";
             text.fontSize = 1;
             text.color = textColors[0];
             text.supportRichText = true;
