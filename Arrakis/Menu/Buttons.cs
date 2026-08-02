@@ -62,6 +62,7 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Float Menu", enableMethod =() => FloatMenu = true, disableMethod =() => FloatMenu = false, toolTip = "Makes the menu float infront of you.", ShowInArraylist = false },
                 new ButtonInfo { buttonText = "Arraylist", method =() => Visual.Arraylist(), disableMethod =() => Visual.DisableArraylist(), toolTip = "Gives you a arraylist showing every mod you have enabled.", ShowInArraylist = false },
                 new ButtonInfo { buttonText = "Flip Arraylist", enableMethod =() => fliparraylist = true, disableMethod =() => fliparraylist = false, toolTip = "Flips the array list.", ShowInArraylist = false },
+                new ButtonInfo { buttonText = "Menu Animation", enableMethod =() => menuanimation = true, disableMethod =() => menuanimation = false, toolTip = "Makes the menu have a open and close animation.", ShowInArraylist = false },
                 new ButtonInfo { buttonText = "On GUI Menu", enableMethod =() => PcGui.OnGUIMenu = true, disableMethod =() => PcGui.OnGUIMenu = false, toolTip = "Makes the menu be a pc gui.", ShowInArraylist = false },
                 new ButtonInfo { buttonText = "Log Photon Events", enableMethod =() => logphotonevents = true, disableMethod =() => logphotonevents = false, toolTip = "Logs all photon events to your console." },
                 new ButtonInfo { buttonText = "Save Preferences", method =() => SaveSettings(), isTogglable = false, toolTip = "Saves your settings and enabled mods to a file." },

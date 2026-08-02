@@ -42,6 +42,7 @@ namespace Arrakis
         public static bool followheadmesh = false;
         public static bool followmenutheme = false;
         public static bool fliparraylist = false;
+        public static bool menuanimation = false;
 
         public static KeyCode keyboardButton = KeyCode.Q;
 

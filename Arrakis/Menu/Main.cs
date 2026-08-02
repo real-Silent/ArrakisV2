@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Arrakis.Classes;
 using Arrakis.Mods;
 using Arrakis.Notifications;
@@ -9,6 +6,10 @@ using GorillaExtensions;
 using GorillaLocomotion;
 using HarmonyLib;
 using Photon.Pun;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -40,6 +41,10 @@ namespace Arrakis.Menu
                     if (toOpen || keyboardOpen)
                     {
                         CreateMenu();
+                        if (menuanimation)
+                        {
+                            CRunner.instance.StartCoroutine(OpenMenu());
+                        }
                         RecenterMenu(rightHanded, keyboardOpen);
                         if (reference == null)
                             CreateReference();
@@ -65,8 +70,15 @@ namespace Arrakis.Menu
                             comp.angularVelocity = GameObject.Find("Player Objects/Player VR Controller/GorillaPlayer/TurnParent/LeftHand Controller").GetOrAddComponent<GorillaVelocityEstimator>().angularVelocity;
                         }
 
-                        Destroy(menu, 2f);
-                        menu = null;
+                        if (menuanimation)
+                        {
+                            CRunner.instance.StartCoroutine(CloseMenu());
+                        }
+                        else
+                        {
+                            Destroy(menu, 2f);
+                            menu = null;
+                        }
 
                         Destroy(reference);
                         reference = null;
@@ -154,6 +166,39 @@ namespace Arrakis.Menu
             }
 
             shouldBePC = !XRSettings.isDeviceActive;
+        }
+
+        private static IEnumerator OpenMenu()
+        {
+            GameObject menuObject = menu;
+            float elapsedTime = 0f;
+            Vector3 target = menu.transform.localScale;
+            while (elapsedTime < 0.05f)
+            {
+                if (menuObject == null)
+                    yield break;
+                menuObject.transform.localScale = Vector3.Lerp(Vector3.zero, target, elapsedTime / 0.05f);
+                elapsedTime += Time.deltaTime;
+                yield return null;
+            }
+            if (menuObject == null)
+                yield break;
+            menuObject.transform.localScale = target;
+        }
+
+        private static IEnumerator CloseMenu()
+        {
+            Transform menuTransform = menu.transform;
+            menu = null;
+            Vector3 before = menuTransform.localScale;
+            float elapsedTime = 0f;
+            while (elapsedTime < 0.05f)
+            {
+                menuTransform.localScale = Vector3.Lerp(before, Vector3.zero, elapsedTime / 0.05f);
+                elapsedTime += Time.deltaTime;
+                yield return null;
+            }
+            Destroy(menuTransform.gameObject);
         }
 
         public static ButtonInfo[] StringsToInfos(string[] array) =>
