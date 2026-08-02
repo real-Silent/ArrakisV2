@@ -237,40 +237,6 @@ namespace Arrakis.Mods
             IDnameTagPool.Clear();
         }
 
-        public static string GetPlatform(VRRig rig)
-        {
-            int steamScore = 0;
-            int pcScore = 0;
-            int questScore = 0;
-
-            string cosmetics = rig._playerOwnedCosmetics.Concat();
-
-            if (cosmetics.Contains("S. FIRST LOGIN"))
-                steamScore++;
-
-            if (cosmetics.Contains("FIRST LOGIN"))
-                pcScore++;
-
-            if (rig.Creator.GetPlayerRef().CustomProperties.Count >= 2)
-                pcScore++;
-
-            if (rig.currentRankedSubTierPC > 0)
-            {
-                pcScore++;
-            }
-            else if (rig.currentRankedSubTierQuest > 0)
-            {
-                questScore++;
-            }
-
-            if (steamScore > pcScore && steamScore > questScore)
-                return "Steam";
-
-            if (pcScore > steamScore && pcScore > questScore)
-                return "PC";
-
-            return "Standalone";
-        }
         private static Dictionary<VRRig, TextMeshPro> PlatformnameTagPool = new Dictionary<VRRig, TextMeshPro>();
         public static void PlatformNameTags()
         {
@@ -286,7 +252,7 @@ namespace Arrakis.Mods
                 {
                     if (rig != null && rig != VRRig.LocalRig)
                     {
-                        string platform = GetPlatform(rig);
+                        string platform = rig._playerOwnedCosmetics.Concat().Contains("S. FIRST LOGIN") ? "STEAM" : "QUEST";
 
                         if (!PlatformnameTagPool.TryGetValue(rig, out var tag))
                         {
