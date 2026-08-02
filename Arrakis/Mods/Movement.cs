@@ -334,5 +334,13 @@ namespace Arrakis.Mods
                 GorillaTagger.Instance.bodyCollider.attachedRigidbody.useGravity = true;
             }
         }
+        public static void AutoKayflock()
+        {
+            if (ControllerInputPoller.instance.rightIndexPressed)
+            {
+                GorillaTagger.Instance.rightHandTransform.position = RandomVector3(310);
+                GTPlayer.Instance.transform.position += GTPlayer.Instance.headCollider.transform.forward * Time.deltaTime * Settings.flyspeed;
+            }
+        }
     }
 }

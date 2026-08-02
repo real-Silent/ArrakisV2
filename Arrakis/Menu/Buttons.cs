@@ -159,6 +159,7 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Anti Memory Leak", method =() => Safety.AntiMemoryLeak(), isTogglable = true, toolTip = "Makes it so you cant have memory leaks." },
                 new ButtonInfo { buttonText = "Show AntiCheat Reports <color=grey>[<color=cyan>OTHERS</color>]</color>", enableMethod =() => showanticheatreports = true, disableMethod =() => showanticheatreports = false, toolTip = "Logs everyone elses anti cheat reports in your console." },
                 new ButtonInfo { buttonText = "Show AntiCheat Reports <color=grey>[<color=cyan>SELF</color>]</color>", enableMethod =() => showanticheatreportself = true, disableMethod =() => showanticheatreportself = false, toolTip = "Logs your own anti cheat reports in your console." },
+                new ButtonInfo { buttonText = "Anti Stump Kick", enableMethod =() => GroupPatch.enabled = true, disableMethod =() => GroupPatch.enabled = false, toolTip = "Dosnt let you get kicked from group kick." },
             },
 
             new ButtonInfo[] { // Movement
@@ -184,6 +185,7 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Extreme Speed Boost", method =() => Movement.ExtremeSpeedBoost(), isTogglable = true, toolTip = "Gives you a extreme speed boost." },
                 new ButtonInfo { buttonText = "Slide Control", method =() => Movement.SlideControl(), disableMethod =() => Movement.FixSlideControl(), isTogglable = true, toolTip = "Gives you more control on ice." },
                 new ButtonInfo { buttonText = "Wall Walk <color=grey>[<color=cyan>G</color>]</color>", method =() => Movement.WallWalk(), isTogglable = true, toolTip = "Lets you walk on the walls easier." },
+                new ButtonInfo { buttonText = "Kayflock <color=grey>[<color=cyan>T</color>]</color>", method =() => Movement.AutoKayflock(), isTogglable = true, toolTip = "Lets you automaticly kayflock." },
             },
 
             new ButtonInfo[] { // VRRig
