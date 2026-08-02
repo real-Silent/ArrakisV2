@@ -90,7 +90,7 @@ namespace Arrakis
 
         public static void ChangeMenuTheme()
         {
-            currentTheme = (currentTheme + 1) % 10;
+            currentTheme = (currentTheme + 1) % 11; // Always make this number above the last case so if its case 14: make it 15
             switch (currentTheme)
             {
                 case 0: // Default
