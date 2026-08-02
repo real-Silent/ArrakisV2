@@ -336,9 +336,14 @@ namespace Arrakis.Mods
         }
         public static void AutoKayflock()
         {
-            if (ControllerInputPoller.instance.rightIndexPressed)
+            if (ControllerInputPoller.instance.rightControllerTriggerButton)
             {
                 GorillaTagger.Instance.rightHandTransform.position = RandomVector3(310);
+                GTPlayer.Instance.transform.position += GTPlayer.Instance.headCollider.transform.forward * Time.deltaTime * Settings.flyspeed;
+            }
+            if (ControllerInputPoller.instance.leftControllerTriggerButton)
+            {
+                GorillaTagger.Instance.leftHandTransform.position = RandomVector3(310);
                 GTPlayer.Instance.transform.position += GTPlayer.Instance.headCollider.transform.forward * Time.deltaTime * Settings.flyspeed;
             }
         }
