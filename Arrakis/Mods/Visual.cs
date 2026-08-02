@@ -322,6 +322,41 @@ namespace Arrakis.Mods
             FpsnametagPool.Clear();
         }
 
+        private static Dictionary<VRRig, TextMeshPro> TaggednametagPool = new Dictionary<VRRig, TextMeshPro>();
+        public static void TaggedNameTags()
+        {
+            if (NetworkSystem.Instance.InRoom)
+            {
+                foreach (var rig in TaggednametagPool.Keys.Where(r => r == null || !VRRigCache.ActiveRigs.Contains(r)).ToList())
+                {
+                    if (TaggednametagPool[rig] != null)
+                        GameObject.Destroy(TaggednametagPool[rig].gameObject);
+                    TaggednametagPool.Remove(rig);
+                }
+                foreach (VRRig rig in VRRigCache.ActiveRigs)
+                {
+                    if (rig != null && rig != VRRig.LocalRig)
+                    {
+                        if (!TaggednametagPool.TryGetValue(rig, out var tag))
+                        {
+                            tag = CreateText(followheadmesh ? rig.headMesh.transform : rig.transform, TextAlignmentOptions.Center, "Not Tagged", followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor, 0.7f, 4);
+                            TaggednametagPool.Add(rig, tag);
+                        }
+                        tag.text = rig.IsTagged() ? "Tagged" : "Not Tagged";
+                        tag.color = followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor;
+                        tag.transform.LookAt(Camera.main.transform);
+                        tag.transform.Rotate(0f, 180f, 0f);
+                    }
+                }
+            }
+        }
+        public static void DisableTaggedNameTags()
+        {
+            foreach (var tag in TaggednametagPool.Values)
+                GameObject.Destroy(tag.gameObject);
+            TaggednametagPool.Clear();
+        }
+
         private static Dictionary<VRRig, TextMeshPro> GrabTagsPool = new Dictionary<VRRig, TextMeshPro>();
         public static void GrabTags()
         {

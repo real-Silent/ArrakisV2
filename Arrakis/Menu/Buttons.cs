@@ -233,6 +233,7 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Platform Name Tags", method =() => Visual.PlatformNameTags(), disableMethod =() => Visual.DisablePlatformNameTags(), isTogglable = true, toolTip = "Gives everyone a nametag that shows there platform." },
                 new ButtonInfo { buttonText = "Grab Name Tags", method =() => Visual.GrabTags(), disableMethod =() => Visual.DisableGrabTags(), isTogglable = true, toolTip = "Gives everyone a nametag that shows if there holding grips." },
                 new ButtonInfo { buttonText = "Fps Name Tags", method =() => Visual.FpsNameTags(), disableMethod =() => Visual.DisableFpsNameTags(), isTogglable = true, toolTip = "Gives everyone a nametag that shows there fps." },
+                new ButtonInfo { buttonText = "Tagged Name Tags", method =() => Visual.TaggedNameTags(), disableMethod =() => Visual.DisableTaggedNameTags(), isTogglable = true, toolTip = "Gives everyone a nametag that shows if there tagged." },
                 new ButtonInfo { buttonText = "Morning Time", method =() => BetterDayNightManager.instance.SetTimeOfDay(1), toolTip = "Sets your time of day to morning." },
                 new ButtonInfo { buttonText = "Day Time", method =() => BetterDayNightManager.instance.SetTimeOfDay(3), toolTip = "Sets your time of day to daytime." },
                 new ButtonInfo { buttonText = "Evening Time", method =() => BetterDayNightManager.instance.SetTimeOfDay(7), toolTip = "Sets your time of day to evening." },
