@@ -90,7 +90,7 @@ namespace Arrakis
 
         public static void ChangeMenuTheme()
         {
-            currentTheme = (currentTheme + 1) % 11; // Always make this number above the last case so if its case 14: make it 15
+            currentTheme = (currentTheme + 1) % 13; // Always make this number above the last case so if its case 14: make it 15
             switch (currentTheme)
             {
                 case 0: // Default
@@ -169,6 +169,20 @@ namespace Arrakis
                     buttonColors[1] = new ExtGradient { colors = ExtGradient.GetSolidGradient(Color.orange) };
                     textColors[0] = Color.orange;
                     textColors[1] = Color.black;
+                    break;
+                case 11: // Grey
+                    backgroundColor = new ExtGradient { colors = ExtGradient.GetSolidGradient(Color.grey) };
+                    buttonColors[0] = new ExtGradient { colors = ExtGradient.GetSolidGradient(Color.grey) };
+                    buttonColors[1] = new ExtGradient { colors = ExtGradient.GetSolidGradient(Color.black) };
+                    textColors[0] = Color.white;
+                    textColors[1] = Color.white;
+                    break;
+                case 12: // Dark Grey
+                    backgroundColor = new ExtGradient { colors = ExtGradient.GetSolidGradient(new Color(0.1f, 0.1f, 0.1f)) };
+                    buttonColors[0] = new ExtGradient { colors = ExtGradient.GetSolidGradient(new Color(0.1f, 0.1f, 0.1f)) };
+                    buttonColors[1] = new ExtGradient { colors = ExtGradient.GetSolidGradient(Color.black) };
+                    textColors[0] = Color.white;
+                    textColors[1] = Color.white;
                     break;
             }
         }
