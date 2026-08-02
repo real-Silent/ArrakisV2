@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Arrakis.Extensions;
 using ExitGames.Client.Photon;
 using GorillaGameModes;
 using GorillaLocomotion;
@@ -31,7 +32,7 @@ namespace Arrakis.Mods
                 {
                     if (rig != null && rig != VRRig.LocalRig)
                     {
-                        if (!rig.mainSkin.material.name.Contains("fected") && VRRig.LocalRig.mainSkin.material.name.Contains("fected"))
+                        if (!rig.IsTagged() && VRRig.LocalRig.IsTagged())
                         {
                             VRRig.LocalRig.enabled = false;
                             VRRig.LocalRig.transform.position = rig.transform.position;
@@ -60,7 +61,7 @@ namespace Arrakis.Mods
                 {
                     if (rig != null && rig != VRRig.LocalRig)
                     {
-                        if (rig.mainSkin.material.name.Contains("fected") && !VRRig.LocalRig.mainSkin.material.name.Contains("fected"))
+                        if (rig.IsTagged() && !VRRig.LocalRig.IsTagged())
                         {
                             VRRig.LocalRig.enabled = false;
                             VRRig.LocalRig.transform.position = rig.transform.position;
@@ -85,7 +86,7 @@ namespace Arrakis.Mods
                     VRRig rig = Ray.collider.GetComponentInParent<VRRig>();
                     if (rig != null && rig != VRRig.LocalRig)
                     {
-                        if (!rig.mainSkin.material.name.Contains("fected"))
+                        if (!rig.IsTagged())
                         {
                             VRRig.LocalRig.enabled = false;
                             VRRig.LocalRig.transform.position = rig.transform.position;
@@ -197,11 +198,11 @@ namespace Arrakis.Mods
             }
             else
             {
-                if (VRRig.LocalRig.mainSkin.material.name.Contains("fected") && !VRRig.LocalRig.mainSkin.material.name.Contains("fected"))
+                if (VRRig.LocalRig.IsTagged() && !VRRig.LocalRig.IsTagged())
                 {
                     foreach (VRRig rig in VRRigCache.ActiveRigs)
                     {
-                        if (rig.mainSkin.material.name.Contains("fected") && !VRRig.LocalRig.mainSkin.material.name.Contains("fected"))
+                        if (rig.IsTagged() && !VRRig.LocalRig.IsTagged())
                         {
                             if (Vector3.Distance(VRRig.LocalRig.transform.position, rig.transform.position) < 3f)
                             {

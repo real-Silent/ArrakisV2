@@ -50,13 +50,13 @@ namespace Arrakis.Mods
                         {
                             case 0:
                                 rig.mainSkin.material.shader = Shader.Find("GUI/Text Shader");
-                                rig.mainSkin.material.color = (rig.mainSkin.material.name.Contains("fected") || rig.mainSkin.material.name.ToLower().Contains("it")) ? new Color(0.6f, 0f, 0f, 0.6f) : new Color(0.46f, 0.6f, 0.6f, 0.6f);
+                                rig.mainSkin.material.color = (rig.IsTagged() || rig.mainSkin.material.name.ToLower().Contains("it")) ? new Color(0.6f, 0f, 0f, 0.6f) : new Color(0.46f, 0.6f, 0.6f, 0.6f);
                                 break;
                             case 1:
                                 if (BehindStuff(rig))
                                 {
                                     rig.mainSkin.material.shader = Shader.Find("GUI/Text Shader");
-                                    rig.mainSkin.material.color = (rig.mainSkin.material.name.Contains("fected") || rig.mainSkin.material.name.ToLower().Contains("it")) ? new Color(0.6f, 0f, 0f, 0.6f) : new Color(0.46f, 0.6f, 0.6f, 0.6f);
+                                    rig.mainSkin.material.color = (rig.IsTagged() ? new Color(0.6f, 0f, 0f, 0.6f) : new Color(0.46f, 0.6f, 0.6f, 0.6f));
                                 }
                                 else
                                 {
@@ -92,7 +92,7 @@ namespace Arrakis.Mods
                 {
                     if (rig != null && rig != VRRig.LocalRig)
                     {
-                        Color tracerColor = (rig.mainSkin.material.name.Contains("fected") || rig.mainSkin.material.name.ToLower().Contains("it")) ? new Color(0.6f, 0f, 0f, 0.6f) : new Color(0.46f, 0.6f, 0.6f, 0.6f);
+                        Color tracerColor = rig.IsTagged() ? new Color(0.6f, 0f, 0f, 0.6f) : new Color(0.46f, 0.6f, 0.6f, 0.6f);
                         GameObject holder = new GameObject();
                         LineRenderer line = holder.AddComponent<LineRenderer>();
                         line.useWorldSpace = true;
