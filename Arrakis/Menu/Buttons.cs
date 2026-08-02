@@ -67,6 +67,7 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Pointer Trail", enableMethod =() => pointertrail = true, disableMethod =() => pointertrail = false, toolTip = "Gives the pointer a trail.", ShowInArraylist = false },
                 new ButtonInfo { buttonText = "Disable Pointer", enableMethod =() => disablepointer = true, disableMethod =() => disablepointer = false, toolTip = "Disables the menu pointer.", ShowInArraylist = false },
                 new ButtonInfo { buttonText = "Disable Menu Drop", enableMethod =() => disablemenudrop = true, disableMethod =() => disablemenudrop = false, toolTip = "Disables the menu dropping.", ShowInArraylist = false },
+                new ButtonInfo { buttonText = "Low Gravity Menu", enableMethod =() => lowgravitymenu = true, disableMethod =() => lowgravitymenu = false, toolTip = "Gives the menu low gravity.", ShowInArraylist = false },
                 new ButtonInfo { buttonText = "On GUI Menu", enableMethod =() => PcGui.OnGUIMenu = true, disableMethod =() => PcGui.OnGUIMenu = false, toolTip = "Makes the menu be a pc gui.", ShowInArraylist = false },
                 new ButtonInfo { buttonText = "Log Photon Events", enableMethod =() => logphotonevents = true, disableMethod =() => logphotonevents = false, toolTip = "Logs all photon events to your console." },
                 new ButtonInfo { buttonText = "Save Preferences", method =() => SaveSettings(), isTogglable = false, toolTip = "Saves your settings and enabled mods to a file." },
