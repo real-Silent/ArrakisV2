@@ -8,6 +8,6 @@
         public const string Version = "2.2.1";
         public const string BaseDirectory = "Arrakis";
         public const string ServerApi = "https://novax.lol/arrakis/api"; // Luckily still up
-        public const string DiscordLink = "https://discord.gg/dtQdz59FJG ";
+        public const string DiscordLink = "https://discord.gg/dtQdz59FJG";
     }
 }
