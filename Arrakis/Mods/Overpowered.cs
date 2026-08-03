@@ -611,7 +611,7 @@ namespace Arrakis.Mods
                 RaycastHit Ray = GunData.Ray;
                 if (lockTarget != null && gunLocked)
                 {
-                    LagPlayer(lockTarget, 2002, 4f); // set to 1999 if kicks
+                    LagPlayer(lockTarget, 1992, 4.1f); // set to 1999 if kicks
                 }
                 if (GetGunInput(true))
                 {
