@@ -725,7 +725,7 @@ namespace Arrakis.Mods
                 }
             }
         }
-        public static void FreezeFlingGun()
+        public static void FreezeRopeGun()
         {
             if (GetGunInput(false))
             {

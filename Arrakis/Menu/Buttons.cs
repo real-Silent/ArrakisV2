@@ -375,7 +375,7 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Empty Lava", method =() => Overpowered.ChangeLavaState(InfectionLavaController.RisingLavaState.Drained), isTogglable = false, toolTip = "Removes the lava." },
                 new ButtonInfo { buttonText = "Erupt Lava", method =() => Overpowered.ChangeLavaState(InfectionLavaController.RisingLavaState.Erupting), isTogglable = false, toolTip = "Erupts the lava." },
                 new ButtonInfo { buttonText = "Rope Fling Gun", method =() => Overpowered.RopeFlingGun(), isTogglable = true, toolTip = "Flings the rope you shoot." },
-                new ButtonInfo { buttonText = "Freeze Fling Gun", method =() => Overpowered.FreezeFlingGun(), isTogglable = true, toolTip = "Freezes the rope you shoot." },
+                new ButtonInfo { buttonText = "Freeze Rope Gun", method =() => Overpowered.FreezeRopeGun(), isTogglable = true, toolTip = "Freezes the rope you shoot." },
             },
 
             new ButtonInfo[] { // Master
