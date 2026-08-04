@@ -139,7 +139,7 @@ namespace Arrakis.Mods
             catch { }
         }
         public static void SpoofSupportPage() =>
-            GorillaComputer.instance.screenText.Set(GorillaComputer.instance.screenText.stringBuilder.ToString().Replace("STEAM", "QUEST").Replace(GorillaComputer.instance.buildDate,$"{GorillaComputer.instance.buildDate}\nBUILD CODE 4893\nMANAGED ACCOUNT: NO"));
+             GorillaComputer.instance.screenText.Set( GorillaComputer.instance.screenText.stringBuilder.ToString().Replace("STEAM", "QUEST").Replace(GorillaComputer.instance.buildDate, $"{GorillaComputer.instance.buildDate}\nBUILD CODE 4893\nMANAGED ACCOUNT: NO"));
 
         private static float AntiMemoryLeakDelay;
         public static void AntiMemoryLeak()
