@@ -2,7 +2,6 @@
 using Arrakis.Extensions;
 using Arrakis.Menu;
 using GorillaExtensions;
-using Pathfinding.RVO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
