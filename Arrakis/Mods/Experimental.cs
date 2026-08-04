@@ -358,27 +358,21 @@ namespace Arrakis.Mods
         {
             if (ControllerInputPoller.instance.rightIndexPressed || Mouse.current.leftButton.isPressed)
             {
-
                 Texture2D texture = AssetBundleLoader.LoadTexture("pride.png");
-
-                Material mat = new Material(Shader.Find("GorillaTag/UberShader")); // fixed -nova
+                Material mat = new Material(Shader.Find("Universal Render Pipeline/Unlit")); // fixed -nova
                 mat.mainTexture = texture;
-
                 GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-
                 cube.transform.position = GorillaTagger.Instance.rightHandTransform.position;
                 cube.transform.localScale = Vector3.one * 0.25f;
-
                 Renderer renderer = cube.GetComponent<Renderer>();
                 renderer.material = mat;
-
                 Rigidbody rb = cube.AddComponent<Rigidbody>();
                 rb.mass = 1f;
                 rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
-
                 Object.Destroy(cube, 5f);
             }
         }
+
         public static void VStumpCrashPlayer(int actorNumber) => // map locked? 180 worked once -sleepy
             PhotonNetwork.RaiseEvent((byte)UnityEngine.Random.Range(180, 190), new object[] { "leaveGame", (double)actorNumber, false, (double)actorNumber }, new RaiseEventOptions { TargetActors = new[] { actorNumber } }, SendOptions.SendReliable);
 
