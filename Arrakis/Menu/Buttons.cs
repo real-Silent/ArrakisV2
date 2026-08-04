@@ -109,7 +109,7 @@ namespace Arrakis.Menu
 
                 new ButtonInfo { buttonText = "Disable Gun Line", method =() => gunline = false, disableMethod =() => gunline = true, isTogglable = true, toolTip = "Disables the gun line.", ShowInArraylist = false },
                 new ButtonInfo { buttonText = "Show Gun Target", method =() => showTarget = false, disableMethod =() => showTarget = true, isTogglable = true, toolTip = "Shows who ever you are shooting.", ShowInArraylist = false },
-                new ButtonInfo { buttonText = "Freeze Player In Menu", method =() => ChangeGunline(), isTogglable = false, toolTip = "Changes the gunline.", ShowInArraylist = false },
+                new ButtonInfo { buttonText = "Change Gun line", method =() => ChangeGunline(), isTogglable = false, toolTip = "Changes the gunline.", ShowInArraylist = false },
             },
 
             new ButtonInfo[] { // Enabled
