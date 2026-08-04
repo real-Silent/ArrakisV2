@@ -679,6 +679,15 @@ namespace Arrakis.Menu
 
         public static void Toggle(string buttonText)
         {
+            ButtonInfo button = GetIndex(buttonText);
+            if (button != null)
+            {
+                if (button.detected)
+                {
+                    NotificationManager.SendNotification($"This mod is <color=red>detected</color> and has been disabled.");
+                }
+            }
+
             int lastPage = ((buttons[currentCategoryIndex].Length + buttonsPerPage - 1) / buttonsPerPage) - 1;
             if (CurrentCategoryName == "Enabled") // Credits to Seralyth
             {

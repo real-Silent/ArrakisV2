@@ -14,5 +14,6 @@ namespace Arrakis.Classes
         public string toolTip = "This button doesn't have a tooltip/tutorial.";
         public bool label = false;
         public bool ShowInArraylist = true;
+        public bool detected = false;
     }
 }

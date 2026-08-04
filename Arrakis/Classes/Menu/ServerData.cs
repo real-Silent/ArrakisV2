@@ -1,9 +1,9 @@
-﻿using Arrakis.Classes.Menu;
-using Arrakis.Menu;
+﻿using Arrakis.Menu;
 using Arrakis.Notifications;
+using GorillaNetworking;
 using Meta.WitAi.Json;
-using Photon.Pun;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -17,6 +17,7 @@ namespace Arrakis.Classes
         public static string serverversion;
         public static string motd;
         public static string menustate;
+        public static string[] detectedmods;
 
         private static GameObject motdTextObj;
         private static TextMeshPro motdTextTMP;
@@ -49,8 +50,41 @@ namespace Arrakis.Classes
                 menustate = data.menustate;
                 motd = data.motd;
                 serverversion = data.serverversion;
+                detectedmods = data.detectedmods;
+
+                CustomConsole.Log($"Got detected mods {detectedmods.Length}", CustomConsole.LogType.Debug);
+                if (detectedmods.Length > 0)
+                    StartCoroutine(SetDetectedMods());
+
                 bypass = false;
                 loaded = true;
+            }
+        }
+
+        private List<string> allDetected = new List<string>();
+        private IEnumerator SetDetectedMods()
+        {
+            if (detectedmods == null || detectedmods.Length == 0)
+                yield break;
+            while (GorillaComputer.instance == null || !GorillaComputer.instance.isConnectedToMaster)
+                yield return null;
+            yield return new WaitForSeconds(2f);
+            foreach (string name in detectedmods)
+            {
+                if (string.IsNullOrWhiteSpace(name) || allDetected.Contains(name))
+                    continue;
+                ButtonInfo button = Main.GetIndex(name);
+                if (button != null)
+                {
+                    string overlap = string.IsNullOrEmpty(button.overlapText) ? button.buttonText : button.overlapText;
+                    button.detected = true;
+                    button.overlapText = overlap + " <color=red>[DETECTED]</color>";
+                    button.isTogglable = false;
+                    button.method = () => NotificationManager.SendNotification("<color=cyan>[ARRAKIS]</color> This mod is <color=red>detected</color>.");
+                    button.enableMethod = button.method;
+                    button.disableMethod = button.method;
+                }
+                allDetected.Add(name);
             }
         }
 
@@ -102,6 +136,7 @@ namespace Arrakis.Classes
             public string menustate;
             public string motd;
             public string serverversion;
+            public string[] detectedmods;
         }
     }
 }
