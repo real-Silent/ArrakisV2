@@ -561,30 +561,30 @@ namespace Arrakis.Mods
             }
         }
 
-        public static void UnlockSubscription() // By sleepy
+        public static void UnlockSubscription(bool active) // By sleepy
         {
             if (SubscriptionManager.Instance == null) return;
             Type subscriptionDetailsType = typeof(SubscriptionManager.SubscriptionDetails);
             object details = Activator.CreateInstance(subscriptionDetailsType);
-            subscriptionDetailsType.GetField("active").SetValue(details, true);
+            subscriptionDetailsType.GetField("active").SetValue(details, active);
             subscriptionDetailsType.GetField("daysAccrued").SetValue(details, int.MaxValue);
             subscriptionDetailsType.GetField("tier").SetValue(details, int.MaxValue);
-            subscriptionDetailsType.GetField("autoRenew").SetValue(details, true);
+            subscriptionDetailsType.GetField("autoRenew").SetValue(details, active);
             subscriptionDetailsType.GetField("autoRenewMonths").SetValue(details, int.MaxValue);
             subscriptionDetailsType.GetField("subscriptionActiveUntilDate").SetValue(details, DateTime.MaxValue);
             FieldInfo subscriptionFeatureSettingsField = subscriptionDetailsType.GetField("subscriptionFeatureSettings");
             if (subscriptionFeatureSettingsField != null)
             {
-                subscriptionFeatureSettingsField.SetValue(details, new[] { true, true });
+                subscriptionFeatureSettingsField.SetValue(details, new[] { active, active });
             }
             typeof(SubscriptionManager).GetField("localSubscriptionDetails", BindingFlags.NonPublic | BindingFlags.Static).SetValue(null, details);
-            typeof(SubscriptionManager).GetField("_localSubscriptionDataInitialized", BindingFlags.NonPublic | BindingFlags.Static).SetValue(null, true);
+            typeof(SubscriptionManager).GetField("_localSubscriptionDataInitialized", BindingFlags.NonPublic | BindingFlags.Static).SetValue(null, active);
             if (NetworkSystem.Instance != null && NetworkSystem.Instance.LocalPlayer != null)
             {
                 MethodInfo updateMethod = typeof(SubscriptionManager).GetMethod("UpdatePlayerSubsDetails", BindingFlags.NonPublic | BindingFlags.Instance);
                 if (updateMethod != null)
                 {
-                    updateMethod.Invoke(SubscriptionManager.Instance, new object[] { NetworkSystem.Instance.LocalPlayer, true, int.MaxValue });
+                    updateMethod.Invoke(SubscriptionManager.Instance, new object[] { NetworkSystem.Instance.LocalPlayer, active, int.MaxValue });
                 }
             }
         }

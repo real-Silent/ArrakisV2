@@ -307,7 +307,7 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Give All Resources [SI]", method =() => Fun.GiveAllResources(), isTogglable = true, toolTip = "Gives alot of every resource." },
                 new ButtonInfo { buttonText = "Unlock All [SI]", method =() => Fun.SIUnlockAll(), isTogglable = true, toolTip = "Unlocks every super item." },
                 new ButtonInfo { buttonText = "Flash VIM Name Tag", method =() => Fun.FlashVIMNameTag(), isTogglable = true, toolTip = "Flashes the golden nametag." },
-                new ButtonInfo { buttonText = "Unlock VIM Subscription", method =() => Fun.UnlockSubscription(), isTogglable = true, toolTip = "Unlocks VIM." },
+                new ButtonInfo { buttonText = "Unlock VIM Subscription", enableMethod =() => Fun.UnlockSubscription(true), disableMethod =() => Fun.UnlockSubscription(false), isTogglable = true, toolTip = "Unlocks VIM." },
                 new ButtonInfo { buttonText = "VIM Dig Gun", method =() => Fun.VIMDimGun(), isTogglable = true, toolTip = "Digs in the VIM dig map." },
                 new ButtonInfo { buttonText = "Sticky Holdables", method =() => Fun.StickyHoldables(), isTogglable = true, toolTip = "Makes holdables stick to your hands." },
                 new ButtonInfo { buttonText = "Spin Holdables", method =() => Fun.SpinHoldables(), isTogglable = true, toolTip = "Makes holdables spin in your hands." },
