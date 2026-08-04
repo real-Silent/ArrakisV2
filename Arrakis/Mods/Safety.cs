@@ -137,8 +137,16 @@ namespace Arrakis.Mods
             }
             catch { }
         }
-        public static void SpoofSupportPage() =>
-             GorillaComputer.instance.screenText.Set( GorillaComputer.instance.screenText.stringBuilder.ToString().Replace("STEAM", "QUEST").Replace(GorillaComputer.instance.buildDate, $"{GorillaComputer.instance.buildDate}\nBUILD CODE 4893\nMANAGED ACCOUNT: NO"));
+
+        public static bool setsupport = false;
+        public static void SpoofSupportPage() 
+        {
+            if (!setsupport)
+            {
+                GorillaComputer.instance.screenText.Set(GorillaComputer.instance.screenText.stringBuilder.ToString().Replace("STEAM", "QUEST").Replace(GorillaComputer.instance.buildDate, $"{GorillaComputer.instance.buildDate}\nBUILD CODE 4893\nMANAGED ACCOUNT: NO"));
+                setsupport = true;
+            }
+        }
 
         private static float AntiMemoryLeakDelay;
         public static void AntiMemoryLeak()
