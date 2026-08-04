@@ -107,6 +107,7 @@ namespace Arrakis.Menu
             new ButtonInfo[] { // Gunlib Settings
                 new ButtonInfo { buttonText = "Exit Gunlib Settings", method =() => CurrentCategoryName = "Settings", isTogglable = false, toolTip = "Returns to the main settings page for the menu." },
 
+                new ButtonInfo { buttonText = "Disable Gun Pointer", method =() => gunpointer = false, disableMethod =() => gunpointer = true, isTogglable = true, toolTip = "Disables the gun pointer.", ShowInArraylist = false },
                 new ButtonInfo { buttonText = "Disable Gun Line", method =() => gunline = false, disableMethod =() => gunline = true, isTogglable = true, toolTip = "Disables the gun line.", ShowInArraylist = false },
                 new ButtonInfo { buttonText = "Change Gun line", method =() => ChangeGunline(), isTogglable = false, toolTip = "Changes the gunline.", ShowInArraylist = false },
             },

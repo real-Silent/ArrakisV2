@@ -34,6 +34,7 @@ namespace Arrakis
         public static bool outlineMenu;
         public static bool menusounds = true;
         public static bool gunline = true;
+        public static bool gunpointer = true;
         public static bool cosmeticfinder = true;
 
         public static bool showanticheatreports = false;
@@ -381,6 +382,7 @@ namespace Arrakis
             public int currentFlySpeed { get; set; }
             public int currentDigSize { get; set; }
             public int currentprojectilecolor { get; set; }
+            public int GunLineindex { get; set; }
             public List<string> enabledMods { get; set; } = new List<string>();
             public List<string> favorites { get; set; } = new List<string>();
         }
@@ -398,6 +400,7 @@ namespace Arrakis
                 currentFlySpeed = currentFlySpeed,
                 currentDigSize = currentDigSize,
                 currentprojectilecolor = currentprojectilecolor,
+                GunLineindex = GunLineindex,
                 enabledMods = Buttons.buttons.SelectMany(x => x).Where(x => x.enabled).Select(x => x.buttonText).ToList(),
                 favorites = favorites
             };
@@ -435,6 +438,9 @@ namespace Arrakis
 
                 currentprojectilecolor = settings.currentprojectilecolor - 1;
                 ChangeProjectilesColor();
+
+                GunLineindex = settings.GunLineindex - 1;
+                ChangeGunline();
 
                 HashSet<string> enabled = settings.enabledMods.ToHashSet();
                 foreach (ButtonInfo button in Buttons.buttons.SelectMany(x => x))

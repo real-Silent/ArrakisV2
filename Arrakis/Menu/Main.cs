@@ -955,6 +955,7 @@ namespace Arrakis.Menu
             GunPointer.SetActive(true);
             GunPointer.transform.localScale = Vector3.one * gunPointerSize;
             GunPointer.transform.position = endPos;
+            GunPointer.GetComponent<Renderer>().enabled = !gunpointer;
             Renderer pointerRenderer = GunPointer.GetComponent<Renderer>();
             if (pointerRenderer.material.shader.name != "GUI/Text Shader")
                 pointerRenderer.material.shader = Shader.Find("GUI/Text Shader");
