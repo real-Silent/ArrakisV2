@@ -179,7 +179,7 @@ namespace Arrakis.Mods
                     boxEspPool[rig] = box;
                 }
                 Color color = followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor;
-                color.a = 0.2f;
+                color.a = 0.3f;
                 box.GetComponent<Renderer>().material.color = color;
                 float distance = Vector3.Distance(Camera.main.transform.position, rig.transform.position);
                 float scale = Mathf.Clamp(distance * 0.05f, 0.25f, 3f);
