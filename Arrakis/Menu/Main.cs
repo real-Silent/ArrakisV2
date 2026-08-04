@@ -302,7 +302,7 @@ namespace Arrakis.Menu
                 outline.transform.parent = menu.transform;
                 outline.transform.rotation = Quaternion.identity;
                 outline.transform.localScale = new Vector3(0.09f, 1.04f, 1.04f);
-                outline.GetComponent<Renderer>().material.color = backgroundColor.colors[0].color;
+                outline.GetComponent<Renderer>().material.color = buttonColors[0].GetCurrentColor();
                 outline.transform.position = new Vector3(0.05f, 0f, 0f);
             }
 
