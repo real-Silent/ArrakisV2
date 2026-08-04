@@ -10,7 +10,6 @@ using GorillaNetworking;
 using Photon.Pun;
 using UnityEngine;
 using static Arrakis.Menu.Main;
-using static Arrakis.Patches.Patchers.FPSPatch;
 
 namespace Arrakis.Mods
 {
