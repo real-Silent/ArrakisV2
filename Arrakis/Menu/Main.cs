@@ -226,6 +226,16 @@ namespace Arrakis.Menu
             }
 
             shouldBePC = !XRSettings.isDeviceActive;
+
+            try
+            {
+                if (Time.time > lastsavesprefstime)
+                {
+                    lastsavesprefstime = Time.time + 120f;
+                    SaveSettings();
+                }
+            }
+            catch { }
         }
 
         private static IEnumerator OpenMenu()
@@ -1002,6 +1012,8 @@ namespace Arrakis.Menu
 
         public static string currentRoomName = "";
         public static string reconnectingRoomName = "";
+
+        public static float lastsavesprefstime;
 
         // Data
         public static int pageNumber = 0;
