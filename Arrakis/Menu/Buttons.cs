@@ -253,7 +253,7 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Snowfall", enableMethod =() => Visual.Snowfall(true), disableMethod =() => Visual.Snowfall(false), toolTip = "Toggles the snow." },
                 new ButtonInfo { buttonText = "Rain", enableMethod =() => Visual.Rain(true), disableMethod =() => Visual.Rain(false), toolTip = "Toggles the Rain." },
                 new ButtonInfo { buttonText = "No Leaves", enableMethod =() => Visual.NoLeaves(), disableMethod =() => Visual.DisableNoLeaves(), toolTip = "Removes all the leaves in the game." },
-                new ButtonInfo { buttonText = "Clear Weather", method =() => Visual.ClearWeather(), toolTip = "Clears the weather.", isTogglable = false },
+                new ButtonInfo { buttonText = "Clear Weather", method =() => Visual.ClearWeather(), toolTip = "Clears the weather.", isTogglable = true },
             },
 
             new ButtonInfo[] { // Advantage
