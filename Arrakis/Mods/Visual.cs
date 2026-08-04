@@ -228,6 +228,9 @@ namespace Arrakis.Mods
                             nameTagPool.Add(rig, tag);
                         }
                         tag.text = rig.Creator.NickName;
+                        Transform parent = followheadmesh ? rig.headMesh.transform : rig.transform;
+                        if (tag.transform.parent != parent)
+                            tag.transform.SetParent(parent, false);
                         tag.color = followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor;
                         tag.transform.LookAt(Camera.main.transform);
                         tag.transform.Rotate(0f, 180f, 0f);
@@ -263,6 +266,9 @@ namespace Arrakis.Mods
                             tag = CreateText(followheadmesh ? rig.headMesh.transform : rig.transform, TextAlignmentOptions.Center, rig.Creator.UserId, followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor, 0.7f, 1);
                             IDnameTagPool.Add(rig, tag);
                         }
+                        Transform parent = followheadmesh ? rig.headMesh.transform : rig.transform;
+                        if (tag.transform.parent != parent)
+                            tag.transform.SetParent(parent, false);
                         tag.color = followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor;
                         tag.transform.LookAt(Camera.main.transform);
                         tag.transform.Rotate(0f, 180f, 0f);
@@ -298,6 +304,9 @@ namespace Arrakis.Mods
                             tag = CreateText(followheadmesh ? rig.headMesh.transform : rig.transform, TextAlignmentOptions.Center, platform, followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor, 0.7f, 2);
                             PlatformnameTagPool.Add(rig, tag);
                         }
+                        Transform parent = followheadmesh ? rig.headMesh.transform : rig.transform;
+                        if (tag.transform.parent != parent)
+                            tag.transform.SetParent(parent, false);
                         tag.color = followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor;
                         tag.transform.LookAt(Camera.main.transform);
                         tag.transform.Rotate(0f, 180f, 0f);
@@ -347,6 +356,9 @@ namespace Arrakis.Mods
                         {
                             tag.text = $"<color=#00ffff>{rig.fps}</color>";
                         }
+                        Transform parent = followheadmesh ? rig.headMesh.transform : rig.transform;
+                        if (tag.transform.parent != parent)
+                            tag.transform.SetParent(parent, false);
                         tag.color = followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor;
                         tag.transform.LookAt(Camera.main.transform);
                         tag.transform.Rotate(0f, 180f, 0f);
@@ -381,6 +393,9 @@ namespace Arrakis.Mods
                             tag = CreateText(followheadmesh ? rig.headMesh.transform : rig.transform, TextAlignmentOptions.Center, "Not Tagged", followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor, 0.7f, 5);
                             TaggednametagPool.Add(rig, tag);
                         }
+                        Transform parent = followheadmesh ? rig.headMesh.transform : rig.transform;
+                        if (tag.transform.parent != parent)
+                            tag.transform.SetParent(parent, false);
                         tag.text = rig.IsTagged() ? "Tagged" : "Not Tagged";
                         tag.color = followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor;
                         tag.transform.LookAt(Camera.main.transform);
@@ -423,6 +438,9 @@ namespace Arrakis.Mods
                             tag = CreateText(followheadmesh ? rig.headMesh.transform : rig.transform, TextAlignmentOptions.Center, grabbing, followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor, 0.7f, 3);
                             GrabTagsPool.Add(rig, tag);
                         }
+                        Transform parent = followheadmesh ? rig.headMesh.transform : rig.transform;
+                        if (tag.transform.parent != parent)
+                            tag.transform.SetParent(parent, false);
                         tag.color = followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor;
                         tag.transform.LookAt(Camera.main.transform);
                         tag.transform.Rotate(0f, 180f, 0f);
