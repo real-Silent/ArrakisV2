@@ -1,14 +1,11 @@
 ﻿using Arrakis.Classes.Menu;
 using Arrakis.Extensions;
-using Fusion;
-using GorillaNetworking;
 using Photon.Pun;
-using System;
 using System.Linq;
 using TMPro;
 using UnityEngine;
 
-namespace Arrakis.Classes
+namespace Arrakis.Managers
 {
     public class Boards : MonoBehaviour
     {

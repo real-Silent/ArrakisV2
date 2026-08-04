@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using Arrakis.Classes;
 using Arrakis.Classes.Menu;
+using Arrakis.Managers;
 using Arrakis.Menu;
 using Arrakis.Notifications;
 using BepInEx;
