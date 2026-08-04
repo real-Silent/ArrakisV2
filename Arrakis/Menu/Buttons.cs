@@ -254,6 +254,7 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Rain", enableMethod =() => Visual.Rain(true), disableMethod =() => Visual.Rain(false), toolTip = "Toggles the Rain." },
                 new ButtonInfo { buttonText = "No Leaves", enableMethod =() => Visual.NoLeaves(), disableMethod =() => Visual.DisableNoLeaves(), toolTip = "Removes all the leaves in the game." },
                 new ButtonInfo { buttonText = "Clear Weather", method =() => Visual.ClearWeather(), toolTip = "Clears the weather.", isTogglable = true },
+                new ButtonInfo { buttonText = "Spectate Gun", method =() => Visual.SpectateGun(), toolTip = "Spectates who ever you shoot.", isTogglable = true },
             },
 
             new ButtonInfo[] { // Advantage
@@ -368,6 +369,7 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Break Audio All <color=grey>[<color=cyan>B</color>]</color>", method =() => Overpowered.BreakAudioAll(), isTogglable = true, toolTip = "Breaks everyones audio when you hold <color=grey>[<color=cyan>B</color>]</color>." },
                 new ButtonInfo { buttonText = "Break Audio Gun", method =() => Overpowered.BreakAudioGun(), isTogglable = true, toolTip = "Breaks the audio of the who you shoot." },
                 new ButtonInfo { buttonText = "Barrel Fling Gun", method =() => Overpowered.BarrelFlingGun(), isTogglable = true, toolTip = "Flings who ever you shoot if you own the barrel. [Made by sleepy]" },
+                new ButtonInfo { buttonText = "Barrel Crash Gun", method =() => Overpowered.BarrelCrashGun(), isTogglable = true, toolTip = "Crashes who ever you shoot if you own the barrel. [Made by sleepy]" },
                 new ButtonInfo { buttonText = "Barrel Exucute Gun", method =() => Overpowered.BarrelExucuteGun(), isTogglable = true, toolTip = "Exucute who ever you shoot if you own the barrel. [Made by sleepy]" },
                 new ButtonInfo { buttonText = "Grab Fling Gun", method =() => Overpowered.GrabFlingGun(), isTogglable = true, toolTip = "Flings who ever you shoot if they are grabbable" },
                 new ButtonInfo { buttonText = "Grab Crash Gun", method =() => Overpowered.GrabCrashGun(), isTogglable = true, toolTip = "Crashes who ever you shoot if they are grabbable" },

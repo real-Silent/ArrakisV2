@@ -1,13 +1,14 @@
-﻿using Arrakis.Classes;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Arrakis.Classes;
 using Arrakis.Extensions;
 using Arrakis.Menu;
 using GorillaExtensions;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static Arrakis.Menu.Main;
 using static Arrakis.Settings;
 
 namespace Arrakis.Mods
@@ -431,7 +432,8 @@ namespace Arrakis.Mods
                         {
                             grabbing = "Grabbing";
                         }
-                        else { grabbing = ""; };
+                        else { grabbing = ""; }
+                        ;
 
                         if (!GrabTagsPool.TryGetValue(rig, out var tag))
                         {
@@ -576,6 +578,47 @@ namespace Arrakis.Mods
             arraylistHub = null;
             GameObject.Destroy(arraylistText);
             arraylistText = null;
+        }
+        public static GameObject ACam;
+        public static void SpectateGun()
+        {
+            if (GetGunInput(false))
+            {
+                var GunData = RenderGun();
+                GameObject NewPointer = GunData.NewPointer;
+                RaycastHit Ray = GunData.Ray;
+                if (lockTarget != null && gunLocked)
+                {
+                    if (ACam == null)
+                    {
+                        ACam = new GameObject("Arrakis Camera");
+                        var c = ACam.AddComponent<Camera>();
+                        c.fieldOfView = 120;
+                        c.depth = 4;
+                        c.nearClipPlane = 0.1f;
+                        c.cameraType = CameraType.Game;
+                        ACam.transform.position = GorillaTagger.Instance.offlineVRRig.headConstraint.transform.position;
+                        Object.DontDestroyOnLoad(ACam);
+                    }
+                    ACam.transform.rotation = lockTarget.head.rigTarget.rotation;
+                    ACam.transform.position = lockTarget.head.rigTarget.position;
+                }
+                if (GetGunInput(true))
+                {
+                    VRRig rig = Ray.collider.GetComponentInParent<VRRig>();
+                    if (rig != null && rig != VRRig.LocalRig)
+                    {
+                        lockTarget = rig;
+                        gunLocked = true;
+                    }
+                }
+            }
+            else
+            {
+                lockTarget = null;
+                gunLocked = false;
+                Object.Destroy(ACam);
+            }
         }
     }
 }

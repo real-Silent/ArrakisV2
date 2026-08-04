@@ -232,7 +232,7 @@ namespace Arrakis.Mods
             if (ControllerInputPoller.instance.rightControllerSecondaryButton)
             {
                 GorillaTagger.Instance.myVRRig.SendRPC("RPC_PlayHandTap", Photon.Pun.RpcTarget.Others, new object[] { 110, 99999 });
-                GorillaTagger.Instance.myVRRig.SendRPC("RPC_PlayHandTap", Photon.Pun.RpcTarget.Others, new object[] { 111, 99999  });
+                GorillaTagger.Instance.myVRRig.SendRPC("RPC_PlayHandTap", Photon.Pun.RpcTarget.Others, new object[] { 111, 99999 });
                 Safety.RPCProc();
             }
         }
@@ -247,8 +247,8 @@ namespace Arrakis.Mods
 
                 if (lockTarget != null && gunLocked)
                 {
-                    GorillaTagger.Instance.myVRRig.SendRPC("RPC_PlayHandTap", lockTarget.Creator, new object[] { 110, 99999  });
-                    GorillaTagger.Instance.myVRRig.SendRPC("RPC_PlayHandTap", lockTarget.Creator, new object[] { 111, 99999  });
+                    GorillaTagger.Instance.myVRRig.SendRPC("RPC_PlayHandTap", lockTarget.Creator, new object[] { 110, 99999 });
+                    GorillaTagger.Instance.myVRRig.SendRPC("RPC_PlayHandTap", lockTarget.Creator, new object[] { 111, 99999 });
                     Safety.RPCProc();
                 }
 
@@ -297,6 +297,35 @@ namespace Arrakis.Mods
                 gunLocked = false;
             }
         }
+        public static void BarrelCrashGun()
+        {
+            if (GetGunInput(false))
+            {
+                var GunData = RenderGun();
+                GameObject NewPointer = GunData.NewPointer;
+                RaycastHit Ray = GunData.Ray;
+
+                if (lockTarget != null && gunLocked)
+                {
+                    BarrelFling(lockTarget.transform.position, lockTarget.bodyTransform.up * 1000f, Quaternion.identity, new RaiseEventOptions { TargetActors = new[] { RigManager.GetNetPlayerFromVRRig(lockTarget).ActorNumber } });
+                }
+
+                if (GetGunInput(true))
+                {
+                    VRRig rig = Ray.collider.GetComponentInParent<VRRig>();
+                    if (rig != null && rig != VRRig.LocalRig)
+                    {
+                        lockTarget = rig;
+                        gunLocked = true;
+                    }
+                }
+            }
+            else
+            {
+                lockTarget = null;
+                gunLocked = false;
+            }
+        }
         public static void BarrelExucuteGun()
         {
             if (GetGunInput(false))
@@ -326,7 +355,7 @@ namespace Arrakis.Mods
                 gunLocked = false;
             }
         }
-        
+
         private const int DeployableBarrelSlot = 618;
         private static Coroutine disableRoutine;
         private static float tpt;
@@ -356,7 +385,7 @@ namespace Arrakis.Mods
                     BitPackUtils.PackQuaternionForNetwork(rotation), BitPackUtils.PackWorldPosForNetwork(velocity)
                 };
                 VRRig.LocalRig.transform.position = position;
-                PhotonNetwork.RaiseEvent(177, data,  eventOptions, new SendOptions { Reliability = false, DeliveryMode = DeliveryMode.ReliableUnsequenced });
+                PhotonNetwork.RaiseEvent(177, data, eventOptions, new SendOptions { Reliability = false, DeliveryMode = DeliveryMode.ReliableUnsequenced });
                 barrel._child.Deploy(barrel, position, rotation, velocity, false);
                 barrel.DeployChild();
                 Safety.RPCProc();
@@ -756,7 +785,7 @@ namespace Arrakis.Mods
             Velocity = Velocity.ClampMagnitudeSafe(15f);
             if (RopeSwingManager.instance.ropes.TryGetValue(RopeId, out GorillaRopeSwing Rope))
             {
-                var rope = Rope.nodes.Skip(1).Select((v, i) => new { index = i, transform = v, distance = Vector3.Distance(GorillaTagger.Instance.bodyCollider.transform.position, v.transform.position)}).OrderBy(x => x.distance).First();
+                var rope = Rope.nodes.Skip(1).Select((v, i) => new { index = i, transform = v, distance = Vector3.Distance(GorillaTagger.Instance.bodyCollider.transform.position, v.transform.position) }).OrderBy(x => x.distance).First();
                 if (rope.distance > 5f)
                 {
                     if (RopeCoroutine != null)
