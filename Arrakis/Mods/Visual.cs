@@ -113,7 +113,6 @@ namespace Arrakis.Mods
                             tracersPool[rig] = holder;
                         }
                         LineRenderer lr = holder.GetComponent<LineRenderer>();
-
                         Color color = rig.IsTagged() ? new Color(0.6f, 0f, 0f, 0.6f): new Color(0.46f, 0.6f, 0.6f, 0.6f);
                         lr.startColor = color;
                         lr.endColor = color;
