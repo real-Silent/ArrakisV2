@@ -33,6 +33,16 @@ namespace Arrakis.Mods
                 GTPlayer.Instance.bodyCollider.attachedRigidbody.linearVelocity = Vector3.zero;
             }
         }
+        public static void NoclipFly()
+        {
+            if (ControllerInputPoller.instance.rightControllerPrimaryButton)
+            {
+                GTPlayer.Instance.transform.position += GTPlayer.Instance.headCollider.transform.forward * Time.deltaTime * Settings.flyspeed;
+                GTPlayer.Instance.bodyCollider.attachedRigidbody.linearVelocity = Vector3.zero;
+                foreach (MeshCollider collider in GameObject.FindObjectsByType<MeshCollider>(FindObjectsSortMode.None))
+                    collider.enabled = !ControllerInputPoller.instance.rightControllerPrimaryButton;
+            }
+        }
 
         public static void MosaBoost() =>
             GTPlayer.Instance.maxJumpSpeed = 7.5f;
@@ -49,9 +59,8 @@ namespace Arrakis.Mods
         public static void PSA()
         {
             if (ControllerInputPoller.instance.rightControllerPrimaryButton)
-            {
-                GTPlayer.Instance.transform.position += GTPlayer.Instance.RightHand.controllerTransform.transform.forward * Time.deltaTime * Settings.flyspeed;
-            }
+                GTPlayer.Instance.transform.position += GTPlayer.Instance.headCollider.transform.forward * Time.deltaTime * Settings.flyspeed;
+            
         }
 
         public static void ExcelFly()
