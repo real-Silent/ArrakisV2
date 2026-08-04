@@ -41,6 +41,7 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Movement Settings", method =() => CurrentCategoryName = "Movement Settings", isTogglable = false, toolTip = "Opens the movement settings for the menu." },
                 new ButtonInfo { buttonText = "Visual Settings", method =() => CurrentCategoryName = "Visual Settings", isTogglable = false, toolTip = "Opens the visual settings for the menu." },
                 new ButtonInfo { buttonText = "Projectile Settings", method =() => CurrentCategoryName = "Projectile Settings", isTogglable = false, toolTip = "Opens the projectile settings for the menu." },
+                new ButtonInfo { buttonText = "Gunlib Settings", method =() => CurrentCategoryName = "Gunlib Settings", isTogglable = false, toolTip = "Opens the projectile settings for the menu." },
             },
 
             new ButtonInfo[] { // Menu Settings
@@ -58,7 +59,6 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Freeze Rig In Menu", method =() => FreezeRigInMenu(), disableMethod =() => Movement.FixRig(), isTogglable = true, toolTip = "Freezes your rig when you have the menu open.", ShowInArraylist = false },
                 new ButtonInfo { buttonText = "Change Font Style", overlapText = "Change Font Style <color=grey>[<color=cyan>Default</color>]</color>", method =() => ChangeFontStyle(), isTogglable = false, toolTip = "Changes the font style of the menu text.", ShowInArraylist = false },
                 new ButtonInfo { buttonText = "Disable Menu Sounds", method =() => menusounds = false, disableMethod =() => menusounds = true, isTogglable = true, toolTip = "Disables the menu sounds.", ShowInArraylist = false },
-                new ButtonInfo { buttonText = "Disable Gun Line", method =() => gunline = false, disableMethod =() => gunline = true, isTogglable = true, toolTip = "Disables the gun line.", ShowInArraylist = false },
                 new ButtonInfo { buttonText = "Disable Click Vibrations", method =() => disablevibrations = true, disableMethod =() => disablevibrations = false, isTogglable = true, toolTip = "Disables the contorller vibrations you get when you press a button.", ShowInArraylist = false },
                 new ButtonInfo { buttonText = "Disable Cosmetic Finder", method =() => cosmeticfinder = false, disableMethod =() => cosmeticfinder = true, isTogglable = true, toolTip = "Disables the cosmetic finder gui.", ShowInArraylist = false },
                 new ButtonInfo { buttonText = "Change Dig Size", method =() => ChangeDigSize(), isTogglable = false, toolTip = "Changes the dig size for the VIM dig mod.", ShowInArraylist = false },
@@ -103,6 +103,12 @@ namespace Arrakis.Menu
 
                 new ButtonInfo { buttonText = "Change Projectile Color", method =() => ChangeProjectilesColor(), isTogglable = false, toolTip = "Changes the color of the projectiles." },
                 new ButtonInfo { buttonText = "Allow Colored Big Snowballs", enableMethod =() => allowbigsnowballcolor = true, disableMethod =() => allowbigsnowballcolor = false, isTogglable = true, toolTip = "Allows the growing snowballs to have a color." },
+            },
+            new ButtonInfo[] { // Gunlib Settings
+                new ButtonInfo { buttonText = "Exit Gunlib Settings", method =() => CurrentCategoryName = "Settings", isTogglable = false, toolTip = "Returns to the main settings page for the menu." },
+
+                new ButtonInfo { buttonText = "Disable Gun Line", method =() => gunline = false, disableMethod =() => gunline = true, isTogglable = true, toolTip = "Disables the gun line.", ShowInArraylist = false },
+                new ButtonInfo { buttonText = "Show Gun Target", method =() => showTarget = false, disableMethod =() => showTarget = true, isTogglable = true, toolTip = "Shows who ever you are shooting.", ShowInArraylist = false },
             },
 
             new ButtonInfo[] { // Enabled
@@ -182,6 +188,7 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Show AntiCheat Reports <color=grey>[<color=cyan>SELF</color>]</color>", enableMethod =() => showanticheatreportself = true, disableMethod =() => showanticheatreportself = false, toolTip = "Logs your own anti cheat reports in your console." },
                 new ButtonInfo { buttonText = "Anti Stump Kick", enableMethod =() => GroupPatch.enabled = true, disableMethod =() => GroupPatch.enabled = false, toolTip = "Dosnt let you get kicked from group kick." },
                 new ButtonInfo { buttonText = "Board Spoof", method =() => Safety.BoardSpoof(), toolTip = "Spoofs your name and color every 30 secounds." },
+                new ButtonInfo { buttonText = "Nuke Mod Checkers", enableMethod =() => Safety.NukeModCheckers(), method =() => Safety.UpdateFps(), disableMethod =() => FPSPatch.enabled = false, toolTip = "Tells mod checkers that you have a high fps and alot of mods." },
             },
 
             new ButtonInfo[] { // Movement
@@ -485,6 +492,7 @@ namespace Arrakis.Menu
             "Movement Settings",
             "Visual Settings",
             "Projectile Settings",
+            "Gunlib Settings",
             "Enabled",
             "Favorites",
             "Important",

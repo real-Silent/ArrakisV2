@@ -1,3 +1,8 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using Arrakis.Classes;
 using Arrakis.Managers;
 using Arrakis.Mods;
@@ -7,11 +12,6 @@ using GorillaExtensions;
 using GorillaLocomotion;
 using HarmonyLib;
 using Photon.Pun;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -919,85 +919,137 @@ namespace Arrakis.Menu
                 1 << LayerMask.NameToLayer("Gorilla Boundary") | 1 << LayerMask.NameToLayer("GorillaCosmetics") | 1 << LayerMask.NameToLayer("GorillaParticle"));
             return noInvisLayerMask ?? GTPlayer.Instance.locomotionEnabledLayers;
         }
-
         public static bool gunLocked;
         public static VRRig lockTarget;
+        public static bool showTarget = false;
+        public static int gunLineStyle = 0;
+        public static float gunPointerSize = 0.15f; // ill add a setting for this later -sleepy
+        public static float gunLineWidth = 0.025f; // ill add a setting for this later -sleepy
 
-        public static bool GetGunInput(bool isShooting) // Adding this so i dont need to mess around with guns much
+        public static bool GetGunInput(bool isShooting)
         {
-            return isShooting ? ControllerInputPoller.instance.rightControllerTriggerButton || Mouse.current.leftButton.isPressed : ControllerInputPoller.instance.rightGrab || Mouse.current.rightButton.isPressed;
+            return isShooting? ControllerInputPoller.instance.rightControllerTriggerButton || Mouse.current.leftButton.isPressed : ControllerInputPoller.instance.rightGrab || Mouse.current.rightButton.isPressed;
         }
 
         public static Vector3 MidPosition;
         public static Vector3 MidVelocity;
-        public static (RaycastHit Ray, GameObject NewPointer) RenderGun(int? overrideLayerMask = null) // I took bezier and shouldBePC from seralyth | i love bezier
+
+        public static (RaycastHit Ray, GameObject NewPointer) RenderGun(int? overrideLayerMask = null)
         {
-            Transform GunTransform = GorillaTagger.Instance.rightHandTransform;
-            Vector3 StartPosition = GunTransform.position;
-            Vector3 Direction = GunTransform.forward;
-            Vector3 Up = GunTransform.up; // -GT.up
-            Vector3 Right = GunTransform.right;
-            Physics.Raycast(GorillaTagger.Instance.rightHandTransform.position, -GorillaTagger.Instance.rightHandTransform.up + -GorillaTagger.Instance.rightHandTransform.forward, out var Ray, 512f, NoInvisLayerMask());
+            Transform gunTransform = GorillaTagger.Instance.rightHandTransform;
+            Vector3 startPos = gunTransform.position;
+            Vector3 direction = gunTransform.forward;
+            Vector3 up = gunTransform.up;
+            Vector3 right = gunTransform.right;
+            Physics.Raycast(startPos, -gunTransform.up + -gunTransform.forward, out var ray, 512f, NoInvisLayerMask());
             if (shouldBePC)
             {
-                Ray ray = TPC.ScreenPointToRay(Mouse.current.position.ReadValue());
-                Physics.Raycast(ray, out Ray, 512f, NoInvisLayerMask());
-                Direction = ray.direction;
+                Ray screenRay = TPC.ScreenPointToRay(Mouse.current.position.ReadValue());
+                Physics.Raycast(screenRay, out ray, 512f, NoInvisLayerMask());
+                direction = screenRay.direction;
             }
-            Vector3 EndPosition = gunLocked ? lockTarget.transform.position : Ray.point;
-            if (EndPosition == Vector3.zero)
-                EndPosition = StartPosition + Direction * 512f;
+            Vector3 endPos = gunLocked && lockTarget != null ? lockTarget.transform.position : ray.point;
+            if (endPos == Vector3.zero)
+                endPos = startPos + direction * 512f;
             if (GunPointer == null)
                 GunPointer = GameObject.CreatePrimitive(PrimitiveType.Sphere);
             GunPointer.SetActive(true);
-            GunPointer.transform.localScale = new Vector3(0.15f, 0.15f, 0.15f);
-            GunPointer.transform.position = EndPosition;
-            Renderer PointerRenderer = GunPointer.GetComponent<Renderer>();
-            if (PointerRenderer.material.shader.name != "GUI/Text Shader")
-                PointerRenderer.material.shader = Shader.Find("GUI/Text Shader");
-            PointerRenderer.material.color = gunLocked || GetGunInput(true) ? buttonColors[1].GetCurrentColor() : buttonColors[0].GetCurrentColor();
-            Collider gunPointerCollider = GunPointer.GetComponent<Collider>();
-            if (gunPointerCollider != null)
-                Destroy(gunPointerCollider);
+            GunPointer.transform.localScale = Vector3.one * gunPointerSize;
+            GunPointer.transform.position = endPos;
+            Renderer pointerRenderer = GunPointer.GetComponent<Renderer>();
+            if (pointerRenderer.material.shader.name != "GUI/Text Shader")
+                pointerRenderer.material.shader = Shader.Find("GUI/Text Shader");
+            pointerRenderer.material.color = gunLocked || GetGunInput(true) ? buttonColors[1].GetCurrentColor() : buttonColors[0].GetCurrentColor();
+            Collider col = GunPointer.GetComponent<Collider>();
+            if (col != null)
+                Destroy(col);
             if (gunline)
             {
                 if (GunLine == null)
                 {
-                    GameObject line = new GameObject("Arrakis_GunLine"); // Seralyth_GunLine
-                    GunLine = line.AddComponent<LineRenderer>();
+                    GameObject lineObj = new GameObject("GunLine");
+                    GunLine = lineObj.AddComponent<LineRenderer>();
                 }
                 GunLine.gameObject.SetActive(true);
                 if (GunLine.material.shader.name != "GUI/Text Shader")
                     GunLine.material.shader = Shader.Find("GUI/Text Shader");
-                GunLine.startColor = backgroundColor.GetCurrentColor();
-                GunLine.endColor = backgroundColor.GetCurrentColor(0.5f);
-                GunLine.startWidth = 0.02f * 1f;
-                GunLine.endWidth = 0.02f * 1f;
+                GunLine.startWidth = gunLineWidth;
+                GunLine.endWidth = gunLineWidth;
                 GunLine.useWorldSpace = true;
-                int Step = 50;
-                Vector3 BaseMid = Vector3.Lerp(StartPosition, EndPosition, 0.5f);
-                float angle = Time.time * 3f;
-                Vector3 wobbleOffset = Up * (Mathf.Sin(angle) * 0.15f) + Right * (Mathf.Cos(angle * 1.3f) * 0.15f);
-                Vector3 targetMid = BaseMid + wobbleOffset;
-                if (MidPosition == Vector3.zero) MidPosition = targetMid;
-                Vector3 force = (targetMid - MidPosition) * 40f;
-                MidVelocity += force * Time.deltaTime;
-                MidVelocity *= Mathf.Exp(-6f * Time.deltaTime);
-                MidPosition += MidVelocity * Time.deltaTime;
-                GunLine.positionCount = Step;
-                GunLine.SetPosition(0, StartPosition);
-                Vector3[] points = new Vector3[Step];
-                for (int i = 0; i < Step; i++)
+                int steps = 50;
+                Vector3[] points = new Vector3[steps];
+                switch (gunLineStyle)
                 {
-                    float t = (float)i / (Step - 1);
-                    points[i] = Mathf.Pow(1 - t, 2) * StartPosition + 2 * (1 - t) * t * MidPosition + Mathf.Pow(t, 2) * EndPosition;
+                    case 0:
+                        Vector3 baseMid = Vector3.Lerp(startPos, endPos, 0.5f);
+                        float angle = Time.time * 3f;
+                        Vector3 wobble = up * (Mathf.Sin(angle) * 0.15f) + right * (Mathf.Cos(angle * 1.3f) * 0.15f);
+                        Vector3 targetMid = baseMid + wobble;
+                        if (MidPosition == Vector3.zero)
+                            MidPosition = targetMid;
+                        Vector3 force = (targetMid - MidPosition) * 40f;
+                        MidVelocity += force * Time.deltaTime;
+                        MidVelocity *= Mathf.Exp(-6f * Time.deltaTime);
+                        MidPosition += MidVelocity * Time.deltaTime;
+                        for (int i = 0; i < steps; i++)
+                        {
+                            float t = (float)i / (steps - 1);
+                            points[i] = Mathf.Pow(1 - t, 2) * startPos + 2 * (1 - t) * t * MidPosition + Mathf.Pow(t, 2) * endPos;
+                        }
+                        break;
+                    case 1:
+                        for (int i = 0; i < steps; i++)
+                        {
+                            float t = (float)i / (steps - 1);
+                            points[i] = Vector3.Lerp(startPos, endPos, t);
+                        }
+                        break;
+                    case 2:
+                        for (int i = 0; i < steps; i++)
+                        {
+                            float t = (float)i / (steps - 1);
+                            points[i] = Vector3.Lerp(startPos, endPos, t);
+                        }
+                        GunLine.startColor = Color.HSVToRGB(Mathf.Repeat(Time.time * 0.4f, 1f), 1f, 1f);
+                        GunLine.endColor = Color.HSVToRGB(Mathf.Repeat(Time.time * 0.4f + 0.5f, 1f), 1f, 1f);
+                        break;
+                    case 3:
+                        points[0] = startPos;
+                        points[steps - 1] = endPos;
+                        for (int i = 1; i < steps - 1; i++)
+                        {
+                            float t = (float)i / (steps - 1);
+                            Vector3 basePoint = Vector3.Lerp(startPos, endPos, t);
+                            Vector3 offset = up * (Mathf.PerlinNoise(Time.time * 8f + i * 0.3f, 0f) - 0.5f) * 0.35f
+                                        + right * (Mathf.PerlinNoise(0f, Time.time * 8f + i * 0.3f) - 0.5f) * 0.35f;
+                            points[i] = basePoint + offset;
+                        }
+                        break;
+                    case 4:
+                        float pulse = 0.015f + Mathf.Sin(Time.time * 6f) * 0.01f;
+                        GunLine.startWidth = pulse;
+                        GunLine.endWidth = pulse;
+                        for (int i = 0; i < steps; i++)
+                        {
+                            float t = (float)i / (steps - 1);
+                            points[i] = Vector3.Lerp(startPos, endPos, t);
+                        }
+                        break;
                 }
-                GunLine.positionCount = Step;
+                if (gunLineStyle != 2)
+                {
+                    GunLine.startColor = backgroundColor.GetCurrentColor();
+                    GunLine.endColor = backgroundColor.GetCurrentColor(0.5f);
+                }
+                GunLine.positionCount = steps;
                 GunLine.SetPositions(points);
             }
-            return (Ray, GunPointer);
+            if (showTarget && gunLocked && lockTarget != null)
+                lockTarget.mainSkin.material.shader = Shader.Find("GUI/Text Shader");
+            else
+                lockTarget.mainSkin.material.shader = Shader.Find("GorillaTag/UberShader");
+            return (ray, GunPointer);
         }
-
         // Variables
         // Important
         // Objects

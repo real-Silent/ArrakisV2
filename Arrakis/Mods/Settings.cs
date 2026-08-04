@@ -143,6 +143,19 @@ namespace Arrakis
             }
             GetIndex("Change Click Volume").overlapText = $"Change Click Volume <color=grey>[<color=cyan>{buttonclickvolume}f</color>]</color>";
         }
+        private static int GunLineindex = 0;
+        public static void ChangeGunline()
+        {
+            GunLineindex = (GunLineindex + 1) % 5;
+            switch (GunLineindex)
+            {
+                case 0: gunLineStyle = 0; break;
+                case 1: gunLineStyle = 1; break;
+                case 2: gunLineStyle = 2; break;
+                case 3: gunLineStyle = 3; break;
+                case 4: gunLineStyle = 4; break;
+            }
+        }
 
         public static void FreezePlayerInMenu()
         {
