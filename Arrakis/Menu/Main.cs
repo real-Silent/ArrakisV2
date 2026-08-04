@@ -1,4 +1,5 @@
 using Arrakis.Classes;
+using Arrakis.Managers;
 using Arrakis.Mods;
 using Arrakis.Notifications;
 using BepInEx;
@@ -41,6 +42,8 @@ namespace Arrakis.Menu
                 {
                     if (toOpen || keyboardOpen)
                     {
+                        if (menusounds)
+                            AudioManager.MenuSound("menuopen");
                         CreateMenu();
                         if (menuanimation)
                         {
@@ -60,6 +63,9 @@ namespace Arrakis.Menu
                         GameObject.Find("Shoulder Camera").transform.Find("CM vcam1").gameObject.SetActive(true);
 
                         Rigidbody comp = menu.GetOrAddComponent<Rigidbody>();
+
+                        if (menusounds)
+                            AudioManager.MenuSound("menuclose");
 
                         if (!disablemenudrop)
                         {

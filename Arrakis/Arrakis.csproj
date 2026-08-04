@@ -10,7 +10,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Resources\Audio\Buttons\smooth.wav" />
+    <None Remove="Resources\Audio\menuclose.wav" />
+    <None Remove="Resources\Audio\menuopen.wav" />
   </ItemGroup>
 
 	<ItemGroup>
@@ -24,6 +25,8 @@
 		<PublicizerClearCacheOnClean>true</PublicizerClearCacheOnClean>
 	</PropertyGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Resources\Audio\menuclose.wav" />
+    <EmbeddedResource Include="Resources\Audio\menuopen.wav" />
     <EmbeddedResource Include="Resources\Bundles\maxwell" />
   </ItemGroup>
   
@@ -33,7 +36,7 @@
   
   <ItemGroup>
     <EmbeddedResource Include="Resources\Bundles\zeldasword" />
-    <EmbeddedResource Include="Resources\Audio\Buttons\smooth.wav" />
+    <EmbeddedResource Include="Resources\Audio\smooth.wav" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="0Harmony">

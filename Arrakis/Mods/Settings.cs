@@ -32,6 +32,7 @@ namespace Arrakis
         public static bool rightHanded;
         public static bool disableNotifications;
         public static bool outlineMenu;
+        public static bool menusounds = true;
         public static bool gunline = true;
         public static bool cosmeticfinder = true;
 
