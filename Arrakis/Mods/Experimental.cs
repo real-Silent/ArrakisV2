@@ -17,10 +17,10 @@ using Photon.Realtime;
 using Photon.Voice.PUN;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static Arrakis.Classes.RigManager;
 using static Arrakis.Menu.Main;
 using JoinType = GorillaNetworking.JoinType;
 using Object = UnityEngine.Object;
-using static Arrakis.Classes.RigManager;
 using Random = UnityEngine.Random;
 
 namespace Arrakis.Mods
@@ -290,7 +290,7 @@ namespace Arrakis.Mods
                 CRunner.instance.StartCoroutine(
                     SerializationDelay(() =>
                     {
-                        PhotonNetwork.NetworkingClient.OpRaiseEvent( eventCode, copiedPayload, raiseOptions, send);
+                        PhotonNetwork.NetworkingClient.OpRaiseEvent(eventCode, copiedPayload, raiseOptions, send);
                     }, delay));
             }
             else
@@ -318,7 +318,7 @@ namespace Arrakis.Mods
                 {
                     AntiKickEvents = true;
                     for (int i = 0; i < 4000; i++)
-                       FriendshipGroupDetection.Instance.photonView.RPC("RequestPartyGameMode", lockTarget.Creator.GetPlayerRef(), new object[] { GameMode.gameModeKeyByName.Keys.ToArray()[Random.Range(0, GameMode.gameModeKeyByName.Keys.Count)] });
+                        FriendshipGroupDetection.Instance.photonView.RPC("RequestPartyGameMode", lockTarget.Creator.GetPlayerRef(), new object[] { GameMode.gameModeKeyByName.Keys.ToArray()[Random.Range(0, GameMode.gameModeKeyByName.Keys.Count)] });
 
                     Safety.RPCProc();
                 }
@@ -403,7 +403,31 @@ namespace Arrakis.Mods
                 gunLocked = false;
             }
         }
+        public static void SwitchToTcp()
+        {
+            var loadBalancingPeer = PhotonNetwork.NetworkingClient.LoadBalancingPeer;
+            loadBalancingPeer.TransportProtocol = ConnectionProtocol.Tcp;
+            loadBalancingPeer.peerBase = new TPeer
+            {
+                photonPeer = loadBalancingPeer,
+                usedTransportProtocol = ConnectionProtocol.Tcp,
+                DoFraming = true
+            };
+        }
 
+        public static void SwitchToUdp()
+        {
+            var loadBalancingPeer = PhotonNetwork.NetworkingClient.LoadBalancingPeer;
+            loadBalancingPeer.TransportProtocol = ConnectionProtocol.Udp;
+            loadBalancingPeer.peerBase = new EnetPeer
+            {
+                photonPeer = loadBalancingPeer,
+                usedTransportProtocol = ConnectionProtocol.Udp
+            };
+
+            NetworkSystem.Instance.ReturnToSinglePlayer();
+            Important.Reauth();
+        }
         // Admin Mods
         public static float admindelay;
         public static void AdminKickAll() =>

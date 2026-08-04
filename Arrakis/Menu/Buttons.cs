@@ -432,6 +432,7 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Spam Pride Cube", method =() => Experimental.SpamPrideCube(), isTogglable = true, toolTip = "Spams client sided cubes." },
                 new ButtonInfo { buttonText = "Stump Kick All <color=grey>[<color=cyan>Private</color>]</color>", method =() => Experimental.StumpKickAll(), isTogglable = false, toolTip = "Kicks everyone in stump to a public lobby." },
                 new ButtonInfo { buttonText = "VStump Crash Gun", method =() => Experimental.VStumpCrashGun(), isTogglable = true, toolTip = "Crashes someone if in a VStump map." },
+                new ButtonInfo { buttonText = "Switch To Tcp", enableMethod =() => Experimental.SwitchToTcp(), disableMethod =() => Experimental.SwitchToUdp(), isTogglable = true, toolTip = "Swaps the networking to tcp, this breaks somethings." },
             },
 
             new ButtonInfo[] { // Soundboard
