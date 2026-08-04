@@ -2,6 +2,7 @@
 using Arrakis.Extensions;
 using Arrakis.Menu;
 using GorillaExtensions;
+using Pathfinding.RVO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -83,6 +84,7 @@ namespace Arrakis.Mods
             }
         }
 
+        private static Dictionary<VRRig, GameObject> tracersPool = new Dictionary<VRRig, GameObject>();
         public static void Tracers()
         {
             if (NetworkSystem.Instance.InRoom)
@@ -91,22 +93,44 @@ namespace Arrakis.Mods
                 {
                     if (rig != null && rig != VRRig.LocalRig)
                     {
-                        Color tracerColor = rig.IsTagged() ? new Color(0.6f, 0f, 0f, 0.6f) : new Color(0.46f, 0.6f, 0.6f, 0.6f);
-                        GameObject holder = new GameObject();
-                        LineRenderer line = holder.AddComponent<LineRenderer>();
-                        line.useWorldSpace = true;
-                        line.material.shader = Shader.Find("GUI/Text Shader");
-                        line.positionCount = 2;
-                        line.startWidth = 0.02f;
-                        line.endWidth = 0.02f;
-                        line.startColor = tracerColor;
-                        line.endColor = tracerColor;
-                        line.SetPosition(0, GorillaTagger.Instance.rightHandTransform.position);
-                        line.SetPosition(1, rig.transform.position);
-                        GameObject.Destroy(holder, Time.deltaTime);
+                        foreach (var key in tracersPool.Keys.ToList())
+                        {
+                            if (key == null || !VRRigCache.ActiveRigs.Contains(key))
+                            {
+                                GameObject.Destroy(tracersPool[key]);
+                                tracersPool.Remove(key);
+                            }
+                        }
+                        if (!tracersPool.TryGetValue(rig, out GameObject holder))
+                        {
+                            holder = new GameObject();
+                            LineRenderer line = holder.AddComponent<LineRenderer>();
+                            line.useWorldSpace = true;
+                            line.material = new Material(Shader.Find("GUI/Text Shader"));
+                            line.positionCount = 2;
+                            line.startWidth = 0.02f;
+                            line.endWidth = 0.02f;
+                            tracersPool[rig] = holder;
+                        }
+                        LineRenderer lr = holder.GetComponent<LineRenderer>();
+
+                        Color color = rig.IsTagged() ? new Color(0.6f, 0f, 0f, 0.6f): new Color(0.46f, 0.6f, 0.6f, 0.6f);
+                        lr.startColor = color;
+                        lr.endColor = color;
+                        lr.SetPosition(0, GorillaTagger.Instance.rightHandTransform.position);
+                        lr.SetPosition(1, rig.transform.position);
                     }
                 }
             }
+        }
+        public static void DisableTracers()
+        {
+            foreach (var obj in tracersPool.Values)
+            {
+                if (obj != null)
+                    Object.Destroy(obj);
+            }
+            tracersPool.Clear();
         }
 
         private static readonly Dictionary<VRRig, GameObject> boxEspPool = new Dictionary<VRRig, GameObject>();
