@@ -301,7 +301,7 @@ namespace Arrakis.Menu
                 Destroy(outline.GetComponent<BoxCollider>());
                 outline.transform.parent = menu.transform;
                 outline.transform.rotation = Quaternion.identity;
-                outline.transform.localScale = new Vector3(0.1f, 1.04f, 1.04f);
+                outline.transform.localScale = new Vector3(0.09f, 1.04f, 1.04f);
                 outline.GetComponent<Renderer>().material.color = backgroundColor.colors[0].color;
                 outline.transform.position = new Vector3(0.05f, 0f, 0f);
             }
