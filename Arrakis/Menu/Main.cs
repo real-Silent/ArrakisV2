@@ -229,7 +229,7 @@ namespace Arrakis.Menu
 
             try
             {
-                if (Time.time > lastsavesprefstime)
+                if (!disableautosave && Time.time > lastsavesprefstime)
                 {
                     lastsavesprefstime = Time.time + 120f;
                     SaveSettings();
