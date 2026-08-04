@@ -26,7 +26,7 @@ namespace Arrakis.Mods
         {
             if (NetworkSystem.Instance.InRoom)
                 NetworkSystem.Instance.ReturnToSinglePlayer();
-            PhotonNetworkController.Instance.AttemptToJoinSpecificRoom(currentRoomName, JoinType.Solo);
+            PhotonNetworkController.Instance.AttemptToJoinSpecificRoom(reconnectingRoomName, JoinType.Solo);
         }
 
         public static void DisableWindBarriers()

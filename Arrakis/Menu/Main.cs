@@ -204,26 +204,25 @@ namespace Arrakis.Menu
                 CustomConsole.Log(string.Format("{0} // Error with executing mods at {1}: {2}", PluginInfo.Name, exc.StackTrace, exc.Message), CustomConsole.LogType.Error);
             }
 
-            if (NetworkSystem.Instance.InRoom && PhotonNetwork.CurrentRoom != null)
+            if (NetworkSystem.Instance.InRoom)
             {
-                string roomName = PhotonNetwork.CurrentRoom.Name;
-
-                if (currentRoomName != roomName)
+                if (currentRoomName != PhotonNetwork.CurrentRoom.Name)
                 {
-                    currentRoomName = roomName;
+                    currentRoomName = PhotonNetwork.CurrentRoom.Name;
                     if (!disableroomnotifications)
-                    {
                         NotificationManager.SendNotification($"<color=grey>[</color><color=cyan>ARRAKIS</color><color=grey>]</color> Joined room {currentRoomName}");
-                    }
                 }
+                if (reconnectingRoomName != PhotonNetwork.CurrentRoom.Name)
+                    reconnectingRoomName = PhotonNetwork.CurrentRoom.Name;
             }
-            else if (!string.IsNullOrEmpty(currentRoomName))
+            else
             {
-                if (!disableroomnotifications)
+                if (currentRoomName != "")
                 {
-                    NotificationManager.SendNotification($"<color=grey>[</color><color=cyan>ARRAKIS</color><color=grey>]</color> Left room {currentRoomName}");
+                    if (!disableroomnotifications)
+                        NotificationManager.SendNotification($"<color=grey>[</color><color=cyan>ARRAKIS</color><color=grey>]</color> Left room {currentRoomName}");
+                    currentRoomName = "";
                 }
-                currentRoomName = string.Empty;
             }
 
             shouldBePC = !XRSettings.isDeviceActive;
@@ -1002,6 +1001,7 @@ namespace Arrakis.Menu
         private static LineRenderer GunLine;
 
         public static string currentRoomName = "";
+        public static string reconnectingRoomName = "";
 
         // Data
         public static int pageNumber = 0;
