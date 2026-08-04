@@ -146,5 +146,33 @@ namespace Arrakis.Mods
                 GC.Collect();
             }
         }
+        private static string originalName;
+        private static float SpoofDelay;
+        public static void BoardSpoof()
+        {
+            if (Time.time > SpoofDelay)
+            {
+                SpoofDelay = Time.time + 30f;
+                VRRig.LocalRig.enabled = false;
+                VRRig.LocalRig.transform.position = GorillaComputer.instance.friendJoinCollider.transform.position;
+
+                if (GorillaComputer.instance.friendJoinCollider.playerIDsCurrentlyTouching.Contains(PhotonNetwork.LocalPlayer.UserId))
+                {
+                    originalName = PhotonNetwork.LocalPlayer.NickName;
+
+                    foreach (NetPlayer target in NetworkSystem.Instance.PlayerListOthers)
+                    {
+                        var color = new Color(UnityEngine.Random.Range(0f, 1f), UnityEngine.Random.Range(0f, 1f), UnityEngine.Random.Range(0f, 1f));
+                        string name = Important.GenerateRandomString(UnityEngine.Random.Range(0, 14));
+                        PhotonNetwork.LocalPlayer.NickName = name;
+
+                        GorillaTagger.Instance.myVRRig.SendRPC("RPC_InitializeNoobMaterial", target, new object[] { color.r, color.g, color.b });
+                    }
+
+                    VRRig.LocalRig.enabled = true;
+                    PhotonNetwork.LocalPlayer.NickName = originalName;
+                }
+            }
+        }
     }
 }

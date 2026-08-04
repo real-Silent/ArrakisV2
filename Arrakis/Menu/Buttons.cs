@@ -181,6 +181,7 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Show AntiCheat Reports <color=grey>[<color=cyan>OTHERS</color>]</color>", enableMethod =() => showanticheatreports = true, disableMethod =() => showanticheatreports = false, toolTip = "Logs everyone elses anti cheat reports in your console." },
                 new ButtonInfo { buttonText = "Show AntiCheat Reports <color=grey>[<color=cyan>SELF</color>]</color>", enableMethod =() => showanticheatreportself = true, disableMethod =() => showanticheatreportself = false, toolTip = "Logs your own anti cheat reports in your console." },
                 new ButtonInfo { buttonText = "Anti Stump Kick", enableMethod =() => GroupPatch.enabled = true, disableMethod =() => GroupPatch.enabled = false, toolTip = "Dosnt let you get kicked from group kick." },
+                new ButtonInfo { buttonText = "Board Spoof", method =() => Safety.BoardSpoof(), toolTip = "Spoofs your name and color every 30 secounds." },
             },
 
             new ButtonInfo[] { // Movement
