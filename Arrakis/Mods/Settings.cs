@@ -55,6 +55,7 @@ namespace Arrakis
         public static bool disablemenutitle = false;
         public static bool disablepagenumber = false;
         public static bool disablecustomboards = false;
+        public static bool disableroomnotifications = false;
 
         public static KeyCode keyboardButton = KeyCode.Q;
 

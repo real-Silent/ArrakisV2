@@ -207,12 +207,20 @@ namespace Arrakis.Menu
             if (NetworkSystem.Instance.InRoom)
             {
                 if (currentRoomName != PhotonNetwork.CurrentRoom.Name)
+                {
                     currentRoomName = PhotonNetwork.CurrentRoom.Name;
+                    if (!disableroomnotifications)
+                        NotificationManager.SendNotification($"<color=grey>[</color><color=cyan>ARRAKIS</color><color=grey>]</color> Joined room {currentRoomName}");
+                }
             }
             else
             {
                 if (currentRoomName != "")
+                {
+                    if (!disableroomnotifications)
+                        NotificationManager.SendNotification($"<color=grey>[</color><color=cyan>ARRAKIS</color><color=grey>]</color> Left room {currentRoomName}");
                     currentRoomName = "";
+                }
             }
 
             shouldBePC = !XRSettings.isDeviceActive;
