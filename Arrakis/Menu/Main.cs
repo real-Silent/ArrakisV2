@@ -204,23 +204,26 @@ namespace Arrakis.Menu
                 CustomConsole.Log(string.Format("{0} // Error with executing mods at {1}: {2}", PluginInfo.Name, exc.StackTrace, exc.Message), CustomConsole.LogType.Error);
             }
 
-            if (NetworkSystem.Instance.InRoom)
+            if (NetworkSystem.Instance.InRoom && PhotonNetwork.CurrentRoom != null)
             {
-                if (currentRoomName != PhotonNetwork.CurrentRoom.Name)
+                string roomName = PhotonNetwork.CurrentRoom.Name;
+
+                if (currentRoomName != roomName)
                 {
-                    currentRoomName = PhotonNetwork.CurrentRoom.Name;
+                    currentRoomName = roomName;
                     if (!disableroomnotifications)
+                    {
                         NotificationManager.SendNotification($"<color=grey>[</color><color=cyan>ARRAKIS</color><color=grey>]</color> Joined room {currentRoomName}");
+                    }
                 }
             }
-            else
+            else if (!string.IsNullOrEmpty(currentRoomName))
             {
-                if (currentRoomName != "")
+                if (!disableroomnotifications)
                 {
-                    if (!disableroomnotifications)
-                        NotificationManager.SendNotification($"<color=grey>[</color><color=cyan>ARRAKIS</color><color=grey>]</color> Left room {currentRoomName}");
-                    currentRoomName = "";
+                    NotificationManager.SendNotification($"<color=grey>[</color><color=cyan>ARRAKIS</color><color=grey>]</color> Left room {currentRoomName}");
                 }
+                currentRoomName = string.Empty;
             }
 
             shouldBePC = !XRSettings.isDeviceActive;
