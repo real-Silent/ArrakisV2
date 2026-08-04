@@ -138,13 +138,13 @@ namespace Arrakis.Mods
             catch { }
         }
 
-        public static bool setsupport = false;
+        private static float spoofdelay = 0f;
         public static void SpoofSupportPage() 
         {
-            if (!setsupport)
+            if (Time.time > spoofdelay)
             {
                 GorillaComputer.instance.screenText.Set(GorillaComputer.instance.screenText.stringBuilder.ToString().Replace("STEAM", "QUEST").Replace(GorillaComputer.instance.buildDate, $"{GorillaComputer.instance.buildDate}\nBUILD CODE 4893\nMANAGED ACCOUNT: NO"));
-                setsupport = true;
+                spoofdelay = Time.time + 0.1f;   
             }
         }
 
