@@ -361,7 +361,7 @@ namespace Arrakis.Mods
 
                 Texture2D texture = AssetBundleLoader.LoadTexture("pride.png");
 
-                Material mat = new Material(Shader.Find("Standard"));
+                Material mat = new Material(Shader.Find("GorillaTag/UberShader")); // fixed -nova
                 mat.mainTexture = texture;
 
                 GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);

@@ -24,15 +24,15 @@
 		<PublicizerClearCacheOnClean>true</PublicizerClearCacheOnClean>
 	</PropertyGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Classes/Resources/maxwell" />
+    <EmbeddedResource Include="Resources\Bundles\maxwell" />
   </ItemGroup>
   
   <ItemGroup>
-    <EmbeddedResource Include="Classes/Resources/pride.png" />
+    <EmbeddedResource Include="Resources\Images\pride.png" />
   </ItemGroup>
   
   <ItemGroup>
-    <EmbeddedResource Include="Classes/Resources/zeldasword" />
+    <EmbeddedResource Include="Resources\Bundles\zeldasword" />
     <EmbeddedResource Include="Resources\Audio\Buttons\smooth.wav" />
   </ItemGroup>
   <ItemGroup>

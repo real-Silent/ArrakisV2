@@ -36,7 +36,7 @@ public static class AssetBundleLoader
         AssetBundle bundle;
         if (bundles.TryGetValue(name, out bundle))
             return bundle;
-        string resourceName = "Arrakis.Classes.Resources." + name;
+        string resourceName = "Arrakis.Resources.Bundles." + name;
         using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName))
         {
             if (stream == null)
@@ -148,7 +148,7 @@ public static class AssetBundleLoader
     public static Texture2D LoadTexture(string resourceName)
     {
         Assembly assembly = Assembly.GetExecutingAssembly();
-        string fullName = $"Arrakis.Classes.Resources.{resourceName}";
+        string fullName = $"Arrakis.Resources.Images.{resourceName}";
         using Stream stream = assembly.GetManifestResourceStream(fullName);
         if (stream == null)
         {
