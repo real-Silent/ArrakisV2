@@ -189,10 +189,12 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Hand Fly <color=grey>[<color=cyan>A</color>]</color>", method =() => Movement.HandFly(), isTogglable = true, toolTip = "Lets you fly while holding <color=grey>[<color=cyan>A</color>]</color>." },
                 new ButtonInfo { buttonText = "Trigger Fly <color=grey>[<color=cyan>T</color>]</color>", method =() => Movement.TriggerFly(), isTogglable = true, toolTip = "Lets you fly while holding <color=grey>[<color=cyan>T</color>]</color>." },
                 new ButtonInfo { buttonText = "Iron Monkey", method =() => Movement.ExcelFly(), isTogglable = true, toolTip = "Lets you fly like iron man." },
-                new ButtonInfo { buttonText = "WASD Fly", method =() => Movement.WasdFly(), isTogglable = true, toolTip = "Lets you move around with wasd." },
                 new ButtonInfo { buttonText = "Platforms", method =() => Movement.Platforms(), isTogglable = true, toolTip = "Lets you walk on air with platforms." },
                 new ButtonInfo { buttonText = "Trigger Platforms", method =() => Movement.Platforms(true), isTogglable = true, toolTip = "Lets you walk on air with platforms." },
                 new ButtonInfo { buttonText = "Invis Platforms", method =() => Movement.Platforms(false, true), isTogglable = true, toolTip = "Lets you walk on air with platforms." },
+                new ButtonInfo { buttonText = "Platform Spam <color=grey>[<color=cyan>G</color>]</color>", method =() => Movement.PlatformSpam(), isTogglable = true, toolTip = "Lets you spam platforms." },
+                new ButtonInfo { buttonText = "Frozone <color=grey>[<color=cyan>G</color>]</color>", method =() => Movement.Frozone(), isTogglable = true, toolTip = "Lets you become frozone." },
+                new ButtonInfo { buttonText = "WASD Fly", method =() => Movement.WasdFly(), isTogglable = true, toolTip = "Lets you move around with wasd." },
                 new ButtonInfo { buttonText = "No Clip <color=grey>[<color=cyan>T</color>]</color>", method =() => Movement.NoClip(), isTogglable = true, toolTip = "Lets you go through objects." },
                 new ButtonInfo { buttonText = "No Tag Freeze", method =() => Movement.NoTagFreeze(true), isTogglable = true, toolTip = "Disables the tag freeze you get when you get tagged." },
                 new ButtonInfo { buttonText = "Force Tag Freeze", method =() => Movement.NoTagFreeze(false), disableMethod =() => Movement.NoTagFreeze(true), isTogglable = true, toolTip = "Enables the tag freeze you get when you get tagged." },
@@ -208,7 +210,6 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Kayflock <color=grey>[<color=cyan>T</color>]</color>", method =() => Movement.AutoKayflock(), isTogglable = true, toolTip = "Lets you automaticly kayflock." },
                 new ButtonInfo { buttonText = "Checkpoint", method =() => Movement.CheckPoint(), disableMethod =() => Movement.DisableCheckPoint(), isTogglable = true, toolTip = "Lets you spawn a check point and teleport back to it at anytime." },
                 new ButtonInfo { buttonText = "Piggyback Gun", method =() => Movement.PiggybackGun(), isTogglable = true, toolTip = "Lets you piggyback the person who you shoot." },
-                new ButtonInfo { buttonText = "Platform Spam <color=grey>[<color=cyan>G</color>]</color>", method =() => Movement.PlatformSpam(), isTogglable = true, toolTip = "Lets you spam platforms." },
             },
 
             new ButtonInfo[] { // VRRig

@@ -1,4 +1,5 @@
-﻿using GorillaLocomotion;
+﻿using GorillaExtensions;
+using GorillaLocomotion;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 using UnityEngine.InputSystem;
@@ -426,6 +427,30 @@ namespace Arrakis.Mods
                 platform.transform.position = GorillaTagger.Instance.leftHandTransform.position;
                 platform.transform.rotation = GorillaTagger.Instance.leftHandTransform.rotation;
                 platform.transform.localScale = new Vector3(0.0125f, 0.28f, 0.3825f);
+                platform.GetComponent<Renderer>().material.color = Settings.backgroundColor.GetCurrentColor();
+                GameObject.Destroy(platform, 5f);
+            }
+        }
+
+        public static void Frozone()
+        {
+            if (ControllerInputPoller.instance.rightGrab)
+            {
+                GameObject platform = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                platform.transform.position = GorillaTagger.Instance.rightHandTransform.position;
+                platform.transform.rotation = GorillaTagger.Instance.rightHandTransform.rotation;
+                platform.transform.localScale = new Vector3(0.0125f, 0.28f, 0.3825f);
+                platform.GetOrAddComponent<GorillaSurfaceOverride>().overrideIndex = 61;
+                platform.GetComponent<Renderer>().material.color = Settings.backgroundColor.GetCurrentColor();
+                GameObject.Destroy(platform, 5f);
+            }
+            if (ControllerInputPoller.instance.leftGrab)
+            {
+                GameObject platform = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                platform.transform.position = GorillaTagger.Instance.leftHandTransform.position;
+                platform.transform.rotation = GorillaTagger.Instance.leftHandTransform.rotation;
+                platform.transform.localScale = new Vector3(0.0125f, 0.28f, 0.3825f);
+                platform.GetOrAddComponent<GorillaSurfaceOverride>().overrideIndex = 61;
                 platform.GetComponent<Renderer>().material.color = Settings.backgroundColor.GetCurrentColor();
                 GameObject.Destroy(platform, 5f);
             }
