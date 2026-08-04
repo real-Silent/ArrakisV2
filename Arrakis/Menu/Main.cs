@@ -980,7 +980,7 @@ namespace Arrakis.Menu
                 Vector3[] points = new Vector3[steps];
                 switch (gunLineStyle)
                 {
-                    case 0:
+                    case 0: // Bezier/Default
                         Vector3 baseMid = Vector3.Lerp(startPos, endPos, 0.5f);
                         float angle = Time.time * 3f;
                         Vector3 wobble = up * (Mathf.Sin(angle) * 0.15f) + right * (Mathf.Cos(angle * 1.3f) * 0.15f);
@@ -997,14 +997,14 @@ namespace Arrakis.Menu
                             points[i] = Mathf.Pow(1 - t, 2) * startPos + 2 * (1 - t) * t * MidPosition + Mathf.Pow(t, 2) * endPos;
                         }
                         break;
-                    case 1:
+                    case 1: // Straight
                         for (int i = 0; i < steps; i++)
                         {
                             float t = (float)i / (steps - 1);
                             points[i] = Vector3.Lerp(startPos, endPos, t);
                         }
                         break;
-                    case 2:
+                    case 2: // Rainbow
                         for (int i = 0; i < steps; i++)
                         {
                             float t = (float)i / (steps - 1);
@@ -1013,7 +1013,7 @@ namespace Arrakis.Menu
                         GunLine.startColor = Color.HSVToRGB(Mathf.Repeat(Time.time * 0.4f, 1f), 1f, 1f);
                         GunLine.endColor = Color.HSVToRGB(Mathf.Repeat(Time.time * 0.4f + 0.5f, 1f), 1f, 1f);
                         break;
-                    case 3:
+                    case 3: // Zigline ?
                         points[0] = startPos;
                         points[steps - 1] = endPos;
                         for (int i = 1; i < steps - 1; i++)
@@ -1025,7 +1025,7 @@ namespace Arrakis.Menu
                             points[i] = basePoint + offset;
                         }
                         break;
-                    case 4:
+                    case 4: // Pulse
                         float pulse = 0.015f + Mathf.Sin(Time.time * 6f) * 0.01f;
                         GunLine.startWidth = pulse;
                         GunLine.endWidth = pulse;

@@ -150,11 +150,26 @@ namespace Arrakis
             GunLineindex = (GunLineindex + 1) % 5;
             switch (GunLineindex)
             {
-                case 0: gunLineStyle = 0; break;
-                case 1: gunLineStyle = 1; break;
-                case 2: gunLineStyle = 2; break;
-                case 3: gunLineStyle = 3; break;
-                case 4: gunLineStyle = 4; break;
+                case 0: 
+                    gunLineStyle = 0;
+                    GetIndex("Change Gun Line").overlapText = "Change Gun Line <color=grey>[<color=cyan>Default</color>]</color>";
+                    break;
+                case 1: 
+                    gunLineStyle = 1;
+                    GetIndex("Change Gun Line").overlapText = "Change Gun Line <color=grey>[<color=cyan>Straight</color>]</color>";
+                    break;
+                case 2: 
+                    gunLineStyle = 2;
+                    GetIndex("Change Gun Line").overlapText = "Change Gun Line <color=grey>[<color=cyan>Rainbow</color>]</color>";
+                    break;
+                case 3: 
+                    gunLineStyle = 3;
+                    GetIndex("Change Gun Line").overlapText = "Change Gun Line <color=grey>[<color=cyan>ZigZag</color>]</color>";
+                    break;
+                case 4:
+                    gunLineStyle = 4;
+                    GetIndex("Change Gun Line").overlapText = "Change Gun Line <color=grey>[<color=cyan>Pulse</color>]</color>";
+                    break;
             }
         }
 
