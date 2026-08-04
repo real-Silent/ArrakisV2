@@ -112,6 +112,7 @@ namespace Arrakis.Mods
                     if (!tracersPool.TryGetValue(rig, out GameObject holder))
                     {
                         holder = new GameObject();
+                        holder.transform.parent = rig.transform; // stupid fix -nova
                         LineRenderer line = holder.AddComponent<LineRenderer>();
                         line.useWorldSpace = true;
                         line.material = new Material(Shader.Find("GUI/Text Shader"));
