@@ -347,5 +347,33 @@ namespace Arrakis.Mods
                 GTPlayer.Instance.transform.position += GTPlayer.Instance.headCollider.transform.forward * Time.deltaTime * Settings.flyspeed;
             }
         }
+
+        private static GameObject checkpoint = null;
+        public static void CheckPoint()
+        {
+            if (ControllerInputPoller.instance.rightGrab)
+            {
+                if (checkpoint == null)
+                {
+                    checkpoint = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                    checkpoint.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
+                    checkpoint.GetComponent<Renderer>().material.color = Color.white;
+                    GameObject.Destroy(checkpoint.GetComponent<Collider>());
+                }
+                checkpoint.transform.position = VRRig.LocalRig.rightHandTransform.position;
+                checkpoint.transform.rotation = VRRig.LocalRig.rightHandTransform.rotation;
+            }
+            if (ControllerInputPoller.instance.rightControllerTriggerButton)
+            {
+                GTPlayer.Instance.transform.position = checkpoint.transform.position + new Vector3(0f, 0.5f, 0f);
+                GameObject.Destroy(checkpoint, 0.2f);
+                checkpoint = null;
+            }
+        }
+        public static void DisableCheckPoint()
+        {
+            GameObject.Destroy(checkpoint);
+            checkpoint = null;
+        }
     }
 }
