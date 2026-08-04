@@ -87,38 +87,45 @@ namespace Arrakis.Mods
         private static Dictionary<VRRig, GameObject> tracersPool = new Dictionary<VRRig, GameObject>();
         public static void Tracers()
         {
-            if (NetworkSystem.Instance.InRoom)
+            if (!NetworkSystem.Instance.InRoom) // if it doesnt work the first time just return -nova
+                return;
+            foreach (VRRig rig in VRRigCache.ActiveRigs)
             {
-                foreach (VRRig rig in VRRigCache.ActiveRigs)
+                if (rig != null && rig != VRRig.LocalRig)
                 {
-                    if (rig != null && rig != VRRig.LocalRig)
+                    List<VRRig> remove = null;
+                    foreach (var pair in tracersPool)
                     {
-                        foreach (var key in tracersPool.Keys.ToList())
+                        if (pair.Key == null || !VRRigCache.ActiveRigs.Contains(pair.Key))
                         {
-                            if (key == null || !VRRigCache.ActiveRigs.Contains(key))
-                            {
-                                GameObject.Destroy(tracersPool[key]);
-                                tracersPool.Remove(key);
-                            }
+                            remove ??= new List<VRRig>();
+                            remove.Add(pair.Key);
+                            if (pair.Value != null)
+                                Object.Destroy(pair.Value);
                         }
-                        if (!tracersPool.TryGetValue(rig, out GameObject holder))
-                        {
-                            holder = new GameObject();
-                            LineRenderer line = holder.AddComponent<LineRenderer>();
-                            line.useWorldSpace = true;
-                            line.material = new Material(Shader.Find("GUI/Text Shader"));
-                            line.positionCount = 2;
-                            line.startWidth = 0.02f;
-                            line.endWidth = 0.02f;
-                            tracersPool[rig] = holder;
-                        }
-                        LineRenderer lr = holder.GetComponent<LineRenderer>();
-                        Color color = followmenutheme ? backgroundColor.GetCurrentColor() : rig.IsTagged() ? new Color(0.6f, 0f, 0f, 0.6f): new Color(0.46f, 0.6f, 0.6f, 0.6f);
-                        lr.startColor = color;
-                        lr.endColor = color;
-                        lr.SetPosition(0, GorillaTagger.Instance.rightHandTransform.position);
-                        lr.SetPosition(1, rig.transform.position);
                     }
+                    if (remove != null)
+                    {
+                        foreach (var vrrig in remove)
+                            tracersPool.Remove(vrrig);
+                    }
+                    if (!tracersPool.TryGetValue(rig, out GameObject holder))
+                    {
+                        holder = new GameObject();
+                        LineRenderer line = holder.AddComponent<LineRenderer>();
+                        line.useWorldSpace = true;
+                        line.material = new Material(Shader.Find("GUI/Text Shader"));
+                        line.positionCount = 2;
+                        line.startWidth = 0.02f;
+                        line.endWidth = 0.02f;
+                        tracersPool[rig] = holder;
+                    }
+                    LineRenderer lr = holder.GetComponent<LineRenderer>();
+                    Color color = followmenutheme ? backgroundColor.GetCurrentColor() : rig.IsTagged() ? new Color(0.6f, 0f, 0f, 0.6f) : new Color(0.46f, 0.6f, 0.6f, 0.6f);
+                    lr.startColor = color;
+                    lr.endColor = color;
+                    lr.SetPosition(0, GorillaTagger.Instance.rightHandTransform.position);
+                    lr.SetPosition(1, rig.transform.position);
                 }
             }
         }
