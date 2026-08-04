@@ -522,6 +522,8 @@ namespace Arrakis.Menu
                 case "Enabled":
                     enabledMods = new List<ButtonInfo>() { GetIndex("Exit Enabled") };
                     enabledMods.AddRange(Buttons.buttons.SelectMany(buttonlist => buttonlist).Where(v => v.enabled));
+                    if (enabledMods.Count == 1)
+                        enabledMods.Add(new ButtonInfo { buttonText = "you have no enabled mods", label = true });
                     renderButtons = enabledMods.ToArray();
                     break;
                 case "Favorites":
@@ -727,6 +729,10 @@ namespace Arrakis.Menu
                     }
                 }
                 lastPage = ((enabledMods.Count + buttonsPerPage - 1) / buttonsPerPage) - 1;
+            }
+            else if (CurrentCategoryName == "Favorites")
+            {
+                lastPage = ((favorites.Count + buttonsPerPage - 1) / buttonsPerPage) - 1;
             }
 
             if (ControllerInputPoller.instance.leftGrab || Keyboard.current.gKey.isPressed)
