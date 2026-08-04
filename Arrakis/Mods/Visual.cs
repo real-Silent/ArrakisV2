@@ -113,7 +113,7 @@ namespace Arrakis.Mods
                             tracersPool[rig] = holder;
                         }
                         LineRenderer lr = holder.GetComponent<LineRenderer>();
-                        Color color = rig.IsTagged() ? new Color(0.6f, 0f, 0f, 0.6f): new Color(0.46f, 0.6f, 0.6f, 0.6f);
+                        Color color = followmenutheme ? backgroundColor.GetCurrentColor() : rig.IsTagged() ? new Color(0.6f, 0f, 0f, 0.6f): new Color(0.46f, 0.6f, 0.6f, 0.6f);
                         lr.startColor = color;
                         lr.endColor = color;
                         lr.SetPosition(0, GorillaTagger.Instance.rightHandTransform.position);
@@ -171,11 +171,16 @@ namespace Arrakis.Mods
             }
             foreach (VRRig rig in VRRigCache.ActiveRigs)
             {
-                if (rig != null && rig != VRRig.LocalRig && !boxEspPool.ContainsKey(rig))
+                if (rig == null || rig == VRRig.LocalRig)
+                    continue;
+                if (!boxEspPool.TryGetValue(rig, out GameObject box))
                 {
-                    GameObject box = CreateObject(rig.transform, PrimitiveType.Cube, new Vector3(0.5f, 0.5f, 0.1f), followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor, Shader.Find("GUI/Text Shader"));
-                    boxEspPool.Add(rig, box);
+                    box = CreateObject(rig.transform, PrimitiveType.Cube, new Vector3(0.5f, 0.5f, 0.1f), followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor, Shader.Find("GUI/Text Shader"));
+                    boxEspPool[rig] = box;
                 }
+                box.GetComponent<Renderer>().material.color = followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor;
+                box.transform.localScale = new Vector3(0.5f, 0.5f, 0.1f);
+                box.transform.LookAt(Camera.main.transform);
             }
         }
 
