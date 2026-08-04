@@ -9,6 +9,10 @@
 	  <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="Resources\Audio\Buttons\smooth.wav" />
+  </ItemGroup>
+
 	<ItemGroup>
 		<PackageReference Include="BepInEx.AssemblyPublicizer.MSBuild" Version="0.4.3">
 			<PrivateAssets>all</PrivateAssets>
@@ -29,6 +33,7 @@
   
   <ItemGroup>
     <EmbeddedResource Include="Classes/Resources/zeldasword" />
+    <EmbeddedResource Include="Resources\Audio\Buttons\smooth.wav" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="0Harmony">
