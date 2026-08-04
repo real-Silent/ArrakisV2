@@ -178,8 +178,12 @@ namespace Arrakis.Mods
                     box = CreateObject(rig.transform, PrimitiveType.Cube, new Vector3(0.5f, 0.5f, 0.1f), followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor, Shader.Find("GUI/Text Shader"));
                     boxEspPool[rig] = box;
                 }
-                box.GetComponent<Renderer>().material.color = followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor;
-                box.transform.localScale = new Vector3(0.5f, 0.5f, 0.1f);
+                Color color = followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor;
+                color.a = 0.2f;
+                box.GetComponent<Renderer>().material.color = color;
+                float distance = Vector3.Distance(Camera.main.transform.position, rig.transform.position);
+                float scale = Mathf.Clamp(distance * 0.05f, 0.25f, 3f);
+                box.transform.localScale = new Vector3(scale, scale, 0.02f);
                 box.transform.LookAt(Camera.main.transform);
             }
         }
