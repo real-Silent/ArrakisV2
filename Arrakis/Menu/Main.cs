@@ -921,7 +921,6 @@ namespace Arrakis.Menu
         }
         public static bool gunLocked;
         public static VRRig lockTarget;
-        public static bool showTarget = false;
         public static int gunLineStyle = 0;
         public static float gunPointerSize = 0.15f; // ill add a setting for this later -sleepy
         public static float gunLineWidth = 0.025f; // ill add a setting for this later -sleepy
@@ -1044,10 +1043,6 @@ namespace Arrakis.Menu
                 GunLine.positionCount = steps;
                 GunLine.SetPositions(points);
             }
-            if (showTarget && gunLocked && lockTarget != null)
-                lockTarget.mainSkin.material.shader = Shader.Find("GUI/Text Shader");
-            else
-                lockTarget.mainSkin.material.shader = Shader.Find("GorillaTag/UberShader");
             return (ray, GunPointer);
         }
         // Variables
