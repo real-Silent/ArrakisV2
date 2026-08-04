@@ -1,3 +1,4 @@
+using Arrakis.Managers;
 using UnityEngine;
 using static Arrakis.Menu.Main;
 using static Arrakis.Settings;
@@ -13,9 +14,13 @@ namespace Arrakis.Classes
 			if (Time.time > buttonCooldown && collider == buttonCollider || Time.time > buttonCooldown && collider == leftButtonCollider || Time.time > buttonCooldown && collider == rightButtonCollider && menu != null)
 			{
                 buttonCooldown = Time.time + 0.2f;
-                GorillaTagger.Instance.StartVibration(rightHanded, GorillaTagger.Instance.tagHapticStrength / 2f, GorillaTagger.Instance.tagHapticDuration / 2f);
-                VRRig.LocalRig.PlayHandTapLocal(buttonsound, rightHanded, buttonclickvolume);
-				Toggle(relatedText);
+				if (!disablevibrations)
+					GorillaTagger.Instance.StartVibration(rightHanded, GorillaTagger.Instance.tagHapticStrength / 2f, GorillaTagger.Instance.tagHapticDuration / 2f);
+				if (customclip)
+					AudioManager.Play(AudioManager.buttonclick, buttonclickvolume);
+				else
+					VRRig.LocalRig.PlayHandTapLocal(buttonsound, rightHanded, buttonclickvolume);
+                Toggle(relatedText);
             }
 		}
 	}

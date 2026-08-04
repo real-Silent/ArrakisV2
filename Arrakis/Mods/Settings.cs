@@ -61,58 +61,77 @@ namespace Arrakis
 
         public static bool logphotonevents = false;
 
+        public static bool disablevibrations;
+        public static bool customclip;
+
         public static float gradientSpeed = 0.5f;
         public static bool FloatMenu = false;
         public static int buttonsound = 67;
         private static int clicksound = 0;
         public static void ChangeClickSound() // Making it get its name from GTPlayer.Instance.materialData[buttonsound].matName
         {
-            clicksound = (clicksound + 1) % 11;
+            clicksound = (clicksound + 1) % 12;
             switch (clicksound)
             {
-                case 0: 
+                case 0:
+                    customclip = false; // shitty way but yea -nova
                     buttonsound = 67;
                     GetIndex("Change Click Sound").overlapText = $"Change Click Sound <color=grey>[<color=cyan>{GTPlayer.Instance.materialData[buttonsound].matName}</color>]</color>";
                     break;
-                case 1: 
+                case 1:
+                    customclip = false;
                     buttonsound = 66;
                     GetIndex("Change Click Sound").overlapText = $"Change Click Sound <color=grey>[<color=cyan>{GTPlayer.Instance.materialData[buttonsound].matName}</color>]</color>";
                     break;
-                case 2: 
+                case 2:
+                    customclip = false;
                     buttonsound = 8;
                     GetIndex("Change Click Sound").overlapText = $"Change Click Sound <color=grey>[<color=cyan>{GTPlayer.Instance.materialData[buttonsound].matName}</color>]</color>";
                     break;
                 case 3:
+                    customclip = false;
                     buttonsound = 84;
                     GetIndex("Change Click Sound").overlapText = $"Change Click Sound <color=grey>[<color=cyan>{GTPlayer.Instance.materialData[buttonsound].matName}</color>]</color>";
                     break;
                 case 4:
+                    customclip = false;
                     buttonsound = 32;
                     GetIndex("Change Click Sound").overlapText = $"Change Click Sound <color=grey>[<color=cyan>{GTPlayer.Instance.materialData[buttonsound].matName}</color>]</color>";
                     break;
                 case 5:
+                    customclip = false;
                     buttonsound = 106;
                     GetIndex("Change Click Sound").overlapText = $"Change Click Sound <color=grey>[<color=cyan>{GTPlayer.Instance.materialData[buttonsound].matName}</color>]</color>";
                     break;
                 case 6:
+                    customclip = false;
                     buttonsound = 189;
                     GetIndex("Change Click Sound").overlapText = $"Change Click Sound <color=grey>[<color=cyan>{GTPlayer.Instance.materialData[buttonsound].matName}</color>]</color>";
                     break;
                 case 7:
+                    customclip = false;
                     buttonsound = 22;
                     GetIndex("Change Click Sound").overlapText = $"Change Click Sound <color=grey>[<color=cyan>{GTPlayer.Instance.materialData[buttonsound].matName}</color>]</color>";
                     break;
-                case 8: 
+                case 8:
+                    customclip = false;
                     buttonsound = 43;
                     GetIndex("Change Click Sound").overlapText = $"Change Click Sound <color=grey>[<color=cyan>{GTPlayer.Instance.materialData[buttonsound].matName}</color>]</color>";
                     break;
-                case 9: 
+                case 9:
+                    customclip = false;
                     buttonsound = 210;
                     GetIndex("Change Click Sound").overlapText = $"Change Click Sound <color=grey>[<color=cyan>{GTPlayer.Instance.materialData[buttonsound].matName}</color>]</color>"; 
                     break;
-                case 10: 
+                case 10:
+                    customclip = false;
                     buttonsound = 217;
                     GetIndex("Change Click Sound").overlapText = $"Change Click Sound <color=grey>[<color=cyan>{GTPlayer.Instance.materialData[buttonsound].matName}</color>]</color>";
+                    break;
+                case 11:
+                    customclip = true;
+                    buttonsound = -1;
+                    GetIndex("Change Click Sound").overlapText = $"Change Click Sound <color=grey>[<color=cyan>Smooth</color>]</color>";
                     break;
             }
         }

@@ -31,6 +31,8 @@ namespace Arrakis
             holder.AddComponent<UserCount>();
             holder.AddComponent<Boards>();
 
+            AudioManager.CacheSounds();
+
             if (!Directory.Exists(PluginInfo.BaseDirectory))
                 Directory.CreateDirectory(PluginInfo.BaseDirectory);
 
