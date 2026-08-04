@@ -313,7 +313,7 @@ namespace Arrakis.Menu
             CanvasScaler canvasScaler = canvasObject.AddComponent<CanvasScaler>();
             canvasObject.AddComponent<GraphicRaycaster>();
             canvas.renderMode = RenderMode.WorldSpace;
-            canvasScaler.dynamicPixelsPerUnit = 1000f;
+            canvasScaler.dynamicPixelsPerUnit = highqualitytext ? 2000f : 1000f;
 
             // Title
             Text text = new GameObject
