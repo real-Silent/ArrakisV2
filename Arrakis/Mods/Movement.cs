@@ -68,17 +68,17 @@ namespace Arrakis.Mods
             GTPlayer.Instance.bodyCollider.attachedRigidbody.useGravity = false;
             GTPlayer.Instance.bodyCollider.attachedRigidbody.linearVelocity = Vector3.zero;
             if (Keyboard.current.wKey.isPressed)
-                GTPlayer.Instance.transform.position += GTPlayer.Instance.LeftHand.controllerTransform.parent.forward * Time.deltaTime * Settings.wasdflyspeed;
+                GTPlayer.Instance.transform.position += GTPlayer.Instance.RightHand.controllerTransform.parent.forward * Time.deltaTime * Settings.wasdflyspeed;
             if (Keyboard.current.sKey.isPressed)
-                GTPlayer.Instance.transform.position += -GTPlayer.Instance.LeftHand.controllerTransform.parent.forward * Time.deltaTime * Settings.wasdflyspeed;
+                GTPlayer.Instance.transform.position += -GTPlayer.Instance.RightHand.controllerTransform.parent.forward * Time.deltaTime * Settings.wasdflyspeed;
             if (Keyboard.current.aKey.isPressed)
-                GTPlayer.Instance.transform.position += -GTPlayer.Instance.LeftHand.controllerTransform.parent.right * Time.deltaTime * Settings.wasdflyspeed;
+                GTPlayer.Instance.transform.position += -GTPlayer.Instance.RightHand.controllerTransform.parent.right * Time.deltaTime * Settings.wasdflyspeed;
             if (Keyboard.current.dKey.isPressed)
-                GTPlayer.Instance.transform.position += GTPlayer.Instance.LeftHand.controllerTransform.parent.right * Time.deltaTime * Settings.wasdflyspeed;
+                GTPlayer.Instance.transform.position += GTPlayer.Instance.RightHand.controllerTransform.parent.right * Time.deltaTime * Settings.wasdflyspeed;
             if (Keyboard.current.spaceKey.isPressed)
-                GTPlayer.Instance.transform.position += GTPlayer.Instance.LeftHand.controllerTransform.parent.up * Time.deltaTime * Settings.wasdflyspeed;
+                GTPlayer.Instance.transform.position += GTPlayer.Instance.RightHand.controllerTransform.parent.up * Time.deltaTime * Settings.wasdflyspeed;
             if (Keyboard.current.leftCtrlKey.isPressed)
-                GTPlayer.Instance.transform.position += -GTPlayer.Instance.LeftHand.controllerTransform.parent.up * Time.deltaTime * Settings.wasdflyspeed;
+                GTPlayer.Instance.transform.position += -GTPlayer.Instance.RightHand.controllerTransform.parent.up * Time.deltaTime * Settings.wasdflyspeed;
             if (Keyboard.current.leftShiftKey.isPressed)
                 Settings.wasdflyspeed = 20f;
             else
@@ -89,7 +89,7 @@ namespace Arrakis.Mods
                 y += m.x * 0.2f;
                 p -= m.y * 0.2f;
                 p = Mathf.Clamp(p, -89f, 89f);
-                GTPlayer.Instance.LeftHand.controllerTransform.parent.rotation = Quaternion.Euler(p, y, 0f);
+                GTPlayer.Instance.RightHand.controllerTransform.parent.rotation = Quaternion.Euler(p, y, 0f);
             }
             VRRig.LocalRig.head.rigTarget.transform.rotation = GorillaTagger.Instance.headCollider.transform.rotation;
         }
