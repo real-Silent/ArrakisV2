@@ -396,7 +396,8 @@ namespace Arrakis.Mods
                         Transform parent = followheadmesh ? rig.headMesh.transform : rig.transform;
                         if (tag.transform.parent != parent)
                             tag.transform.SetParent(parent, false);
-                        tag.text = rig.IsTagged() ? "Tagged" : "Not Tagged";
+                        if (GorillaGameManager.instance.GameTypeName() != "CASUAL")
+                            tag.text = rig.IsTagged() ? "Tagged" : "Not Tagged";
                         tag.color = followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor;
                         tag.transform.LookAt(Camera.main.transform);
                         tag.transform.Rotate(0f, 180f, 0f);
