@@ -1,5 +1,6 @@
 ﻿using GorillaLocomotion;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 using UnityEngine.InputSystem;
 using static Arrakis.Menu.Main;
 
@@ -374,6 +375,36 @@ namespace Arrakis.Mods
         {
             GameObject.Destroy(checkpoint);
             checkpoint = null;
+        }
+
+        public static void PiggybackGun()
+        {
+            if (GetGunInput(false))
+            {
+                var GunData = RenderGun();
+                GameObject NewPointer = GunData.NewPointer;
+                RaycastHit Ray = GunData.Ray;
+
+                if (lockTarget != null && gunLocked)
+                {
+                    GTPlayer.Instance.transform.position = lockTarget.transform.position + new Vector3(0f, 0.7f, 0f);
+                }
+
+                if (GetGunInput(true))
+                {
+                    VRRig rig = Ray.collider.GetComponentInParent<VRRig>();
+                    if (rig != null && rig != VRRig.LocalRig)
+                    {
+                        lockTarget = rig;
+                        gunLocked = true;
+                    }
+                }
+            }
+            else
+            {
+                lockTarget = null;
+                gunLocked = false;
+            }
         }
     }
 }

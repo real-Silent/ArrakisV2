@@ -204,6 +204,7 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Wall Walk <color=grey>[<color=cyan>G</color>]</color>", method =() => Movement.WallWalk(), isTogglable = true, toolTip = "Lets you walk on the walls easier." },
                 new ButtonInfo { buttonText = "Kayflock <color=grey>[<color=cyan>T</color>]</color>", method =() => Movement.AutoKayflock(), isTogglable = true, toolTip = "Lets you automaticly kayflock." },
                 new ButtonInfo { buttonText = "Checkpoint", method =() => Movement.CheckPoint(), disableMethod =() => Movement.DisableCheckPoint(), isTogglable = true, toolTip = "Lets you spawn a check point and teleport back to it at anytime." },
+                new ButtonInfo { buttonText = "Piggyback Gun", method =() => Movement.PiggybackGun(), isTogglable = true, toolTip = "Lets you piggyback the person who you shoot." },
             },
 
             new ButtonInfo[] { // VRRig
