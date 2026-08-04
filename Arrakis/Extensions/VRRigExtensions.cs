@@ -47,6 +47,7 @@ namespace Arrakis.Extensions
         }
         public static bool IsTagged(this VRRig rig) 
         {
+            if (GorillaGameManager.instance == null) return false;
             if (rig == null) return false;
             List<NetPlayer> infectedPlayers = ((GorillaTagManager)GorillaGameManager.instance).currentInfected;
             NetPlayer targetPlayer = rig.GetPlayer();
