@@ -417,6 +417,69 @@ namespace Arrakis.Mods
             }
         }
 
+        public static void FollowPlayerGun()
+        {
+            if (GetGunInput(false))
+            {
+                var GunData = RenderGun();
+                GameObject NewPointer = GunData.NewPointer;
+                RaycastHit Ray = GunData.Ray;
+
+                if (lockTarget != null && gunLocked)
+                {
+                    GTPlayer.Instance.transform.position = Vector3.Lerp(GTPlayer.Instance.transform.position, lockTarget.transform.position, Time.deltaTime * 2f);
+                }
+
+                if (GetGunInput(true))
+                {
+                    VRRig rig = Ray.collider.GetComponentInParent<VRRig>();
+                    if (rig != null && rig != VRRig.LocalRig)
+                    {
+                        lockTarget = rig;
+                        gunLocked = true;
+                    }
+                }
+            }
+            else
+            {
+                lockTarget = null;
+                gunLocked = false;
+            }
+        }
+
+        public static void RigFollowPlayerGun()
+        {
+            if (GetGunInput(false))
+            {
+                var GunData = RenderGun();
+                GameObject NewPointer = GunData.NewPointer;
+                RaycastHit Ray = GunData.Ray;
+
+                if (lockTarget != null && gunLocked)
+                {
+                    if (!VRRig.LocalRig.enabled)
+                        VRRig.LocalRig.transform.position = Vector3.Lerp(VRRig.LocalRig.transform.position, lockTarget.transform.position, Time.deltaTime * 2f);
+                }
+
+                if (GetGunInput(true))
+                {
+                    VRRig rig = Ray.collider.GetComponentInParent<VRRig>();
+                    if (rig != null && rig != VRRig.LocalRig)
+                    {
+                        VRRig.LocalRig.enabled = false;
+                        lockTarget = rig;
+                        gunLocked = true;
+                    }
+                }
+            }
+            else
+            {
+                VRRig.LocalRig.enabled = true;
+                lockTarget = null;
+                gunLocked = false;
+            }
+        }
+
         public static void PlatformSpam()
         {
             if (ControllerInputPoller.instance.rightGrab)
