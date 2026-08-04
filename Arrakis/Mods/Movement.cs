@@ -105,7 +105,7 @@ namespace Arrakis.Mods
                     platR = GameObject.CreatePrimitive(PrimitiveType.Cube);
                     platR.transform.position = GorillaTagger.Instance.rightHandTransform.position;
                     platR.transform.rotation = GorillaTagger.Instance.rightHandTransform.rotation;
-                    platR.transform.localScale = new Vector3(0.0125f, 0.28f, 0.3825f); // Took scale from my other menu scaling hurts my head
+                    platR.transform.localScale = new Vector3(0.0125f, 0.28f, 0.3825f);
                     platR.GetComponent<Renderer>().material.color = Settings.backgroundColor.GetCurrentColor();
                     platR.GetComponent<Renderer>().enabled = !invis;
                     if (Settings.stickyplats)
@@ -127,7 +127,7 @@ namespace Arrakis.Mods
                     platL = GameObject.CreatePrimitive(PrimitiveType.Cube);
                     platL.transform.position = GorillaTagger.Instance.leftHandTransform.position;
                     platL.transform.rotation = GorillaTagger.Instance.leftHandTransform.rotation;
-                    platL.transform.localScale = new Vector3(0.0125f, 0.28f, 0.3825f); // Took scale from my other menu scaling hurts my head
+                    platL.transform.localScale = new Vector3(0.0125f, 0.28f, 0.3825f);
                     platL.GetComponent<Renderer>().material.color = Settings.backgroundColor.GetCurrentColor();
                     platL.GetComponent<Renderer>().enabled = !invis;
                     if (Settings.stickyplats)
@@ -404,6 +404,30 @@ namespace Arrakis.Mods
             {
                 lockTarget = null;
                 gunLocked = false;
+            }
+        }
+
+        public static void PlatformSpam()
+        {
+            if (ControllerInputPoller.instance.rightGrab)
+            {
+                GameObject platform = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                GameObject.Destroy(platform.GetComponent<Collider>());
+                platform.transform.position = GorillaTagger.Instance.rightHandTransform.position;
+                platform.transform.rotation = GorillaTagger.Instance.rightHandTransform.rotation;
+                platform.transform.localScale = new Vector3(0.0125f, 0.28f, 0.3825f);
+                platform.GetComponent<Renderer>().material.color = Settings.backgroundColor.GetCurrentColor();
+                GameObject.Destroy(platform, 5f);
+            }
+            if (ControllerInputPoller.instance.leftGrab)
+            {
+                GameObject platform = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                GameObject.Destroy(platform.GetComponent<Collider>());
+                platform.transform.position = GorillaTagger.Instance.leftHandTransform.position;
+                platform.transform.rotation = GorillaTagger.Instance.leftHandTransform.rotation;
+                platform.transform.localScale = new Vector3(0.0125f, 0.28f, 0.3825f);
+                platform.GetComponent<Renderer>().material.color = Settings.backgroundColor.GetCurrentColor();
+                GameObject.Destroy(platform, 5f);
             }
         }
     }
