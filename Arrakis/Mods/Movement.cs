@@ -3,6 +3,7 @@ using GorillaLocomotion;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 using UnityEngine.InputSystem;
+using Valve.VR;
 using static Arrakis.Menu.Main;
 
 namespace Arrakis.Mods
@@ -59,8 +60,20 @@ namespace Arrakis.Mods
         public static void PSA()
         {
             if (ControllerInputPoller.instance.rightControllerPrimaryButton)
-                GTPlayer.Instance.transform.position += GTPlayer.Instance.headCollider.transform.forward * Time.deltaTime * Settings.flyspeed;
-            
+            {
+                GTPlayer.Instance.transform.position += GorillaTagger.Instance.bodyCollider.transform.forward * (Time.deltaTime * 5f);
+                if (!GTPlayer.Instance.IsGroundedHand)
+                {
+                    if (GTPlayer.Instance.transform.position.y > 1f)
+                    {
+                        GorillaTagger.Instance.rigidbody.linearVelocity = new Vector3(GorillaTagger.Instance.rigidbody.linearVelocity.x, -15f,GorillaTagger.Instance.rigidbody.linearVelocity.z);
+                    }
+                }
+                else
+                {
+                    GorillaTagger.Instance.rigidbody.linearVelocity = Vector3.zero;
+                }
+            }
         }
 
         public static void ExcelFly()
@@ -525,6 +538,55 @@ namespace Arrakis.Mods
                 platform.GetOrAddComponent<GorillaSurfaceOverride>().overrideIndex = 61;
                 platform.GetComponent<Renderer>().material.color = Settings.backgroundColor.GetCurrentColor();
                 GameObject.Destroy(platform, 5f);
+            }
+        }
+        public static void PullBoost()
+        {
+            if (!SteamVR_Actions.gorillaTag_RightJoystickClick.GetState(SteamVR_Input_Sources.RightHand)) return;
+            if (!GTPlayer.Instance.leftHand.wasColliding && !GTPlayer.Instance.rightHand.wasColliding) return;
+            Vector3 moveDir = GTPlayer.Instance.bodyCollider.transform.forward;
+            float currentStrength = 15f;
+            RaycastHit groundHit;
+            if (Physics.Raycast(GTPlayer.Instance.transform.position + Vector3.up * 0.5f, Vector3.down, out groundHit, 2f))
+            {
+                float angle = Vector3.Angle(groundHit.normal, Vector3.up);
+                if (angle > 5f)
+                {
+                    Vector3 slopeDir = Vector3.ProjectOnPlane(moveDir, groundHit.normal).normalized;
+                    bool goingUp = Vector3.Dot(moveDir, groundHit.normal) < 0;
+                    if (goingUp)
+                    {
+                        currentStrength = 15f * 0.8f;
+                        moveDir = slopeDir;
+                    }
+                    else
+                    {
+                        currentStrength = 15f * 1.5f;
+                        moveDir = slopeDir;
+                    }
+                }
+            }
+            Rigidbody rb = GTPlayer.Instance.bodyCollider.attachedRigidbody;
+            Vector3 originalVelocity = rb.linearVelocity;
+            rb.linearVelocity = Vector3.zero;
+            GTPlayer.Instance.transform.position += moveDir * (Time.deltaTime * currentStrength);
+            rb.linearVelocity = originalVelocity;
+        }
+        public static void PullMod()
+        {
+            if (!SteamVR_Actions.gorillaTag_RightJoystickClick.GetState(SteamVR_Input_Sources.RightHand)) return;
+            if (GTPlayer.Instance.leftHand.wasColliding || GTPlayer.Instance.rightHand.wasColliding)
+            {
+                Rigidbody rb = GorillaTagger.Instance.rigidbody;
+                Vector3 originalVelocity = rb.linearVelocity;
+                rb.linearVelocity = Vector3.zero;
+                Vector3 velocity = originalVelocity;
+                velocity.x *= 0.15f;
+                velocity.y = 0f;
+                velocity.z *= 0.15f;
+                Vector3 newPos = GTPlayer.Instance.transform.position + velocity;
+                GTPlayer.Instance.transform.position = newPos;
+                rb.linearVelocity = originalVelocity;
             }
         }
     }
