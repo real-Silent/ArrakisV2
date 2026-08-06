@@ -142,7 +142,7 @@ namespace Arrakis.Mods
                 NotificationManager.SendNotification("<color=grey>[</color><color=red>ERROR</color><color=grey>]</color> You must be in a private room.");
                 return;
             }
-
+            GorillaComputer.instance.friendJoinCollider.playerIDsCurrentlyTouching.Remove(PhotonNetwork.LocalPlayer.UserId);
             GorillaComputer.instance.OnGroupJoinButtonPress(0, GorillaComputer.instance.friendJoinCollider);
         }
         private static float instantPartyDelay;
@@ -337,6 +337,24 @@ namespace Arrakis.Mods
                 lockTarget = null;
                 gunLocked = false;
                 AntiKickEvents = false;
+            }
+        }
+        public static float plagDelay;
+        public static void PartyLagAll()
+        {
+            if (FriendshipGroupDetection.Instance.IsInParty && Time.time > plagDelay)
+            {
+                plagDelay = Time.time + 10f;
+                var partyPlayers = NetworkSystem.Instance.PlayerListOthers.Where(plr => FriendshipGroupDetection.Instance.IsInMyGroup(plr.UserId)).ToList();
+                for (int i = 0; i < 4000; i++)
+                {
+                    foreach (var plr in partyPlayers)
+                    {
+                        var photonPlayer = PhotonNetwork.CurrentRoom.GetPlayer(plr.ActorNumber);
+                        FriendshipGroupDetection.Instance.photonView.RPC("RequestPartyGameMode", photonPlayer, new object[] { GameMode.gameModeKeyByName.Keys.ToArray()[Random.Range(0, GameMode.gameModeKeyByName.Keys.Count)] });
+                    }
+                }
+                Safety.RPCProc();
             }
         }
         public static readonly string prop = "arrakis v" + PluginInfo.Version;

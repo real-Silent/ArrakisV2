@@ -350,7 +350,7 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Overlap Blocks", enableMethod =() => OverlapPatch.enabled = true, disableMethod  =() => OverlapPatch.enabled = false, isTogglable = true, toolTip = "Lets you overlap blocks in monkey blocks." },
                 new ButtonInfo { buttonText = "Monkey Blocks Size Changer", method =() => Fun.MonkeyBlocksSizeChanger(), isTogglable = true, toolTip = "Lets you change your size in monkey blocks with your <color=cyan>TRIGGERS</color>." },
                 new ButtonInfo { buttonText = "Build While Small", enableMethod =() => BuildPatch.enabled = true, disableMethod =() => BuildPatch.enabled = false, isTogglable = true, toolTip = "Lets you build in monkey blocks while you're small." },
-                new ButtonInfo { buttonText = "Multi Block", method =() => Fun.MultiBlock(), isTogglable = true, toolTip = "Lets you pick up multible blocks." },
+                new ButtonInfo { buttonText = "Buy All Free Cosmetics", method =() => Fun.BuyAllFree(), isTogglable = false, toolTip = "Trys to buy every cosmetic if its free." },
             },
 
             new ButtonInfo[] { // Projectiles
@@ -438,6 +438,7 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Instant Party", method =() => Experimental.InstantParty(), isTogglable = true, toolTip = "Instantly makes the party instead of the delay." },
                 new ButtonInfo { buttonText = "Party Break Network Triggers", method =() => Experimental.PartyBreakNetworkTriggers(), isTogglable = true, toolTip = "Makes it so anyone in your party can go to any map without getting disconnected." },
                 new ButtonInfo { buttonText = "Party Lag Gun", method =() => Experimental.PartyLagGun(), disableMethod =() => EventPatches.Override = null, isTogglable = true, toolTip = "Lets you lag who ever you shoot if they are in your party." },
+                new ButtonInfo { buttonText = "Party Lag All", method =() => Experimental.PartyLagAll(), isTogglable = true, toolTip = "Lags everyone if they are in your party." },
                 new ButtonInfo { buttonText = "Deafen All", method =() => Experimental.DeafenAll(), isTogglable = true, toolTip = "Deafens everyone in the current lobby." },
                 new ButtonInfo { buttonText = "Deafen Gun", method =() => Experimental.DeafenGun(), isTogglable = true, toolTip = "Deafens who you shoot." },
                 new ButtonInfo { buttonText = "Maxwell", enableMethod =() => AssetBundleLoader.LoadBundle("maxwell", VRRig.LocalRig.rightHandTransform.position, VRRig.LocalRig.rightHandTransform.rotation, "maxwell"), method =() => AssetBundleLoader.MoveObject("maxwell", VRRig.LocalRig.rightHandTransform.position, VRRig.LocalRig.rightHandTransform.rotation), disableMethod =() => AssetBundleLoader.DeleteBundle("maxwell"), isTogglable = true, toolTip = "Spawns a client sided maxwell." },

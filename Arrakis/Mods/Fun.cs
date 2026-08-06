@@ -795,5 +795,16 @@ namespace Arrakis.Mods
             BuilderPieceInteractor.instance.handState[1] = BuilderPieceInteractor.HandState.Empty;
             BuilderPieceInteractor.instance.heldPiece[1] = null;
         }
+        public static void BuyAllFree()
+        {
+            foreach (CosmeticsController.CosmeticItem controller in CosmeticsController.instance.allCosmetics)
+            {
+                if (controller.canTryOn && controller.cost == 0 && !CosmeticsController.instance.unlockedCosmetics.Contains(controller))
+                {
+                    CosmeticsController.instance.itemToBuy = controller;
+                    CosmeticsController.instance.PurchaseItem();
+                }
+            }
+        }
     }
 }
