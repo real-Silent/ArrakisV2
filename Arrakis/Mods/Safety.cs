@@ -187,19 +187,14 @@ namespace Arrakis.Mods
         }
         public static void NukeModCheckers()
         {
+            FPSPatch.enabled = true;
+            FPSPatch.spoofFPSValue = 255;
             Hashtable props = new Hashtable();
             props.Add("<size=50>😀😃😄😁😆😅😂🤣😊😇🙂🙃😉😌😍🥰😘😗😙😚😋😛😝😜🤪🤨🧐🤓😎🤩🥳😏😒😞😔😟😕🙁☹😣😖😫😩🥺😭😤😠😡</size>", "<size=50>😀😃😄😁😆😅😂🤣😊😇🙂🙃😉😌😍🥰😘😗😙😚😋😛😝😜🤪🤨🧐🤓😎🤩🥳😏😒😞😔😟😕🙁☹😣😖😫😩🥺😭😤😠😡</size>");
             props.Add("<size=50>𓂀𓆣𓋹𓏏𓇋⚚⚛⚡☯☢☣☠♛♚♜♞♟✶✷✸✹✺✻✼✽✾✿❀❁❂❃❄❅❆❇❈❉❊❋⟁⟆⟐⟡⟢⟣⟤⟥⟦⟧⟨⟩⟪⟫⟬⟭⟮⟯⟰⟱⟲⟳⟴⟵⟶⟷⟸⟹⟺⟻⟼⟽⟾</size>", "<size=50>𓂀𓆣𓋹𓏏𓇋⚚⚛⚡☯☢☣☠♛♚♜♞♟✶✷✸✹✺✻✼✽✾✿❀❁❂❃❄❅❆❇❈❉❊❋⟁⟆⟐⟡⟢⟣⟤⟥⟦⟧⟨⟩⟪⟫⟬⟭⟮⟯⟰⟱⟲⟳⟴⟵⟶⟷⟸⟹⟺⟻⟼⟽⟾</size>");
             foreach (string mod in modDictionary.Keys)
                 props[mod] = true;
             PhotonNetwork.LocalPlayer.SetCustomProperties(props);
-        }
-        public static void UpdateFps()
-        {
-            FPSPatch.enabled = true;
-            FPSPatch.spoofFPSValue = UnityEngine.Random.Range(int.MinValue, int.MaxValue);
-            if (reconnectingRoomName != PhotonNetwork.CurrentRoom.Name)
-                NukeModCheckers();
         }
         public static readonly Dictionary<string, string> modDictionary = new Dictionary<string, string> {// creds to Seralyth for the list ^-^
             { "genesis", "Genesis" },
