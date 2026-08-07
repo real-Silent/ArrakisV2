@@ -78,7 +78,6 @@ namespace Arrakis
             {
                 new ButtonInfo { buttonText = "Exit Players", method =() => CurrentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." }
             };
-            CurrentCategoryName = "Players";
             if (!NetworkSystem.Instance.InRoom)
                 buttons.Add(new ButtonInfo { buttonText = "not in a room", label = true });
             else
@@ -89,6 +88,8 @@ namespace Arrakis
                     buttons.Add(new ButtonInfo { buttonText = $"plr{i}", overlapText = plr.NickName, isTogglable = false, method =() => GoToPlayer(plr), toolTip = "Lets you see player info and more." });
                 }
             }
+            Buttons.buttons[GetCategory("Player")] = buttons.ToArray();
+            CurrentCategoryName = "Players";
         }
 
         private static void GoToPlayer(NetPlayer plr)
@@ -110,6 +111,7 @@ namespace Arrakis
                     new ButtonInfo { buttonText = "admin kick plr", overlapText = $"Admin Kick {plrName}", method =() => Admin.ExecuteCommand("kick", ReceiverGroup.All, plr.UserId) }
                 });
             }
+            Buttons.buttons[GetCategory("Temporary")] = buttons.ToArray();
             CurrentCategoryName = "Temporary";
         }
 
