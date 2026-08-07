@@ -109,7 +109,6 @@ namespace Arrakis.Mods
             {
                 if (Time.time > lastRpcClear + rpcClearInterval)
                 {
-                    lastRpcClear = Time.time;
                     if (PhotonNetwork.NetworkingClient != null)
                     {
                         var peer = PhotonNetwork.NetworkingClient.LoadBalancingPeer;
@@ -121,6 +120,7 @@ namespace Arrakis.Mods
                             CustomConsole.Log("Cleared outgoing RPC queue to prevent crash", CustomConsole.LogType.Info);
                         }
                     }
+                    lastRpcClear = Time.time;
                 }
                 if (GorillaTagger.Instance == null || GorillaTagger.Instance.myVRRig == null)
                     return;
@@ -153,8 +153,8 @@ namespace Arrakis.Mods
         {
             if (Time.time > AntiMemoryLeakDelay)
             {
-                AntiMemoryLeakDelay = Time.time + 45f;
                 GC.Collect();
+                AntiMemoryLeakDelay = Time.time + 45f;
             }
         }
         private static string originalName;
@@ -163,7 +163,6 @@ namespace Arrakis.Mods
         {
             if (Time.time > SpoofDelay)
             {
-                SpoofDelay = Time.time + 30f;
                 VRRig.LocalRig.enabled = false;
                 VRRig.LocalRig.transform.position = GorillaComputer.instance.friendJoinCollider.transform.position;
 
@@ -183,6 +182,7 @@ namespace Arrakis.Mods
                     VRRig.LocalRig.enabled = true;
                     PhotonNetwork.LocalPlayer.NickName = originalName;
                 }
+                SpoofDelay = Time.time + 30f;
             }
         }
         public static void NukeModCheckers()

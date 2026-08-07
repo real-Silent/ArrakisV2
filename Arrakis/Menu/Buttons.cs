@@ -16,8 +16,12 @@ namespace Arrakis.Menu
             new ButtonInfo[] { // Main
                 new ButtonInfo { buttonText = PluginInfo.DiscordLink, label = true, isTogglable = false },
                 new ButtonInfo { buttonText = "Settings", method =() => CurrentCategoryName = "Settings", isTogglable = false, toolTip = "Opens the settings page for the menu." },
+
+                new ButtonInfo { buttonText = "Players", method =() => Players(), isTogglable = false, toolTip = "Opens the players page for the menu." },
+
                 new ButtonInfo { buttonText = "Enabled", method =() => CurrentCategoryName = "Enabled", isTogglable = false, toolTip = "Opens the enabled page for the menu." },
                 new ButtonInfo { buttonText = "Favorites", method =() => CurrentCategoryName = "Favorites", isTogglable = false, toolTip = "Opens the favorites page for the menu." },
+
                 new ButtonInfo { buttonText = "Important", method =() => CurrentCategoryName = "Important", isTogglable = false, toolTip = "Opens the important page for the menu." },
                 new ButtonInfo { buttonText = "Computer", method =() => CurrentCategoryName = "Computer", isTogglable = false, toolTip = "Opens the computer page for the menu." },
                 new ButtonInfo { buttonText = "Safety", method =() => CurrentCategoryName = "Safety", isTogglable = false, toolTip = "Opens the safety page for the menu." },
@@ -65,6 +69,7 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Float Menu", enableMethod =() => FloatMenu = true, disableMethod =() => FloatMenu = false, toolTip = "Makes the menu float infront of you.", ShowInArraylist = false },
                 new ButtonInfo { buttonText = "Arraylist", method =() => Visual.Arraylist(), disableMethod =() => Visual.DisableArraylist(), toolTip = "Gives you a arraylist showing every mod you have enabled.", ShowInArraylist = false },
                 new ButtonInfo { buttonText = "Flip Arraylist", enableMethod =() => fliparraylist = true, disableMethod =() => fliparraylist = false, toolTip = "Flips the array list.", ShowInArraylist = false },
+                new ButtonInfo { buttonText = "Flip Notifications", enableMethod =() => flipnotifications = true, disableMethod =() => flipnotifications = false, toolTip = "Flips the notifications.", ShowInArraylist = false },
                 new ButtonInfo { buttonText = "Menu Animation", enableMethod =() => menuanimation = true, disableMethod =() => menuanimation = false, toolTip = "Makes the menu have a open and close animation.", ShowInArraylist = false },
                 new ButtonInfo { buttonText = "High Quality Text", enableMethod =() => highqualitytext = true, disableMethod =() => highqualitytext = false, toolTip = "Makes the menu text higher quality.", ShowInArraylist = false },
                 new ButtonInfo { buttonText = "Menu Trail", enableMethod =() => menutrail = true, disableMethod =() => menutrail = false, toolTip = "Gives the menu a trail.", ShowInArraylist = false },
@@ -486,6 +491,12 @@ namespace Arrakis.Menu
 
                 new ButtonInfo { buttonText = "Admin Lightning Strike Gun", method =() => Experimental.AdminLightningStrikeGun(), isTogglable = true, toolTip = "Lets you spawn lightning strikes where you shoot." },
             },
+
+            new ButtonInfo[] { // Players
+                new ButtonInfo { buttonText = "Exit Players", method =() => CurrentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },
+            },
+
+            new ButtonInfo[] { }, // Temporary
         };
 
         public static string[] categoryNames =
@@ -514,6 +525,8 @@ namespace Arrakis.Menu
             "Experimental",
             "Soundboard",
             "Admin",
+            "Players",
+            "Temporary",
         };
     }
 }

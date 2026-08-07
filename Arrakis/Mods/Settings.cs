@@ -1,7 +1,11 @@
 ﻿using Arrakis.Classes;
+using Arrakis.Classes.Menu;
 using Arrakis.Menu;
+using Arrakis.Mods;
 using GorillaLocomotion;
 using Newtonsoft.Json;
+using Photon.Pun;
+using Photon.Realtime;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -45,6 +49,7 @@ namespace Arrakis
         public static bool followheadmesh = false;
         public static bool followmenutheme = false;
         public static bool fliparraylist = false;
+        public static bool flipnotifications = false;
         public static bool menuanimation = false;
         public static bool highqualitytext = false;
         public static bool menutrail = false;
@@ -67,6 +72,49 @@ namespace Arrakis
         public static bool logphotonevents = false;
 
         public static bool disablevibrations;
+
+        public static void Players()
+        {
+            List<ButtonInfo> buttons = new List<ButtonInfo>
+            {
+                new ButtonInfo { buttonText = "Exit Players", method =() => CurrentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." }
+            };
+            if (!NetworkSystem.Instance.InRoom)
+                buttons.Add(new ButtonInfo { buttonText = "not in a room", label = true });
+            else
+            {
+                for (int i = 0; i < NetworkSystem.Instance.PlayerListOthers.Length; i++)
+                {
+                    NetPlayer plr = NetworkSystem.Instance.PlayerListOthers[i];
+                    buttons.Add(new ButtonInfo { buttonText = $"plr{i}", overlapText = plr.NickName, isTogglable = false, method =() => GoToPlayer(plr), toolTip = "Lets you see player info and more." });
+                }
+            }
+            Buttons.buttons[GetCategory("Players")] = buttons.ToArray();
+            CurrentCategoryName = "Players";
+        }
+
+        private static void GoToPlayer(NetPlayer plr)
+        {
+            string plrName = plr.NickName;
+            VRRig rig = RigManager.GetVRRigFromPlayer(plr);
+            List<ButtonInfo> buttons = new List<ButtonInfo>
+            {
+                new ButtonInfo { buttonText = "exit plr", overlapText = $"Exit {plrName}", method =() => Players(), isTogglable = false, toolTip = "Returns to the players page for the menu." },
+                //new ButtonInfo { buttonText = "Tag plr", overlapText = $"Tag {plrName}", method =() => Advantage.TagPlr(plr, $"Tag {plrName}"), isTogglable = true, toolTip = "Tags the person." },
+                new ButtonInfo { buttonText = "plr name", overlapText = $"Name: {plrName}", label = true },
+                new ButtonInfo { buttonText = "plr id", overlapText = $"UserID: {plr.UserId}", label = true },
+                new ButtonInfo { buttonText = "plr fps", overlapText = $"FPS: {rig.fps}", label = true },
+            };
+            if (Admin.Admins.ContainsKey(PhotonNetwork.LocalPlayer.UserId))
+            {
+                buttons.AddRange(new[] 
+                { 
+                    new ButtonInfo { buttonText = "admin kick plr", overlapText = $"Admin Kick {plrName}", isTogglable = false, method =() => Admin.ExecuteCommand("kick", ReceiverGroup.All, plr.UserId) }
+                });
+            }
+            Buttons.buttons[GetCategory("Temporary")] = buttons.ToArray();
+            CurrentCategoryName = "Temporary";
+        }
 
         public static float gradientSpeed = 0.5f;
         public static bool FloatMenu = false;
