@@ -355,6 +355,7 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Overlap Blocks", enableMethod =() => OverlapPatch.enabled = true, disableMethod  =() => OverlapPatch.enabled = false, isTogglable = true, toolTip = "Lets you overlap blocks in monkey blocks." },
                 new ButtonInfo { buttonText = "Monkey Blocks Size Changer", method =() => Fun.MonkeyBlocksSizeChanger(), isTogglable = true, toolTip = "Lets you change your size in monkey blocks with your <color=cyan>TRIGGERS</color>." },
                 new ButtonInfo { buttonText = "Build While Small", enableMethod =() => BuildPatch.enabled = true, disableMethod =() => BuildPatch.enabled = false, isTogglable = true, toolTip = "Lets you build in monkey blocks while you're small." },
+                new ButtonInfo { buttonText = "Multi Block", method =() => Fun.MultiBlock(), isTogglable = true, toolTip = "Lets you put pick alot of blocks in your right hand." },
                 new ButtonInfo { buttonText = "Buy All Free Cosmetics", method =() => Fun.BuyAllFree(), isTogglable = false, toolTip = "Trys to buy every cosmetic if its free." },
             },
 
