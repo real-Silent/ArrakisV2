@@ -80,7 +80,7 @@ namespace Arrakis.Notifications
                 try
                 {
                     NotifiText.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
-                    NotifiText.fontStyle = FontStyle.Italic;
+                    NotifiText.fontStyle = Settings.currentStyle;
                 }
                 catch { }
             }
