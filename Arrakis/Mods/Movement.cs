@@ -582,7 +582,7 @@ namespace Arrakis.Mods
                 rb.linearVelocity = Vector3.zero;
                 Vector3 velocity = originalVelocity;
                 velocity.x *= 0.2f;
-                velocity.y = 0f;
+                //velocity.y = 0f;
                 velocity.z *= 0.2f;
                 Vector3 newPos = GTPlayer.Instance.transform.position + velocity;
                 GTPlayer.Instance.transform.position = newPos;
