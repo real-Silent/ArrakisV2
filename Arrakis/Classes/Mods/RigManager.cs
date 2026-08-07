@@ -65,6 +65,20 @@ namespace Arrakis.Classes
             return found;
         }
 
+        public static NetPlayer GetNetPlayerFromNickName(string nickname)
+        {
+            NetPlayer found = null;
+            foreach (NetPlayer plr in NetworkSystem.Instance.PlayerListOthers)
+            {
+                if (plr.NickName == nickname)
+                {
+                    found = plr;
+                    break;
+                }
+            }
+            return found;
+        }
+
         public static Color GetPlayerColor(VRRig Player)
         {
             if (Player.bodyRenderer.cosmeticBodyType == GorillaBodyType.Skeleton)

@@ -16,8 +16,12 @@ namespace Arrakis.Menu
             new ButtonInfo[] { // Main
                 new ButtonInfo { buttonText = PluginInfo.DiscordLink, label = true, isTogglable = false },
                 new ButtonInfo { buttonText = "Settings", method =() => CurrentCategoryName = "Settings", isTogglable = false, toolTip = "Opens the settings page for the menu." },
+
+                new ButtonInfo { buttonText = "Players", method =() => Players(), isTogglable = false, toolTip = "Opens the players page for the menu." },
+
                 new ButtonInfo { buttonText = "Enabled", method =() => CurrentCategoryName = "Enabled", isTogglable = false, toolTip = "Opens the enabled page for the menu." },
                 new ButtonInfo { buttonText = "Favorites", method =() => CurrentCategoryName = "Favorites", isTogglable = false, toolTip = "Opens the favorites page for the menu." },
+
                 new ButtonInfo { buttonText = "Important", method =() => CurrentCategoryName = "Important", isTogglable = false, toolTip = "Opens the important page for the menu." },
                 new ButtonInfo { buttonText = "Computer", method =() => CurrentCategoryName = "Computer", isTogglable = false, toolTip = "Opens the computer page for the menu." },
                 new ButtonInfo { buttonText = "Safety", method =() => CurrentCategoryName = "Safety", isTogglable = false, toolTip = "Opens the safety page for the menu." },
@@ -486,6 +490,12 @@ namespace Arrakis.Menu
 
                 new ButtonInfo { buttonText = "Admin Lightning Strike Gun", method =() => Experimental.AdminLightningStrikeGun(), isTogglable = true, toolTip = "Lets you spawn lightning strikes where you shoot." },
             },
+
+            new ButtonInfo[] { // Players
+                new ButtonInfo { buttonText = "Exit Players", method =() => CurrentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },
+            },
+
+            new ButtonInfo[] { }, // Temporary
         };
 
         public static string[] categoryNames =
@@ -514,6 +524,8 @@ namespace Arrakis.Menu
             "Experimental",
             "Soundboard",
             "Admin",
+            "Players",
+            "Temporary",
         };
     }
 }
