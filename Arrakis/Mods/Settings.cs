@@ -88,7 +88,7 @@ namespace Arrakis
                     buttons.Add(new ButtonInfo { buttonText = $"plr{i}", overlapText = plr.NickName, isTogglable = false, method =() => GoToPlayer(plr), toolTip = "Lets you see player info and more." });
                 }
             }
-            Buttons.buttons[GetCategory("Player")] = buttons.ToArray();
+            Buttons.buttons[GetCategory("Players")] = buttons.ToArray();
             CurrentCategoryName = "Players";
         }
 
