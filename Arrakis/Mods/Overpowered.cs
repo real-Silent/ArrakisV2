@@ -540,7 +540,7 @@ namespace Arrakis.Mods
                     RaycastHit Ray = GunData.Ray;
                     if (lockTarget != null && gunLocked)
                     {
-                        ForceGrabTest(lockTarget, new Vector3(-88.1699f, 141.4335f, -161.3968f).normalized);
+                        ForceGrabTest(lockTarget, new Vector3(-88.1699f, 141.4335f, -161.3968f));
                     }
                     if (GetGunInput(true))
                     {
