@@ -806,5 +806,29 @@ namespace Arrakis.Mods
                 }
             }
         }
+
+        public static string name;
+        public static void AnimatedName()
+        {
+            if (!NetworkSystem.Instance.InRoom)
+            {
+                GorillaComputer.instance.currentName = name;
+                GorillaComputer.instance.SetLocalNameTagText(GorillaComputer.instance.currentName);
+                GorillaComputer.instance.savedName = GorillaComputer.instance.currentName;
+                PlayerPrefs.SetString("playerName", GorillaComputer.instance.currentName);
+                PlayerPrefs.Save();
+                PhotonNetwork.LocalPlayer.NickName = name;
+                return;
+            }
+            if (string.IsNullOrEmpty(name)) name = PhotonNetwork.LocalPlayer.NickName;
+            int length = Mathf.Clamp((int)Mathf.PingPong(Time.time / 0.25f, name.Length) + 1, 1, name.Length);
+            GorillaComputer.instance.currentName = name[..length];
+            GorillaComputer.instance.SetLocalNameTagText(GorillaComputer.instance.currentName);
+            GorillaComputer.instance.savedName = GorillaComputer.instance.currentName;
+            PlayerPrefs.SetString("playerName", GorillaComputer.instance.currentName);
+            PlayerPrefs.Save();
+            PhotonNetwork.LocalPlayer.NickName = name[..length];
+            Safety.RPCProc();
+        }
     }
 }

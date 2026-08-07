@@ -358,6 +358,7 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Build While Small", enableMethod =() => BuildPatch.enabled = true, disableMethod =() => BuildPatch.enabled = false, isTogglable = true, toolTip = "Lets you build in monkey blocks while you're small." },
                 new ButtonInfo { buttonText = "Multi Block", method =() => Fun.MultiBlock(), isTogglable = true, toolTip = "Lets you put pick alot of blocks in your right hand." },
                 new ButtonInfo { buttonText = "Buy All Free Cosmetics", method =() => Fun.BuyAllFree(), isTogglable = false, toolTip = "Trys to buy every cosmetic if its free." },
+                new ButtonInfo { buttonText = "Animated Name", method =() => Fun.AnimatedName(), disableMethod =() => Fun.name = null, isTogglable = true, toolTip = "Makes your name animated." },
             },
 
             new ButtonInfo[] { // Projectiles
