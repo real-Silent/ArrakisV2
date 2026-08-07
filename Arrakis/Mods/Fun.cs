@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using Arrakis.Notifications;
 using GorillaLocomotion;
 using GorillaNetworking;
 using GorillaTagScripts;
@@ -797,13 +798,21 @@ namespace Arrakis.Mods
         }
         public static void BuyAllFree()
         {
-            foreach (CosmeticsController.CosmeticItem controller in CosmeticsController.instance.allCosmetics)
+            string mapName = GetCurrentMapName();
+            if (mapName == "City")
             {
-                if (controller.canTryOn && controller.cost == 0 && !CosmeticsController.instance.unlockedCosmetics.Contains(controller))
+                foreach (CosmeticsController.CosmeticItem controller in CosmeticsController.instance.allCosmetics)
                 {
-                    CosmeticsController.instance.itemToBuy = controller;
-                    CosmeticsController.instance.PurchaseItem();
+                    if (controller.canTryOn && controller.cost == 0 && !CosmeticsController.instance.unlockedCosmetics.Contains(controller))
+                    {
+                        CosmeticsController.instance.itemToBuy = controller;
+                        CosmeticsController.instance.PurchaseItem();
+                    }
                 }
+            }
+            else
+            {
+                NotificationManager.SendNotification("<color=red>[ERROR]</color> You are not in city.");
             }
         }
 
