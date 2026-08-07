@@ -1,7 +1,7 @@
 ﻿using Arrakis.Classes;
 using Arrakis.Classes.Menu;
 using Arrakis.Menu;
-using GorillaGameModes;
+using Arrakis.Mods;
 using GorillaLocomotion;
 using Newtonsoft.Json;
 using Photon.Pun;
@@ -99,7 +99,7 @@ namespace Arrakis
             List<ButtonInfo> buttons = new List<ButtonInfo>
             {
                 new ButtonInfo { buttonText = "exit plr", overlapText = $"Exit {plrName}", method =() => Players(), isTogglable = false, toolTip = "Returns to the players page for the menu." },
-                new ButtonInfo { buttonText = "Tag plr", overlapText = $"Tag {plrName}", method =() => GameMode.ReportTag(plr), isTogglable = false, toolTip = "Tags the person." },
+                //new ButtonInfo { buttonText = "Tag plr", overlapText = $"Tag {plrName}", method =() => Advantage.TagPlr(plr, $"Tag {plrName}"), isTogglable = true, toolTip = "Tags the person." },
                 new ButtonInfo { buttonText = "plr name", overlapText = $"Name: {plrName}", label = true },
                 new ButtonInfo { buttonText = "plr id", overlapText = $"UserID: {plr.UserId}", label = true },
                 new ButtonInfo { buttonText = "plr fps", overlapText = $"FPS: {rig.fps}", label = true },
@@ -108,7 +108,7 @@ namespace Arrakis
             {
                 buttons.AddRange(new[] 
                 { 
-                    new ButtonInfo { buttonText = "admin kick plr", overlapText = $"Admin Kick {plrName}", method =() => Admin.ExecuteCommand("kick", ReceiverGroup.All, plr.UserId) }
+                    new ButtonInfo { buttonText = "admin kick plr", overlapText = $"Admin Kick {plrName}", isTogglable = false, method =() => Admin.ExecuteCommand("kick", ReceiverGroup.All, plr.UserId) }
                 });
             }
             Buttons.buttons[GetCategory("Temporary")] = buttons.ToArray();

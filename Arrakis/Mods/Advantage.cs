@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using Arrakis.Classes;
 using Arrakis.Extensions;
+using Arrakis.Notifications;
 using ExitGames.Client.Photon;
 using GorillaGameModes;
 using GorillaLocomotion;
@@ -141,6 +143,32 @@ namespace Arrakis.Mods
 
             hitboxleft.GetComponent<Renderer>().material.color = new Color(Settings.backgroundColor.GetCurrentColor().r, Settings.backgroundColor.GetCurrentColor().g, Settings.backgroundColor.GetCurrentColor().b, 0.2f);
             hitboxright.GetComponent<Renderer>().material.color = new Color(Settings.backgroundColor.GetCurrentColor().r, Settings.backgroundColor.GetCurrentColor().g, Settings.backgroundColor.GetCurrentColor().b, 0.2f);
+        }
+
+        public static void TagPlr(NetPlayer plr, string btnTextToDisable)
+        {
+            VRRig target = RigManager.GetVRRigFromPlayer(plr);
+            if (target == null)
+            {
+                NotificationManager.SendNotification("<color=red>[ARRAKIS]</color> target is null.");
+                return;
+            }
+            if (target.IsTagged())
+            {
+                NotificationManager.SendNotification("<color=red>[ARRAKIS]</color> target is tagged.");
+                return;
+            }
+            if (!VRRig.LocalRig.IsTagged())
+            {
+                NotificationManager.SendNotification("<color=red>[ARRAKIS]</color> you are not tagged.");
+                return;
+            }
+            VRRig.LocalRig.enabled = false;
+            VRRig.LocalRig.transform.position = target.transform.position;
+            GameMode.ReportTag(plr);
+            VRRig.LocalRig.enabled = true;
+            if (GetIndex(btnTextToDisable).enabled)
+                Toggle(btnTextToDisable);
         }
 
         public static void DestroyHitboxes()
