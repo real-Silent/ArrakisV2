@@ -49,6 +49,7 @@ namespace Arrakis
         public static bool followheadmesh = false;
         public static bool followmenutheme = false;
         public static bool fliparraylist = false;
+        public static bool flipnotifications = false;
         public static bool menuanimation = false;
         public static bool highqualitytext = false;
         public static bool menutrail = false;

@@ -77,6 +77,7 @@ namespace Arrakis.Notifications
                 float time = Time.time;
                 activeNotifications.RemoveAll(n => time >= n.Delay);
                 NotifiText.text = string.Concat(activeNotifications.Select(n => n.Text));
+                NotifiText.alignment = Settings.flipnotifications ? TextAnchor.LowerRight : TextAnchor.LowerLeft;
                 try
                 {
                     NotifiText.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
