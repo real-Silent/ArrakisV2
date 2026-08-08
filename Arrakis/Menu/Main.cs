@@ -636,9 +636,16 @@ namespace Arrakis.Menu
             {
                 try
                 {
-                    TPC = GameObject.Find("Player Objects/Third Person Camera/Shoulder Camera").GetComponent<Camera>();
+                    if (TPC == null)
+                    {
+                        try
+                        {
+                            TPC = GameObject.Find("Player Objects/Third Person Camera/Shoulder Camera").GetComponent<Camera>();
+                        }
+                        catch { TPC = GameObject.Find("Shoulder Camera").GetComponent<Camera>(); }
+                    }
                 }
-                catch { CustomConsole.Log("Third Person Camera is null or not able to be found.", CustomConsole.LogType.Warning); }
+                catch { }
 
                 GameObject.Find("Shoulder Camera").transform.Find("CM vcam1").gameObject.SetActive(false);
 
