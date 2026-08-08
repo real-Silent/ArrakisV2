@@ -495,5 +495,24 @@ namespace Arrakis.Mods
                 elevator.UpdateLocalState(GRElevator.ElevatorState.DoorMovingClosing);
             }
         }
+        public static void VIMKickAll()
+        {
+            if (SubscriptionManager.Instance.subData[VRRig.LocalRig.Creator].active)
+            {
+                NotificationManager.SendNotification("<color=yellow>[ARRAKIS]</color>You are not a VIM subscriber this mod will not work.");
+                return;
+            }
+            if (PhotonNetwork.LocalPlayer.IsMasterClient)
+            {
+                NotificationManager.SendNotification("<color=yellow>[ARRAKIS]</color>You are not master this mod will not work.");
+                return;
+            }
+            if (!NetworkSystem.Instance.CurrentRoom.isPublic)
+            {
+                NotificationManager.SendNotification("<color=yellow>[ARRAKIS]</color>Room is not private this mod will not work.");
+                return;
+            }
+            NetworkSystem.Instance.PlayerListOthers.ForEach(p => RoomControls.KickPlayer(p.ActorNumber));
+        }
     }
 }

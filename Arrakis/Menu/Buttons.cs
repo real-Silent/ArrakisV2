@@ -440,6 +440,7 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Block Trap Gun", method =() => Master.BlockTrapGun(), isTogglable = true, toolTip = "Traps who ever you shoot with blocks." },
                 new ButtonInfo { buttonText = "Door Trap Gun [GR]", method =() => Master.DoorTrapGun(), isTogglable = true, toolTip = "Traps who ever you shoot with doors." },
                 new ButtonInfo { buttonText = "Break Elevator", method =() => Master.BreakElevator(), isTogglable = true, toolTip = "Breaks the elevator." },
+                new ButtonInfo { buttonText = "VIM Kick All", method =() => Master.VIMKickAll(), isTogglable = false, toolTip = "Kicks everybody if you are master client, the room is private and you own vim." },
             },
 
             new ButtonInfo[] { // Experimental
