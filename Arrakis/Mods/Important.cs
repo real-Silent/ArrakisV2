@@ -7,6 +7,7 @@ using Photon.Pun;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.XR;
 using static Arrakis.Menu.Main;
 
 namespace Arrakis.Mods
@@ -67,13 +68,23 @@ namespace Arrakis.Mods
 
         public static void FirstPerson()
         {
-            TPC.GetComponent<Camera>().fieldOfView = 90f;
-            TPC.gameObject.transform.Find("CM vcam1").GetComponent<CinemachineVirtualCamera>().enabled = false;
+            if (TPC != null)
+            {
+                if (menu != null && !XRSettings.isDeviceActive)
+                    return;
+                TPC.fieldOfView = 90f;
+                TPC.gameObject.transform.Find("CM vcam1").GetComponent<CinemachineVirtualCamera>().enabled = false;
+                TPC.gameObject.transform.position = GorillaTagger.Instance.headCollider.transform.position;
+                TPC.gameObject.transform.rotation = Quaternion.Lerp(TPC.transform.rotation, GorillaTagger.Instance.headCollider.transform.rotation, 0.075f);
+            }
         }
         public static void DisableFirstPerson()
         {
-            TPC.GetComponent<Camera>().fieldOfView = 60f;
-            TPC.gameObject.transform.Find("CM vcam1").GetComponent<CinemachineVirtualCamera>().enabled = true;
+            if (TPC != null)
+            {
+                TPC.fieldOfView = 60f;
+                TPC.gameObject.transform.Find("CM vcam1").GetComponent<CinemachineVirtualCamera>().enabled = true;
+            }
         }
         public static void UnlockComp() =>
             GorillaComputer.instance.CompQueueUnlockButtonPress();
