@@ -1,8 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using Arrakis.Classes;
 using Arrakis.Managers;
 using Arrakis.Mods;
@@ -12,6 +7,11 @@ using GorillaExtensions;
 using GorillaLocomotion;
 using HarmonyLib;
 using Photon.Pun;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -226,6 +226,14 @@ namespace Arrakis.Menu
             }
 
             shouldBePC = !XRSettings.isDeviceActive;
+
+            try
+            {
+                Plugins.LoadPlugin();
+            }
+            catch { }
+
+            Plugins.ExecuteUpdate();
 
             try
             {
