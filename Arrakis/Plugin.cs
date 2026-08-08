@@ -33,7 +33,8 @@ namespace Arrakis
 
             if (!Directory.Exists(PluginInfo.BaseDirectory))
                 Directory.CreateDirectory(PluginInfo.BaseDirectory);
-
+            if (!Directory.Exists($"{PluginInfo.BaseDirectory}\\Rooms"))
+                Directory.CreateDirectory($"{PluginInfo.BaseDirectory}\\Rooms");
             if (!File.Exists($"{PluginInfo.BaseDirectory}/CustomTitle.txt"))
                 File.WriteAllText($"{PluginInfo.BaseDirectory}/CustomTitle.txt", "your title");
 

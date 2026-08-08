@@ -1,3 +1,8 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using Arrakis.Classes;
 using Arrakis.Managers;
 using Arrakis.Mods;
@@ -5,13 +10,9 @@ using Arrakis.Notifications;
 using BepInEx;
 using GorillaExtensions;
 using GorillaLocomotion;
+using GorillaNetworking;
 using HarmonyLib;
 using Photon.Pun;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -244,8 +245,25 @@ namespace Arrakis.Menu
                 }
             }
             catch { }
-        }
 
+            try
+            {
+                if (PhotonNetwork.InRoom && saveRoomDelay < Time.time)
+                {
+                    saveRoomDelay = Time.time + 5;
+                    string[] roomdata = new string[4];
+
+                    roomdata[0] = PhotonNetwork.CurrentRoom.IsOpen.ToString();
+                    roomdata[1] = PhotonNetwork.CurrentRoom.PlayerCount.ToString();
+                    roomdata[2] = GorillaComputer.instance.GetSelectedMapJoinTrigger().networkZone;
+                    roomdata[3] = GorillaComputer.instance.lastPressedGameMode;
+
+                    File.WriteAllLines($"{PluginInfo.BaseDirectory}\\Rooms\\" + PhotonNetwork.CurrentRoom.name + ".txt", roomdata);
+                }
+            }
+            catch { }
+        }
+        public static float saveRoomDelay;
         private static IEnumerator OpenMenu()
         {
             GameObject menuObject = menu;
@@ -1361,6 +1379,43 @@ namespace Arrakis.Menu
                 ImageConversion.LoadImage(texture, bytes);
                 return texture;
             }
+        }
+        public static void LoadRooms()
+        {
+            string currentRoom = PhotonNetwork.InRoom ? PhotonNetwork.CurrentRoom.Name : null;
+            CurrentCategoryName = "Rooms";
+            pageNumber = 0;
+            List<ButtonInfo> buttons = new List<ButtonInfo>
+            {
+                new ButtonInfo { buttonText = "Exit Rooms", method = () => CurrentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." }
+            };
+            foreach (var roomFile in new DirectoryInfo($"{PluginInfo.BaseDirectory}\\Rooms").GetFiles())
+            {
+                string roomName = Path.GetFileNameWithoutExtension(roomFile.Name);
+                string displayName = roomName;
+                if (currentRoom == roomName)
+                    displayName += " (CURRENT)";
+                buttons.Add(new ButtonInfo { buttonText = displayName, method = () => OpenRoom(roomFile.FullName), isTogglable = false, toolTip = "Opens this room." });
+            }
+            Buttons.buttons[GetCategory("Rooms")] = buttons.ToArray();
+        }
+        public static void OpenRoom(string room)
+        {
+            string[] fileContents = File.ReadAllLines(room);
+            string roomName = Path.GetFileNameWithoutExtension(room);
+            List<ButtonInfo> buttons = new List<ButtonInfo>
+            {
+                new ButtonInfo { buttonText = "Back", method = () => LoadRooms(), isTogglable = false, toolTip = "Returns to the rooms list." },
+                new ButtonInfo { buttonText = "Delete Room", method = () => { File.Delete(room); LoadRooms(); }, isTogglable = false, toolTip = "Deletes this room." },
+                new ButtonInfo { buttonText = "Join Room", method = () => { PhotonNetworkController.Instance.AttemptToJoinSpecificRoom(roomName, GorillaNetworking.JoinType.Solo); LoadRooms(); }, isTogglable = false, toolTip = "Joins this room." },
+                new ButtonInfo { buttonText = "Room : " + roomName, label = true },
+                new ButtonInfo { buttonText = "Playercount : " + fileContents[1], label = true },
+                new ButtonInfo { buttonText = "Map : " + fileContents[2], label = true },
+                new ButtonInfo { buttonText = "Gamemode : " + fileContents[3], label = true }
+            };
+            Buttons.buttons[GetCategory("Rooms")] = buttons.ToArray();
+            CurrentCategoryName = "Rooms";
+            pageNumber = 0;
         }
     }
 }

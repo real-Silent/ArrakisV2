@@ -22,6 +22,7 @@ namespace Arrakis.Menu
 
                 new ButtonInfo { buttonText = "Enabled", method =() => CurrentCategoryName = "Enabled", isTogglable = false, toolTip = "Opens the enabled page for the menu." },
                 new ButtonInfo { buttonText = "Favorites", method =() => CurrentCategoryName = "Favorites", isTogglable = false, toolTip = "Opens the favorites page for the menu." },
+                new ButtonInfo { buttonText = "Rooms", method =() => Main.LoadRooms(), isTogglable = false, toolTip = "Opens the rooms page for the menu." },
 
                 new ButtonInfo { buttonText = "Important", method =() => CurrentCategoryName = "Important", isTogglable = false, toolTip = "Opens the important page for the menu." },
                 new ButtonInfo { buttonText = "Computer", method =() => CurrentCategoryName = "Computer", isTogglable = false, toolTip = "Opens the computer page for the menu." },
@@ -125,6 +126,10 @@ namespace Arrakis.Menu
 
             new ButtonInfo[] { // Favorites
                 new ButtonInfo { buttonText = "Exit Favorites", method =() => CurrentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },
+            },
+
+            new ButtonInfo[] { // Rooms
+                new ButtonInfo { buttonText = "Exit Rooms", method =() => CurrentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },
             },
 
             new ButtonInfo[] { // Important
@@ -521,6 +526,7 @@ namespace Arrakis.Menu
             "Gunlib Settings",
             "Enabled",
             "Favorites",
+            "Rooms",
             "Important",
             "Computer",
             "Safety",
