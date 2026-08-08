@@ -1,4 +1,5 @@
 using System;
+using Arrakis.Mods;
 using HarmonyLib;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -29,6 +30,9 @@ namespace Arrakis.Patches.Patchers
                             break;
                         case 2:
                             rotation = Quaternion.Euler(0f, GorillaTagger.Instance.headCollider.transform.rotation.eulerAngles.y + 180f, 0f);
+                            break;
+                        case 3:
+                            rotation = Quaternion.Euler(0f, Movement.VRRigTorso.transform.rotation.eulerAngles.y, 0f);
                             break;
                     }
 

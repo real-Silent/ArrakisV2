@@ -255,6 +255,8 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Smooth Rig", enableMethod =() => PhotonNetwork.SerializationRate = 35, disableMethod =() => PhotonNetwork.SerializationRate = 10, isTogglable = true, toolTip = "Makes your rig smooth to other players." },
                 new ButtonInfo { buttonText = "Fake Full Body Tracking", enableMethod =() => TorsoPatch.VRRigLateUpdate += Movement.FakeFBT, disableMethod =() => TorsoPatch.VRRigLateUpdate -= Movement.FakeFBT, isTogglable = true, toolTip = "Makes it look like you have full body tracking." },
                 new ButtonInfo { buttonText = "Spaz Full Body Tracking", enableMethod =() => TorsoPatch.VRRigLateUpdate += Movement.SpazBody, disableMethod =() => TorsoPatch.VRRigLateUpdate -= Movement.SpazBody, isTogglable = true, toolTip = "Spazzes the full body tracking." },
+                new ButtonInfo { buttonText = "Flip", enableMethod =() => TorsoPatch.VRRigLateUpdate += Movement.Flip, disableMethod =() => { TorsoPatch.VRRigLateUpdate -= Movement.Flip; Movement.StopFlip(); }, isTogglable = true, toolTip = "Lets you flip when pressing your trigger." },
+                new ButtonInfo { buttonText = "Smooth Body", method =() => Movement.SmoothBody(), disableMethod =() => Movement.ToggleTorsoPatch(false), isTogglable = true, toolTip = "Smooths your vrrigs body." },
             },
 
             new ButtonInfo[] { // Visual

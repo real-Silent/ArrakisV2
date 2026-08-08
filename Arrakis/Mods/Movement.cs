@@ -1,5 +1,7 @@
-﻿using GorillaExtensions;
+﻿using Arrakis.Patches.Patchers;
+using GorillaExtensions;
 using GorillaLocomotion;
+using static Arrakis.Patches.Patchers.TorsoPatch;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 using UnityEngine.InputSystem;
@@ -594,6 +596,56 @@ namespace Arrakis.Mods
                 GTPlayer.Instance.transform.position = newPos;
                 rb.linearVelocity = originalVelocity;
             }
+        }
+        public static void StopFlip()
+        {
+            GTPlayer.Instance.UnsetGravityOverride(GTPlayer.Instance);
+            GTPlayerTransform.ApplyRotationOverride(Quaternion.identity, Time.frameCount);
+        }
+        public static bool flipping;
+        public static float flipStart;
+        public static Quaternion flipFrom;
+        public static Vector3 flipAxis;
+        public const float flipDuration = 1f;
+        public static void Flip()
+        {
+            if (!flipping && (ControllerInputPoller.instance.rightControllerTriggerButton || Mouse.current.leftButton.isPressed) && VRRig.LocalRig.enabled)
+            {
+                if (GTPlayer.Instance.playerRigidBody)
+                {
+                    flipping = true;
+                    flipStart = Time.time;
+                    flipAxis = VRRig.LocalRig.transform.right;
+                    flipFrom = GTPlayer.Instance?.playerRigidBody?.rotation ?? Quaternion.identity;
+                }
+            }
+            if (!flipping) return;
+
+            float t = (Time.time - flipStart) / flipDuration;
+            if (t >= 1f)
+            {
+                flipping = false;
+                GTPlayerTransform.ApplyRotationOverride(flipFrom, Time.frameCount);
+
+                return;
+            }
+            var rot = Quaternion.AngleAxis(-360f * t, flipAxis) * flipFrom;
+            GTPlayerTransform.ApplyRotationOverride(rot, Time.frameCount);
+        }
+        public static void ToggleTorsoPatch(bool enabled, int mode = 0)
+        {
+            TorsoPatch.enabled = enabled;
+            TorsoPatch.mode = mode;
+            if (!enabled && VRRigTorso != null)
+                Object.Destroy(VRRigTorso);
+        }
+        public static GameObject VRRigTorso;
+        public static void SmoothBody()
+        {
+            ToggleTorsoPatch(true, 3);
+            if (VRRigTorso == null)
+                VRRigTorso = new GameObject("Arrakis_vrrigtorso");
+            VRRigTorso.transform.rotation = Quaternion.Lerp(VRRigTorso.transform.rotation, Quaternion.Euler(0f, GorillaTagger.Instance.headCollider.transform.rotation.eulerAngles.y, 0f), Time.deltaTime * 6.5f);
         }
     }
 }
