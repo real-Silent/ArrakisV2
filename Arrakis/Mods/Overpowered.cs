@@ -571,6 +571,49 @@ namespace Arrakis.Mods
                 GetIndex("Grab City Kick Gun").enabled = false;
             }
         }
+        public static void MetroGrabKickGun()
+        {
+            string mapName = GetCurrentMapName();
+            if (mapName == "Metropolis")
+            {
+                if (GetGunInput(false))
+                {
+                    var GunData = RenderGun();
+                    GameObject NewPointer = GunData.NewPointer;
+                    RaycastHit Ray = GunData.Ray;
+                    if (lockTarget != null && gunLocked)
+                    {
+                        ForceGrabTest(lockTarget, lockTarget.transform.position - new Vector3(97.4061f, -551.25f, -294.1043f));
+                    }
+                    if (GetGunInput(true))
+                    {
+                        VRRig rig = Ray.collider.GetComponentInParent<VRRig>();
+                        if (rig != null && rig != VRRig.LocalRig)
+                        {
+                            lockTarget = rig;
+                            gunLocked = true;
+                        }
+                    }
+                }
+                else
+                {
+                    lockTarget = null;
+                    gunLocked = false;
+                }
+                bool noInput = !ControllerInputPoller.instance.rightGrab && !ControllerInputPoller.instance.leftGrab && !ControllerInputPoller.instance.rightControllerTriggerButton && !ControllerInputPoller.instance.leftControllerTriggerButton;
+                if (noInput && Patches.GrabPatch.enabled)
+                {
+                    UpdateGrabStatus(false);
+                    VRRig.LocalRig.BreakHandLinks();
+                    VRRig.LocalRig.enabled = true;
+                }
+            }
+            else
+            {
+                NotificationManager.SendNotification("<color=red>[ERROR]</color> You are not in Metropolis.");
+                GetIndex("Grab Metro Kick Gun").enabled = false;
+            }
+        }
 
         public static void GrabBreakMovementGun()
         {

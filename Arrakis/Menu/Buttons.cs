@@ -401,6 +401,7 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Grab Crash Gun", method =() => Overpowered.GrabCrashGun(), isTogglable = true, toolTip = "Crashes who ever you shoot if they are grabbable" },
                 new ButtonInfo { buttonText = "Grab Break Movement Gun", method =() => Overpowered.GrabBreakMovementGun(), isTogglable = true, toolTip = "Slightly move the person you shoot if they are grabbable" },
                 new ButtonInfo { buttonText = "Grab City Kick Gun", method =() => Overpowered.CityGrabKickGun(), isTogglable = true, toolTip = "Pushes them to clouds if they are grabbable" },
+                new ButtonInfo { buttonText = "Grab Metro Kick Gun", method =() => Overpowered.MetroGrabKickGun(), isTogglable = true, toolTip = "Pushes them to a network trigger if they are grabbable" },
                 new ButtonInfo { buttonText = "Big Stutter Gun", method =() => Overpowered.BigStutterGun(), isTogglable = true, toolTip = "Lags who you shoot, this may kick you, dosnt seem to work on steam players." },
                 new ButtonInfo { buttonText = "Strong Lag Gun", method =() => Overpowered.StrongLagGun(), isTogglable = true, toolTip = "Lags who you shoot, dosnt seem to work on steam players." },
                 new ButtonInfo { buttonText = "Lag Gun", method =() => Overpowered.LagGun(), isTogglable = true, toolTip = "Lags who you shoot, dosnt seem to work on steam players." },
