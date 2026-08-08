@@ -86,6 +86,7 @@ namespace Arrakis.Mods
 
         private static float y;
         private static float p;
+        private static Vector3 pos = Vector3.zero;
         public static void WasdFly()
         {
             GTPlayer.Instance.bodyCollider.attachedRigidbody.useGravity = false;
@@ -115,6 +116,11 @@ namespace Arrakis.Mods
                 GTPlayer.Instance.RightHand.controllerTransform.parent.rotation = Quaternion.Euler(p, y, 0f);
             }
             VRRig.LocalRig.head.rigTarget.transform.rotation = GorillaTagger.Instance.headCollider.transform.rotation;
+
+            if (!Keyboard.current.wKey.isPressed && !Keyboard.current.aKey.isPressed && !Keyboard.current.sKey.isPressed && !Keyboard.current.dKey.isPressed && !Keyboard.current.spaceKey.isPressed && !Keyboard.current.leftCtrlKey.isPressed && pos != Vector3.zero)
+                GorillaTagger.Instance.rigidbody.transform.position = pos;
+            else
+                pos = GorillaTagger.Instance.rigidbody.transform.position;
         }
 
         private static GameObject platR = null;
