@@ -1,5 +1,6 @@
 ﻿using Arrakis.Classes;
 using Arrakis.Mods;
+using Arrakis.Notifications;
 using Arrakis.Patches;
 using Arrakis.Patches.Patchers;
 using GorillaTagScripts;
@@ -14,7 +15,7 @@ namespace Arrakis.Menu
         public static ButtonInfo[][] buttons = new ButtonInfo[][]
         {
             new ButtonInfo[] { // Main
-                new ButtonInfo { buttonText = PluginInfo.DiscordLink, label = true, isTogglable = false },
+                new ButtonInfo { buttonText = PluginInfo.DiscordLink, method =() => JoinDiscord(), isTogglable = false, toolTip = "Prompts you if you want to join the discord or not." },
                 new ButtonInfo { buttonText = "Settings", method =() => CurrentCategoryName = "Settings", isTogglable = false, toolTip = "Opens the settings page for the menu." },
 
                 new ButtonInfo { buttonText = "Players", method =() => Players(), isTogglable = false, toolTip = "Opens the players page for the menu." },
@@ -500,6 +501,11 @@ namespace Arrakis.Menu
             },
 
             new ButtonInfo[] { }, // Temporary
+
+            new ButtonInfo[] { // Internal
+                new ButtonInfo { buttonText = "AcceptPrompt", method =() => { NotificationManager.ClearAllNotifications(); CurrentPrompt.accept?.Invoke(); StopCurrentPrompt(); }, isTogglable = false },
+                new ButtonInfo { buttonText = "DeclinePrompt", method =() => { NotificationManager.ClearAllNotifications(); CurrentPrompt.decline?.Invoke(); StopCurrentPrompt(); }, isTogglable = false },
+            },
         };
 
         public static string[] categoryNames =
@@ -530,6 +536,7 @@ namespace Arrakis.Menu
             "Admin",
             "Players",
             "Temporary",
+            "Internal",
         };
     }
 }

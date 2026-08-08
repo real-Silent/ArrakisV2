@@ -8,6 +8,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using UnityEngine;
@@ -72,6 +73,18 @@ namespace Arrakis
         public static bool logphotonevents = false;
 
         public static bool disablevibrations;
+
+        public static void JoinDiscord()
+        {
+            Prompt("Join Arrakis Discord", () => 
+            {
+                Process.Start("https://novax.lol/d");
+            }, () =>
+            {
+                CurrentCategoryName = "Main";
+                StopCurrentPrompt();
+            });
+        }
 
         public static void Players()
         {

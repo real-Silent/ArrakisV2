@@ -517,28 +517,32 @@ namespace Arrakis.Menu
             // Button Creation
             int buttonIndexOffset = 0;
             ButtonInfo[] renderButtons = new ButtonInfo[] { };
-            switch (CurrentCategoryName)
+            if (CurrentPrompt != null)
+                ShowPrompt();
+            else 
             {
-                case "Enabled":
-                    enabledMods = new List<ButtonInfo>() { GetIndex("Exit Enabled") };
-                    enabledMods.AddRange(Buttons.buttons.SelectMany(buttonlist => buttonlist).Where(v => v.enabled));
-                    if (enabledMods.Count == 1)
-                        enabledMods.Add(new ButtonInfo { buttonText = "you have no enabled mods", label = true });
-                    renderButtons = enabledMods.ToArray();
-                    break;
-                case "Favorites":
-                    foreach (var favoriteMod in favorites.Where(favoriteMod => GetIndex(favoriteMod) == null).ToList())
-                        favorites.Remove(favoriteMod);
-                    renderButtons = StringsToInfos(favorites.ToArray());
-                    break;
-                default:
-                    renderButtons = Buttons.buttons[currentCategoryIndex];
-                    break;
+                switch (CurrentCategoryName)
+                {
+                    case "Enabled":
+                        enabledMods = new List<ButtonInfo>() { GetIndex("Exit Enabled") };
+                        enabledMods.AddRange(Buttons.buttons.SelectMany(buttonlist => buttonlist).Where(v => v.enabled));
+                        if (enabledMods.Count == 1)
+                            enabledMods.Add(new ButtonInfo { buttonText = "you have no enabled mods", label = true });
+                        renderButtons = enabledMods.ToArray();
+                        break;
+                    case "Favorites":
+                        foreach (var favoriteMod in favorites.Where(favoriteMod => GetIndex(favoriteMod) == null).ToList())
+                            favorites.Remove(favoriteMod);
+                        renderButtons = StringsToInfos(favorites.ToArray());
+                        break;
+                    default:
+                        renderButtons = Buttons.buttons[currentCategoryIndex];
+                        break;
+                }
+                renderButtons = renderButtons.Skip(pageNumber * (buttonsPerPage - buttonIndexOffset)).Take(buttonsPerPage - buttonIndexOffset).ToArray();
+                for (int i = 0; i < renderButtons.Length; i++)
+                    AddButton((i + buttonIndexOffset) * 0.1f + (0.1f / 10), i, renderButtons[i]);
             }
-            renderButtons = renderButtons.Skip(pageNumber * (buttonsPerPage - buttonIndexOffset)).Take(buttonsPerPage - buttonIndexOffset).ToArray();
-            for (int i = 0; i < renderButtons.Length; i++)
-                AddButton((i + buttonIndexOffset) * 0.1f + (0.1f / 10), i, renderButtons[i]);
-
             RecenterMenu(rightHanded, false);
         }
 
@@ -1188,6 +1192,111 @@ namespace Arrakis.Menu
                 }
             }
             return "N/A";
+        }
+
+        public class PromptData
+        {
+            public string message;
+            public string accepttext;
+            public string declinetext;
+            public Action accept;
+            public Action decline;
+        }
+        public static List<PromptData> prompts = new List<PromptData>();
+        public static PromptData CurrentPrompt
+        {
+            get
+            {
+                if (prompts.Count > 0)
+                    return prompts[0];
+                else
+                    return null;
+            }
+        }
+        public static void StopCurrentPrompt() =>
+            prompts.RemoveAt(0);
+        public static void Prompt(string message, Action accept = null, Action decline = null, string accepbutton = "Yes", string declinebutton = "No")
+        {
+            prompts.Add(new PromptData 
+            {
+                message = message,
+                accept = accept ?? (() => { }),
+                decline = decline ?? (() => { }),
+                accepttext = accepbutton,
+                declinetext = declinebutton
+            });
+            if (menu != null && prompts.Count <= 1)
+                ReloadMenu();
+        }
+
+        public static void ShowPrompt()
+        {
+            if (CurrentPrompt == null)
+                return;
+            Text prompttext = new GameObject { transform = { parent = canvasObject.transform } }.AddComponent<Text>();
+            prompttext.font = currentFont;
+            prompttext.text = CurrentPrompt.message;
+            prompttext.fontSize = 1;
+            prompttext.lineSpacing = 0.8f;
+            prompttext.color = textColors[0];
+            prompttext.supportRichText = true;
+            prompttext.fontStyle = currentStyle;
+            prompttext.alignment = TextAnchor.MiddleCenter;
+            prompttext.resizeTextForBestFit = true;
+            prompttext.resizeTextMinSize = 0;
+            RectTransform rect = prompttext.GetComponent<RectTransform>();
+            rect.sizeDelta = new Vector2(0.28f, 0.28f);
+            rect.localPosition = new Vector3(0.06f, 0f, 0f);
+            rect.rotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
+            {
+                GameObject button = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                button.GetComponent<BoxCollider>().isTrigger = true;
+                button.transform.parent = menu.transform;
+                button.transform.rotation = Quaternion.identity;
+                button.transform.localScale = new Vector3(0.09f, CurrentPrompt.declinetext == null ? 0.9f : 0.4375f, 0.08f);
+                button.transform.localPosition = new Vector3(0.56f, CurrentPrompt.declinetext == null ? 0f : 0.2375f, -0.43f);
+                button.AddComponent<ButtonCollider>().relatedText = "AcceptPrompt";
+                ColorChanger colorChanger = button.AddComponent<ColorChanger>();
+                colorChanger.colors = buttonColors[0];
+                Text text = new GameObject { transform = { parent = canvasObject.transform } }.AddComponent<Text>();
+                text.font = currentFont;
+                text.fontStyle = currentStyle;
+                text.text = CurrentPrompt.accepttext;
+                text.fontSize = 1;
+                text.alignment = TextAnchor.MiddleCenter;
+                text.resizeTextForBestFit = true;
+                text.resizeTextMinSize = 0;
+                text.color = textColors[1];
+                RectTransform textRect = text.GetComponent<RectTransform>();
+                textRect.sizeDelta = new Vector2(0.2f, 0.03f);
+                textRect.localPosition = new Vector3(0.064f, CurrentPrompt.declinetext != null ? 0.075f : 0f, -0.16f);
+                textRect.rotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
+            }
+            if (CurrentPrompt.declinetext != null)
+            {
+                GameObject button = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                button.GetComponent<BoxCollider>().isTrigger = true;
+                button.transform.parent = menu.transform;
+                button.transform.rotation = Quaternion.identity;
+                button.transform.localScale = new Vector3(0.09f, 0.4375f, 0.08f);
+                button.transform.localPosition = new Vector3(0.56f, -0.2375f, -0.43f);
+                button.AddComponent<ButtonCollider>().relatedText = "DeclinePrompt";
+                ColorChanger colorChanger = button.AddComponent<ColorChanger>();
+                colorChanger.colors = buttonColors[0];
+                Text text = new GameObject { transform = { parent = canvasObject.transform } }.AddComponent<Text>();
+                text.font = currentFont;
+                text.fontStyle = currentStyle;
+                text.text = CurrentPrompt.declinetext;
+                text.fontSize = 1;
+                text.alignment = TextAnchor.MiddleCenter;
+                text.resizeTextForBestFit = true;
+                text.resizeTextMinSize = 0;
+                text.color = textColors[1];
+                RectTransform rect2 = text.GetComponent<RectTransform>();
+                rect2.sizeDelta = new Vector2(0.2f, 0.03f);
+                rect2.localPosition = new Vector3(0.064f, -0.075f, -0.16f);
+                rect2.rotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
+            }
         }
     }
 }
