@@ -2,6 +2,7 @@
 using Arrakis.Classes.Menu;
 using Arrakis.Menu;
 using Arrakis.Mods;
+using Arrakis.Notifications;
 using GorillaLocomotion;
 using Newtonsoft.Json;
 using Photon.Pun;
@@ -29,6 +30,14 @@ namespace Arrakis
             Color.white, // Disabled
             Color.white // Enabled
         };
+
+        public static void GlobalReturn()
+        {
+            NotificationManager.ClearAllNotifications();
+            Toggle(Buttons.buttons[currentCategoryIndex][GetCategory("Main")].buttonText);
+            if (prompts.Count > 0)
+                StopCurrentPrompt();
+        }
 
         public static Font currentFont = Resources.GetBuiltinResource(typeof(Font), "Arial.ttf") as Font;
 
@@ -58,6 +67,7 @@ namespace Arrakis
         public static bool disablepointer = false;
         public static bool disablemenudrop = false;
         public static bool disableautosave = false;
+        public static bool disableReturnButton = false;
         public static bool lowgravitymenu = false;
         public static bool custommenutitle = false;
         public static bool disablemenutitle = false;

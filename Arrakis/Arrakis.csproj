@@ -18,6 +18,14 @@
 		<StartArguments>steam://run/1533390</StartArguments>
 	</PropertyGroup>
 
+	<ItemGroup>
+	  <None Remove="Resources\Images\return.png" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Include="Resources\Images\return.png" />
+	</ItemGroup>
+
 	<!-- AssemblyPublicizer usage inspired from GorillaShirts -->
 	<ItemGroup>
 		<PackageReference Include="BepInEx.AssemblyPublicizer.MSBuild" Version="0.4.3">

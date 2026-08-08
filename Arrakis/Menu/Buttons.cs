@@ -78,6 +78,7 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Disable Pointer", enableMethod =() => disablepointer = true, disableMethod =() => disablepointer = false, toolTip = "Disables the menu pointer.", ShowInArraylist = false },
                 new ButtonInfo { buttonText = "Disable Menu Drop", enableMethod =() => disablemenudrop = true, disableMethod =() => disablemenudrop = false, toolTip = "Disables the menu dropping.", ShowInArraylist = false },
                 new ButtonInfo { buttonText = "Disable Auto Save", enableMethod =() => disableautosave = true, disableMethod =() => disableautosave = false, toolTip = "Disables the auto saving of menu settings that happen every 2 minutes.", ShowInArraylist = false },
+                new ButtonInfo { buttonText = "Disable Return Button", enableMethod =() => disableReturnButton = true, disableMethod =() => disableReturnButton = false, toolTip = "Disables the return button.", ShowInArraylist = false },
                 new ButtonInfo { buttonText = "Low Gravity Menu", enableMethod =() => lowgravitymenu = true, disableMethod =() => lowgravitymenu = false, toolTip = "Gives the menu low gravity.", ShowInArraylist = false },
                 new ButtonInfo { buttonText = "Custom Menu Title", enableMethod =() => custommenutitle = true, disableMethod =() => custommenutitle = false, toolTip = "Makes the menu use a custom menu title you can edit in files.", ShowInArraylist = false },
                 new ButtonInfo { buttonText = "Disable Menu Title", enableMethod =() => disablemenutitle = true, disableMethod =() => disablemenutitle = false, toolTip = "Removes the menu title.", ShowInArraylist = false },
@@ -503,6 +504,7 @@ namespace Arrakis.Menu
             new ButtonInfo[] { }, // Temporary
 
             new ButtonInfo[] { // Internal
+                new ButtonInfo { buttonText = "GlobalReturn", method = Settings.GlobalReturn, isTogglable = false, toolTip = "Returns you to the previous category." },
                 new ButtonInfo { buttonText = "AcceptPrompt", method =() => { NotificationManager.ClearAllNotifications(); CurrentPrompt.accept?.Invoke(); StopCurrentPrompt(); }, isTogglable = false },
                 new ButtonInfo { buttonText = "DeclinePrompt", method =() => { NotificationManager.ClearAllNotifications(); CurrentPrompt.decline?.Invoke(); StopCurrentPrompt(); }, isTogglable = false },
             },

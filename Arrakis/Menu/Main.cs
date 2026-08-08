@@ -441,6 +441,9 @@ namespace Arrakis.Menu
                 rectt.rotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
             }
 
+            if (!disableReturnButton && CurrentCategoryName != "Main")
+                ReturnButton(false);
+
             // Page Buttons
             GameObject gameObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
             if (!UnityInput.Current.GetKey(keyboardButton))
@@ -1296,6 +1299,52 @@ namespace Arrakis.Menu
                 rect2.sizeDelta = new Vector2(0.2f, 0.03f);
                 rect2.localPosition = new Vector3(0.064f, -0.075f, -0.16f);
                 rect2.rotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
+            }
+        }
+
+        public static Texture2D returnIcon;
+        public static Material returnMat;
+        private static void ReturnButton(bool showsearchbutton)
+        {
+            GameObject buttonObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            buttonObject.GetComponent<BoxCollider>().isTrigger = true;
+            buttonObject.transform.parent = menu.transform;
+            buttonObject.transform.rotation = Quaternion.identity;
+            buttonObject.transform.localScale = new Vector3(0.09f, 0.102f, 0.08f);
+            buttonObject.transform.localPosition = new Vector3(0.56f, -0.450f, -0.58f);
+            if (showsearchbutton)
+                buttonObject.transform.localPosition += new Vector3(0f, 0.16f, 0f);
+            buttonObject.AddComponent<ButtonCollider>().relatedText = "GlobalReturn";
+            ColorChanger colorChanger = buttonObject.AddComponent<ColorChanger>();
+            colorChanger.colors = colorChanger.colors = buttonColors[0];
+            Image returnImage = new GameObject
+            { transform = { parent = canvasObject.transform } }.AddComponent<Image>();
+            if (returnIcon == null)
+                returnIcon = LoadTexture("return");
+            if (returnMat == null)
+                returnMat = new Material(returnImage.material);
+            returnImage.material = returnMat;
+            returnImage.material.SetTexture("_MainTex", returnIcon);
+            returnImage.color = textColors[1];
+            RectTransform imageTransform = returnImage.GetComponent<RectTransform>();
+            imageTransform.localPosition = Vector3.zero;
+            imageTransform.sizeDelta = new Vector2(.03f, .03f);
+            imageTransform.localPosition = new Vector3(.064f, -0.35f / 2.6f, -0.58f / 2.6f);
+            if (showsearchbutton)
+                imageTransform.localPosition += new Vector3(0f, 0.0475f, 0f);
+            imageTransform.rotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
+        }
+
+        public static Texture2D LoadTexture(string fileName)
+        {
+            using (Stream stream = typeof(Plugin).Assembly.GetManifestResourceStream($"Arrakis.Resources.Images.{fileName}.png"))
+            {
+                if (stream == null) return null;
+                byte[] bytes = new byte[stream.Length];
+                stream.Read(bytes, 0, bytes.Length);
+                Texture2D texture = new Texture2D(2, 2);
+                ImageConversion.LoadImage(texture, bytes);
+                return texture;
             }
         }
     }
