@@ -772,6 +772,7 @@ namespace Arrakis.Mods
         }
         public static void ChangeLavaState(InfectionLavaController.RisingLavaState state) // master ss? -sleepy
         {
+            if (!PhotonNetwork.LocalPlayer.IsMasterClient) NotificationManager.SendNotification("<color=cyan>[ARRAKIS]</color> You are not master client this mod will have a huge delay to be ss.");
             var lava = InfectionLavaController.ActiveControllers.FirstOrDefault();
             if (lava == null)
                 return;
