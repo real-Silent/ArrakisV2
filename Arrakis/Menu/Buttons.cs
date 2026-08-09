@@ -163,6 +163,9 @@ namespace Arrakis.Menu
 
             new ButtonInfo[] { // Global
                 new ButtonInfo { buttonText = "Exit Global", method =() => CurrentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },
+                new ButtonInfo { buttonText = "Connect to <color=grey>[<color=cyan>EU</color>]</color>", method =() => Important.ConnectToRegion("EU"), isTogglable = false, toolTip = "Connects to EU region." },
+                new ButtonInfo { buttonText = "Connect to <color=grey>[<color=cyan>USW</color>]</color>", method =() => Important.ConnectToRegion("USW"), isTogglable = false, toolTip = "Connects to USW region." },
+                new ButtonInfo { buttonText = "Connect to <color=grey>[<color=cyan>US</color>]</color>", method =() => Important.ConnectToRegion("US"), isTogglable = false, toolTip = "Connects to US region." },
                 new ButtonInfo { buttonText = "Change Queue <color=grey>[<color=cyan>Default</color>]</color>", method =() => Important.ChangeQueue("DEFAULT"), isTogglable = false, toolTip = "Changes the current queue." },
                 new ButtonInfo { buttonText = "Change Queue <color=grey>[<color=cyan>Minigames</color>]</color>", method =() => Important.ChangeQueue("MINIGAMES"), isTogglable = false, toolTip = "Changes the current queue." },
                 new ButtonInfo { buttonText = "Change Queue <color=grey>[<color=cyan>Competitive</color>]</color>", method =() => Important.ChangeQueue("COMPETITIVE"), isTogglable = false, toolTip = "Changes the current queue." },
@@ -189,9 +192,6 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Disable Quit Box", method =() => AntiQuitBox.disable = true, disableMethod =() => AntiQuitBox.disable = false, isTogglable = true, toolTip = "Disables the quit box." },
                 new ButtonInfo { buttonText = "PC Button Click", method =() => Important.ButtonClick(), isTogglable = true, toolTip = "Lets you click buttons with your mouse." },
                 new ButtonInfo { buttonText = "Reauth", method =() => Important.Reauth(), isTogglable = false, toolTip = "Reauths you to gtag." },
-                new ButtonInfo { buttonText = "Connect to <color=grey>[<color=cyan>EU</color>]</color>", method =() => Important.ConnectToRegion("EU"), isTogglable = false, toolTip = "Connects to EU region." },
-                new ButtonInfo { buttonText = "Connect to <color=grey>[<color=cyan>USW</color>]</color>", method =() => Important.ConnectToRegion("USW"), isTogglable = false, toolTip = "Connects to USW region." },
-                new ButtonInfo { buttonText = "Connect to <color=grey>[<color=cyan>US</color>]</color>", method =() => Important.ConnectToRegion("US"), isTogglable = false, toolTip = "Connects to US region." },
                 new ButtonInfo { buttonText = "Buy Barrel", method =() => Important.BuyBarrel(), isTogglable = false, toolTip = "Puts the barrel in your cart." },
                 new ButtonInfo { buttonText = "Disable Wind Barriers", enableMethod =() => WindPatch.enabled = true, method =() => Important.DisableWindBarriers(), disableMethod =() => { WindPatch.enabled = false; Important.EnableWindBarriers(); }, isTogglable = true, toolTip = "Disables the wind barriers." },
                 new ButtonInfo { buttonText = "Unload Menu", method =() => Important.UnloadMenu(), isTogglable = false, toolTip = "Unloads the menu and you wont be able to use it until you restart." },
