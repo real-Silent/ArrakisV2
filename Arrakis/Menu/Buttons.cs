@@ -543,6 +543,7 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "GlobalReturn", method = Settings.GlobalReturn, isTogglable = false, toolTip = "Returns you to the previous category." },
                 new ButtonInfo { buttonText = "AcceptPrompt", method =() => { NotificationManager.ClearAllNotifications(); CurrentPrompt.accept?.Invoke(); StopCurrentPrompt(); }, isTogglable = false },
                 new ButtonInfo { buttonText = "DeclinePrompt", method =() => { NotificationManager.ClearAllNotifications(); CurrentPrompt.decline?.Invoke(); StopCurrentPrompt(); }, isTogglable = false },
+                new ButtonInfo { buttonText = "Keyboard", method =() => KeyboardManager.Toggle(), isTogglable = false },
             },
         };
 

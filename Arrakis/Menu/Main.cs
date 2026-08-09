@@ -493,7 +493,7 @@ namespace Arrakis.Menu
 
             if (!disableReturnButton && CurrentCategoryName != "Main")
                 ReturnButton(false);
-
+            SearchButton(true);
             // Page Buttons
             GameObject gameObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
             if (!UnityInput.Current.GetKey(keyboardButton))
@@ -1392,7 +1392,44 @@ namespace Arrakis.Menu
                 imageTransform.localPosition += new Vector3(0f, 0.0475f, 0f);
             imageTransform.rotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
         }
+        public static Texture2D searchIcon;
+        public static Material searchMat;
+        private static void SearchButton(bool showsearchbutton)
+        {
+            GameObject buttonObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            buttonObject.GetComponent<BoxCollider>().isTrigger = true;
+            buttonObject.transform.parent = menu.transform;
+            buttonObject.transform.rotation = Quaternion.identity;
+            buttonObject.transform.localScale = new Vector3(0.09f, 0.102f, 0.08f);
+            buttonObject.transform.localPosition = new Vector3(0.44f, -0.450f, -0.58f);
+            if (showsearchbutton)
+                buttonObject.transform.localPosition += new Vector3(0f, 0.16f, 0f);
+            buttonObject.AddComponent<ButtonCollider>().relatedText = "Keyboard";
+            ColorChanger colorChanger = buttonObject.AddComponent<ColorChanger>();
+            colorChanger.colors = buttonColors[0];
 
+            Image searchImage = new GameObject
+            {
+                transform = { parent = canvasObject.transform }
+            }.AddComponent<Image>();
+
+            if (searchIcon == null)
+                searchIcon = LoadTexture("search");
+            if (searchMat == null)
+                searchMat = new Material(searchImage.material);
+
+            searchImage.material = searchMat;
+            searchImage.material.SetTexture("_MainTex", searchIcon);
+            searchImage.color = textColors[1];
+
+            RectTransform imageTransform = searchImage.GetComponent<RectTransform>();
+            imageTransform.localPosition = Vector3.zero;
+            imageTransform.sizeDelta = new Vector2(.03f, .03f);
+            imageTransform.localPosition = new Vector3(.052f, -.35f / 2.6f, -.58f / 2.6f);
+            if (showsearchbutton)
+                imageTransform.localPosition += new Vector3(0f, 0.0475f, 0f);
+            imageTransform.rotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
+        }
         public static Texture2D LoadTexture(string fileName)
         {
             using (Stream stream = typeof(Plugin).Assembly.GetManifestResourceStream($"Arrakis.Resources.Images.{fileName}.png"))
