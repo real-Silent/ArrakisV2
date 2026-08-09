@@ -37,7 +37,7 @@ namespace Arrakis.Menu
             {
                 NotificationManager.SendNotification($"<color=yellow>[ARRAKIS]</color> Check console for info on {input}");
                 CustomConsole.Log($"Got {input} name {CosmeticsController.instance.GetItemNameFromDisplayName(input)}", CustomConsole.LogType.Info);
-                CustomConsole.Log($" Got {input} SO {CosmeticsController.instance.GetCosmeticSOFromDisplayName(input)}", CustomConsole.LogType.Info);
+                CustomConsole.Log($"Got {input} SO {CosmeticsController.instance.GetCosmeticSOFromDisplayName(input)}", CustomConsole.LogType.Info);
             }
         }
     }
