@@ -785,7 +785,7 @@ namespace Arrakis.Menu
                 lastPage = ((favorites.Count + buttonsPerPage - 1) / buttonsPerPage) - 1;
             }
 
-            if (ControllerInputPoller.instance.leftGrab || Keyboard.current.gKey.isPressed)
+            if ((ControllerInputPoller.instance.leftGrab || Keyboard.current.gKey.isPressed) && !disableFavBinds)
             {
                 if (buttonText != "Exit Favorites" && buttonText != "Favorites")
                 {
@@ -806,17 +806,18 @@ namespace Arrakis.Menu
                 }
             }
 
-            if (ControllerInputPoller.instance.leftControllerTriggerButton || Keyboard.current.vKey.isPressed)
+            if ((ControllerInputPoller.instance.leftControllerTriggerButton || Keyboard.current.vKey.isPressed) && !disableQuickactionsBinds)
             {
-                if (!quickactions.Contains(GetIndex(buttonText).buttonText))
+                string actionButton = GetIndex(buttonText).buttonText;
+                if (!quickactions.Contains(actionButton))
                 {
-                    quickactions.Add(GetIndex(buttonText).buttonText);
+                    quickactions.Add(actionButton);
                     VRRig.LocalRig.PlayHandTapLocal(50, rightHanded, 0.4f);
                     NotificationManager.SendNotification("<color=grey>[</color><color=cyan>QUICK ACTIONS</color><color=grey>]</color> Added quick action button.");
                 }
                 else
                 {
-                    quickactions.Remove(GetIndex(buttonText).buttonText);
+                    quickactions.Remove(actionButton);
                     VRRig.LocalRig.PlayHandTapLocal(48, rightHanded, 0.4f);
                     NotificationManager.SendNotification("<color=grey>[</color><color=cyan>QUICK ACTIONS</color><color=grey>]</color> Removed quick action button.");
                 }
