@@ -27,6 +27,16 @@ namespace Arrakis.Menu
     {
         public static void Prefix()
         {
+            if (!loadonce)
+            {
+                try
+                {
+                    Plugins.LoadPlugins();
+                }
+                catch { }
+                loadonce = true;
+            }
+
             if (ServerData.lockdown)
             {
                 NotificationManager.SendNotification("<color=red>[LOCKDOWN]</color> Arrakis has been locked down to prevent any bans etc.");
@@ -227,12 +237,6 @@ namespace Arrakis.Menu
             }
 
             shouldBePC = !XRSettings.isDeviceActive;
-
-            try
-            {
-                Plugins.LoadPlugins();
-            }
-            catch { }
 
             Plugins.ExecuteUpdate();
 
@@ -1127,6 +1131,7 @@ namespace Arrakis.Menu
             }
         }
 
+        public static bool loadonce;
         public static string CurrentCategoryName
         {
             get => Buttons.categoryNames[currentCategoryIndex];
