@@ -1,3 +1,4 @@
+<div>
 ## **Arrakis**
 
 **Arrakis is a *Gorilla Tag* mod menu with overpowered and fun features**
@@ -14,3 +15,5 @@
 
 **Join our discord or visit our site**
 [Arrakis Discord](https://novax.lol/d) * [Arrakis Site](https://novax.lol)
+  
+</div>
