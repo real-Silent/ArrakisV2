@@ -1544,6 +1544,10 @@ namespace Arrakis.Menu
 
         public static void DestroyMenu()
         {
+            if (GetIndex("First Person").enabled)
+                Toggle("First Person");
+            disablecustomboards = true;
+
             GameObject.Destroy(menu);
             menu = null;
 
