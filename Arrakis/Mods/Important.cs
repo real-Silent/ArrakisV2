@@ -34,8 +34,17 @@ namespace Arrakis.Mods
 {
     public class Important
     {
-        public static void QuitGame() =>
-            Application.Quit();
+        public static void QuitGame()
+        {
+            Prompt("Are you sure you want to exit Gorilla Tag.", () => 
+            {
+                Application.Quit();
+            }, () => 
+            {
+                CurrentCategoryName = "Main";
+                StopCurrentPrompt();
+            });
+        }
 
         public static void Disconnect() =>
             NetworkSystem.Instance.ReturnToSinglePlayer();
