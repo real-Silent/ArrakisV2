@@ -2,6 +2,7 @@
 using Arrakis.Menu;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -27,13 +28,17 @@ namespace Arrakis.Managers
         }
 
         public static readonly List<Plugin> plugins = new List<Plugin>();
-        public static void LoadPlugin()
+        public static void LoadPlugins()
         {
+            Buttons.buttons[Main.GetCategory("Plugin Settings")] = new[] { new ButtonInfo { buttonText = "Exit Plugin Settings", method = () => Main.CurrentCategoryName = "Settings", isTogglable = false, toolTip = "Returns you back to the settings menu." } };
+
             if (plugins.Count > 0)
             {
                 foreach (var plugin in plugins.Where(plugin => plugin.enabled))
                     DisablePlugin(plugin.assembly);
             }
+
+            plugins.Clear();
 
             if (!Directory.Exists($"{PluginInfo.BaseDirectory}/Plugins"))
                 Directory.CreateDirectory($"{PluginInfo.BaseDirectory}/Plugins");
@@ -71,6 +76,17 @@ namespace Arrakis.Managers
                 }
                 catch { }
             }
+
+            foreach (Plugin plugin in plugins)
+            {
+                try
+                {
+                    Main.AddButton(Main.GetCategory("Plugin Settings"), new ButtonInfo { buttonText = plugin.fileName, overlapText = (plugin.enabled ? "<color=grey>[</color><color=cyan>ON</color><color=grey>]</color>" : "<color=grey>[</color><color=red>OFF</color><color=grey>]</color>") + " " + plugin.name, method = () => TogglePlugin(plugin), isTogglable = false, toolTip = plugin.description });
+                }
+                catch (Exception e) { CustomConsole.Log($"Error loading plugin {plugin.name} , reason: {e}", CustomConsole.LogType.Error); }
+            }
+
+            Main.AddButton(Main.GetCategory("Plugin Settings"), new ButtonInfo { buttonText = "Reload Plugins", method = ReloadPlugins, isTogglable = false, toolTip = "Reloads all of your plugins." });
         }
 
         private static string SanitizeFileName(string name)
@@ -172,6 +188,17 @@ namespace Arrakis.Managers
                 ResolveHooks(assembly).OnDisable?.Invoke(null, null);
             }
             catch { }
+        }
+
+        public static void ReloadPlugins()
+        {
+            Dictionary<string, bool> snapshot = plugins.ToDictionary(p => p.fileName, p => p.enabled);
+
+            LoadPlugins();
+            foreach (Plugin plugin in plugins)
+                if (snapshot.TryGetValue(plugin.fileName, out bool wasEnabled) && plugin.enabled != wasEnabled)
+                    TogglePlugin(plugin);
+            Main.CurrentCategoryName = "Main";
         }
     }
 }

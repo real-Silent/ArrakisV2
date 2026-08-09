@@ -1,4 +1,5 @@
 ﻿using Arrakis.Classes;
+using Arrakis.Managers;
 using Arrakis.Mods;
 using Arrakis.Notifications;
 using Arrakis.Patches;
@@ -47,7 +48,8 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Movement Settings", method =() => CurrentCategoryName = "Movement Settings", isTogglable = false, toolTip = "Opens the movement settings for the menu." },
                 new ButtonInfo { buttonText = "Visual Settings", method =() => CurrentCategoryName = "Visual Settings", isTogglable = false, toolTip = "Opens the visual settings for the menu." },
                 new ButtonInfo { buttonText = "Projectile Settings", method =() => CurrentCategoryName = "Projectile Settings", isTogglable = false, toolTip = "Opens the projectile settings for the menu." },
-                new ButtonInfo { buttonText = "Gunlib Settings", method =() => CurrentCategoryName = "Gunlib Settings", isTogglable = false, toolTip = "Opens the projectile settings for the menu." },
+                new ButtonInfo { buttonText = "Gunlib Settings", method =() => CurrentCategoryName = "Gunlib Settings", isTogglable = false, toolTip = "Opens the gunlib settings for the menu." },
+                new ButtonInfo { buttonText = "Plugin Settings", method =() => CurrentCategoryName = "Plugin Settings", isTogglable = false, toolTip = "Opens the plugin settings for the menu." },
             },
 
             new ButtonInfo[] { // Menu Settings
@@ -118,6 +120,11 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Disable Gun Pointer", method =() => gunpointer = false, disableMethod =() => gunpointer = true, isTogglable = true, toolTip = "Disables the gun pointer.", ShowInArraylist = false },
                 new ButtonInfo { buttonText = "Disable Gun Line", method =() => gunline = false, disableMethod =() => gunline = true, isTogglable = true, toolTip = "Disables the gun line.", ShowInArraylist = false },
                 new ButtonInfo { buttonText = "Change Gun Line", overlapText = "Change Gun Line <color=grey>[<color=cyan>Default</color>]</color>", method =() => ChangeGunline(), isTogglable = false, toolTip = "Changes the gunline.", ShowInArraylist = false },
+            },
+
+            new ButtonInfo[] { // Plugin Settings
+                new ButtonInfo { buttonText = "Exit Plugin Settings", method =() => CurrentCategoryName = "Settings", isTogglable = false, toolTip = "Returns you back to the settings menu." },
+                new ButtonInfo { buttonText = "Reload Plugins", method = Plugins.ReloadPlugins, isTogglable = false, toolTip = "Reloads all of your plugins." }
             },
 
             new ButtonInfo[] { // Enabled
@@ -528,6 +535,7 @@ namespace Arrakis.Menu
             "Visual Settings",
             "Projectile Settings",
             "Gunlib Settings",
+            "Plugin Settings",
             "Enabled",
             "Favorites",
             "Rooms",

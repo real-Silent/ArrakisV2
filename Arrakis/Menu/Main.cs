@@ -230,7 +230,7 @@ namespace Arrakis.Menu
 
             try
             {
-                Plugins.LoadPlugin();
+                Plugins.LoadPlugins();
             }
             catch { }
 
