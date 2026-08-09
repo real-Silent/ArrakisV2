@@ -46,6 +46,19 @@ namespace Arrakis.Mods
             });
         }
 
+        public static void UnloadMenu()
+        {
+            Prompt("Are you sure you want to unload the menu you wont be able to use it again unless you restart youe game", () =>
+            {
+                if (menu != null)
+                    DestroyMenu();
+            }, () =>
+            {
+                CurrentCategoryName = "Main";
+                StopCurrentPrompt();
+            });
+        }
+
         public static void Disconnect() =>
             NetworkSystem.Instance.ReturnToSinglePlayer();
 

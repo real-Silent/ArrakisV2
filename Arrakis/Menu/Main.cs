@@ -1541,5 +1541,27 @@ namespace Arrakis.Menu
             }
             buttons[category] = buttonInfoList.ToArray();
         }
+
+        public static void DestroyMenu()
+        {
+            GameObject.Destroy(menu);
+            menu = null;
+
+            GameObject.Destroy(reference);
+            reference = null;
+
+            if (leftReference != null)
+            {
+                GameObject.Destroy(leftReference);
+                leftReference = null;
+            }
+            if (rightReference != null)
+            {
+                GameObject.Destroy(rightReference);
+                rightReference = null;
+            }
+            GameObject.Destroy(GameObject.Find("Arrakis"));
+            HarmonyLoader.RemovePatches();
+        }
     }
 }
