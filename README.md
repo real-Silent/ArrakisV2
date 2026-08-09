@@ -1,18 +1,21 @@
-### Arrakis Mod Menu
+<div align="center">
 
-**Arrakis is a *Gorilla Tag* mod menu with overpowered and fun features**
+# Arrakis
 
-Including:
-```
-> Movement
-> Visual
-> Fun
-> Overpowered
-> Master
-> More
-```
+**Arrakis is a** ***Gorilla Tag*** **mod menu with overpowered and fun features.**
 
-*While using Arrakis your ban rate is lowered alot meaning you cannot get banned by reports etc.*
+| Features |
+|:-------:|
+| *Movement* |
+| *Visual* |
+| *VRRig* |
+| *Fun* |
+| *Overpowered* |
+| *Master* |
+| *And way more* |
 
-**Join our discord or visit our site**
-[Arrakis Discord](https://discord.gg/dtQdz59FJG) [Arrakis Site](https://novax.lol)
+**Join our Discord or visit our site:**
+
+[Arrakis Discord](https://novax.lol/d) · [Arrakis Site](https://novax.lol)
+
+</div>
