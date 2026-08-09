@@ -1,19 +1,21 @@
-<div>
-## **Arrakis**
+<div align="center">
 
-**Arrakis is a *Gorilla Tag* mod menu with overpowered and fun features**
+# Arrakis
+
+**Arrakis is a** ***Gorilla Tag*** **mod menu with overpowered and fun features.**
 
 | Features |
-|----------|
-| *movement* |
-| *visual* |
-| *vrrig* |
-| *fun* |
-| *overpowered* |
-| *master* |
-| *way more* |
+|:-------:|
+| *Movement* |
+| *Visual* |
+| *VR Rig* |
+| *Fun* |
+| *Overpowered* |
+| *Master* |
+| *And way more* |
 
-**Join our discord or visit our site**
-[Arrakis Discord](https://novax.lol/d) * [Arrakis Site](https://novax.lol)
-  
+**Join our Discord or visit our site:**
+
+[Arrakis Discord](https://novax.lol/d) · [Arrakis Site](https://novax.lol)
+
 </div>
