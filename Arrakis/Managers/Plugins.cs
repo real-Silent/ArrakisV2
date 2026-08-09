@@ -38,6 +38,8 @@ namespace Arrakis.Managers
                     DisablePlugin(plugin.assembly);
             }
 
+            cacheHooks.Clear();
+            cacheAssembly.Clear();
             plugins.Clear();
 
             if (!Directory.Exists($"{PluginInfo.BaseDirectory}/Plugins"))
