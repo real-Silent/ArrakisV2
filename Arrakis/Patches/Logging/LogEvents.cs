@@ -1,5 +1,5 @@
 /*
- * Arrakis | Patches/Patchers/LogEvent.cs
+ * Arrakis | Patches/Logging/LogEvent.cs
  *
  * Copyright (C) 2026 Arrakis
  * https://github.com/real-Silent/Arrakis

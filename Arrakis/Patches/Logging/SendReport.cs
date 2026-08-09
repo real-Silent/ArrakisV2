@@ -1,5 +1,5 @@
 ﻿/*
- * Arrakis | Patches/Patchers/SendReport.cs
+ * Arrakis | Patches/Logging/SendReport.cs
  *
  * Copyright (C) 2026 Arrakis
  * https://github.com/real-Silent/Arrakis
