@@ -126,7 +126,7 @@ namespace Arrakis.Managers
                 EnablePlugin(plugin.assembly);
             plugin.enabled = !plugin.enabled;
             string disabledPluginsString = plugins.Where(p => !p.enabled).Select(p => p.fileName).Aggregate("", (current, disabledPlugin) => current + (disabledPlugin + "\n"));
-            File.WriteAllText($"{PluginInfo.BaseDirectory}/Plugins/DisabledPlugins.txt", disabledPluginsString);
+            File.WriteAllText($"{PluginInfo.BaseDirectory}/Plugins/disabled.txt", disabledPluginsString);
             Main.GetIndex(plugin.fileName).overlapText = (plugin.enabled ? "<color=grey>[</color><color=cyan>ON</color><color=grey>]</color>" : "<color=grey>[</color><color=red>OFF</color><color=grey>]</color>") + " " + plugin.name;
         }
 
