@@ -1,3 +1,4 @@
+using Arrakis.Classes;
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
@@ -7,7 +8,7 @@ using UnityEngine.InputSystem;
 using static Arrakis.Menu.Main;
 using static Arrakis.Settings;
 
-namespace Arrakis.Classes // nova forced me to do this -sleepy
+namespace Arrakis.Managers // nova forced me to do this -sleepy
 {
     public class KeyboardManager : MonoBehaviour
     {
