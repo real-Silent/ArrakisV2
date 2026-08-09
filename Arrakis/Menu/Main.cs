@@ -1417,5 +1417,61 @@ namespace Arrakis.Menu
             CurrentCategoryName = "Rooms";
             pageNumber = 0;
         }
+
+        public static int AddCategory(string categoryName)
+        {
+            List<ButtonInfo[]> buttonInfoList = buttons.ToList();
+            buttonInfoList.Add(new ButtonInfo[] { });
+            buttons = buttonInfoList.ToArray();
+            List<string> categoryList = categoryNames.ToList();
+            categoryList.Add(categoryName);
+            categoryNames = categoryList.ToArray();
+            return buttons.Length - 1;
+        }
+        public static void RemoveCategory(string categoryName)
+        {
+            List<ButtonInfo[]> buttonInfoList = buttons.ToList();
+            buttonInfoList.RemoveAt(GetCategory(categoryName));
+            buttons = buttonInfoList.ToArray();
+            List<string> categoryList = categoryNames.ToList();
+            categoryList.Remove(categoryName);
+            categoryNames = categoryList.ToArray();
+        }
+        public static void AddButton(int category, ButtonInfo button, int index = -1)
+        {
+            List<ButtonInfo> buttonInfoList = buttons[category].ToList();
+            if (index > 0)
+                buttonInfoList.Insert(index, button);
+            else
+                buttonInfoList.Add(button);
+            buttons[category] = buttonInfoList.ToArray();
+        }
+        public static void AddButtons(int category, ButtonInfo[] buttons, int index = -1)
+        {
+            List<ButtonInfo> buttonInfoList = Buttons.buttons[category].ToList();
+            if (index > 0)
+            {
+                for (int i = 0; i < buttons.Length; i++)
+                    buttonInfoList.Insert(index + i, buttons[i]);
+            }
+            else
+                buttonInfoList.AddRange(buttons);
+            Buttons.buttons[category] = buttonInfoList.ToArray();
+        }
+        public static void RemoveButton(int category, string name, int index = -1)
+        {
+            List<ButtonInfo> buttonInfoList = buttons[category].ToList();
+            if (index > 0)
+                buttonInfoList.RemoveAt(index);
+            else
+            {
+                foreach (var button in buttonInfoList.Where(button => button.buttonText == name))
+                {
+                    buttonInfoList.Remove(button);
+                    break;
+                }
+            }
+            buttons[category] = buttonInfoList.ToArray();
+        }
     }
 }
