@@ -455,40 +455,26 @@ namespace Arrakis.Menu
             }
 
             // Disconnect
+            float thing = -0.3f;
             if (disconnectButton)
             {
-                GameObject disconnectbutton = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                if (!UnityInput.Current.GetKey(keyboardButton))
-                    disconnectbutton.layer = 2;
-                Destroy(disconnectbutton.GetComponent<Rigidbody>());
-                disconnectbutton.GetComponent<BoxCollider>().isTrigger = true;
-                disconnectbutton.transform.parent = menu.transform;
-                disconnectbutton.transform.rotation = Quaternion.identity;
-                disconnectbutton.transform.localScale = new Vector3(0.09f, 0.9f, 0.08f);
-                disconnectbutton.transform.localPosition = new Vector3(0.56f, 0f, 0.6f);
-                disconnectbutton.GetComponent<Renderer>().material.color = buttonColors[0].colors[0].color;
-                disconnectbutton.AddComponent<ButtonCollider>().relatedText = "Disconnect";
+                AddButton(-0.3f, -1, GetIndex("Disconnect"));
+                thing -= 0.1f;
+            }
 
-                colorChanger = disconnectbutton.AddComponent<ColorChanger>();
-                colorChanger.colors = buttonColors[0];
-
-                Text discontext = new GameObject
+            if (quickactions.Count > 0)
+            {
+                foreach (string action in quickactions.ToList())
                 {
-                    transform = { parent = canvasObject.transform }
-                }.AddComponent<Text>();
-                discontext.text = "Disconnect";
-                discontext.font = currentFont;
-                discontext.fontSize = 1;
-                discontext.color = textColors[0];
-                discontext.alignment = TextAnchor.MiddleCenter;
-                discontext.resizeTextForBestFit = true;
-                discontext.resizeTextMinSize = 0;
-
-                RectTransform rectt = discontext.GetComponent<RectTransform>();
-                rectt.localPosition = Vector3.zero;
-                rectt.sizeDelta = new Vector2(0.2f, 0.03f);
-                rectt.localPosition = new Vector3(0.064f, 0f, 0.23f);
-                rectt.rotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
+                    ButtonInfo button = GetIndex(action);
+                    if (button == null)
+                    {
+                        quickactions.Remove(action);
+                        continue;
+                    }
+                    AddButton(thing, -1, button);
+                    thing -= 0.1f;
+                }
             }
 
             if (!disableReturnButton && CurrentCategoryName != "Main")
@@ -820,6 +806,24 @@ namespace Arrakis.Menu
                 }
             }
 
+            if (ControllerInputPoller.instance.leftControllerTriggerButton || Keyboard.current.vKey.isPressed)
+            {
+                if (!quickactions.Contains(GetIndex(buttonText).buttonText))
+                {
+                    quickactions.Add(GetIndex(buttonText).buttonText);
+                    VRRig.LocalRig.PlayHandTapLocal(50, rightHanded, 0.4f);
+                    NotificationManager.SendNotification("<color=grey>[</color><color=cyan>QUICK ACTIONS</color><color=grey>]</color> Added quick action button.");
+                }
+                else
+                {
+                    quickactions.Remove(GetIndex(buttonText).buttonText);
+                    VRRig.LocalRig.PlayHandTapLocal(48, rightHanded, 0.4f);
+                    NotificationManager.SendNotification("<color=grey>[</color><color=cyan>QUICK ACTIONS</color><color=grey>]</color> Removed quick action button.");
+                }
+                ReloadMenu();
+                return;
+            }
+
             if (buttonText == "PreviousPage")
             {
                 pageNumber--;
@@ -1120,6 +1124,7 @@ namespace Arrakis.Menu
 
         public static List<ButtonInfo> enabledMods = new List<ButtonInfo>() { };
         public static readonly List<string> favorites = new List<string> { "Exit Favorites" };
+        public static readonly List<string> quickactions = new List<string>();
 
         public static SphereCollider buttonCollider;
         public static Camera TPC;

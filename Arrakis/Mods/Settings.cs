@@ -490,6 +490,7 @@ namespace Arrakis
             public int GunLineindex { get; set; }
             public List<string> enabledMods { get; set; } = new List<string>();
             public List<string> favorites { get; set; } = new List<string>();
+            public List<string> quickactions { get; set; } = new List<string>();
         }
 
         public static void SaveSettings()
@@ -507,7 +508,8 @@ namespace Arrakis
                 currentprojectilecolor = currentprojectilecolor,
                 GunLineindex = GunLineindex,
                 enabledMods = Buttons.buttons.SelectMany(x => x).Where(x => x.enabled).Select(x => x.buttonText).ToList(),
-                favorites = favorites
+                favorites = favorites,
+                quickactions = quickactions
             };
             settings.enabledMods = Buttons.buttons.SelectMany(x => x).Where(x => x.enabled).Select(x => x.buttonText).ToList();
             File.WriteAllText(Path.Combine(PluginInfo.BaseDirectory, "SavedSettings.json"), JsonConvert.SerializeObject(settings, Formatting.Indented));
@@ -557,6 +559,10 @@ namespace Arrakis
                 favorites.Clear();
                 foreach (var fav in settings.favorites)
                     favorites.Add(fav);
+
+                quickactions.Clear();
+                foreach (var quick in settings.quickactions)
+                    quickactions.Add(quick);
             }
             catch (Exception ex)
             {
