@@ -8,7 +8,7 @@
 |:-------:|
 | *Movement* |
 | *Visual* |
-| *VR Rig* |
+| *VRRig* |
 | *Fun* |
 | *Overpowered* |
 | *Master* |
