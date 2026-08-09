@@ -493,7 +493,7 @@ namespace Arrakis.Menu
 
             if (!disableReturnButton && CurrentCategoryName != "Main")
                 ReturnButton(false);
-            SearchButton(true);
+            //SearchButton(true);
             // Page Buttons
             GameObject gameObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
             if (!UnityInput.Current.GetKey(keyboardButton))
