@@ -43,7 +43,9 @@ namespace Arrakis.Menu
 
                 new ButtonInfo { buttonText = "Enabled", method =() => CurrentCategoryName = "Enabled", isTogglable = false, toolTip = "Opens the enabled page for the menu." },
                 new ButtonInfo { buttonText = "Favorites", method =() => CurrentCategoryName = "Favorites", isTogglable = false, toolTip = "Opens the favorites page for the menu." },
+
                 new ButtonInfo { buttonText = "Rooms", method =() => Main.LoadRooms(), isTogglable = false, toolTip = "Opens the rooms page for the menu." },
+                new ButtonInfo { buttonText = "Global", method =() => CurrentCategoryName = "Global", isTogglable = false, toolTip = "Opens the global page for the menu." },
 
                 new ButtonInfo { buttonText = "Important", method =() => CurrentCategoryName = "Important", isTogglable = false, toolTip = "Opens the important page for the menu." },
                 new ButtonInfo { buttonText = "Computer", method =() => CurrentCategoryName = "Computer", isTogglable = false, toolTip = "Opens the computer page for the menu." },
@@ -159,6 +161,22 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Exit Rooms", method =() => CurrentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },
             },
 
+            new ButtonInfo[] { // Global
+                new ButtonInfo { buttonText = "Exit Global", method =() => CurrentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },
+                new ButtonInfo { buttonText = "Change Queue <color=grey>[<color=cyan>Default</color>]</color>", method =() => Important.ChangeQueue("DEFAULT"), isTogglable = false, toolTip = "Changes the current queue." },
+                new ButtonInfo { buttonText = "Change Queue <color=grey>[<color=cyan>Minigames</color>]</color>", method =() => Important.ChangeQueue("MINIGAMES"), isTogglable = false, toolTip = "Changes the current queue." },
+                new ButtonInfo { buttonText = "Change Queue <color=grey>[<color=cyan>Competitive</color>]</color>", method =() => Important.ChangeQueue("COMPETITIVE"), isTogglable = false, toolTip = "Changes the current queue." },
+                new ButtonInfo { buttonText = "Change Gamemode <color=grey>[<color=cyan>Casual</color>]</color>", method =() => Important.ChangeGamemode("CASUAL"), isTogglable = false, toolTip = "Changes your current gamemode." },
+                new ButtonInfo { buttonText = "Change Gamemode <color=grey>[<color=cyan>Infection</color>]</color>", method =() => Important.ChangeGamemode("INFECTION"), isTogglable = false, toolTip = "Changes your current gamemode." },
+                new ButtonInfo { buttonText = "Change Gamemode <color=grey>[<color=cyan>Hunt</color>]</color>", method =() => Important.ChangeGamemode("HUNTDOWW"), isTogglable = false, toolTip = "Changes your current gamemode." },
+                new ButtonInfo { buttonText = "Change Gamemode <color=grey>[<color=cyan>Paintbrawl</color>]</color>", method =() => Important.ChangeGamemode("PAINTBRAWL"), isTogglable = false, toolTip = "Changes your current gamemode." },
+                new ButtonInfo { buttonText = "Change Gamemode <color=grey>[<color=cyan>Guardian</color>]</color>", method =() => Important.ChangeGamemode("GUARDIAN"), isTogglable = false, toolTip = "Changes your current gamemode." },
+                new ButtonInfo { buttonText = "Change Gamemode <color=grey>[<color=cyan>GhostTag</color>]</color>", method =() => Important.ChangeGamemode("GHOST"), isTogglable = false, toolTip = "Changes your current gamemode." },
+                new ButtonInfo { buttonText = "Change Gamemode <color=grey>[<color=cyan>Ambush</color>]</color>", method =() => Important.ChangeGamemode("AMBUSH"), isTogglable = false, toolTip = "Changes your current gamemode." },
+                new ButtonInfo { buttonText = "Change Gamemode <color=grey>[<color=cyan>FreezeTag</color>]</color>", method =() => Important.ChangeGamemode("FREEZETAG"), isTogglable = false, toolTip = "Changes your current gamemode." },
+                new ButtonInfo { buttonText = "Change Gamemode <color=grey>[<color=cyan>Custom</color>]</color>", method =() => Important.ChangeGamemode("CUSTOM"), isTogglable = false, toolTip = "Changes your current gamemode." },
+            },
+
             new ButtonInfo[] { // Important
                 new ButtonInfo { buttonText = "Exit Important", method =() => CurrentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },
 
@@ -176,18 +194,6 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Connect to <color=grey>[<color=cyan>US</color>]</color>", method =() => Important.ConnectToRegion("US"), isTogglable = false, toolTip = "Connects to US region." },
                 new ButtonInfo { buttonText = "Buy Barrel", method =() => Important.BuyBarrel(), isTogglable = false, toolTip = "Puts the barrel in your cart." },
                 new ButtonInfo { buttonText = "Disable Wind Barriers", enableMethod =() => WindPatch.enabled = true, method =() => Important.DisableWindBarriers(), disableMethod =() => { WindPatch.enabled = false; Important.EnableWindBarriers(); }, isTogglable = true, toolTip = "Disables the wind barriers." },
-                new ButtonInfo { buttonText = "Change Queue <color=grey>[<color=cyan>Default</color>]</color>", method =() => Important.ChangeQueue("DEFAULT"), isTogglable = false, toolTip = "Changes the current queue." },
-                new ButtonInfo { buttonText = "Change Queue <color=grey>[<color=cyan>Minigames</color>]</color>", method =() => Important.ChangeQueue("MINIGAMES"), isTogglable = false, toolTip = "Changes the current queue." },
-                new ButtonInfo { buttonText = "Change Queue <color=grey>[<color=cyan>Competitive</color>]</color>", method =() => Important.ChangeQueue("COMPETITIVE"), isTogglable = false, toolTip = "Changes the current queue." },
-                new ButtonInfo { buttonText = "Change Gamemode <color=grey>[<color=cyan>Casual</color>]</color>", method =() => Important.ChangeGamemode("CASUAL"), isTogglable = false, toolTip = "Changes your current gamemode." },
-                new ButtonInfo { buttonText = "Change Gamemode <color=grey>[<color=cyan>Infection</color>]</color>", method =() => Important.ChangeGamemode("INFECTION"), isTogglable = false, toolTip = "Changes your current gamemode." },
-                new ButtonInfo { buttonText = "Change Gamemode <color=grey>[<color=cyan>Hunt</color>]</color>", method =() => Important.ChangeGamemode("HUNTDOWW"), isTogglable = false, toolTip = "Changes your current gamemode." },
-                new ButtonInfo { buttonText = "Change Gamemode <color=grey>[<color=cyan>Paintbrawl</color>]</color>", method =() => Important.ChangeGamemode("PAINTBRAWL"), isTogglable = false, toolTip = "Changes your current gamemode." },
-                new ButtonInfo { buttonText = "Change Gamemode <color=grey>[<color=cyan>Guardian</color>]</color>", method =() => Important.ChangeGamemode("GUARDIAN"), isTogglable = false, toolTip = "Changes your current gamemode." },
-                new ButtonInfo { buttonText = "Change Gamemode <color=grey>[<color=cyan>GhostTag</color>]</color>", method =() => Important.ChangeGamemode("GHOST"), isTogglable = false, toolTip = "Changes your current gamemode." },
-                new ButtonInfo { buttonText = "Change Gamemode <color=grey>[<color=cyan>Ambush</color>]</color>", method =() => Important.ChangeGamemode("AMBUSH"), isTogglable = false, toolTip = "Changes your current gamemode." },
-                new ButtonInfo { buttonText = "Change Gamemode <color=grey>[<color=cyan>FreezeTag</color>]</color>", method =() => Important.ChangeGamemode("FREEZETAG"), isTogglable = false, toolTip = "Changes your current gamemode." },
-                new ButtonInfo { buttonText = "Change Gamemode <color=grey>[<color=cyan>Custom</color>]</color>", method =() => Important.ChangeGamemode("CUSTOM"), isTogglable = false, toolTip = "Changes your current gamemode." },
                 new ButtonInfo { buttonText = "Unload Menu", method =() => Important.UnloadMenu(), isTogglable = false, toolTip = "Unloads the menu and you wont be able to use it until you restart." },
             },
 
@@ -561,6 +567,7 @@ namespace Arrakis.Menu
             "Enabled",
             "Favorites",
             "Rooms",
+            "Global",
             "Important",
             "Computer",
             "Safety",
