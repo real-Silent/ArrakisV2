@@ -276,7 +276,7 @@ namespace Arrakis
                 VRRig.LocalRig.enabled = true;
         }
 
-        private static int currentTheme = 0;
+        public static int currentTheme = 0;
 
         public static void ChangeMenuTheme()
         {

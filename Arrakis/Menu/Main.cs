@@ -1289,6 +1289,12 @@ namespace Arrakis.Menu
             if (menu != null && prompts.Count <= 1)
                 ReloadMenu();
         }
+        public static void PromptSingle(string Message, Action Accept = null, string AcceptButton = "Ok")
+        {
+            prompts.Add(new PromptData { message = Message, accept = Accept, decline = null, accepttext = AcceptButton, declinetext = null });
+            if (menu != null && prompts.Count <= 1)
+                ReloadMenu();
+        }
 
         public static void ShowPrompt()
         {
@@ -1327,7 +1333,7 @@ namespace Arrakis.Menu
                 text.alignment = TextAnchor.MiddleCenter;
                 text.resizeTextForBestFit = true;
                 text.resizeTextMinSize = 0;
-                text.color = textColors[1];
+                text.color = currentTheme == 9 ? textColors[0] : textColors[1];
                 RectTransform textRect = text.GetComponent<RectTransform>();
                 textRect.sizeDelta = new Vector2(0.2f, 0.03f);
                 textRect.localPosition = new Vector3(0.064f, CurrentPrompt.declinetext != null ? 0.075f : 0f, -0.16f);
@@ -1352,7 +1358,7 @@ namespace Arrakis.Menu
                 text.alignment = TextAnchor.MiddleCenter;
                 text.resizeTextForBestFit = true;
                 text.resizeTextMinSize = 0;
-                text.color = textColors[1];
+                text.color = currentTheme == 9 ? textColors[0] : textColors[1];
                 RectTransform rect2 = text.GetComponent<RectTransform>();
                 rect2.sizeDelta = new Vector2(0.2f, 0.03f);
                 rect2.localPosition = new Vector3(0.064f, -0.075f, -0.16f);
@@ -1383,7 +1389,7 @@ namespace Arrakis.Menu
                 returnMat = new Material(returnImage.material);
             returnImage.material = returnMat;
             returnImage.material.SetTexture("_MainTex", returnIcon);
-            returnImage.color = textColors[1];
+            returnImage.color = currentTheme == 9 ? textColors[0] : textColors[1];
             RectTransform imageTransform = returnImage.GetComponent<RectTransform>();
             imageTransform.localPosition = Vector3.zero;
             imageTransform.sizeDelta = new Vector2(.03f, .03f);
