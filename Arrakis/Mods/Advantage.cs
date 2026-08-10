@@ -77,7 +77,16 @@ namespace Arrakis.Mods
                 {
                     if (rig != null && rig != VRRig.LocalRig)
                     {
-                        TagPlayer(rig.Creator);
+                        if (!VRRig.LocalRig.IsTagged() && rig.IsTagged())
+                        {
+                            VRRig.LocalRig.enabled = false;
+                            VRRig.LocalRig.transform.position = rig.transform.position;
+                            GameMode.ReportTag(NetworkSystem.Instance.LocalPlayer);
+                        }
+                        else
+                        {
+                            VRRig.LocalRig.enabled = true;
+                        }
                     }
                 }
             }
