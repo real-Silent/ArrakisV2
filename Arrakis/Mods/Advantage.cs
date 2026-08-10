@@ -19,6 +19,7 @@
  */
 
 using System.Collections.Generic;
+using System.Linq;
 using Arrakis.Classes;
 using Arrakis.Extensions;
 using Arrakis.Notifications;
@@ -54,14 +55,7 @@ namespace Arrakis.Mods
                 {
                     if (rig != null && rig != VRRig.LocalRig)
                     {
-                        if (!rig.IsTagged() && VRRig.LocalRig.IsTagged())
-                        {
-                            VRRig.LocalRig.enabled = false;
-                            VRRig.LocalRig.transform.position = rig.transform.position;
-                            GameMode.ReportTag(rig.Creator);
-                        }
-                        else
-                            VRRig.LocalRig.enabled = true;
+                        TagPlayer(rig.Creator);
                     }
                 }
             }
@@ -83,14 +77,7 @@ namespace Arrakis.Mods
                 {
                     if (rig != null && rig != VRRig.LocalRig)
                     {
-                        if (rig.IsTagged() && !VRRig.LocalRig.IsTagged())
-                        {
-                            VRRig.LocalRig.enabled = false;
-                            VRRig.LocalRig.transform.position = rig.transform.position;
-                            GameMode.ReportTag(NetworkSystem.Instance.LocalPlayer);
-                        }
-                        else
-                            VRRig.LocalRig.enabled = true;
+                        TagPlayer(rig.Creator);
                     }
                 }
             }
@@ -108,12 +95,7 @@ namespace Arrakis.Mods
                     VRRig rig = Ray.collider.GetComponentInParent<VRRig>();
                     if (rig != null && rig != VRRig.LocalRig)
                     {
-                        if (!rig.IsTagged())
-                        {
-                            VRRig.LocalRig.enabled = false;
-                            VRRig.LocalRig.transform.position = rig.transform.position;
-                            GameMode.ReportTag(rig.Creator);
-                        }
+                        TagPlayer(rig.Creator);
                     }
                 }
                 else
@@ -163,32 +145,6 @@ namespace Arrakis.Mods
 
             hitboxleft.GetComponent<Renderer>().material.color = new Color(Settings.backgroundColor.GetCurrentColor().r, Settings.backgroundColor.GetCurrentColor().g, Settings.backgroundColor.GetCurrentColor().b, 0.2f);
             hitboxright.GetComponent<Renderer>().material.color = new Color(Settings.backgroundColor.GetCurrentColor().r, Settings.backgroundColor.GetCurrentColor().g, Settings.backgroundColor.GetCurrentColor().b, 0.2f);
-        }
-
-        public static void TagPlr(NetPlayer plr, string btnTextToDisable)
-        {
-            VRRig target = RigManager.GetVRRigFromPlayer(plr);
-            if (target == null)
-            {
-                NotificationManager.SendNotification("<color=red>[ARRAKIS]</color> target is null.");
-                return;
-            }
-            if (target.IsTagged())
-            {
-                NotificationManager.SendNotification("<color=red>[ARRAKIS]</color> target is tagged.");
-                return;
-            }
-            if (!VRRig.LocalRig.IsTagged())
-            {
-                NotificationManager.SendNotification("<color=red>[ARRAKIS]</color> you are not tagged.");
-                return;
-            }
-            VRRig.LocalRig.enabled = false;
-            VRRig.LocalRig.transform.position = target.transform.position;
-            GameMode.ReportTag(plr);
-            VRRig.LocalRig.enabled = true;
-            if (GetIndex(btnTextToDisable).enabled)
-                Toggle(btnTextToDisable);
         }
 
         public static void DestroyHitboxes()
@@ -261,6 +217,26 @@ namespace Arrakis.Mods
                                 VRRig.LocalRig.enabled = true;
                         }
                     }
+                }
+            }
+        }
+
+        public static void TagPlayer(NetPlayer player)
+        {
+            VRRig[] target = VRRigCache.ActiveRigs.Where(x => x != null && x.Creator == player).ToArray();
+            foreach (var rig in target)
+            {
+                if (!VRRig.LocalRig.IsTagged())
+                {
+                    NotificationManager.SendNotification("<color=grey>[</color><color=cyan>ARRAKIS</color><color=grey>]</color> You are not tagged.");
+                    VRRig.LocalRig.enabled = true;
+                    return;
+                }
+                if (VRRig.LocalRig.IsTagged() && !rig.IsTagged())
+                {
+                    VRRig.LocalRig.enabled = false;
+                    VRRig.LocalRig.transform.position = rig.transform.position;
+                    GameMode.ReportTag(player);
                 }
             }
         }
