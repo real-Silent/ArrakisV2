@@ -20,7 +20,6 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using Arrakis.Classes;
 using Arrakis.Extensions;
 using Arrakis.Notifications;
 using ExitGames.Client.Photon;
@@ -46,17 +45,29 @@ namespace Arrakis.Mods
                     {
                         if (!tag.currentInfected.Contains(plr))
                                 tag.AddInfectedPlayer(plr);
+                        Toggle("Tag All");
+                        ReloadMenu();
                     }
                 }
             }
             else
             {
+                bool tagged = true;
                 foreach (VRRig rig in VRRigCache.ActiveRigs)
                 {
                     if (rig != null && rig != VRRig.LocalRig)
                     {
-                        TagPlayer(rig.Creator);
+                        if (!rig.IsTagged())
+                        {
+                            TagPlayer(rig.Creator);
+                            tagged = false;
+                        }
                     }
+                }
+                if (tagged)
+                {
+                    Toggle("Tag All");
+                    ReloadMenu();
                 }
             }
         }
@@ -69,10 +80,13 @@ namespace Arrakis.Mods
                 {
                     if (!tag.currentInfected.Contains(NetworkSystem.Instance.LocalPlayer))
                         tag.AddInfectedPlayer(NetworkSystem.Instance.LocalPlayer);
+                    Toggle("Tag Self");
+                    ReloadMenu();
                 }
             }
             else
             {
+                bool tagged = true;
                 foreach (VRRig rig in VRRigCache.ActiveRigs)
                 {
                     if (rig != null && rig != VRRig.LocalRig)
@@ -82,12 +96,15 @@ namespace Arrakis.Mods
                             VRRig.LocalRig.enabled = false;
                             VRRig.LocalRig.transform.position = rig.transform.position;
                             GameMode.ReportTag(NetworkSystem.Instance.LocalPlayer);
-                        }
-                        else
-                        {
-                            VRRig.LocalRig.enabled = true;
+                            tagged = false;
                         }
                     }
+                }
+                if (tagged)
+                {
+                    VRRig.LocalRig.enabled = true;
+                    Toggle("Tag Self");
+                    ReloadMenu();
                 }
             }
         }
