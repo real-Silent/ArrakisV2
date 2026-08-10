@@ -24,7 +24,7 @@ namespace Arrakis
     {
         public const string GUID = "org.nova.arrakis";
         public const string Name = "Arrakis";
-        public const string Description = "Created by nova (@novaissilly). and Sleepy";
+        public const string Description = "Created by nova (@s1lnt). and Sleepy";
         public const string Version = "2.3.0";
         public const string BaseDirectory = "Arrakis";
         public const string ServerApi = "https://novax.lol/arrakis/api";
