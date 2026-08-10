@@ -36,6 +36,6 @@ namespace Arrakis.Mods
             }
         }
         public static void SoundSpam(int index) =>
-            PlaySound(index, false, 99f, ControllerInputPoller.instance.rightControllerSecondaryButton);
+            PlaySound(index, false, 99f, ControllerInputPoller.instance.rightControllerTriggerButton);
     }
 }
