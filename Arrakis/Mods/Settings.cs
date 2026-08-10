@@ -21,6 +21,7 @@
 using Arrakis.Classes;
 using Arrakis.Classes.Menu;
 using Arrakis.Menu;
+using Arrakis.Mods;
 using Arrakis.Notifications;
 using GorillaLocomotion;
 using Newtonsoft.Json;
@@ -144,7 +145,7 @@ namespace Arrakis
             List<ButtonInfo> buttons = new List<ButtonInfo>
             {
                 new ButtonInfo { buttonText = "exit plr", overlapText = $"Exit {plrName}", method =() => Players(), isTogglable = false, toolTip = "Returns to the players page for the menu." },
-                //new ButtonInfo { buttonText = "Tag plr", overlapText = $"Tag {plrName}", method =() => Advantage.TagPlr(plr, $"Tag {plrName}"), isTogglable = true, toolTip = "Tags the person." },
+                new ButtonInfo { buttonText = "Tag plr", overlapText = $"Tag {plrName}", method =() => Advantage.TagPlayer(plr), isTogglable = true, toolTip = "Tags the person." },
                 new ButtonInfo { buttonText = "plr name", overlapText = $"Name: {plrName}", label = true },
                 new ButtonInfo { buttonText = "plr id", overlapText = $"UserID: {plr.UserId}", label = true },
                 new ButtonInfo { buttonText = "plr fps", overlapText = $"FPS: {rig.fps}", label = true },
