@@ -286,6 +286,15 @@ namespace Arrakis.Menu
                 }
             }
             catch { }
+
+            try
+            {
+                if (!VRRig.LocalRig.enabled)
+                {
+                    
+                }
+            }
+            catch { }
         }
         public static float saveRoomDelay;
         private static IEnumerator OpenMenu()
