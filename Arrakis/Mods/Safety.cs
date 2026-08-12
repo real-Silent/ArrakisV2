@@ -298,7 +298,7 @@ namespace Arrakis.Mods
             { "Fusioned", "Fusioned" },
             { "y u lookin in here weirdo", "Malachi Menu Reborn" },
             { "ØƦƁƖƬ", "Orbit" },
-            { "Atlas", "Atlas" }
+            { "Atlas", "Atlas" },
             { "𓂀𓆣𓋹𓏏𓇋⚚⚛⚡☯☢☣☠♛♚♜♞♟✶✷✸✹✺✻✼✽✾✿❀❁❂❃❄❅❆❇❈❉❊❋⟁⟆⟐⟡⟢⟣⟤⟥⟦⟧⟨⟩⟪⟫⟬⟭⟮⟯⟰⟱⟲⟳⟴⟵⟶", "𓂀𓆣𓋹𓏏𓇋⚚⚛⚡☯☢☣☠♛♚♜♞♟✶✷✸✹✺✻✼✽✾✿❀❁❂❃❄❅❆❇❈❉❊❋⟁⟆⟐⟡⟢⟣⟤⟥⟦⟧⟨⟩⟪⟫⟬⟭⟮⟯⟰⟱⟲⟳⟴⟵⟶" }
         };
     }
