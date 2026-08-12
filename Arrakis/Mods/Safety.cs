@@ -190,7 +190,7 @@ namespace Arrakis.Mods
                 {
                     originalName = PhotonNetwork.LocalPlayer.NickName;
 
-                    foreach (NetPlayer target in NetworkSystem.Instance.PlayerListOthers)
+                    foreach (NetPlayer target in NetworkSystem.Instance.PlayerList)
                     {
                         var color = new Color(UnityEngine.Random.Range(0f, 1f), UnityEngine.Random.Range(0f, 1f), UnityEngine.Random.Range(0f, 1f));
                         string name = Important.GenerateRandomString(UnityEngine.Random.Range(0, 14));
