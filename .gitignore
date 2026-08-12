@@ -39,3 +39,4 @@ Arrakis/Directory.Build.props
 >>>>>>> Stashed changes
 Arrakis/Directory.Build.targets
 .gitignore
+Arrakis/Directory.Packages.props
