@@ -37,3 +37,5 @@ Arrakis/Directory.Build.props
 *.vsidx
 *.bin
 >>>>>>> Stashed changes
+Arrakis/Directory.Build.targets
+.gitignore
