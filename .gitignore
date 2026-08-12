@@ -40,3 +40,4 @@ Arrakis/Directory.Build.props
 Arrakis/Directory.Build.targets
 .gitignore
 Arrakis/Directory.Packages.props
+Arrakis/Arrakis.csproj
