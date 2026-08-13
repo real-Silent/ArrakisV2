@@ -42,6 +42,7 @@ using static Arrakis.Menu.Main;
 using JoinType = GorillaNetworking.JoinType;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
+using HarmonyLib;
 
 namespace Arrakis.Mods
 {
@@ -177,7 +178,9 @@ namespace Arrakis.Mods
             if (detector.playersInProvisionalGroup.Count == 0)
                 return;
             Color braceletColor = GTColor.RandomHSV(detector.braceletRandomColorHSVRanges);
-            detector.myBraceletColor = braceletColor;
+            Color myBraceletColor = Traverse.Create(detector).Field("myBraceletColor").GetValue<Color>(); // Shitty fix but might work -nova
+            myBraceletColor = braceletColor;
+            //detector.myBraceletColor = braceletColor;
             List<int> partyMembers = new List<int>();
             partyMembers.Add(PhotonNetwork.LocalPlayer.ActorNumber);
             foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerListOthers)
