@@ -20,6 +20,7 @@
 
 using System.Collections.Generic;
 using System.Reflection;
+using Arrakis.Classes;
 using Arrakis.Notifications;
 using BepInEx;
 using GorillaTagScripts;
@@ -534,5 +535,154 @@ namespace Arrakis.Mods
             }
             NetworkSystem.Instance.PlayerListOthers.ForEach(p => RoomControls.KickPlayer(p.ActorNumber));
         }
+
+        // Lucy mods so we can release when october i know its early but yea -nova
+        //public static HalloweenGhostChaser Lucy
+        //{
+        //    get
+        //    {
+        //        return GameObject.Find("idk lucys 2026 halloween path yet since its not even october").GetComponent<HalloweenGhostChaser>();
+        //    }
+        //}
+        //
+        //public static void SpawnBlueLucy()
+        //{
+        //    if (Lucy.IsMine)
+        //    {
+        //        Lucy.timeGongStarted = 0f;
+        //        Lucy.isSummoned = false;
+        //        Lucy.currentState = HalloweenGhostChaser.ChaseState.Gong;
+        //    }
+        //    else
+        //    {
+        //        NotificationManager.SendNotification("<color=yellow>[ARRAKIS]</color> You are not master client this mod wont work.");
+        //    }
+        //}
+        //public static void SpawnRedLucy()
+        //{
+        //    if (Lucy.IsMine)
+        //    {
+        //        Lucy.timeGongStarted = 0f;
+        //        Lucy.isSummoned = true;
+        //        Lucy.currentState = HalloweenGhostChaser.ChaseState.Gong;
+        //    }
+        //    else
+        //    {
+        //        NotificationManager.SendNotification("<color=yellow>[ARRAKIS]</color> You are not master client this mod wont work.");
+        //    }
+        //}
+        //public static void DespawnLucy()
+        //{
+        //    if (Lucy.IsMine)
+        //    {
+        //        Lucy.isSummoned = false;
+        //        Lucy.currentState = HalloweenGhostChaser.ChaseState.Dormant;
+        //    }
+        //    else
+        //    {
+        //        NotificationManager.SendNotification("<color=yellow>[ARRAKIS]</color> You are not master client this mod wont work.");
+        //    }
+        //}
+        //public static void FastLucy()
+        //{
+        //    if (Lucy.IsMine)
+        //    {
+        //        Lucy.currentSpeed = 3f;
+        //    }
+        //    else
+        //    {
+        //        NotificationManager.SendNotification("<color=yellow>[ARRAKIS]</color> You are not master client this mod wont work.");
+        //    }
+        //}
+        //public static void SlowLucy()
+        //{
+        //    if (Lucy.IsMine)
+        //    {
+        //        Lucy.currentSpeed = 0.1f;
+        //    }
+        //    else
+        //    {
+        //        NotificationManager.SendNotification("<color=yellow>[ARRAKIS]</color> You are not master client this mod wont work.");
+        //    }
+        //}
+        //
+        //private static float lucyspaztimething = 0f;
+        //public static void SpazLucy()
+        //{
+        //    if (Lucy.IsMine)
+        //    {
+        //        if (Time.time > lucyspaztimething)
+        //        {
+        //            Lucy.currentState = Lucy.currentState == HalloweenGhostChaser.ChaseState.InitialRise ? HalloweenGhostChaser.ChaseState.Gong : HalloweenGhostChaser.ChaseState.InitialRise;
+        //            lucyspaztimething = Time.time + 0.5f;
+        //        }
+        //    }
+        //    else
+        //    {
+        //        NotificationManager.SendNotification("<color=yellow>[ARRAKIS]</color> You are not master client this mod wont work.");
+        //    }
+        //}
+        //
+        //private static float lucyspaztarget = 0f;
+        //public static void SpazLucyTarget()
+        //{
+        //    if (Lucy.IsMine)
+        //    {
+        //        if (Time.time > lucyspaztarget)
+        //        {
+        //            Lucy.currentState = HalloweenGhostChaser.ChaseState.Chasing;
+        //            Lucy.targetPlayer = RigManager.GetRandomVRRig(true).Creator;
+        //            lucyspaztarget = Time.time + 0.5f;
+        //        }
+        //    }
+        //    else
+        //    {
+        //        NotificationManager.SendNotification("<color=yellow>[ARRAKIS]</color> You are not master client this mod wont work.");
+        //    }
+        //}
+        //
+        //public static void MoveLucyGun()
+        //{
+        //    if (GetGunInput(false))
+        //    {
+        //        var GunData = RenderGun();
+        //        GameObject NewPointer = GunData.NewPointer;
+        //        RaycastHit Ray = GunData.Ray;
+        //        if (GetGunInput(true))
+        //        {
+        //            if (Lucy.IsMine)
+        //            {
+        //                Lucy.transform.position = NewPointer.transform.position;
+        //            }
+        //            else
+        //            {
+        //                NotificationManager.SendNotification("<color=yellow>[ARRAKIS]</color> You are not master client this mod wont work.");
+        //            }
+        //        }
+        //    }
+        //}
+        //
+        //public static void GrabLucy()
+        //{
+        //    if (Lucy.IsMine)
+        //    {
+        //        if (ControllerInputPoller.instance.rightGrab)
+        //        {
+        //            Lucy.targetPlayer = null;
+        //            Lucy.currentState = HalloweenGhostChaser.ChaseState.Chasing;
+        //            Lucy.transform.position = VRRig.LocalRig.rightHandTransform.position;
+        //        }
+        //        if (ControllerInputPoller.instance.leftGrab)
+        //        {
+        //            Lucy.targetPlayer = null;
+        //            Lucy.currentState = HalloweenGhostChaser.ChaseState.Chasing;
+        //            Lucy.transform.position = VRRig.LocalRig.leftHandTransform.position;
+        //        }
+        //    }
+        //    else
+        //    {
+        //        NotificationManager.SendNotification("<color=yellow>[ARRAKIS]</color> You are not master client this mod wont work.");
+        //    }
+        //}
     }
 }

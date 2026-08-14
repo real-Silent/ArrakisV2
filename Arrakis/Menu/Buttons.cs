@@ -460,6 +460,16 @@ namespace Arrakis.Menu
             new ButtonInfo[] { // Master
                 new ButtonInfo { buttonText = "Exit Master", method =() => CurrentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },
 
+                //new ButtonInfo { buttonText = "Spawn Blue Lucy", method =() => Master.SpawnBlueLucy(), isTogglable = false, toolTip = "Spawns the blue ghost Lucy in forest." },
+                //new ButtonInfo { buttonText = "Spawn Red Lucy", method =() => Master.SpawnRedLucy(), isTogglable = false, toolTip = "Spawns the red ghost Lucy in forest." },
+                //new ButtonInfo { buttonText = "Depawn Red Lucy", method =() => Master.DespawnLucy(), isTogglable = false, toolTip = "Despawns the red ghost Lucy in forest." },
+                //new ButtonInfo { buttonText = "Fast Lucy", method =() => Master.FastLucy(), isTogglable = false, toolTip = "Makes the ghost Lucy become really fast." },
+                //new ButtonInfo { buttonText = "Slow Lucy", method =() => Master.SlowLucy(), isTogglable = false, toolTip = "Makes the ghost Lucy become really slow." },
+                //new ButtonInfo { buttonText = "Spaz Lucy", method =() => Master.SpazLucy(), isTogglable = true, toolTip = "Makes the ghost Lucy spaz out." },
+                //new ButtonInfo { buttonText = "Spaz Lucy Target", method =() => Master.SpazLucyTarget(), isTogglable = true, toolTip = "Makes the ghost Lucy spaz the target." },
+                //new ButtonInfo { buttonText = "Move Lucy Gun", method =() => Master.MoveLucyGun(), isTogglable = true, toolTip = "Makes the ghost Lucy go to your gun pointer." },
+                //new ButtonInfo { buttonText = "Grab Lucy", method =() => Master.GrabLucy(), isTogglable = true, toolTip = "Makes the ghost Lucy go to your hand when holding your grips." },
+
                 new ButtonInfo { buttonText = "Grey Screen All", method =() => Master.GreyScreenAll(), isTogglable = false, toolTip = "Sets everyone screen to grey." },
                 new ButtonInfo { buttonText = "Fix Screen All", method =() => Master.NoGreyScreenAll(), isTogglable = false, toolTip = "Sets everyone screen to normal." },
                 new ButtonInfo { buttonText = "Spaz Grey Screen All", method =() => Master.SpazGreyScreenAll(), isTogglable = true, toolTip = "Spazes the grey screen on everyone." },
