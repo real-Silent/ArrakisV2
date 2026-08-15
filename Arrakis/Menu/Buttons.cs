@@ -486,7 +486,6 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Get All Tryon Cosmetics", method =() => Experimental.GetTryonCosmetics(), isTogglable = false, toolTip = "Gets all the try on cosmetics and logs in the console." },
 
                 new ButtonInfo { buttonText = "Get RPC Data", method =() => Experimental.GetRPCData(), isTogglable = false, toolTip = "Gets the rpc data and logs to a file." },
-                new ButtonInfo { buttonText = "Elevator Kick All", method =() => Experimental.ElevatorKickAll(), isTogglable = false, toolTip = "Attempts to kick people using the elevator." },
                 new ButtonInfo { buttonText = "Kick All In Party", method =() => Experimental.KickAllInParty(), isTogglable = false, toolTip = "Kicks everyone in your party." },
                 new ButtonInfo { buttonText = "Leave Party", method =() => FriendshipGroupDetection.Instance.LeaveParty(), isTogglable = false, toolTip = "Leaves the party you are in." },
                 new ButtonInfo { buttonText = "Party Lag Gun", method =() => Experimental.PartyLagGun(), disableMethod =() => EventPatches.Override = null, isTogglable = true, toolTip = "Lets you lag who ever you shoot if they are in your party." },

@@ -63,10 +63,6 @@ namespace Arrakis.Mods
                 }
             }
         }
-
-        public static void ElevatorKickAll() =>
-           GRElevatorManager._instance.SendRPC("RemoteElevatorButtonPress", RpcTarget.MasterClient, new[] { 3, (int)GRElevatorManager._instance.currentLocation });
-
         public static void KickAllInParty()
         {
             if (FriendshipGroupDetection.Instance.IsInParty)
