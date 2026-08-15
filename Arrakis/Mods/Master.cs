@@ -500,22 +500,6 @@ namespace Arrakis.Mods
             _GRM.gameEntityManager.photonView.RPC("CreateItemRPC", RpcTarget.AllBuffered, new int[] { netId }, new int[] { hash }, new long[] { BitPackUtils.PackWorldPosForNetwork(position) }, new int[] { BitPackUtils.PackQuaternionForNetwork(rotation) }, createData, new int[] { 0 });
             Safety.RPCProc();
         }
-        public static void BreakElevator() // dosnt work while in a for loop for me ig :sob: -sleepy
-        {
-            if (GRElevatorManager._instance == null) return;
-
-            foreach (var elevator in GRElevatorManager._instance.allElevators)
-            {
-                elevator.UpdateLocalState(GRElevator.ElevatorState.DoorBeginOpening);
-                elevator.UpdateLocalState(GRElevator.ElevatorState.DoorMovingOpening);
-                elevator.UpdateLocalState(GRElevator.ElevatorState.DoorBeginClosing);
-                elevator.UpdateLocalState(GRElevator.ElevatorState.DoorMovingClosing);
-                elevator.UpdateLocalState(GRElevator.ElevatorState.DoorBeginOpening);
-                elevator.UpdateLocalState(GRElevator.ElevatorState.DoorMovingOpening);
-                elevator.UpdateLocalState(GRElevator.ElevatorState.DoorBeginClosing);
-                elevator.UpdateLocalState(GRElevator.ElevatorState.DoorMovingClosing);
-            }
-        }
         public static void VIMKickAll()
         {
             if (SubscriptionManager.Instance.subData[VRRig.LocalRig.Creator].active)
