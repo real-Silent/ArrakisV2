@@ -298,7 +298,7 @@ namespace Arrakis.Mods
                 if (lockTarget != null && gunLocked && FriendshipGroupDetection.Instance.IsInMyGroup(lockTarget.Creator.GetPlayerRef().UserId))
                 {
                     AntiKickEvents = true;
-                    for (int i = 0; i < 4000; i++)
+                    for (int i = 0; i < 3400; i++)
                         FriendshipGroupDetection.Instance.photonView.RPC("RequestPartyGameMode", lockTarget.Creator.GetPlayerRef(), new object[] { GameMode.gameModeKeyByName.Keys.ToArray()[Random.Range(0, GameMode.gameModeKeyByName.Keys.Count)] });
 
                     Safety.RPCProc();
@@ -327,7 +327,7 @@ namespace Arrakis.Mods
             {
                 plagDelay = Time.time + 10f;
                 var partyPlayers = NetworkSystem.Instance.PlayerListOthers.Where(plr => FriendshipGroupDetection.Instance.IsInMyGroup(plr.UserId)).ToList();
-                for (int i = 0; i < 4000; i++)
+                for (int i = 0; i < 3400; i++)
                 {
                     foreach (var plr in partyPlayers)
                     {
