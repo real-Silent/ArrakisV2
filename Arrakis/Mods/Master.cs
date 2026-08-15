@@ -377,9 +377,9 @@ namespace Arrakis.Mods
                     piece.gameObject.SetActive(false);
             }
         }
-        public static void BlockSphere(float radius = 2f, int density = 140)
+        public static void BlockSphere(float radius = 2f, int density = 40)
         {
-            if (!PhotonNetwork.IsMasterClient) 
+            if (!PhotonNetwork.IsMasterClient)
                 return;
             Vector3 center = GorillaTagger.Instance.offlineVRRig.transform.position;
             for (int i = 0; i < density * 2; i++)
