@@ -431,52 +431,6 @@ namespace Arrakis.Mods
                 GameObject.Destroy(tag.gameObject);
             TaggednametagPool.Clear();
         }
-
-        private static Dictionary<VRRig, TextMeshPro> GrabTagsPool = new Dictionary<VRRig, TextMeshPro>();
-        public static void GrabTags()
-        {
-            if (NetworkSystem.Instance.InRoom)
-            {
-                foreach (var rig in GrabTagsPool.Keys.Where(r => r == null || !VRRigCache.ActiveRigs.Contains(r)).ToList())
-                {
-                    if (GrabTagsPool[rig] != null)
-                        GameObject.Destroy(GrabTagsPool[rig].gameObject);
-                    GrabTagsPool.Remove(rig);
-                }
-                foreach (VRRig rig in VRRigCache.ActiveRigs)
-                {
-                    if (rig != null && rig != VRRig.LocalRig)
-                    {
-                        string grabbing = "";
-                        if (Overpowered.CheckHandLinks(rig))
-                        {
-                            grabbing = "Grabbing";
-                        }
-                        else { grabbing = ""; }
-                        ;
-
-                        if (!GrabTagsPool.TryGetValue(rig, out var tag))
-                        {
-                            tag = CreateText(followheadmesh ? rig.headMesh.transform : rig.transform, TextAlignmentOptions.Center, grabbing, followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor, 0.7f, 3);
-                            GrabTagsPool.Add(rig, tag);
-                        }
-                        Transform parent = followheadmesh ? rig.headMesh.transform : rig.transform;
-                        if (tag.transform.parent != parent)
-                            tag.transform.SetParent(parent, false);
-                        tag.color = followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor;
-                        tag.transform.LookAt(Camera.main.transform);
-                        tag.transform.Rotate(0f, 180f, 0f);
-                    }
-                }
-            }
-        }
-        public static void DisableGrabTags()
-        {
-            foreach (var tag in GrabTagsPool.Values)
-                GameObject.Destroy(tag.gameObject);
-            GrabTagsPool.Clear();
-        }
-
         private static TextMeshPro CreateText(Transform parent, TextAlignmentOptions alignment, string text, Color color, float scale, int index = 0)
         {
             GameObject textHolder = new GameObject("nametag_arrakis");
