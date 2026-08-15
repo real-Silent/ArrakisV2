@@ -444,6 +444,11 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Unlock Room", method =() => Overpowered.SetRoomStatus(true), isTogglable = false, toolTip = "Unlocks the current room making it so people can join." },
                 new ButtonInfo { buttonText = "Rope Fling Gun", method =() => Overpowered.RopeFlingGun(), isTogglable = true, toolTip = "Flings the rope you shoot." },
                 new ButtonInfo { buttonText = "Freeze Rope Gun", method =() => Overpowered.FreezeRopeGun(), isTogglable = true, toolTip = "Freezes the rope you shoot." },
+                new ButtonInfo { buttonText = "Rise Lava", method =() => Overpowered.ChangeLavaState(InfectionLavaController.RisingLavaState.Rising), isTogglable = false, toolTip = "Rises the lava." },
+                new ButtonInfo { buttonText = "Fill Lava", method =() => Overpowered.ChangeLavaState(InfectionLavaController.RisingLavaState.Full), isTogglable = false, toolTip = "Fills the lava." },
+                new ButtonInfo { buttonText = "Drain Lava", method =() => Overpowered.ChangeLavaState(InfectionLavaController.RisingLavaState.Draining), isTogglable = false, toolTip = "Drain the lava." },
+                new ButtonInfo { buttonText = "Empty Lava", method =() => Overpowered.ChangeLavaState(InfectionLavaController.RisingLavaState.Drained), isTogglable = false, toolTip = "Removes the lava." },
+                new ButtonInfo { buttonText = "Erupt Lava", method =() => Overpowered.ChangeLavaState(InfectionLavaController.RisingLavaState.Erupting), isTogglable = false, toolTip = "Erupts the lava." },
             },
 
             new ButtonInfo[] { // Master
