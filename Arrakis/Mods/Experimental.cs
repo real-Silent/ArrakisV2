@@ -32,6 +32,7 @@ using GorillaGameModes;
 using GorillaNetworking;
 using GorillaTag;
 using GorillaTagScripts;
+using HarmonyLib;
 using Photon.Pun;
 using Photon.Realtime;
 using Photon.Voice.PUN;
@@ -42,7 +43,6 @@ using static Arrakis.Menu.Main;
 using JoinType = GorillaNetworking.JoinType;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
-using HarmonyLib;
 
 namespace Arrakis.Mods
 {
@@ -165,44 +165,6 @@ namespace Arrakis.Mods
             }
             GorillaComputer.instance.friendJoinCollider.playerIDsCurrentlyTouching.Remove(PhotonNetwork.LocalPlayer.UserId);
             GorillaComputer.instance.OnGroupJoinButtonPress(0, GorillaComputer.instance.friendJoinCollider);
-        }
-        private static float instantPartyDelay;
-        public static void InstantParty() // ai genned looking ahh code 🙏 -sleepy
-        {
-            if (Time.time <= instantPartyDelay)
-                return;
-            instantPartyDelay = Time.time + 0.1f;
-            var detector = FriendshipGroupDetection.Instance;
-            detector.suppressPartyCreationUntilTimestamp = 0f;
-            detector.groupCreateAfterTimestamp = 0f;
-            if (detector.playersInProvisionalGroup.Count == 0)
-                return;
-            Color braceletColor = GTColor.RandomHSV(detector.braceletRandomColorHSVRanges);
-            Color myBraceletColor = Traverse.Create(detector).Field("myBraceletColor").GetValue<Color>(); // Shitty fix but might work -nova
-            myBraceletColor = braceletColor;
-            //detector.myBraceletColor = braceletColor;
-            List<int> partyMembers = new List<int>();
-            partyMembers.Add(PhotonNetwork.LocalPlayer.ActorNumber);
-            foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerListOthers)
-            {
-                bool isMember = detector.IsInMyGroup(player.UserId) || detector.playersInProvisionalGroup.Contains(player.ActorNumber);
-                if (isMember)
-                    partyMembers.Add(player.ActorNumber);
-            }
-            detector.SendPartyFormedRPC(FriendshipGroupDetection.PackColor(braceletColor), partyMembers.ToArray(), false);
-            Safety.RPCProc();
-        }
-
-        private static float breakDelay;
-        public static void PartyBreakNetworkTriggers()
-        {
-            var detector = FriendshipGroupDetection.Instance;
-            if (!detector.IsInParty)
-                return;
-            if (Time.time <= breakDelay)
-                return;
-            breakDelay = Time.time + 0.4f;
-            detector.photonView.RPC("PartyMemberIsAboutToGroupJoin", RpcTarget.All, Array.Empty<object>());
         }
         private static bool antiKickEvents;
         public static bool AntiKickEvents // kidnda works? -sleepy
@@ -414,36 +376,6 @@ namespace Arrakis.Mods
             }
         }
 
-        public static void VStumpCrashPlayer(int actorNumber) => // map locked? 180 worked once -sleepy
-            PhotonNetwork.RaiseEvent((byte)UnityEngine.Random.Range(180, 190), new object[] { "leaveGame", (double)actorNumber, false, (double)actorNumber }, new RaiseEventOptions { TargetActors = new[] { actorNumber } }, SendOptions.SendReliable);
-
-        public static void VStumpCrashGun()
-        {
-            if (GetGunInput(false))
-            {
-                var GunData = RenderGun();
-                GameObject NewPointer = GunData.NewPointer;
-                RaycastHit Ray = GunData.Ray;
-                if (lockTarget != null && gunLocked)
-                {
-                    VStumpCrashPlayer(lockTarget.Creator.ActorNumber);
-                }
-                if (GetGunInput(true))
-                {
-                    VRRig rig = Ray.collider.GetComponentInParent<VRRig>();
-                    if (rig != null && rig != VRRig.LocalRig)
-                    {
-                        lockTarget = rig;
-                        gunLocked = true;
-                    }
-                }
-            }
-            else
-            {
-                lockTarget = null;
-                gunLocked = false;
-            }
-        }
         public static void SwitchToTcp()
         {
             var loadBalancingPeer = PhotonNetwork.NetworkingClient.LoadBalancingPeer;

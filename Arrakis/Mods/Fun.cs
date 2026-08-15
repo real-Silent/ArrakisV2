@@ -789,16 +789,6 @@ namespace Arrakis.Mods
             GorillaTagger.Instance.myVRRig.SendRPC("EnableNonCosmeticHandItemRPC", RpcTarget.All, enable, Lefthand);
             Safety.RPCProc();
         }
-        public static void InvisableRig(bool invisible, GorillaBodyType bodyType = GorillaBodyType.Invisible) // Might have been patched to cs :<<< -sleepy 
-        {
-            var player = NetworkSystem.Instance.LocalPlayer;
-            var actor = player.ActorNumber;
-            GhostReactor.instance.grManager.GetView.RPC("PlayerStateChangeRPC", RpcTarget.All, new object[] { actor, actor, GRPlayer.GRPlayerState.Ghost });
-            var localRig = VRRig.LocalRig;
-            localRig.bodyRenderer.SetGameModeBodyType( invisible ? bodyType : GorillaBodyType.Default);
-            localRig.SetInvisibleToLocalPlayer(invisible);
-        }
-
         public static void RainbowMonkey()
         {
             Vector3 color = new Vector3(UnityEngine.Random.value, UnityEngine.Random.value, UnityEngine.Random.value);
