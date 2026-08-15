@@ -274,6 +274,7 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Rig Follow Player Gun", method =() => Movement.RigFollowPlayerGun(), disableMethod =() => Movement.FixRig(), isTogglable = true, toolTip = "Lets your vrrig follow the person who you shoot." },
                 new ButtonInfo { buttonText = "Pull Mod <color=grey>[<color=cyan>RJ</color>]</color>", method =() => Movement.PullMod(), isTogglable = true, toolTip = "Give you fake pull, dosnt pass checks." },
                 new ButtonInfo { buttonText = "Pull Boost <color=grey>[<color=cyan>RJ</color>]</color>", method =() => Movement.PullBoost(), isTogglable = true, toolTip = "Give you fake pull, might pass checks." },
+                new ButtonInfo { buttonText = "Predictions", enableMethod =() => Movement.CreatePredThingy(), method =() => Movement.Preds(), disableMethod =() => Movement.RemovePredThingy(), isTogglable = true, toolTip = "Give you predictions, might fail checks." },
             },
 
             new ButtonInfo[] { // VRRig

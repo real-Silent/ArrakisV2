@@ -21,6 +21,7 @@
 using Arrakis.Patches.Patchers;
 using GorillaExtensions;
 using GorillaLocomotion;
+using GorillaLocomotion.Climbing;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Valve.VR;
@@ -228,7 +229,31 @@ namespace Arrakis.Mods
                     tp = false;
             }
         }
-
+        public static GameObject lp;
+        public static GameObject rp;
+        public static void CreatePredThingy()
+        {
+            lp = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            Object.Destroy(lp.GetComponent<BoxCollider>());
+            lp.GetComponent<Renderer>().enabled = false;
+            lp.AddComponent<GorillaVelocityTracker>();
+            rp = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            Object.Destroy(rp.GetComponent<BoxCollider>());
+            rp.GetComponent<Renderer>().enabled = false;
+            rp.AddComponent<GorillaVelocityTracker>();
+        }
+        public static void RemovePredThingy()
+        {
+            Object.Destroy(lp);
+            Object.Destroy(rp);
+        }
+        public static void Preds()
+        {
+            lp.transform.position = GorillaTagger.Instance.headCollider.transform.position - GorillaTagger.Instance.leftHandTransform.position;
+            rp.transform.position = GorillaTagger.Instance.headCollider.transform.position - GorillaTagger.Instance.rightHandTransform.position;
+            GTPlayer.Instance.leftHand.controllerTransform.position -= lp.GetComponent<GorillaVelocityTracker>().GetAverageVelocity(true, 0) * 0.025f;
+            GTPlayer.Instance.rightHand.controllerTransform.transform.position -= rp.GetComponent<GorillaVelocityTracker>().GetAverageVelocity(true, 0) * 0.025f;
+        }
         public static void RigGun()
         {
             if (GetGunInput(false))
