@@ -148,6 +148,7 @@ namespace Arrakis.Menu
 
             new ButtonInfo[] { // Plugin Settings
                 new ButtonInfo { buttonText = "Exit Plugin Settings", method =() => CurrentCategoryName = "Settings", isTogglable = false, toolTip = "Returns you back to the settings menu." },
+
                 new ButtonInfo { buttonText = "Reload Plugins", method = Plugins.ReloadPlugins, isTogglable = false, toolTip = "Reloads all of your plugins." }
             },
 
