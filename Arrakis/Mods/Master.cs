@@ -33,51 +33,6 @@ namespace Arrakis.Mods
 {
     public class Master
     {
-        public static void GreyScreenAll() // cs </3 - sleepy
-        {
-            if (PhotonNetwork.LocalPlayer.IsMasterClient)
-            {
-                GreyZoneManager.Instance.ActivateGreyZoneAuthority();
-            }
-            else
-            {
-                NotificationManager.SendNotification("<color=yellow>[ARRAKIS]</color> You are not master client this mod wont work.");
-            }
-        }
-
-        public static void NoGreyScreenAll()
-        {
-            if (PhotonNetwork.LocalPlayer.IsMasterClient)
-            {
-                GreyZoneManager.Instance.DeactivateGreyZoneAuthority();
-            }
-            else
-            {
-                NotificationManager.SendNotification("<color=yellow>[ARRAKIS]</color> You are not master client this mod wont work.");
-            }
-        }
-
-        private static float delaygreyall = 0f;
-        private static bool grey = false;
-        public static void SpazGreyScreenAll() // cs </3 - sleepy
-        {
-            if (PhotonNetwork.LocalPlayer.IsMasterClient)
-            {
-                if (Time.time > delaygreyall)
-                {
-                    grey = !grey;
-                    delaygreyall = Time.time + 0.2f;
-                }
-
-                if (grey) GreyZoneManager.Instance.DeactivateGreyZoneAuthority();
-                else GreyZoneManager.Instance.ActivateGreyZoneAuthority();
-            }
-            else
-            {
-                NotificationManager.SendNotification("<color=yellow>[ARRAKIS]</color> You are not master client this mod wont work.");
-            }
-        }
-
         public static void UntagAll()
         {
             if (PhotonNetwork.LocalPlayer.IsMasterClient)

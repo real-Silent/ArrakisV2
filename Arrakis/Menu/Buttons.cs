@@ -462,10 +462,7 @@ namespace Arrakis.Menu
                 //new ButtonInfo { buttonText = "Spaz Lucy Target", method =() => Master.SpazLucyTarget(), isTogglable = true, toolTip = "Makes the ghost Lucy spaz the target." },
                 //new ButtonInfo { buttonText = "Move Lucy Gun", method =() => Master.MoveLucyGun(), isTogglable = true, toolTip = "Makes the ghost Lucy go to your gun pointer." },
                 //new ButtonInfo { buttonText = "Grab Lucy", method =() => Master.GrabLucy(), isTogglable = true, toolTip = "Makes the ghost Lucy go to your hand when holding your grips." },
-
-                new ButtonInfo { buttonText = "Grey Screen All", method =() => Master.GreyScreenAll(), isTogglable = false, toolTip = "Sets everyone screen to grey." },
-                new ButtonInfo { buttonText = "Fix Screen All", method =() => Master.NoGreyScreenAll(), isTogglable = false, toolTip = "Sets everyone screen to normal." },
-                new ButtonInfo { buttonText = "Spaz Grey Screen All", method =() => Master.SpazGreyScreenAll(), isTogglable = true, toolTip = "Spazes the grey screen on everyone." },
+                
                 new ButtonInfo { buttonText = "Untag All", method =() => Master.UntagAll(), isTogglable = false, toolTip = "Untags everyone in the current lobby." },
                 new ButtonInfo { buttonText = "Untag Self", method =() => Master.UntagSelf(), isTogglable = false, toolTip = "Untags your self." },
                 new ButtonInfo { buttonText = "Untag Gun", method =() => Master.UntagGun(), isTogglable = true, toolTip = "Untags the person you shoot." },
