@@ -19,6 +19,7 @@
  */
 
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using Arrakis.Classes;
 using Arrakis.Notifications;
@@ -32,7 +33,7 @@ namespace Arrakis.Mods
 {
     public class Master
     {
-        public static void GreyScreenAll()
+        public static void GreyScreenAll() // cs </3 - sleepy
         {
             if (PhotonNetwork.LocalPlayer.IsMasterClient)
             {
@@ -58,7 +59,7 @@ namespace Arrakis.Mods
 
         private static float delaygreyall = 0f;
         private static bool grey = false;
-        public static void SpazGreyScreenAll()
+        public static void SpazGreyScreenAll() // cs </3 - sleepy
         {
             if (PhotonNetwork.LocalPlayer.IsMasterClient)
             {
@@ -364,7 +365,16 @@ namespace Arrakis.Mods
                 gunLocked = false;
             }
         }
-
+        public static void ChangeLavaState(InfectionLavaController.RisingLavaState state)
+        {
+            if (!PhotonNetwork.LocalPlayer.IsMasterClient) { NotificationManager.SendNotification("<color=cyan>[ARRAKIS]</color> You are not master client this mod will not work."); return; }
+            var lava = InfectionLavaController.ActiveControllers.FirstOrDefault();
+            if (lava == null)
+                return;
+            double startTime = NetworkSystem.Instance.InRoom ? NetworkSystem.Instance.SimTime : Time.timeAsDouble;
+            lava.JumpToState(state);
+            lava.reliableState.stateStartTime = startTime;
+        }
         public static BuilderPiece piece = null;
         public static void BlockCrashAll()
         {

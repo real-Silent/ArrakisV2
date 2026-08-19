@@ -1,4 +1,5 @@
 ﻿/*
+using static GorillaNetworking.GorillaComputer;
  * Arrakis | Mods/Overpowered.cs
  *
  * Copyright (C) 2026 Arrakis
@@ -27,8 +28,10 @@ using Arrakis.Patches;
 using ExitGames.Client.Photon;
 using GorillaExtensions;
 using GorillaLocomotion.Gameplay;
+using GorillaNetworking;
 using Photon.Pun;
 using Photon.Realtime;
+using Photon.Voice.PUN;
 using UnityEngine;
 using static Arrakis.Classes.RigManager;
 using static Arrakis.Menu.Main;
@@ -469,7 +472,7 @@ namespace Arrakis.Mods
                 RaycastHit Ray = GunData.Ray;
                 if (lockTarget != null && gunLocked)
                 {
-                    LagPlayer(lockTarget, 1992, 4.1f); // set to 1999 if kicks
+                    LagPlayer(lockTarget, 1992, 4.4f); // set to 1999 if kicks
                 }
                 if (GetGunInput(true))
                 {
@@ -497,7 +500,7 @@ namespace Arrakis.Mods
                 RaycastHit Ray = GunData.Ray;
                 if (lockTarget != null && gunLocked)
                 {
-                    LagPlayer(lockTarget, 625, 1.5f); // set to 600 to 650 if kicks
+                    LagPlayer(lockTarget, 625, 1.7f); // set to 600 to 650 if kicks
                 }
                 if (GetGunInput(true))
                 {
@@ -622,15 +625,93 @@ namespace Arrakis.Mods
             }
         }
 
-        public static void ChangeLavaState(InfectionLavaController.RisingLavaState state) // master ss? -sleepy
+        public static void DeafenAll()
         {
-            if (!PhotonNetwork.LocalPlayer.IsMasterClient) NotificationManager.SendNotification("<color=cyan>[ARRAKIS]</color> You are not master client this mod will have a huge delay to be ss.");
-            var lava = InfectionLavaController.ActiveControllers.FirstOrDefault();
-            if (lava == null)
+            for (int i = 0; i < 2; i++)
+            {
+                DeafenPlayer(ReceiverGroup.All);
+            }
+        }
+        public static void DeafenGun()
+        {
+            if (GetGunInput(false))
+            {
+                var GunData = RenderGun();
+                GameObject NewPointer = GunData.NewPointer;
+                RaycastHit Ray = GunData.Ray;
+                if (lockTarget != null && gunLocked)
+                {
+                    int[] target =
+                    {
+                        lockTarget.Creator.ActorNumber
+                    };
+                    for (int i = 0; i < 2; i++)
+                    {
+                        DeafenPlayer(target);
+                    }
+                }
+                if (GetGunInput(true))
+                {
+                    VRRig rig = Ray.collider.GetComponentInParent<VRRig>();
+                    if (rig != null && rig != VRRig.LocalRig)
+                    {
+                        lockTarget = rig;
+                        gunLocked = true;
+                    }
+                }
+            }
+            else
+            {
+                lockTarget = null;
+                gunLocked = false;
+            }
+        }
+        public static void DeafenPlayer(object player) // this looks so ass -sleepy
+        {
+            RaiseEventOptions raiseOptions;
+
+            switch (player)
+            {
+                case ReceiverGroup group:
+                    raiseOptions = new RaiseEventOptions
+                    {
+                        Receivers = group
+                    };
+                    break;
+                case int[] actors:
+                    raiseOptions = new RaiseEventOptions
+                    {
+                        TargetActors = actors
+                    };
+                    break;
+                default:
+                    return;
+            }
+            var sendOptions = new SendOptions
+            {
+                Channel = 0,
+                Reliability = true
+            };
+            var voiceData = new Dictionary<byte, object>();
+            voiceData[1] = 255;
+            voiceData[2] = 48000;
+            voiceData[3] = 2;
+            voiceData[4] = 20000;
+            voiceData[5] = 30000;
+            voiceData[10] = null;
+            voiceData[11] = (byte)0;
+            voiceData[12] = (byte)11;
+            PhotonVoiceNetwork.Instance.Client.OpRaiseEvent(202, new object[] { (byte)0, (byte)1, new object[] { voiceData } }, raiseOptions, sendOptions);
+        }
+        public static void StumpKickAll()
+        {
+            if (!NetworkSystem.Instance.SessionIsPrivate)
+            {
+                NotificationManager.SendNotification("<color=grey>[</color><color=red>ERROR</color><color=grey>]</color> You must be in a private room.");
                 return;
-            double startTime = NetworkSystem.Instance.InRoom ? NetworkSystem.Instance.SimTime : Time.timeAsDouble;
-            lava.JumpToState(state);
-            lava.reliableState.stateStartTime = startTime;
+            }
+            GorillaComputer.instance.friendJoinCollider.playerIDsCurrentlyTouching.Remove(PhotonNetwork.LocalPlayer.UserId);
+            GorillaComputer.instance.OnGroupJoinButtonPress(0, GorillaComputer.instance.friendJoinCollider);
         }
     }
 }
