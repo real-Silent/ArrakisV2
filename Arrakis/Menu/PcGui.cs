@@ -42,10 +42,13 @@ namespace Arrakis.Menu
         private static GUIStyle arrayStyle;
         private static float arrayWidth= 250f;
         public static bool OnGUIMenu = false;
+        public static bool ShowOnScreenStuff = true;
         private static bool stylesCreated = false;
 
         private void OnGUI()
         {
+            if (!ShowOnScreenStuff)
+                return;
             DrawInfoBar();
             DrawArrayList();
             if (!OnGUIMenu)
