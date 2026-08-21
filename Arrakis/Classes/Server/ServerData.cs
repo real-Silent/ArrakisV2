@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Arrakis | Classes/Server/ServerData.cs
  *
  * Copyright (C) 2026 Arrakis
@@ -28,6 +28,8 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
+
+//TODO: Beta mode+noti , other minor backend changes
 
 namespace Arrakis.Classes
 {
