@@ -34,9 +34,8 @@ namespace Arrakis.Patches.Patchers
 
         public static bool Prefix()
         {
-            if (!NetworkSystem.Instance.InRoom)
+            if (!PhotonNetwork.InRoom)
                 return true;
-
             try
             {
                 OnSerialize?.Invoke();
