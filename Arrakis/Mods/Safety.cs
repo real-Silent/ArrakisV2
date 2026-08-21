@@ -214,7 +214,7 @@ namespace Arrakis.Mods
                 props[mod] = true;
             PhotonNetwork.LocalPlayer.SetCustomProperties(props);
         }
-        public static readonly Dictionary<string, string> modDictionary = new Dictionary<string, string> {// creds to Seralyth for the list ^-^
+        public static readonly Dictionary<string, string> modDictionary = new Dictionary<string, string> { // creds to Seralyth for the list ^-^
             { "genesis", "Genesis" },
             { "HP_Left", "Holdable Pad" },
             { "GrateVersion", "Grate" },

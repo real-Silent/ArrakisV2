@@ -143,15 +143,12 @@ namespace Arrakis.Mods
         public static async void CreatePublicLobby(string roomName)
         {
             GorillaNetworkJoinTrigger trigger = PhotonNetworkController.Instance.currentJoinTrigger;
-
             if (trigger == null || trigger.networkZone == "private")
             {
                 float closest = float.MaxValue;
-
                 foreach (GorillaNetworkJoinTrigger joinTrigger in Object.FindObjectsByType<GorillaNetworkJoinTrigger>(FindObjectsSortMode.None))
                 {
                     float distance = Vector3.Distance(VRRig.LocalRig.transform.position, joinTrigger.transform.position);
-
                     if (distance < closest)
                     {
                         closest = distance;
@@ -159,7 +156,6 @@ namespace Arrakis.Mods
                     }
                 }
             }
-
             RoomConfig config = new RoomConfig
             {
                 createIfMissing = true,
@@ -167,7 +163,6 @@ namespace Arrakis.Mods
                 isPublic = true,
                 MaxPlayers = 10
             };
-
             config.CustomProps = new Hashtable
             {
                 { "gameMode", trigger.GetFullDesiredGameModeString() },
@@ -176,7 +171,6 @@ namespace Arrakis.Mods
                 { "language", LocalisationManager.CurrentLanguage.ToString() },
                 { "fan_club", SubscriptionManager.IsLocalSubscribed().ToString().ToLower() }
             };
-
             await NetworkSystem.Instance.ConnectToRoom(roomName, config, -1);
         }
         public static string GenerateRandomString(int a = 4)

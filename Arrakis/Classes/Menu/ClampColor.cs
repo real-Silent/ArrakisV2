@@ -20,7 +20,7 @@
 
 using UnityEngine;
 
-namespace Arrakis.Classes // Credits: Seralyth
+namespace Arrakis.Classes
 {
     public class ClampColor : MonoBehaviour
     {

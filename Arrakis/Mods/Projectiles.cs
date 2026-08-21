@@ -97,7 +97,7 @@ namespace Arrakis.Mods
         private static SnowballThrowable cachedThrow = null;
         private static GrowingSnowballThrowable cachedGThrow = null;
         private static float delay = 0f;
-        public static void SpawnProjectile(string projectileName, Vector3 position, Vector3 velocity, Color color, int scale = 0) // i made this cause yea -nova
+        public static void SpawnProjectile(string projectileName, Vector3 position, Vector3 velocity, Color color, int scale = 0)
         {
             try
             {
@@ -150,7 +150,7 @@ namespace Arrakis.Mods
         }
 
         private static int increment;
-        private static int GetIncrement(Vector3 pos, Vector3 velo, float scale) // i made this cause yea -nova
+        private static int GetIncrement(Vector3 pos, Vector3 velo, float scale)
         {
             try
             {

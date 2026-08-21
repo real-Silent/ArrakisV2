@@ -18,6 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+using Arrakis.Notifications;
 using HarmonyLib;
 using static Arrakis.Settings;
 
@@ -32,12 +33,18 @@ namespace Arrakis.Patches
             if (showanticheatreportself)
             {
                 if (isSelf)
+                {
+                    NotificationManager.SendNotification($"<color=yellow>[ANTICHEAT]</color> Reported {susNick} for {susReason}.", 4f);
                     CustomConsole.Log($"AntiCheat Reported {susNick}, {susId} for {susReason}", CustomConsole.LogType.Info);
+                }
             }
             else if (showanticheatreports)
             {
                 if (!isSelf)
+                {
+                    NotificationManager.SendNotification($"<color=yellow>[ANTICHEAT]</color> Reported {susNick} for {susReason}.", 4f);
                     CustomConsole.Log($"AntiCheat Reported {susNick}, {susId} for {susReason}", CustomConsole.LogType.Info);
+                }
             }
             susReason = null;
             susId = null;

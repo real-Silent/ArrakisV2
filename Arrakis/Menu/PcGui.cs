@@ -26,7 +26,7 @@ using static Arrakis.Settings;
 
 namespace Arrakis.Menu
 {
-    public class PcGui : MonoBehaviour // stop using ai and actually clean it up sleepy -nova | no -sleepy
+    public class PcGui : MonoBehaviour
     {
         private static Rect windowRect = new Rect(120, 80, 850, 600);
         private static Vector2 categoryScroll;

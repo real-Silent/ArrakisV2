@@ -165,7 +165,7 @@ namespace Arrakis
         public static bool FloatMenu = false;
         public static int buttonsound = 67;
         private static int clicksound = 0;
-        public static void ChangeClickSound() // Making it get its name from GTPlayer.Instance.materialData[buttonsound].matName
+        public static void ChangeClickSound()
         {
             clicksound = (clicksound + 1) % 11;
             switch (clicksound)
@@ -283,7 +283,7 @@ namespace Arrakis
 
         public static void ChangeMenuTheme()
         {
-            currentTheme = (currentTheme + 1) % 15; // Always make this number above the last case so if its case 14: make it 15
+            currentTheme = (currentTheme + 1) % 15;
             switch (currentTheme)
             {
                 case 0: // Default
@@ -518,7 +518,7 @@ namespace Arrakis
             File.WriteAllText(Path.Combine(PluginInfo.BaseDirectory, "SavedSettings.json"), JsonConvert.SerializeObject(settings, Formatting.Indented));
         }
 
-        public static void LoadSettings() // Finally fixed this we love json -nova
+        public static void LoadSettings()
         {
             string path = Path.Combine(PluginInfo.BaseDirectory, "SavedSettings.json");
             if (!File.Exists(path))

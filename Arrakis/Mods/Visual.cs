@@ -107,7 +107,7 @@ namespace Arrakis.Mods
         private static Dictionary<VRRig, GameObject> tracersPool = new Dictionary<VRRig, GameObject>();
         public static void Tracers()
         {
-            if (!NetworkSystem.Instance.InRoom) // if it doesnt work the first time just return -nova
+            if (!NetworkSystem.Instance.InRoom)
                 return;
             foreach (VRRig rig in VRRigCache.ActiveRigs)
             {

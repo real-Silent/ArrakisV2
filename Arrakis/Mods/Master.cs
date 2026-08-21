@@ -21,7 +21,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Arrakis.Classes;
 using Arrakis.Notifications;
 using BepInEx;
 using GorillaTagScripts;
@@ -485,6 +484,7 @@ namespace Arrakis.Mods
             }
             NetworkSystem.Instance.PlayerListOthers.ForEach(p => RoomControls.KickPlayer(p.ActorNumber));
         }
+
         // Lucy mods so we can release when october i know its early but yea -nova
         //public static HalloweenGhostChaser Lucy
         //{

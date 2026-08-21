@@ -30,7 +30,7 @@ using UnityEngine.Networking;
 
 namespace Arrakis.Mods
 {
-    public static class Soundboard // Cleaned up code -nova
+    public static class Soundboard
     {
         private static readonly Dictionary<string, AudioClip> Cache = new Dictionary<string, AudioClip>();
         private static GameObject audioObject;

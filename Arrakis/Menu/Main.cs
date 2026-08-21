@@ -276,12 +276,10 @@ namespace Arrakis.Menu
                 {
                     saveRoomDelay = Time.time + 5;
                     string[] roomdata = new string[4];
-
                     roomdata[0] = PhotonNetwork.CurrentRoom.IsOpen.ToString();
                     roomdata[1] = PhotonNetwork.CurrentRoom.PlayerCount.ToString();
                     roomdata[2] = GorillaComputer.instance.GetSelectedMapJoinTrigger().networkZone;
                     roomdata[3] = GorillaComputer.instance.lastPressedGameMode;
-
                     File.WriteAllLines($"{PluginInfo.BaseDirectory}\\Rooms\\" + PhotonNetwork.CurrentRoom.name + ".txt", roomdata);
                 }
             }
@@ -291,12 +289,42 @@ namespace Arrakis.Menu
             {
                 if (!VRRig.LocalRig.enabled)
                 {
-                    
+                    if (ghostSphereR == null)
+                    {
+                        ghostSphereR = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                        GameObject.Destroy(ghostSphereR.GetComponent<SphereCollider>());
+                        ghostSphereR.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
+                        ghostSphereR.GetComponent<Renderer>().material.color = backgroundColor.GetCurrentColor();
+                        ghostSphereR.transform.parent = VRRig.LocalRig.rightHandTransform;
+                    }
+
+                    if (ghostSphereL == null)
+                    {
+                        ghostSphereL = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                        GameObject.Destroy(ghostSphereL.GetComponent<SphereCollider>());
+                        ghostSphereL.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
+                        ghostSphereL.GetComponent<Renderer>().material.color = backgroundColor.GetCurrentColor();
+                        ghostSphereL.transform.parent = VRRig.LocalRig.leftHandTransform;
+                    }
+                }
+                else
+                {
+                    if (ghostSphereR != null)
+                    {
+                        GameObject.Destroy(ghostSphereR);
+                        ghostSphereR = null;
+                    }
+
+                    if (ghostSphereL != null)
+                    {
+                        GameObject.Destroy(ghostSphereL);
+                        ghostSphereL = null;
+                    }
                 }
             }
             catch { }
         }
-        public static float saveRoomDelay;
+
         private static IEnumerator OpenMenu()
         {
             GameObject menuObject = menu;
@@ -355,8 +383,6 @@ namespace Arrakis.Menu
             NotificationManager.SendNotification($"<color=grey>[</color><color=yellow>{(adminname == "NOVA" ? "OWNER" : "ADMIN")}</color><color=grey>]</color> Welcome {adminname} Admin mods have been enabled.", 2f);
         }
 
-
-        // Functions
         public static void CreateMenu()
         {
             // Menu Holder
@@ -489,6 +515,7 @@ namespace Arrakis.Menu
             if (!disableReturnButton && CurrentCategoryName != "Main")
                 ReturnButton(false);
             //SearchButton(true);
+
             // Page Buttons
             GameObject gameObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
             if (!UnityInput.Current.GetKey(keyboardButton))
@@ -1124,9 +1151,8 @@ namespace Arrakis.Menu
             }
             return (ray, GunPointer);
         }
-        // Variables
-        // Important
-        // Objects
+
+        // Variables & Functions
         public static GameObject menu;
         public static GameObject menuBackground;
         public static GameObject reference;
@@ -1147,8 +1173,11 @@ namespace Arrakis.Menu
         public static string reconnectingRoomName = "";
 
         public static float lastsavesprefstime;
+        public static float saveRoomDelay;
 
-        // Data
+        public static GameObject ghostSphereR;
+        public static GameObject ghostSphereL;
+
         public static int pageNumber = 0;
         public static int GetCategory(string categoryName) =>
            Buttons.categoryNames.ToList().IndexOf(categoryName);
@@ -1562,13 +1591,10 @@ namespace Arrakis.Menu
             if (GetIndex("First Person").enabled)
                 Toggle("First Person");
             disablecustomboards = true;
-
             GameObject.Destroy(menu);
             menu = null;
-
             GameObject.Destroy(reference);
             reference = null;
-
             if (leftReference != null)
             {
                 GameObject.Destroy(leftReference);

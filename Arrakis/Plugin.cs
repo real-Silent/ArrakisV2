@@ -41,7 +41,7 @@ namespace Arrakis
 
         public void OnPlayerSpawned()
         {
-            GameObject holder = new GameObject("Arrakis"); // This has alot of shit but like yea idrc it works -nova
+            GameObject holder = new GameObject("Arrakis");
             holder.AddComponent<ServerData>();
             holder.AddComponent<NotificationManager>();
             holder.AddComponent<CRunner>();

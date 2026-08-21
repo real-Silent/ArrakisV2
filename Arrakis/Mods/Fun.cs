@@ -39,7 +39,7 @@ namespace Arrakis.Mods
 {
     public class Fun
     {
-        public static async void UnlockAllCosmetics() // Fixed by sleepy bcz nova dosnt know how to make cosmeticx
+        public static async void UnlockAllCosmetics()
         {
             await Task.Delay(500);
             var cosmetics = CosmeticsController.instance;
@@ -304,7 +304,7 @@ namespace Arrakis.Mods
         private static float lastCacheTime = 0f;
         private static float cacheInterval = 0.5f;
 
-        private static void RHC() // Refreshs holdables cache so game dosnt kill its self
+        private static void RHC()
         {
             if (Time.time - lastCacheTime > cacheInterval)
             {
@@ -354,7 +354,6 @@ namespace Arrakis.Mods
                     {
                         if (holdable == null || holdable.transform == null)
                             continue;
-
                         if (holdable.currentState == TransferrableObject.PositionState.InLeftHand || holdable.currentState == TransferrableObject.PositionState.InRightHand)
                         {
                             holdable.transform.rotation = RandomQuaternion(360);
@@ -365,6 +364,7 @@ namespace Arrakis.Mods
             }
             catch { }
         }
+
         private static float nextJuggleTime = 0f;
         private static float juggleInterval = 0.3f;
         private static int positionIndex = 0;
@@ -442,7 +442,7 @@ namespace Arrakis.Mods
             catch { }
         }
 
-        public static IEnumerator ProcessCosmetics(int mode = 0) // prolly coded like shitg but it functions so :p -sleepy | sleepys hell hole of code fixed -nova
+        public static IEnumerator ProcessCosmetics(int mode = 0)
         {
             bool inCity = GameObject.Find("City_Pretty") != null;
             bool inMountain = GameObject.Find("Mountain") != null;
@@ -489,7 +489,6 @@ namespace Arrakis.Mods
                 yield return new WaitForSeconds(0.1f);
                 VRRig.LocalRig.transform.position = targetPosition;
             }
-
             if (mode > 0)
             {
                 List<CosmeticsController.CosmeticItem> cosmeticsList = new List<CosmeticsController.CosmeticItem>();

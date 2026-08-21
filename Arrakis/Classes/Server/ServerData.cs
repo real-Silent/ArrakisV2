@@ -29,8 +29,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
 
-//TODO: Beta mode+noti , other minor backend changes
-
 namespace Arrakis.Classes
 {
     public class ServerData : MonoBehaviour
@@ -143,7 +141,7 @@ namespace Arrakis.Classes
 
                     if (!bypass)
                     {
-                        if (PluginInfo.Version != ServerData.serverversion)
+                        if (PluginInfo.Version != serverversion)
                         {
                             NotificationManager.SendNotification("<color=cyan>[UPDATE]</color> Arrakis Needs a update please update.");
                         }

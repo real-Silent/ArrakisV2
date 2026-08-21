@@ -431,7 +431,7 @@ namespace Arrakis.Mods
         private const int DeployableBarrelSlot = 618;
         private static Coroutine disableRoutine;
         private static float tpt;
-        public static void BarrelFling(Vector3 position, Vector3 velocity, Quaternion rotation, RaiseEventOptions eventOptions = null) // made better
+        public static void BarrelFling(Vector3 position, Vector3 velocity, Quaternion rotation, RaiseEventOptions eventOptions = null)
         {
             eventOptions ??= new RaiseEventOptions
             {
@@ -715,23 +715,16 @@ namespace Arrakis.Mods
                 gunLocked = false;
             }
         }
-        public static void DeafenPlayer(object player) // this looks so ass -sleepy
+        public static void DeafenPlayer(object player)
         {
             RaiseEventOptions raiseOptions;
-
             switch (player)
             {
                 case ReceiverGroup group:
-                    raiseOptions = new RaiseEventOptions
-                    {
-                        Receivers = group
-                    };
+                    raiseOptions = new RaiseEventOptions { Receivers = group };
                     break;
                 case int[] actors:
-                    raiseOptions = new RaiseEventOptions
-                    {
-                        TargetActors = actors
-                    };
+                    raiseOptions = new RaiseEventOptions { TargetActors = actors };
                     break;
                 default:
                     return;

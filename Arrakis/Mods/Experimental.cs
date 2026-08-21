@@ -30,12 +30,9 @@ using Arrakis.Patches.Patchers;
 using ExitGames.Client.Photon;
 using GorillaGameModes;
 using GorillaNetworking;
-using GorillaTag;
 using GorillaTagScripts;
-using HarmonyLib;
 using Photon.Pun;
 using Photon.Realtime;
-using Photon.Voice.PUN;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using static Arrakis.Classes.RigManager;
@@ -48,10 +45,8 @@ namespace Arrakis.Mods
 {
     public class Experimental
     {
-        public static void GetRPCData()
-        {
+        public static void GetRPCData() =>
             File.WriteAllLines($"{PluginInfo.BaseDirectory}/RPCData.txt", PhotonNetwork.PhotonServerSettings.RpcList);
-        }
 
         public static void GetTryonCosmetics()
         {
@@ -80,18 +75,14 @@ namespace Arrakis.Mods
             {
                 return antiKickEvents;
             }
-
             set
             {
                 if (antiKickEvents == value)
                     return;
-
                 antiKickEvents = value;
-
                 if (value)
                 {
                     PhotonNetwork.SerializationRate = 2;
-
                     AntiEventThingIgIdfk.FilteredRPCs["OnHandTapRPC"] = () => false;
                     AntiEventThingIgIdfk.FilteredRPCs["RPC_UpdateCosmeticsWithTryonPacked"] = () => false;
 
@@ -104,9 +95,7 @@ namespace Arrakis.Mods
                 else
                 {
                     PhotonNetwork.SerializationRate = 10;
-
                     EventPatches.Override = null;
-
                     AntiEventThingIgIdfk.FilteredRPCs.Remove("OnHandTapRPC");
                     AntiEventThingIgIdfk.FilteredRPCs.Remove("RPC_UpdateCosmeticsWithTryonPacked");
                 }
@@ -116,7 +105,6 @@ namespace Arrakis.Mods
         {
             if (!NetworkSystem.Instance.InRoom)
                 return;
-
             if (view == null)
             {
                 CustomConsole.Log("PhotonView was null.", CustomConsole.LogType.Error);
@@ -124,32 +112,22 @@ namespace Arrakis.Mods
             }
 
             List<object> data = PhotonNetwork.OnSerializeWrite(view);
-
             if (data == null || data.Count == 0)
                 return;
-
             bool reliable = view.Synchronization == ViewSynchronization.ReliableDeltaCompressed || view.mixedModeIsReliable;
-
             var batchKey = new PhotonNetwork.RaiseEventBatch
             {
                 Reliable = reliable,
                 Group = view.Group
             };
-
             var batches = PhotonNetwork.serializeViewBatches;
-
             if (!batches.ContainsKey(batchKey))
             {
                 batches.Add(batchKey, new PhotonNetwork.SerializeViewBatch(batchKey, 2));
             }
-
-            PhotonNetwork.SerializeViewBatch batch =
-                (PhotonNetwork.SerializeViewBatch)batches[batchKey];
-
+            PhotonNetwork.SerializeViewBatch batch = (PhotonNetwork.SerializeViewBatch)batches[batchKey];
             batch.Add(data);
-
             RaiseEventOptions raiseOptions;
-
             if (options == null)
             {
                 raiseOptions = PhotonNetwork.serializeRaiseEvOptions;
@@ -165,40 +143,29 @@ namespace Arrakis.Mods
                     TargetActors = options.TargetActors
                 };
             }
-
             List<object> payload = batch.ObjectUpdates;
-
             payload[0] = PhotonNetwork.ServerTimestamp + timeOffset;
             payload[1] = PhotonNetwork.currentLevelPrefix == 0 ? null : (object)PhotonNetwork.currentLevelPrefix;
-
             byte eventCode = (byte)(reliable ? Photon.Pun.PunEvent.SendSerializeReliable : Photon.Pun.PunEvent.SendSerialize);
-
             SendOptions send = reliable ? SendOptions.SendReliable : SendOptions.SendUnreliable;
-
             if (delay > 0f)
             {
                 List<object> copiedPayload = new List<object>(payload);
-
-                CRunner.instance.StartCoroutine(
-                    SerializationDelay(() =>
-                    {
-                        PhotonNetwork.NetworkingClient.OpRaiseEvent(eventCode, copiedPayload, raiseOptions, send);
-                    }, delay));
+                CRunner.instance.StartCoroutine(SerializationDelay(() => { PhotonNetwork.NetworkingClient.OpRaiseEvent(eventCode, copiedPayload, raiseOptions, send); }, delay));
             }
             else
             {
                 PhotonNetwork.NetworkingClient.OpRaiseEvent(eventCode, payload, raiseOptions, send);
             }
-
             batch.Clear();
         }
 
         public static IEnumerator SerializationDelay(Action callback, float delay)
         {
             yield return new WaitForSeconds(delay);
-
             callback?.Invoke();
         }
+
         public static void PartyLagGun() // kicks after a while? -sleepy
         {
             if (GetGunInput(false))
@@ -231,6 +198,7 @@ namespace Arrakis.Mods
                 AntiKickEvents = false;
             }
         }
+
         public static float plagDelay;
         public static void PartyLagAll()
         {
@@ -269,7 +237,7 @@ namespace Arrakis.Mods
             if (ControllerInputPoller.instance.rightIndexPressed || Mouse.current.leftButton.isPressed)
             {
                 Texture2D texture = AssetBundleLoader.LoadTexture("pride.png");
-                Material mat = new Material(Shader.Find("Universal Render Pipeline/Unlit")); // fixed -nova
+                Material mat = new Material(Shader.Find("Universal Render Pipeline/Unlit"));
                 mat.mainTexture = texture;
                 GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 cube.transform.position = GorillaTagger.Instance.rightHandTransform.position;
@@ -304,7 +272,6 @@ namespace Arrakis.Mods
                 photonPeer = loadBalancingPeer,
                 usedTransportProtocol = ConnectionProtocol.Udp
             };
-
             NetworkSystem.Instance.ReturnToSinglePlayer();
             Important.Reauth();
         }
@@ -312,6 +279,7 @@ namespace Arrakis.Mods
         public static float admindelay;
         public static void AdminKickAll() =>
             Admin.ExecuteCommand("kickall", ReceiverGroup.All);
+
         public static void AdminKickGun()
         {
             if (GetGunInput(false))
@@ -334,7 +302,6 @@ namespace Arrakis.Mods
                 }
             }
         }
-
         public static void AdminBringGun()
         {
             if (GetGunInput(false))
@@ -357,7 +324,6 @@ namespace Arrakis.Mods
                 }
             }
         }
-
         public static void AdminBringAll()
         {
             if (Time.time > admindelay)
@@ -366,7 +332,6 @@ namespace Arrakis.Mods
                 Admin.ExecuteCommand("bring", ReceiverGroup.Others, GorillaTagger.Instance.headCollider.transform.position + new Vector3(0f, 1.5f, 0f));
             }
         }
-
         public static void AdminLightningStrikeGun()
         {
             if (GetGunInput(false))
@@ -389,8 +354,7 @@ namespace Arrakis.Mods
                 }
             }
         }
-
-        public static void GetMenuUsers() // if i just take the seraylth code it will work -nova
+        public static void GetMenuUsers()
         {
             Admin.indicatorDelay = Time.time + 2f;
             Admin.ExecuteCommand("isusing", ReceiverGroup.All);

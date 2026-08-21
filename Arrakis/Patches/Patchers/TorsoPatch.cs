@@ -26,7 +26,7 @@ using Random = UnityEngine.Random;
 
 namespace Arrakis.Patches.Patchers
 {
-    [HarmonyPatch(typeof(VRRig), nameof(VRRig.PostTick))] // ty saratigh or how ever you spell it -sleepy
+    [HarmonyPatch(typeof(VRRig), nameof(VRRig.PostTick))] // ty seralyth -sleepy | fixed spelling -nova
     public class TorsoPatch
     {
         public static event Action VRRigLateUpdate;
