@@ -34,6 +34,7 @@ using System.IO;
 using System.Linq;
 using UnityEngine;
 using static Arrakis.Menu.Main;
+using static Mono.Security.X509.X520;
 
 namespace Arrakis
 {
@@ -58,8 +59,6 @@ namespace Arrakis
             if (prompts.Count > 0)
                 StopCurrentPrompt();
         }
-
-        public static Font currentFont = Resources.GetBuiltinResource(typeof(Font), "Arial.ttf") as Font;
 
         public static bool fpsCounter = true;
         public static bool disconnectButton = true;
@@ -436,6 +435,53 @@ namespace Arrakis
             }
         }
 
+        private static int fonttype = 0;
+        private static readonly string[] fontNames =
+        {
+            "Arial",
+            "Comic Sans MS",
+            "Chalkboard",
+            "Segoe Print",
+            "Verdana",
+            "Tahoma",
+            "Courier New",
+            "Times New Roman"
+        };
+        public static Font currentFont = Resources.GetBuiltinResource<Font>("Arial.ttf");
+        public static void ChangeFont()
+        {
+            fonttype = (fonttype + 1) % fontNames.Length;
+            switch (fonttype)
+            {
+                case 0:
+                    currentFont = Resources.GetBuiltinResource<Font>("Arial.ttf");
+                    break;
+                case 1:
+                    currentFont = Font.CreateDynamicFontFromOSFont("Comic Sans MS", 20);
+                    break;
+                case 2:
+                    currentFont = Font.CreateDynamicFontFromOSFont("Chalkboard", 20);
+                    break;
+                case 3:
+                    currentFont = Font.CreateDynamicFontFromOSFont("Segoe Print", 20);
+                    break;
+                case 4:
+                    currentFont = Font.CreateDynamicFontFromOSFont("Verdana", 20);
+                    break;
+                case 5:
+                    currentFont = Font.CreateDynamicFontFromOSFont("Tahoma", 20);
+                    break;
+                case 6:
+                    currentFont = Font.CreateDynamicFontFromOSFont("Courier New", 20);
+                    break;
+                case 7:
+                    currentFont = Font.CreateDynamicFontFromOSFont("Times New Roman", 20);
+                    break;
+            }
+            GetIndex("Change Font").overlapText =$"Change Font <color=grey>[<color=cyan>{fontNames[fonttype]}</color>]</color>";
+        }
+
+
         // Projectile Settings
         public static bool allowbigsnowballcolor = false;
         private static int currentprojectilecolor = 0;
@@ -488,6 +534,7 @@ namespace Arrakis
             public int buttonclickvolumeindex { get; set; }
             public int currentTheme { get; set; }
             public int fontstyle { get; set; }
+            public int fonttype { get; set; }
             public int currentFlySpeed { get; set; }
             public int currentDigSize { get; set; }
             public int currentprojectilecolor { get; set; }
@@ -507,6 +554,7 @@ namespace Arrakis
                 buttonclickvolumeindex = buttonclickvolumeindex,
                 currentTheme = currentTheme,
                 fontstyle = fontstyle,
+                fonttype = fonttype,
                 currentFlySpeed = currentFlySpeed,
                 currentDigSize = currentDigSize,
                 currentprojectilecolor = currentprojectilecolor,
@@ -540,6 +588,9 @@ namespace Arrakis
 
                 fontstyle = settings.fontstyle - 1;
                 ChangeFontStyle();
+
+                fonttype = settings.fonttype - 1;
+                ChangeFont();
 
                 currentFlySpeed = settings.currentFlySpeed - 1;
                 ChangeFlySpeed();
