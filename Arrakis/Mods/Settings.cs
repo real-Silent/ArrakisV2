@@ -96,6 +96,7 @@ namespace Arrakis
         public static bool disableroomnotifications = false;
         public static bool disableFavBinds = false;
         public static bool disableQuickactionsBinds = false;
+        public static bool ghostView = true;
 
         public static KeyCode keyboardButton = KeyCode.Q;
 

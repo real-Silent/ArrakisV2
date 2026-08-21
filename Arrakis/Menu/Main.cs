@@ -289,36 +289,46 @@ namespace Arrakis.Menu
             {
                 if (!VRRig.LocalRig.enabled)
                 {
-                    if (ghostSphereR == null)
+                    if (ghostView)
                     {
-                        ghostSphereR = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-                        GameObject.Destroy(ghostSphereR.GetComponent<SphereCollider>());
-                        ghostSphereR.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
-                        ghostSphereR.GetComponent<Renderer>().material.color = backgroundColor.GetCurrentColor();
-                        ghostSphereR.transform.parent = VRRig.LocalRig.rightHandTransform;
-                    }
+                        if (ghostSphereR == null)
+                        {
+                            ghostSphereR = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                            GameObject.Destroy(ghostSphereR.GetComponent<SphereCollider>());
+                            ghostSphereR.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
+                            ghostSphereR.GetComponent<Renderer>().material.color = backgroundColor.GetCurrentColor();
+                            ghostSphereR.transform.parent = GorillaTagger.Instance.rightHandTransform;
+                            ghostSphereR.transform.position = GorillaTagger.Instance.rightHandTransform.position;
+                            ghostSphereR.transform.rotation = GorillaTagger.Instance.rightHandTransform.rotation;
+                        }
 
-                    if (ghostSphereL == null)
-                    {
-                        ghostSphereL = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-                        GameObject.Destroy(ghostSphereL.GetComponent<SphereCollider>());
-                        ghostSphereL.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
-                        ghostSphereL.GetComponent<Renderer>().material.color = backgroundColor.GetCurrentColor();
-                        ghostSphereL.transform.parent = VRRig.LocalRig.leftHandTransform;
+                        if (ghostSphereL == null)
+                        {
+                            ghostSphereL = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                            GameObject.Destroy(ghostSphereL.GetComponent<SphereCollider>());
+                            ghostSphereL.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
+                            ghostSphereL.GetComponent<Renderer>().material.color = backgroundColor.GetCurrentColor();
+                            ghostSphereL.transform.parent = GorillaTagger.Instance.leftHandTransform;
+                            ghostSphereL.transform.position = GorillaTagger.Instance.leftHandTransform.position;
+                            ghostSphereL.transform.rotation = GorillaTagger.Instance.leftHandTransform.rotation;
+                        }
                     }
                 }
                 else
                 {
-                    if (ghostSphereR != null)
+                    if (ghostView)
                     {
-                        GameObject.Destroy(ghostSphereR);
-                        ghostSphereR = null;
-                    }
+                        if (ghostSphereR != null)
+                        {
+                            GameObject.Destroy(ghostSphereR);
+                            ghostSphereR = null;
+                        }
 
-                    if (ghostSphereL != null)
-                    {
-                        GameObject.Destroy(ghostSphereL);
-                        ghostSphereL = null;
+                        if (ghostSphereL != null)
+                        {
+                            GameObject.Destroy(ghostSphereL);
+                            ghostSphereL = null;
+                        }
                     }
                 }
             }
