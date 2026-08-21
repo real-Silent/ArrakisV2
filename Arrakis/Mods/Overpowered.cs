@@ -23,6 +23,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Arrakis.Classes;
+using Arrakis.Menu;
 using Arrakis.Notifications;
 using Arrakis.Patches;
 using ExitGames.Client.Photon;
@@ -320,6 +321,35 @@ namespace Arrakis.Mods
                 gunLocked = false;
             }
         }
+        public static void BarrelBringGun()
+        {
+            if (GetGunInput(false))
+            {
+                var GunData = RenderGun();
+                GameObject NewPointer = GunData.NewPointer;
+                RaycastHit Ray = GunData.Ray;
+
+                if (lockTarget != null && gunLocked)
+                {
+                    BarrelFling(lockTarget.transform.position + (GorillaTagger.Instance.headCollider.transform.position - lockTarget.headMesh.transform.position).normalized * 0.1f, (GorillaTagger.Instance.bodyCollider.transform.position - lockTarget.transform.position).normalized * 5000f, Quaternion.identity, new RaiseEventOptions { TargetActors = new[] { RigManager.GetNetPlayerFromVRRig(lockTarget).ActorNumber } });
+                }
+
+                if (GetGunInput(true))
+                {
+                    VRRig rig = Ray.collider.GetComponentInParent<VRRig>();
+                    if (rig != null && rig != VRRig.LocalRig)
+                    {
+                        lockTarget = rig;
+                        gunLocked = true;
+                    }
+                }
+            }
+            else
+            {
+                lockTarget = null;
+                gunLocked = false;
+            }
+        }
         public static void BarrelCrashGun()
         {
             if (GetGunInput(false))
@@ -330,7 +360,7 @@ namespace Arrakis.Mods
 
                 if (lockTarget != null && gunLocked)
                 {
-                    BarrelFling(lockTarget.transform.position, lockTarget.bodyTransform.up * 1000f, Quaternion.identity, new RaiseEventOptions { TargetActors = new[] { RigManager.GetNetPlayerFromVRRig(lockTarget).ActorNumber } });
+                    BarrelFling(lockTarget.transform.position + Vector3.down * 0.2f, lockTarget.bodyTransform.up * 10000f, Quaternion.identity, new RaiseEventOptions { TargetActors = new[] { RigManager.GetNetPlayerFromVRRig(lockTarget).ActorNumber } });
                 }
 
                 if (GetGunInput(true))
@@ -349,36 +379,55 @@ namespace Arrakis.Mods
                 gunLocked = false;
             }
         }
-        public static void BarrelExucuteGun()
+        public static void CityBarrelKickGun()
         {
-            if (GetGunInput(false))
+            string Map = Main.GetCurrentMapName();
+            if (Map == "City")
             {
-                var GunData = RenderGun();
-                GameObject NewPointer = GunData.NewPointer;
-                RaycastHit Ray = GunData.Ray;
-
-                if (lockTarget != null && gunLocked)
+                if (GetGunInput(false))
                 {
-                    BarrelFling(lockTarget.transform.position, new Vector3(800f, 800f, 800f), Quaternion.identity, new RaiseEventOptions { TargetActors = new[] { RigManager.GetNetPlayerFromVRRig(lockTarget).ActorNumber } });
-                }
+                    var GunData = RenderGun();
+                    GameObject NewPointer = GunData.NewPointer;
+                    RaycastHit Ray = GunData.Ray;
 
-                if (GetGunInput(true))
-                {
-                    VRRig rig = Ray.collider.GetComponentInParent<VRRig>();
-                    if (rig != null && rig != VRRig.LocalRig)
+                    if (lockTarget != null && gunLocked)
                     {
-                        lockTarget = rig;
-                        gunLocked = true;
+                        BarrelFling(lockTarget.transform.position + (lockTarget.transform.position - new Vector3(-71.14215f, 13.73829f, -95.17883f)).normalized * 0.1f, (new Vector3(-71.14215f, 13.73829f, -95.17883f) - lockTarget.transform.position).normalized * 5000f, Quaternion.identity, new RaiseEventOptions { TargetActors = new[] { RigManager.GetNetPlayerFromVRRig(lockTarget).ActorNumber } });
                     }
+
+                    if (GetGunInput(true))
+                    {
+                        VRRig rig = Ray.collider.GetComponentInParent<VRRig>();
+                        if (rig != null && rig != VRRig.LocalRig)
+                        {
+                            lockTarget = rig;
+                            gunLocked = true;
+                        }
+                    }
+                }
+                else
+                {
+                    lockTarget = null;
+                    gunLocked = false;
                 }
             }
             else
             {
-                lockTarget = null;
-                gunLocked = false;
+                NotificationManager.SendNotification("<color=red>[ERROR]</color> You are not in city.");
+                GetIndex("City Barrel Kick Gun").enabled = false;
             }
         }
-
+        public static void BarrelPunchMod()
+        {
+            foreach (VRRig rig in VRRigCache.ActiveRigs)
+            {
+                if (!rig.isLocal && (Vector3.Distance(GorillaTagger.Instance.leftHandTransform.position, rig.headMesh.transform.position) < 0.25f || Vector3.Distance(GorillaTagger.Instance.rightHandTransform.position, rig.headMesh.transform.position) < 0.25f))
+                {
+                    Vector3 targetDirection = rig.headMesh.transform.position - GorillaTagger.Instance.headCollider.transform.position;
+                    BarrelFling(rig.transform.position + (GorillaTagger.Instance.headCollider.transform.position - rig.headMesh.transform.position).normalized * 0.1f, targetDirection.normalized * 50f, Quaternion.Euler(Random.Range(0, 360), Random.Range(0, 360), Random.Range(0, 360)), new RaiseEventOptions { TargetActors = new[] { RigManager.GetNetPlayerFromVRRig(lockTarget).ActorNumber } });
+                }
+            }
+        }
         private const int DeployableBarrelSlot = 618;
         private static Coroutine disableRoutine;
         private static float tpt;
@@ -712,6 +761,13 @@ namespace Arrakis.Mods
             }
             GorillaComputer.instance.friendJoinCollider.playerIDsCurrentlyTouching.Remove(PhotonNetwork.LocalPlayer.UserId);
             GorillaComputer.instance.OnGroupJoinButtonPress(0, GorillaComputer.instance.friendJoinCollider);
+        }
+        public static void DestroyCacheAll()
+        {
+            foreach (Player p in PhotonNetwork.PlayerListOthers)
+            {
+                PhotonNetwork.OpRemoveCompleteCacheOfPlayer(p.ActorNumber);
+            }
         }
     }
 }

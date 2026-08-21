@@ -433,9 +433,11 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Guardian Wall All", method =() => Overpowered.GuardianWallAll(), isTogglable = true, toolTip = "Brings people to the wall where races start ig." },
                 new ButtonInfo { buttonText = "Break Audio All <color=grey>[<color=cyan>B</color>]</color>", method =() => Overpowered.BreakAudioAll(), isTogglable = true, toolTip = "Breaks everyones audio when you hold <color=grey>[<color=cyan>B</color>]</color>." },
                 new ButtonInfo { buttonText = "Break Audio Gun", method =() => Overpowered.BreakAudioGun(), isTogglable = true, toolTip = "Breaks the audio of the who you shoot." },
-                new ButtonInfo { buttonText = "Barrel Fling Gun", method =() => Overpowered.BarrelFlingGun(), isTogglable = true, toolTip = "Flings who ever you shoot if you own the barrel. [Made by sleepy]" },
-                new ButtonInfo { buttonText = "Barrel Crash Gun", method =() => Overpowered.BarrelCrashGun(), isTogglable = true, toolTip = "Crashes who ever you shoot if you own the barrel. [Made by sleepy]" },
-                new ButtonInfo { buttonText = "Barrel Exucute Gun", method =() => Overpowered.BarrelExucuteGun(), isTogglable = true, toolTip = "Exucute who ever you shoot if you own the barrel. [Made by sleepy]" },
+                new ButtonInfo { buttonText = "Barrel Fling Gun", method =() => Overpowered.BarrelFlingGun(), isTogglable = true, toolTip = "Flings who ever you shoot if you own the barrel." },
+                new ButtonInfo { buttonText = "Barrel Bring Gun", method =() => Overpowered.BarrelBringGun(), isTogglable = true, toolTip = "Brings who ever you shoot if you own the barrel." },
+                new ButtonInfo { buttonText = "City Barrel Kick Gun", method =() => Overpowered.CityBarrelKickGun(), isTogglable = true, toolTip = "Kicks who ever you shoot if you own the barrel and they are in city." },
+                new ButtonInfo { buttonText = "Barrel Punch Mod", method =() => Overpowered.BarrelPunchMod(), isTogglable = true, toolTip = "Lets you punch people if you own the barrel." },
+                new ButtonInfo { buttonText = "Barrel Crash Mod", method =() => Overpowered.BarrelCrashGun(), isTogglable = true, toolTip = "Crashes who ever you shoot if you own the barrel." },
                 new ButtonInfo { buttonText = "Big Stutter Gun", method =() => Overpowered.BigStutterGun(), isTogglable = true, toolTip = "Lags who you shoot, this may kick you, dosnt seem to work on steam players." },
                 new ButtonInfo { buttonText = "Strong Lag Gun", method =() => Overpowered.StrongLagGun(), isTogglable = true, toolTip = "Lags who you shoot, dosnt seem to work on steam players." },
                 new ButtonInfo { buttonText = "Lag Gun", method =() => Overpowered.LagGun(), isTogglable = true, toolTip = "Lags who you shoot, dosnt seem to work on steam players." },
@@ -449,6 +451,7 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Deafen All", method =() => Overpowered.DeafenAll(), isTogglable = true, toolTip = "Deafens everyone in the current lobby." },
                 new ButtonInfo { buttonText = "Deafen Gun", method =() => Overpowered.DeafenGun(), isTogglable = true, toolTip = "Deafens who you shoot." },
                 new ButtonInfo { buttonText = "Stump Kick All <color=grey>[<color=cyan>Private</color>]</color>", method =() => Overpowered.StumpKickAll(), isTogglable = false, toolTip = "Kicks everyone in stump to a public lobby." },
+                new ButtonInfo { buttonText = "Destroy Cache All", method =() => Overpowered.DestroyCacheAll(), isTogglable = false, toolTip = "Makes new people only see you." },
            },
 
             new ButtonInfo[] { // Master
