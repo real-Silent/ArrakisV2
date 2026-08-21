@@ -28,6 +28,7 @@ using GorillaTagScripts;
 using Photon.Pun;
 using UnityEngine;
 using static Arrakis.Menu.Main;
+using static GameEntityManager;
 
 namespace Arrakis.Mods
 {
@@ -467,12 +468,12 @@ namespace Arrakis.Mods
         }
         public static void VIMKickAll()
         {
-            if (SubscriptionManager.Instance.subData[VRRig.LocalRig.Creator].active)
+            if (!SubscriptionManager.Instance.subData[VRRig.LocalRig.Creator].active)
             {
                 NotificationManager.SendNotification("<color=yellow>[ARRAKIS]</color>You are not a VIM subscriber this mod will not work.");
                 return;
             }
-            if (PhotonNetwork.LocalPlayer.IsMasterClient)
+            if (!PhotonNetwork.LocalPlayer.IsMasterClient)
             {
                 NotificationManager.SendNotification("<color=yellow>[ARRAKIS]</color>You are not master this mod will not work.");
                 return;
@@ -484,7 +485,6 @@ namespace Arrakis.Mods
             }
             NetworkSystem.Instance.PlayerListOthers.ForEach(p => RoomControls.KickPlayer(p.ActorNumber));
         }
-
         // Lucy mods so we can release when october i know its early but yea -nova
         //public static HalloweenGhostChaser Lucy
         //{
