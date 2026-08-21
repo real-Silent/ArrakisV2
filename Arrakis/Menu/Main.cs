@@ -295,7 +295,7 @@ namespace Arrakis.Menu
                         {
                             ghostSphereR = GameObject.CreatePrimitive(PrimitiveType.Sphere);
                             GameObject.Destroy(ghostSphereR.GetComponent<SphereCollider>());
-                            ghostSphereR.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
+                            ghostSphereR.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
                             ghostSphereR.GetComponent<Renderer>().material.color = backgroundColor.GetCurrentColor();
                             ghostSphereR.transform.parent = GorillaTagger.Instance.rightHandTransform;
                             ghostSphereR.transform.position = GorillaTagger.Instance.rightHandTransform.position;
@@ -306,7 +306,7 @@ namespace Arrakis.Menu
                         {
                             ghostSphereL = GameObject.CreatePrimitive(PrimitiveType.Sphere);
                             GameObject.Destroy(ghostSphereL.GetComponent<SphereCollider>());
-                            ghostSphereL.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
+                            ghostSphereL.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
                             ghostSphereL.GetComponent<Renderer>().material.color = backgroundColor.GetCurrentColor();
                             ghostSphereL.transform.parent = GorillaTagger.Instance.leftHandTransform;
                             ghostSphereL.transform.position = GorillaTagger.Instance.leftHandTransform.position;
