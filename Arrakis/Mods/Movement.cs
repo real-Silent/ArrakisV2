@@ -623,22 +623,17 @@ namespace Arrakis.Mods
             GTPlayer.Instance.transform.position += moveDir * (Time.deltaTime * currentStrength);
             rb.linearVelocity = originalVelocity;
         }
+        public static bool LastTouchL;
+        public static bool LastTouchR;
         public static void PullMod()
         {
-            if (!SteamVR_Actions.gorillaTag_RightJoystickClick.GetState(SteamVR_Input_Sources.RightHand)) return;
-            if (GTPlayer.Instance.leftHand.wasColliding || GTPlayer.Instance.rightHand.wasColliding)
+            if ((!GTPlayer.Instance.IsHandTouching(true) && LastTouchL) && SteamVR_Actions.gorillaTag_RightJoystickClick.GetState(SteamVR_Input_Sources.RightHand) || (!GTPlayer.Instance.IsHandTouching(false) && LastTouchR) && SteamVR_Actions.gorillaTag_RightJoystickClick.GetState(SteamVR_Input_Sources.RightHand))
             {
-                Rigidbody rb = GorillaTagger.Instance.rigidbody;
-                Vector3 originalVelocity = rb.linearVelocity;
-                rb.linearVelocity = Vector3.zero;
-                Vector3 velocity = originalVelocity;
-                velocity.x *= 0.2f;
-                //velocity.y = 0f;
-                velocity.z *= 0.2f;
-                Vector3 newPos = GTPlayer.Instance.transform.position + velocity;
-                GTPlayer.Instance.transform.position = newPos;
-                rb.linearVelocity = originalVelocity;
+                Vector3 velocity = GTPlayer.Instance.GetComponent<Rigidbody>().velocity;
+                GTPlayer.Instance.transform.position += new Vector3(velocity.x * 0.08f, 0f, velocity.z * 0.08f);
             }
+            LastTouchL = GTPlayer.Instance.IsHandTouching(true);
+            LastTouchR = GTPlayer.Instance.IsHandTouching(false);
         }
         public static void StopFlip()
         {
