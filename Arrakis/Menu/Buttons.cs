@@ -24,6 +24,7 @@ using Arrakis.Mods;
 using Arrakis.Notifications;
 using Arrakis.Patches;
 using Arrakis.Patches.Patchers;
+using GorillaNetworking;
 using GorillaTagScripts;
 using Photon.Pun;
 using static Arrakis.Menu.Main;
@@ -221,7 +222,6 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Create '<color=red>ARRAKIS</color>'", method =() => Important.CreatePublicLobby("<color=red>ARRAKIS</color>"), isTogglable = false, toolTip = "Attempts to make a public room." },
                 new ButtonInfo { buttonText = "Create '❤️❤️❤️'", method =() => Important.CreatePublicLobby("<size=90><color=red>❤️❤️❤️</color></size>"), isTogglable = false, toolTip = "Attempts to make a public room." },
                 new ButtonInfo { buttonText = $"Create '{PluginInfo.DiscordLink}'", method =() => Important.CreatePublicLobby($"<color=red>{PluginInfo.DiscordLink}</color>"), isTogglable = false, toolTip = "Attempts to make a public room." },
-                new ButtonInfo { buttonText = $"Create '{PhotonNetwork.LocalPlayer.NickName}'", method =() => Important.CreatePublicLobby($"<color=red>{PhotonNetwork.LocalPlayer.NickName}</color>"), isTogglable = false, toolTip = "Attempts to make a public room." },
             },
 
             new ButtonInfo[] { // Safety
