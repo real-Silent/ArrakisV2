@@ -256,48 +256,6 @@ namespace Arrakis.Mods
                 }
             }
         }
-
-        public static void BreakAudioAll()
-        {
-            if (ControllerInputPoller.instance.rightControllerSecondaryButton)
-            {
-                GorillaTagger.Instance.myVRRig.SendRPC("RPC_PlayHandTap", Photon.Pun.RpcTarget.Others, new object[] { 110, 99999 });
-                GorillaTagger.Instance.myVRRig.SendRPC("RPC_PlayHandTap", Photon.Pun.RpcTarget.Others, new object[] { 111, 99999 });
-                Safety.RPCProc();
-            }
-        }
-
-        public static void BreakAudioGun()
-        {
-            if (GetGunInput(false))
-            {
-                var GunData = RenderGun();
-                GameObject NewPointer = GunData.NewPointer;
-                RaycastHit Ray = GunData.Ray;
-
-                if (lockTarget != null && gunLocked)
-                {
-                    GorillaTagger.Instance.myVRRig.SendRPC("RPC_PlayHandTap", lockTarget.Creator, new object[] { 110, 99999 });
-                    GorillaTagger.Instance.myVRRig.SendRPC("RPC_PlayHandTap", lockTarget.Creator, new object[] { 111, 99999 });
-                    Safety.RPCProc();
-                }
-
-                if (GetGunInput(true))
-                {
-                    VRRig rig = Ray.collider.GetComponentInParent<VRRig>();
-                    if (rig != null && rig != VRRig.LocalRig)
-                    {
-                        lockTarget = rig;
-                        gunLocked = true;
-                    }
-                }
-            }
-            else
-            {
-                lockTarget = null;
-                gunLocked = false;
-            }
-        }
         public static void BarrelFlingGun()
         {
             if (GetGunInput(false))

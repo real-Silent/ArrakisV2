@@ -433,8 +433,6 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Guardian Bring All", method =() => Overpowered.GuardianBringAll(), isTogglable = false, toolTip = "Brings everyones if you are guardian." },
                 new ButtonInfo { buttonText = "Guardian Wall Gun", method =() => Overpowered.GuardianWallGun(), isTogglable = true, toolTip = "Brings who you shoot to the wall where races start ig." },
                 new ButtonInfo { buttonText = "Guardian Wall All", method =() => Overpowered.GuardianWallAll(), isTogglable = true, toolTip = "Brings people to the wall where races start ig." },
-                new ButtonInfo { buttonText = "Break Audio All <color=grey>[<color=cyan>B</color>]</color>", method =() => Overpowered.BreakAudioAll(), isTogglable = true, toolTip = "Breaks everyones audio when you hold <color=grey>[<color=cyan>B</color>]</color>." },
-                new ButtonInfo { buttonText = "Break Audio Gun", method =() => Overpowered.BreakAudioGun(), isTogglable = true, toolTip = "Breaks the audio of the who you shoot." },
                 new ButtonInfo { buttonText = "Barrel Fling Gun", method =() => Overpowered.BarrelFlingGun(), isTogglable = true, toolTip = "Flings who ever you shoot if you own the barrel." },
                 new ButtonInfo { buttonText = "Barrel Bring Gun", method =() => Overpowered.BarrelBringGun(), isTogglable = true, toolTip = "Brings who ever you shoot if you own the barrel." },
                 new ButtonInfo { buttonText = "City Barrel Kick Gun", method =() => Overpowered.CityBarrelKickGun(), isTogglable = true, toolTip = "Kicks who ever you shoot if you own the barrel and they are in city." },
