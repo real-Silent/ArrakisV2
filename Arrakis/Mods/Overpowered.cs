@@ -23,6 +23,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Arrakis.Classes;
+using Arrakis.Extensions;
 using Arrakis.Menu;
 using Arrakis.Notifications;
 using Arrakis.Patches;
@@ -760,6 +761,31 @@ namespace Arrakis.Mods
             foreach (Player p in PhotonNetwork.PlayerListOthers)
             {
                 PhotonNetwork.OpRemoveCompleteCacheOfPlayer(p.ActorNumber);
+            }
+        }
+
+        public static bool IsBeingHeld(VRRig rig, VRRig remoteRig = null) => // im lazy so fuck you helper method -sleepy
+            rig != null && ((!rig.leftHandLink.CanBeGrabbed() && (remoteRig == null || rig.leftHandLink.grabbedPlayer == remoteRig.GetPlayer())) || (!rig.rightHandLink.CanBeGrabbed() && (remoteRig == null || rig.rightHandLink.grabbedPlayer == remoteRig.GetPlayer())));
+
+        public static void FlingOnGrab()
+        {
+            if (IsBeingHeld(VRRig.LocalRig))
+            {
+                Transform transform = VRRig.LocalRig.leftHandLink.IsLinkActive() ? VRRig.LocalRig.leftHandTransform : VRRig.LocalRig.rightHandTransform;
+                VRRig rig = RigManager.GetVRRigFromPlayer(VRRig.LocalRig.leftHandLink.grabbedPlayer) ?? RigManager.GetVRRigFromPlayer(VRRig.LocalRig.rightHandLink.grabbedPlayer);
+                Vector3 velocity = rig.transform.up * 5f;
+                rig.netView.SendRPC("DroppedByPlayer", rig.Creator, velocity);
+            }
+        }
+
+        public static void CrashOnGrab()
+        {
+            if (IsBeingHeld(VRRig.LocalRig))
+            {
+                Transform transform = VRRig.LocalRig.leftHandLink.IsLinkActive() ? VRRig.LocalRig.leftHandTransform : VRRig.LocalRig.rightHandTransform;
+                VRRig rig = RigManager.GetVRRigFromPlayer(VRRig.LocalRig.leftHandLink.grabbedPlayer) ?? RigManager.GetVRRigFromPlayer(VRRig.LocalRig.rightHandLink.grabbedPlayer);
+                Vector3 velocity = rig.transform.up * -15f;
+                rig.netView.SendRPC("DroppedByPlayer", rig.Creator, velocity);
             }
         }
     }
