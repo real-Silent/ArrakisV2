@@ -429,64 +429,39 @@ namespace Arrakis.Mods
                 }
             }
         }
-        private const int DeployableBarrelSlot = 618;
-        private static Coroutine disableRoutine;
-        private static float tpt;
-        public static void BarrelFling(Vector3 position, Vector3 velocity, Quaternion rotation, RaiseEventOptions eventOptions = null)
+        public const int BarrelIndex = 618;
+        public static float barrelcooldown;
+        public static void BarrelFling(Vector3 pos, Vector3 vel, Quaternion rot, RaiseEventOptions options = null)
         {
-            eventOptions ??= new RaiseEventOptions
+            int index = BarrelIndex;
+            TransferrableObject transferrableObject = VRRig.LocalRig.myBodyDockPositions.allObjects[index];
+
+            if (!transferrableObject.gameObject.activeSelf)
             {
-                Receivers = ReceiverGroup.All
-            };
-            DistancePatch.enabled = true;
-            StopPreviousDisableTask();
-            disableRoutine = CRunner.instance.StartCoroutine(RestoreBarrelState(DeployableBarrelSlot));
-            TransferrableObject barrelObject = VRRig.LocalRig.myBodyDockPositions.allObjects[DeployableBarrelSlot];
-            if (!barrelObject.gameObject.activeSelf)
-            {
-                VRRig.LocalRig.SetActiveTransferrableObjectIndex(1, DeployableBarrelSlot);
-                barrelObject.gameObject.SetActive(true);
+                VRRig.LocalRig.SetActiveTransferrableObjectIndex(1, index);
+                transferrableObject.gameObject.SetActive(true);
             }
-            barrelObject.storedZone = BodyDockPositions.DropPositions.RightArm;
-            barrelObject.currentState = TransferrableObject.PositionState.InRightHand;
-            if (barrelObject.gameObject.activeSelf && Time.time > tpt)
+
+            transferrableObject.storedZone = BodyDockPositions.DropPositions.RightArm;
+            transferrableObject.currentState = TransferrableObject.PositionState.InRightHand;
+
+            if (transferrableObject.gameObject.activeSelf && Time.time > barrelcooldown)
             {
-                DeployableObject barrel = barrelObject.GetComponent<DeployableObject>();
-                object[] data =
-                {
-                    barrel._deploySignal._signalID, PhotonNetwork.ServerTimestamp, BitPackUtils.PackWorldPosForNetwork(position),
-                    BitPackUtils.PackQuaternionForNetwork(rotation), BitPackUtils.PackWorldPosForNetwork(velocity)
+                barrelcooldown = Time.time + 2f;
+
+                DeployableObject barrel = transferrableObject.GetComponent<DeployableObject>();
+
+                object[] data = {
+                    barrel._deploySignal._signalID,
+                    PhotonNetwork.ServerTimestamp,
+                    BitPackUtils.PackWorldPosForNetwork(pos),
+                    BitPackUtils.PackQuaternionForNetwork(rot),
+                    BitPackUtils.PackWorldPosForNetwork(vel)
                 };
-                VRRig.LocalRig.transform.position = position;
-                PhotonNetwork.RaiseEvent(177, data, eventOptions, new SendOptions { Reliability = false, DeliveryMode = DeliveryMode.ReliableUnsequenced });
-                barrel._child.Deploy(barrel, position, rotation, velocity, false);
-                barrel.DeployChild();
-                Safety.RPCProc();
+                options ??= new RaiseEventOptions { Receivers = ReceiverGroup.All, CachingOption = EventCaching.AddToRoomCacheGlobal };
+                PhotonNetwork.RaiseEvent(177, data, options, SendOptions.SendReliable);
+                barrel._child.Deploy(barrel, pos, rot, vel, false);
             }
-        }
-
-        private static void StopPreviousDisableTask()
-        {
-            if (disableRoutine != null)
-            {
-                CRunner.instance.StopCoroutine(disableRoutine);
-            }
-        }
-
-        private static IEnumerator RestoreBarrelState(int index)
-        {
-            yield return new WaitForSeconds(0.3f);
-
-            DistancePatch.enabled = false;
-            VRRig.LocalRig.enabled = true;
-
-            TransferrableObject barrel =
-                VRRig.LocalRig.myBodyDockPositions.allObjects[index];
-
-            barrel.gameObject.SetActive(true);
-
-            barrel.storedZone = BodyDockPositions.DropPositions.RightArm;
-            barrel.currentState = TransferrableObject.PositionState.OnRightArm;
         }
         public static float LagDelay = 0f;
         public static void LagPlayer(VRRig player, int ammount, float delay)
@@ -773,7 +748,7 @@ namespace Arrakis.Mods
             {
                 Transform transform = VRRig.LocalRig.leftHandLink.IsLinkActive() ? VRRig.LocalRig.leftHandTransform : VRRig.LocalRig.rightHandTransform;
                 VRRig rig = RigManager.GetVRRigFromPlayer(VRRig.LocalRig.leftHandLink.grabbedPlayer) ?? RigManager.GetVRRigFromPlayer(VRRig.LocalRig.rightHandLink.grabbedPlayer);
-                Vector3 velocity = rig.transform.up * 5f;
+                Vector3 velocity = new Vector3(0f, 1000f, 0f);
                 rig.netView.SendRPC("DroppedByPlayer", rig.Creator, velocity);
             }
         }
@@ -784,7 +759,7 @@ namespace Arrakis.Mods
             {
                 Transform transform = VRRig.LocalRig.leftHandLink.IsLinkActive() ? VRRig.LocalRig.leftHandTransform : VRRig.LocalRig.rightHandTransform;
                 VRRig rig = RigManager.GetVRRigFromPlayer(VRRig.LocalRig.leftHandLink.grabbedPlayer) ?? RigManager.GetVRRigFromPlayer(VRRig.LocalRig.rightHandLink.grabbedPlayer);
-                Vector3 velocity = rig.transform.up * -15f;
+                Vector3 velocity = new Vector3(0f, -500f, 0);
                 rig.netView.SendRPC("DroppedByPlayer", rig.Creator, velocity);
             }
         }
