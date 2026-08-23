@@ -647,13 +647,13 @@ namespace Arrakis.Mods
         public const float flipDuration = 1f;
         public static void Flip()
         {
-            if (!flipping && (ControllerInputPoller.instance.rightControllerTriggerButton || Mouse.current.leftButton.isPressed) && VRRig.LocalRig.enabled)
+            if (!flipping && (ControllerInputPoller.instance.rightControllerTriggerButton || ControllerInputPoller.instance.leftControllerTriggerButton) && VRRig.LocalRig.enabled)
             {
                 if (GTPlayer.Instance.playerRigidBody)
                 {
                     flipping = true;
                     flipStart = Time.time;
-                    flipAxis = VRRig.LocalRig.transform.right;
+                    flipAxis = ControllerInputPoller.instance.rightControllerTriggerButton ? VRRig.LocalRig.transform.right : -VRRig.LocalRig.transform.right;
                     flipFrom = GTPlayer.Instance?.playerRigidBody?.rotation ?? Quaternion.identity;
                 }
             }
