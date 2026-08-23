@@ -19,6 +19,7 @@ using static GorillaNetworking.GorillaComputer;
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,6 +30,7 @@ using Arrakis.Notifications;
 using Arrakis.Patches;
 using ExitGames.Client.Photon;
 using GorillaExtensions;
+using GorillaLocomotion;
 using GorillaLocomotion.Gameplay;
 using GorillaNetworking;
 using Photon.Pun;
@@ -37,7 +39,10 @@ using Photon.Voice.PUN;
 using UnityEngine;
 using static Arrakis.Classes.RigManager;
 using static Arrakis.Menu.Main;
+using static BodyDockPositions;
+using static TransferrableObject;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
+using Random = UnityEngine.Random;
 
 namespace Arrakis.Mods
 {
@@ -429,40 +434,115 @@ namespace Arrakis.Mods
                 }
             }
         }
-        public const int BarrelIndex = 618;
-        public static float barrelcooldown;
-        public static void BarrelFling(Vector3 pos, Vector3 vel, Quaternion rot, RaiseEventOptions options = null)
+	    private static Coroutine disableCoroutine;
+        private static void BarrelFling(Vector3 pos, Vector3 vel, Quaternion rot, RaiseEventOptions options = null)
+		{
+			if (VRRig.LocalRig == null)
+			{
+				return;
+			}
+			if (options == null)
+			{
+				options = new RaiseEventOptions
+				{
+					Receivers = 0
+				};
+			}
+			if (disableCoroutine != null)
+			{
+				CRunner.instance.StopCoroutine(disableCoroutine);
+			}
+			disableCoroutine = CRunner.instance.StartCoroutine(DisableThrowable());
+			TransferrableObject transferrableObject = GetBarrelObject();
+			if (transferrableObject == null)
+			{
+				EnsureBarrelEquipped();
+				transferrableObject = GetBarrelObject();
+			}
+			if (transferrableObject == null)
+			{
+				return;
+			}
+			DeployableObject component = transferrableObject.GetComponent<DeployableObject>();
+			if (component == null || !component.m_spamChecker.CheckCallTime(Time.unscaledTime))
+			{
+				return;
+			}
+			transferrableObject.currentState = (TransferrableObject.PositionState)8;
+			object[] array = new object[]
+			{
+				component._deploySignal._signalID,
+				NetworkSystem.Instance.ServerTimestamp,
+				BitPackUtils.PackWorldPosForNetwork(pos),
+				BitPackUtils.PackQuaternionForNetwork(rot),
+				BitPackUtils.PackWorldPosForNetwork(vel)
+			};
+			PhotonNetwork.RaiseEvent(177, array, options, SendOptions.SendReliable);
+			component._child.Deploy(component, pos, rot, vel, false);
+			Safety.RPCProc();
+        }
+        private static void TeleportToTryOnRoom()
         {
-            int index = BarrelIndex;
-            TransferrableObject transferrableObject = VRRig.LocalRig.myBodyDockPositions.allObjects[index];
-
-            if (!transferrableObject.gameObject.activeSelf)
+			GameObject gameObject = GameObject.Find("Environment Objects/TriggerZones_Prefab/ZoneTransitions_Prefab/Cosmetics Room Triggers/TryOnRoom");
+			if (gameObject == null || GTPlayer.Instance == null)
+			{
+				return;
+			}
+			Vector3 position = gameObject.transform.position;
+			GTPlayer.Instance.TeleportTo(position - GorillaTagger.Instance.bodyCollider.transform.position + GorillaTagger.Instance.transform.position, GTPlayer.Instance.transform.rotation, false, false);
+			VRRig.LocalRig.transform.position = position;
+			Rigidbody attachedRigidbody = GorillaTagger.Instance.bodyCollider.attachedRigidbody;
+			if (attachedRigidbody != null)
+			{
+				attachedRigidbody.linearVelocity = Vector3.zero;
+			}
+        }
+        private static TransferrableObject GetBarrelObject()
+		{
+			if (VRRig.LocalRig == null || VRRig.LocalRig.myBodyDockPositions == null || VRRig.LocalRig.myBodyDockPositions.allObjects == null)
             {
-                VRRig.LocalRig.SetActiveTransferrableObjectIndex(1, index);
-                transferrableObject.gameObject.SetActive(true);
-            }
-
-            transferrableObject.storedZone = BodyDockPositions.DropPositions.RightArm;
-            transferrableObject.currentState = TransferrableObject.PositionState.InRightHand;
-
-            if (transferrableObject.gameObject.activeSelf && Time.time > barrelcooldown)
+                CustomConsole.Log("Some how somethings null", CustomConsole.LogType.Error);
+                return null;
+			}
+			TransferrableObject[] allObjects = VRRig.LocalRig.myBodyDockPositions.allObjects;
+			if (618 >= allObjects.Length)
             {
-                barrelcooldown = Time.time + 2f;
-
-                DeployableObject barrel = transferrableObject.GetComponent<DeployableObject>();
-
-                object[] data = {
-                    barrel._deploySignal._signalID,
-                    PhotonNetwork.ServerTimestamp,
-                    BitPackUtils.PackWorldPosForNetwork(pos),
-                    BitPackUtils.PackQuaternionForNetwork(rot),
-                    BitPackUtils.PackWorldPosForNetwork(vel)
-                };
-                options ??= new RaiseEventOptions { Receivers = ReceiverGroup.All, CachingOption = EventCaching.AddToRoomCacheGlobal };
-                PhotonNetwork.RaiseEvent(177, data, options, SendOptions.SendReliable);
-                barrel._child.Deploy(barrel, pos, rot, vel, false);
+                CustomConsole.Log("Fucking what?", CustomConsole.LogType.Error);
+                return null;
+			}
+			return allObjects[618];
+        }
+        public static IEnumerator DisableThrowable()
+        {
+            yield return (object)new WaitForSeconds(0.3f);
+            if (VRRig.LocalRig)
+            {
+                TransferrableObject barrelObject = GetBarrelObject();
+                if (VRRig.LocalRig)
+                {
+                    ((Component)barrelObject).gameObject.SetActive(true);
+                    barrelObject.storedZone = DropPositions.RightArm;
+                    barrelObject.currentState = PositionState.OnRightArm;
+                }
             }
         }
+        public static void EnsureBarrelEquipped() // makes it work in city if non owning barrel -sleepy
+		{
+			if (VRRig.LocalRig == null || CosmeticsController.instance == null)
+			{
+				return;
+			}
+			if (string.IsNullOrEmpty(CosmeticsController.instance.concatStringCosmeticsAllowed) || !CosmeticsController.instance.concatStringCosmeticsAllowed.Contains("Lucky Smash Barrel"))
+			{
+				TeleportToTryOnRoom();
+				CosmeticsController.CosmeticItem cosmeticItem = CosmeticsController.instance.allCosmetics.FirstOrDefault<CosmeticsController.CosmeticItem>((CosmeticsController.CosmeticItem c) => string.Equals(c.overrideDisplayName, "Lucky Smash Barrel", StringComparison.OrdinalIgnoreCase));
+				if (!string.IsNullOrEmpty(cosmeticItem.itemName))
+				{
+					CosmeticsController.instance.PressWardrobeItemButton(cosmeticItem, false, false);
+				}
+			}
+			VRRig.LocalRig.SetActiveTransferrableObjectIndex(1, 618);
+		}
         public static float LagDelay = 0f;
         public static void LagPlayer(VRRig player, int ammount, float delay)
         {
@@ -497,7 +577,7 @@ namespace Arrakis.Mods
                 RaycastHit Ray = GunData.Ray;
                 if (lockTarget != null && gunLocked)
                 {
-                    LagPlayer(lockTarget, 1992, 4.4f); // set to 1999 if kicks
+                    LagPlayer(lockTarget, 3600, 8f);
                 }
                 if (GetGunInput(true))
                 {
@@ -525,7 +605,7 @@ namespace Arrakis.Mods
                 RaycastHit Ray = GunData.Ray;
                 if (lockTarget != null && gunLocked)
                 {
-                    LagPlayer(lockTarget, 625, 1.7f); // set to 600 to 650 if kicks
+                    LagPlayer(lockTarget, 1350, 3f);
                 }
                 if (GetGunInput(true))
                 {
@@ -553,7 +633,7 @@ namespace Arrakis.Mods
                 RaycastHit Ray = GunData.Ray;
                 if (lockTarget != null && gunLocked)
                 {
-                    LagPlayer(lockTarget, 250, 0.5f);
+                    LagPlayer(lockTarget, 450, 1f);
                 }
                 if (GetGunInput(true))
                 {
