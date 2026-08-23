@@ -788,5 +788,82 @@ namespace Arrakis.Mods
                 rig.netView.SendRPC("DroppedByPlayer", rig.Creator, velocity);
             }
         }
+        public static void ForceGrabAll()
+        {
+            foreach (VRRig rig in VRRigCache.ActiveRigs)
+                ForceGrabTestButBetterTrust(rig, VRRig.LocalRig.transform.position);
+        }
+        public static void ForceGrabGun()
+        {
+            if (GetGunInput(false))
+            {
+                var GunData = RenderGun();
+                GameObject NewPointer = GunData.NewPointer;
+                RaycastHit Ray = GunData.Ray;
+                if (lockTarget != null && gunLocked)
+                {
+                    ForceGrabTestButBetterTrust(lockTarget, VRRig.LocalRig.transform.position);
+                }
+                if (GetGunInput(true))
+                {
+                    VRRig rig = Ray.collider.GetComponentInParent<VRRig>();
+                    if (rig != null && rig != VRRig.LocalRig)
+                    {
+                        lockTarget = rig;
+                        gunLocked = true;
+                    }
+                }
+            }
+            else
+            {
+                lockTarget = null;
+                gunLocked = false;
+            }
+        }
+        private static float grabCooldown;
+        // tbh might just be the same as old but its working? -sleepy
+        public static bool ForceGrabTestButBetterTrust(VRRig target, Vector3 position, bool returnOnGrab = false, bool enableRigAfter = false)
+        {
+            if (target == null || target.IsLocal()) // yes this SOMEHOW happend to me. -sleepy
+                return false;
+
+            bool doleft = target.leftHandLink.CanBeGrabbed();
+            bool doright = target.rightHandLink.CanBeGrabbed();
+            if (!doleft && !doright)
+            {
+                VRRig.LocalRig.enabled = true;
+                return false;
+            }
+            VRRig local = VRRig.LocalRig;
+            local.enabled = false;
+            local.transform.position = target.syncPos;
+            var localHand = doleft ? local.leftHandLink : local.rightHandLink;
+            var targetHand = doright ? target.leftHandLink : target.rightHandLink;
+
+            if (targetHand.grabbedPlayer == NetworkSystem.Instance.LocalPlayer)
+            {
+                if (returnOnGrab)
+                {
+                    if (enableRigAfter)
+                        local.enabled = true;
+
+                    return true;
+                }
+
+                return false;
+            }
+
+            if (grabCooldown <= 0f)
+                grabCooldown = Mathf.Max(targetHand.rejectGrabsUntilTimestamp, Time.time + 1f);
+
+            if (Time.time >= grabCooldown)
+            {
+                localHand.TentacleTryCreateLink(targetHand);
+                local.transform.position = position;
+                NotificationManager.SendNotification($"<color=grey>[</color><color=cyan>ARRAKIS</color><color=grey>]</color> Attempted to grab {target.GetPlayer().NickName}.");
+                grabCooldown = Mathf.Max(targetHand.rejectGrabsUntilTimestamp, Time.time + 1f);
+            }
+            return false;
+        }
     }
 }
