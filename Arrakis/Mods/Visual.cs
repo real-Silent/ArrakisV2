@@ -594,5 +594,120 @@ namespace Arrakis.Mods
                 Object.Destroy(ACam);
             }
         }
+        public static float EmissionSpeed = 1f;
+        public static TrailRenderer leftTrail;
+        public static TrailRenderer rightTrail;
+        public static Vector3 lastLeftPosition;
+        public static Vector3 lastRightPosition;
+        public static void EnableHandTrails()
+        {
+            Transform leftHand = GorillaTagger.Instance.leftHandTransform;
+            Transform rightHand = GorillaTagger.Instance.rightHandTransform;
+            if (leftHand != null && leftTrail == null)
+            {
+                leftTrail = CreateHandTrail(leftHand);
+            }
+            if (rightHand != null && rightTrail == null)
+            {
+                rightTrail = CreateHandTrail(rightHand);
+            }
+            lastLeftPosition = leftHand != null ? leftHand.position : Vector3.zero;
+            lastRightPosition = rightHand != null ? rightHand.position : Vector3.zero;
+        }
+        private static Shader _espShader; // c# is fucking retarded -sleepy
+        public static Shader EspShader // c# is fucking retarded -sleepy
+        {
+            get
+            {
+                if (_espShader == null)
+                {
+                    _espShader = Shader.Find("GUI/Text Shader");
+                    if (_espShader == null)
+                    {
+                        _espShader = Shader.Find("Sprites/Default");
+                    }
+
+                    if (_espShader == null)
+                    {
+                        _espShader = Cached;
+                    }
+                }
+
+                return _espShader;
+            }
+        }
+        public static Shader Cached { get; private set; } // c# is fucking retarded -sleepy
+        public static Material CreateTransparentMaterial(Color color) // c# is fucking retarded -sleepy
+        {
+            Material material = new Material(EspShader)
+            {
+                color = color
+            };
+            material.SetInt("_ZTest", 8);
+            material.SetFloat("_ZWrite", 0f);
+            material.renderQueue = 4000;
+            return material;
+        }
+        private static TrailRenderer CreateHandTrail(Transform parent)
+        {
+            GameObject trailObject = new GameObject("Arrakis_HandTrail");
+            trailObject.transform.SetParent(parent, false);
+            trailObject.transform.localPosition = Vector3.zero;
+            TrailRenderer trail = trailObject.AddComponent<TrailRenderer>();
+            trail.time = 0.3f;
+            trail.startWidth = 0.05f;
+            trail.endWidth = 0f;
+            trail.minVertexDistance = 0.01f;
+            Gradient gradient = new Gradient
+            {
+                colorKeys = new[]
+                {
+                    new GradientColorKey(Color.white, 0f),
+                    new GradientColorKey(new Color(1f, 0.5f, 0f), 0.5f),
+                    new GradientColorKey(new Color(1f, 0.3f, 0f), 1f)
+                },
+                alphaKeys = new[]
+                {
+                    new GradientAlphaKey(1f, 0f),
+                    new GradientAlphaKey(0.5f, 0.5f),
+                    new GradientAlphaKey(0f, 1f)
+                }
+            };
+            trail.colorGradient = gradient;
+            ((Renderer)trail).material = CreateTransparentMaterial(Color.white);
+            trail.emitting = false;
+            return trail;
+        }
+        public static void HandTrails()
+        {
+            Transform leftHand = GorillaTagger.Instance.leftHandTransform;
+            Transform rightHand = GorillaTagger.Instance.rightHandTransform;
+            float frameTime = Mathf.Max(Time.deltaTime, 0.0001f);
+            if (leftHand != null && leftTrail != null)
+            {
+                leftTrail.emitting = (leftHand.position - lastLeftPosition).magnitude / frameTime > EmissionSpeed;
+                lastLeftPosition = leftHand.position;
+            }
+            if (rightHand != null && rightTrail != null)
+            {
+                rightTrail.emitting = (rightHand.position - lastRightPosition).magnitude / frameTime > EmissionSpeed;
+                lastRightPosition = rightHand.position;
+		    }
+        }
+        public static void DestroyHandTrails()
+        {
+            DestroyHandTrail(leftTrail);
+            DestroyHandTrail(rightTrail);
+        }
+
+        public static void DestroyHandTrail(TrailRenderer trail)
+        {
+            if (trail == null)
+            {
+                return;
+            }
+            Object.Destroy(trail.gameObject);
+            trail = null; // idfk if needs to set but just incase -sleepy
+        }
     }
 }

@@ -321,6 +321,7 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "No Leaves", enableMethod =() => Visual.NoLeaves(), disableMethod =() => Visual.DisableNoLeaves(), toolTip = "Removes all the leaves in the game." },
                 new ButtonInfo { buttonText = "Clear Weather", method =() => Visual.ClearWeather(), toolTip = "Clears the weather.", isTogglable = true },
                 new ButtonInfo { buttonText = "Spectate Gun", method =() => Visual.SpectateGun(), toolTip = "Spectates who ever you shoot.", isTogglable = true },
+                new ButtonInfo { buttonText = "Hand Trails", enableMethod =() => Visual.EnableHandTrails(), method =() => Visual.HandTrails(), disableMethod =() => Visual.DestroyHandTrails(), toolTip = "Puts trails on your hands.", isTogglable = true },
             },
 
             new ButtonInfo[] { // Advantage
@@ -471,7 +472,7 @@ namespace Arrakis.Menu
                 //new ButtonInfo { buttonText = "Spaz Lucy Target", method =() => Master.SpazLucyTarget(), isTogglable = true, toolTip = "Makes the ghost Lucy spaz the target." },
                 //new ButtonInfo { buttonText = "Move Lucy Gun", method =() => Master.MoveLucyGun(), isTogglable = true, toolTip = "Makes the ghost Lucy go to your gun pointer." },
                 //new ButtonInfo { buttonText = "Grab Lucy", method =() => Master.GrabLucy(), isTogglable = true, toolTip = "Makes the ghost Lucy go to your hand when holding your grips." },
-                
+
                 new ButtonInfo { buttonText = "Untag All", method =() => Master.UntagAll(), isTogglable = false, toolTip = "Untags everyone in the current lobby." },
                 new ButtonInfo { buttonText = "Untag Self", method =() => Master.UntagSelf(), isTogglable = false, toolTip = "Untags your self." },
                 new ButtonInfo { buttonText = "Untag Gun", method =() => Master.UntagGun(), isTogglable = true, toolTip = "Untags the person you shoot." },
@@ -498,7 +499,6 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Exit Experimental", method =() => CurrentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },
 
                 new ButtonInfo { buttonText = "Get All Tryon Cosmetics", method =() => Experimental.GetTryonCosmetics(), isTogglable = false, toolTip = "Gets all the try on cosmetics and logs in the console." },
-
                 new ButtonInfo { buttonText = "Get RPC Data", method =() => Experimental.GetRPCData(), isTogglable = false, toolTip = "Gets the rpc data and logs to a file." },
                 new ButtonInfo { buttonText = "Kick All In Party", method =() => Experimental.KickAllInParty(), isTogglable = false, toolTip = "Kicks everyone in your party." },
                 new ButtonInfo { buttonText = "Leave Party", method =() => FriendshipGroupDetection.Instance.LeaveParty(), isTogglable = false, toolTip = "Leaves the party you are in." },
@@ -512,6 +512,7 @@ namespace Arrakis.Menu
 
             new ButtonInfo[] { // Soundboard
                 new ButtonInfo { buttonText = "Exit Soundboard", method =() => CurrentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },
+
                 new ButtonInfo { buttonText = "bad snow days. - v0rtex!", enableMethod =() => Soundboard.Play("https://cdn.discordapp.com/attachments/1531554219046342696/1531556926599467028/bad_snow_days._-_v0rtex.mp3?ex=6a69a50a&is=6a68538a&hm=d1b7ea66f11a3c601325fb911a92602fc6f9b788ccd67580bf17bf4c129d8b66&"), disableMethod =() => Soundboard.Stop(), isTogglable = true, toolTip = "Plays a sound/song." },
                 new ButtonInfo { buttonText = "you was mine. - v0rtex!", enableMethod =() => Soundboard.Play("https://cdn.discordapp.com/attachments/1531554219046342696/1531560634968309900/you_was_mine._-_v0rtex.mp3?ex=6a69a87e&is=6a6856fe&hm=7033fb948b0f4d7b77add3f70684431ecc299c0e21b9cf64e66ae8e11278ea52&"), disableMethod =() => Soundboard.Stop(), isTogglable = true, toolTip = "Plays a sound/song." },
                 new ButtonInfo { buttonText = "factory reset. - ISSBROKIE", enableMethod =() => Soundboard.Play("https://cdn.discordapp.com/attachments/1531554219046342696/1531557468638019635/factory_reset._-_ISSBROKIE.mp3?ex=6a69a58b&is=6a68540b&hm=e9fa9d844fc5100d5924085d8afae5a920feaa87febdffcf9bd055e83534af3f&"), disableMethod =() => Soundboard.Stop(), isTogglable = true, toolTip = "Plays a sound/song." },
