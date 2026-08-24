@@ -28,6 +28,7 @@ using GorillaExtensions;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Arrakis.Classes.Mods;
 using static Arrakis.Menu.Main;
 using static Arrakis.Settings;
 
@@ -708,6 +709,23 @@ namespace Arrakis.Mods
             }
             Object.Destroy(trail.gameObject);
             trail = null; // idfk if needs to set but just incase -sleepy
+        }
+        private static GameObject hudInstance; // pasted RIGHT from my plugin so code might be ass -sleepy
+        public static void PlayerInfo()
+        {
+            if (hudInstance == null)
+            {
+                hudInstance = new GameObject("arrakis_infohud"); // only changed this name bcz before it was the fslur 25 times :3 -sleepy
+                hudInstance.AddComponent<PlayerInfoBehavior>();
+            }
+        }
+        public static void CleanupPlayerInfo() // pasted RIGHT from my plugin so code might be ass -sleepy
+        {
+            if (hudInstance != null)
+            {
+                UnityEngine.Object.Destroy(hudInstance);
+                hudInstance = null;
+            }
         }
     }
 }
