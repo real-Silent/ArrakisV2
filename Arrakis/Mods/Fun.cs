@@ -30,6 +30,7 @@ using GorillaNetworking;
 using GorillaTagScripts;
 using Liv.Lck.GorillaTag;
 using Photon.Pun;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Voxels;
@@ -146,8 +147,40 @@ namespace Arrakis.Mods
             }
         }
 
-        private static void SpawnWater(Vector3 pos, Quaternion rot, float scale, float radius, bool big, bool enter) =>
+        private static void SpawnWater(Vector3 pos, Quaternion rot, float scale, float radius, bool big, bool enter) => 
             GorillaTagger.Instance.myVRRig.SendRPC("RPC_PlaySplashEffect", Photon.Pun.RpcTarget.All, new object[] { pos, rot, scale, radius, big, enter });
+
+        public static float Radius = 1.5f; // nova please name this better then me -sleepy
+        public static float AngleStep = 25f; // nova please name this better then me -sleepy
+        public static float HeightStep = 0.12f; // nova please name this better then me -sleepy
+        public static float MaximumHeight = 2.5f; // nova please name this better then me -sleepy
+        public static float MaximumDistanceSquared = 9f; // nova please name this better then me -sleepy
+        public static float _lastUpdateTime; // nova please name this better then me -sleepy
+        public static float _angleDegrees; // nova please name this better then me -sleepy
+        public static float _height; // nova please name this better then me -sleepy
+        public static void WaterHelixSplash()
+        {
+            if (Time.time > _lastUpdateTime )
+            {
+                _lastUpdateTime = Time.time + 0.07f;
+                Vector3 origin = VRRig.LocalRig.transform.position;
+                SpawnWater(PointOnHelix(origin, _angleDegrees), VRRig.LocalRig.transform.rotation, 5, 100f, true, false);
+                SpawnWater(PointOnHelix(origin, _angleDegrees + 180f), VRRig.LocalRig.transform.rotation, 5, 100f, true, false);
+                Safety.RPCProc();
+
+                _angleDegrees = (_angleDegrees + AngleStep) % 360f;
+                _height += HeightStep;
+                if (_height > MaximumHeight)
+                {
+                    _height = 0f;
+                }
+            }
+        }
+        public static Vector3 PointOnHelix(Vector3 origin, float angleDegrees) // fuck math atp -sleepy || nova please name this better then me -sleepy
+        {
+            float angleRadians = angleDegrees * Mathf.Deg2Rad;
+            return origin + new Vector3(Mathf.Cos(angleRadians) * Radius, _height, Mathf.Sin(angleRadians) * Radius);
+        }
 
         public static void WaterSplashSelf()
         {
@@ -175,7 +208,6 @@ namespace Arrakis.Mods
                 }
             }
         }
-
         public static void MaxQuestScore() =>
             VRRig.LocalRig.SetQuestScore(int.MaxValue);
 
