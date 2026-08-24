@@ -322,6 +322,7 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Clear Weather", method =() => Visual.ClearWeather(), toolTip = "Clears the weather.", isTogglable = true },
                 new ButtonInfo { buttonText = "Spectate Gun", method =() => Visual.SpectateGun(), toolTip = "Spectates who ever you shoot.", isTogglable = true },
                 new ButtonInfo { buttonText = "Hand Trails", enableMethod =() => Visual.EnableHandTrails(), method =() => Visual.HandTrails(), disableMethod =() => Visual.DestroyHandTrails(), toolTip = "Puts trails on your hands.", isTogglable = true },
+                new ButtonInfo { buttonText = "Player Info Hud", enableMethod =() => Visual.PlayerInfo(), disableMethod =() => Visual.CleanupPlayerInfo(), toolTip = "Displays info on your hud.", isTogglable = true },
             },
 
             new ButtonInfo[] { // Advantage
