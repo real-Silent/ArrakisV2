@@ -25,6 +25,7 @@ using System.IO;
 using System.Linq;
 using Arrakis.Classes;
 using Arrakis.Classes.Menu;
+using Arrakis.Menu;
 using Arrakis.Notifications;
 using Arrakis.Patches.Patchers;
 using ExitGames.Client.Photon;
@@ -62,7 +63,7 @@ namespace Arrakis.Mods
         {
             if (FriendshipGroupDetection.Instance.IsInParty)
             {
-                PhotonNetworkController.Instance.AttemptToJoinSpecificRoom("ARRAKIS ON TOP", JoinType.ForceJoinWithParty);
+                PhotonNetworkController.Instance.AttemptToJoinSpecificRoom(Main.GenerateRandomString(6), JoinType.ForceJoinWithParty);
                 NotificationManager.SendNotification("<color=grey>[</color><color=purple>PARTY</color><color=grey>]</color> Kicking party members, please be patient..");
             }
             else

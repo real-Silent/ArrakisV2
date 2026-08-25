@@ -23,6 +23,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using Arrakis.Classes;
 using Arrakis.Managers;
 using Arrakis.Mods;
@@ -1617,6 +1618,16 @@ namespace Arrakis.Menu
             }
             GameObject.Destroy(GameObject.Find("Arrakis"));
             HarmonyLoader.RemovePatches();
+        }
+        private const string RandomChars = "ABCDEFGHIJKLMNPQRSTUVWXYZ123456789";
+        public static string GenerateRandomString(int length = 8)
+        {
+            StringBuilder roomCode = new StringBuilder(length);
+            for (int i = 0; i < length; i++)
+            {
+                roomCode.Append(RandomChars[UnityEngine.Random.Range(0, RandomChars.Length)]);
+            }
+            return roomCode.ToString();
         }
     }
 }
