@@ -454,6 +454,7 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Crash On Grab", method =() => Overpowered.CrashOnGrab(), isTogglable = true, toolTip = "Crashes who ever you hold with handlink." },
                 new ButtonInfo { buttonText = "Force Grab Gun", method =() => Overpowered.ForceGrabGun(), disableMethod =() => VRRig.LocalRig.enabled = true, isTogglable = true, toolTip = "Attempts to grab who ever you shoot." },
                 new ButtonInfo { buttonText = "Force Grab All", method =() => Overpowered.ForceGrabAll(), disableMethod =() => VRRig.LocalRig.enabled = true, isTogglable = true, toolTip = "Attempts to grab who ever you shoot." },
+                new ButtonInfo { buttonText = "Lag All", method =() => Overpowered.LagAll(), isTogglable = true, toolTip = "Lags everyone." },
            },
 
             new ButtonInfo[] { // Master
