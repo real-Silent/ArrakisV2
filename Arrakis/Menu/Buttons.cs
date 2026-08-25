@@ -456,6 +456,7 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Stump Kick All <color=grey>[<color=cyan>Private</color>]</color>", method =() => Overpowered.StumpKickAll(), isTogglable = false, toolTip = "Kicks everyone in stump to a public lobby." },
                 new ButtonInfo { buttonText = "Destroy Cache All", method =() => Overpowered.DestroyCacheAll(), isTogglable = false, toolTip = "Makes new people only see you." },
                 new ButtonInfo { buttonText = "Fling On Grab", method =() => Overpowered.FlingOnGrab(), isTogglable = true, toolTip = "Flings who ever you hold with handlink." },
+                new ButtonInfo { buttonText = "Old Fling On Grab", method =() => Overpowered.OldFlingOnGrab(), isTogglable = true, toolTip = "Flings who ever you hold with handlink." },
                 new ButtonInfo { buttonText = "Crash On Grab", method =() => Overpowered.CrashOnGrab(), isTogglable = true, toolTip = "Crashes who ever you hold with handlink." },
                 new ButtonInfo { buttonText = "Force Grab Gun", method =() => Overpowered.ForceGrabGun(), disableMethod =() => VRRig.LocalRig.enabled = true, isTogglable = true, toolTip = "Attempts to grab who ever you shoot." },
                 new ButtonInfo { buttonText = "Force Grab All", method =() => Overpowered.ForceGrabAll(), disableMethod =() => VRRig.LocalRig.enabled = true, isTogglable = true, toolTip = "Attempts to grab who ever you shoot." },

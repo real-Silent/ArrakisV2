@@ -780,6 +780,32 @@ namespace Arrakis.Mods
         public static bool IsBeingHeld(VRRig rig, VRRig remoteRig = null) => // im lazy so fuck you helper method -sleepy
             rig != null && ((!rig.leftHandLink.CanBeGrabbed() && (remoteRig == null || rig.leftHandLink.grabbedPlayer == remoteRig.GetPlayer())) || (!rig.rightHandLink.CanBeGrabbed() && (remoteRig == null || rig.rightHandLink.grabbedPlayer == remoteRig.GetPlayer())));
 
+        public static void OldFlingOnGrab()
+        {
+            if (IsBeingHeld(VRRig.LocalRig))
+            {
+                CRunner.instance.StartCoroutine(FlingOnGrabCoroutine(new Vector3(0f, 1000f, 0f)));
+            }
+        }
+        public static void OldCrashOnGrab()
+        {
+            if (IsBeingHeld(VRRig.LocalRig))
+            {
+                CRunner.instance.StartCoroutine(FlingOnGrabCoroutine(new Vector3(0f, -500f, 0f)));
+            }
+        }
+        public static IEnumerator FlingOnGrabCoroutine(Vector3 pos)
+        {
+            VRRig.LocalRig.enabled = false;
+            yield return new WaitForSeconds(0.2f);
+            VRRig.LocalRig.transform.position = pos;
+            yield return new WaitForSeconds(0.2f);
+            VRRig.LocalRig.BreakHandLinks();
+            GorillaTagger.Instance.offlineVRRig.rightHandLink.BreakLink();
+            GorillaTagger.Instance.offlineVRRig.leftHandLink.BreakLink();
+            yield return new WaitForSeconds(0.2f);
+            VRRig.LocalRig.enabled = true;
+        }
         public static void FlingOnGrab()
         {
             if (IsBeingHeld(VRRig.LocalRig))
