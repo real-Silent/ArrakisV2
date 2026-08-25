@@ -797,6 +797,7 @@ namespace Arrakis.Mods
         }
         public static IEnumerator FlingOnGrabCoroutine(Vector3 pos)
         {
+            yield return new WaitForSeconds(0.4f);
             ChangeTickCount(9999f);
             VRRig.LocalRig.enabled = false;
             yield return new WaitForSeconds(0.2f);
