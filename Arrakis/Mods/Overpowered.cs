@@ -508,7 +508,7 @@ namespace Arrakis.Mods
             if (PhotonNetwork.InRoom && Time.time >= LagDelay)
             {
                 LagDelay = Time.time + 9f;
-                for (int i = 0; i < 3000; i++)
+                for (int i = 0; i < 2000; i++)
                 {
                     PhotonNetwork.NetworkingClient.OpRaiseEvent(3, new object[0], new RaiseEventOptions
                     {
