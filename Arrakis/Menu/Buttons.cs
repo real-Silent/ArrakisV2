@@ -350,7 +350,7 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Jman Yell Spam <color=grey>[<color=cyan>T</color>]</color>", method =() => Sound.SoundSpam(337), isTogglable = true, toolTip = "Spams the jman yell sound when you hold <color=grey>[<color=cyan>T</color>]</color>." },
                 new ButtonInfo { buttonText = "Jman Okay Spam <color=grey>[<color=cyan>T</color>]</color>", method =() => Sound.SoundSpam(336), isTogglable = true, toolTip = "Spams the jman okay sound when you hold <color=grey>[<color=cyan>T</color>]</color>." },
                 new ButtonInfo { buttonText = "Jman Slap Spam <color=grey>[<color=cyan>T</color>]</color>", method =() => Sound.SoundSpam(338), isTogglable = true, toolTip = "Spams the jman slap sound when you hold <color=grey>[<color=cyan>T</color>]</color>." },
-                new ButtonInfo { buttonText = "Random Spam <color=grey>[<color=cyan>T</color>]</color>", method =() => Sound.SoundSpam(UnityEngine.Random.Range(0, 350)), isTogglable = true, toolTip = "Spams the glass sound when you hold <color=grey>[<color=cyan>T</color>]</color>." },
+                new ButtonInfo { buttonText = "Random Spam <color=grey>[<color=cyan>T</color>]</color>", method =() => Sound.SoundSpam(UnityEngine.Random.Range(0, GorillaLocomotion.GTPlayer.Instance.materialData.Count)), isTogglable = true, toolTip = "Spams the glass sound when you hold <color=grey>[<color=cyan>T</color>]</color>." },
             },
 
             new ButtonInfo[] { // Fun
