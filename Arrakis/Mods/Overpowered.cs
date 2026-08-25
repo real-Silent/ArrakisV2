@@ -33,6 +33,7 @@ using GorillaExtensions;
 using GorillaLocomotion;
 using GorillaLocomotion.Gameplay;
 using GorillaNetworking;
+using HarmonyLib;
 using Photon.Pun;
 using Photon.Realtime;
 using Photon.Voice.PUN;
@@ -796,6 +797,7 @@ namespace Arrakis.Mods
         }
         public static IEnumerator FlingOnGrabCoroutine(Vector3 pos)
         {
+            ChangeTickCount(9999f);
             VRRig.LocalRig.enabled = false;
             yield return new WaitForSeconds(0.2f);
             VRRig.LocalRig.transform.position = pos;
@@ -805,6 +807,11 @@ namespace Arrakis.Mods
             GorillaTagger.Instance.offlineVRRig.leftHandLink.BreakLink();
             yield return new WaitForSeconds(0.2f);
             VRRig.LocalRig.enabled = true;
+            ChangeTickCount();
+        }
+        public static void ChangeTickCount(float tick = 1000) // 1000 default -sleepy
+        {
+            Traverse.Create(GameObject.Find("PhotonMono").GetComponent<PhotonHandler>()).Field("nextSendTickCountOnSerialize").SetValue((int)(Time.realtimeSinceStartup * tick));
         }
         public static void FlingOnGrab()
         {
