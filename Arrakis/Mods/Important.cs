@@ -36,13 +36,9 @@ namespace Arrakis.Mods
     {
         public static void QuitGame()
         {
-            Prompt("Are you sure you want to exit Gorilla Tag.", () => 
+            Prompt("Are you sure you want to exit Gorilla Tag.", () =>
             {
                 Application.Quit();
-            }, () => 
-            {
-                CurrentCategoryName = "Main";
-                StopCurrentPrompt();
             });
         }
 
@@ -52,10 +48,6 @@ namespace Arrakis.Mods
             {
                 if (menu != null)
                     DestroyMenu();
-            }, () =>
-            {
-                CurrentCategoryName = "Main";
-                StopCurrentPrompt();
             });
         }
 

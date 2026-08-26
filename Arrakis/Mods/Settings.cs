@@ -107,13 +107,9 @@ namespace Arrakis
 
         public static void JoinDiscord()
         {
-            Prompt("Join Arrakis Discord", () => 
+            Prompt("Join Arrakis Discord", () =>
             {
                 Process.Start("https://novax.lol/d");
-            }, () =>
-            {
-                CurrentCategoryName = "Main";
-                StopCurrentPrompt();
             });
         }
 
