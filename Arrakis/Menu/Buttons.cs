@@ -410,6 +410,8 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Multi Block", method =() => Fun.MultiBlock(), isTogglable = true, toolTip = "Lets you put pick alot of blocks in your right hand." },
                 new ButtonInfo { buttonText = "Buy All Free Cosmetics", method =() => Fun.BuyAllFree(), isTogglable = false, toolTip = "Trys to buy every cosmetic if its free." },
                 new ButtonInfo { buttonText = "Animated Name", method =() => Fun.AnimatedName(), disableMethod =() => Fun.name = null, isTogglable = true, toolTip = "Makes your name animated." },
+                new ButtonInfo { buttonText = "Break Audio Gun", method =() => Fun.BreakAudioGun(), isTogglable = true, toolTip = "Attempts to break the persons audio who you shoot." },
+                new ButtonInfo { buttonText = "Break Audio All", method =() => Fun.BreakAudioAll(), isTogglable = true, toolTip = "Attempts to break everyones audio." },
             },
 
             new ButtonInfo[] { // Projectiles

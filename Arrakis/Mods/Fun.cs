@@ -18,20 +18,21 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
 using Arrakis.Notifications;
 using GorillaLocomotion;
 using GorillaNetworking;
 using GorillaTagScripts;
 using Liv.Lck.GorillaTag;
 using Photon.Pun;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Threading.Tasks;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 using UnityEngine.InputSystem;
 using Voxels;
 using static Arrakis.Menu.Main;
@@ -879,6 +880,71 @@ namespace Arrakis.Mods
             PlayerPrefs.Save();
             PhotonNetwork.LocalPlayer.NickName = name[..length];
             Safety.RPCProc();
+        }
+
+
+        public static void BreakAudioGun()
+        {
+            if (GetGunInput(false))
+            {
+                var GunData = RenderGun();
+                GameObject NewPointer = GunData.NewPointer;
+                RaycastHit Ray = GunData.Ray;
+
+                if (gunLocked && lockTarget != null)
+                {
+                    BreakAudio(lockTarget.Creator, 111);
+                }
+
+                if (GetGunInput(true))
+                {
+                    VRRig rig = Ray.collider.GetComponentInParent<VRRig>();
+                    if (rig != null && rig != VRRig.LocalRig)
+                    {
+                        gunLocked = true;
+                        lockTarget = rig;
+                    }
+                }
+            }
+            else
+            {
+                gunLocked = false;
+                lockTarget = null;
+            }
+        }
+
+        public static void BreakAudioAll()
+        {
+            if (ControllerInputPoller.instance.rightControllerTriggerButton || Keyboard.current.gKey.isPressed)
+            {
+                BreakAudio(RpcTarget.All, 111);
+            }
+        }
+
+        public static void BreakAudio(NetPlayer player, int soundIndex)
+        {
+            if (NetworkSystem.Instance.InRoom)
+            {
+                if (player != null)
+                {
+                    GorillaTagger.Instance.myVRRig.SendRPC("RPC_PlayHandTap", player, new object[] { soundIndex, false, 999999999f });
+                }
+            }
+            else
+            {
+                GorillaTagger.Instance.offlineVRRig.PlayHandTapLocal(soundIndex, false, 99999999f);
+            }
+        }
+        public static void BreakAudio(RpcTarget target, int soundIndex)
+        {
+            if (NetworkSystem.Instance.InRoom)
+            {
+                GorillaTagger.Instance.myVRRig.SendRPC("RPC_PlayHandTap", target, new object[] { soundIndex, false, 999999999f });
+            }
+            else
+            {
+                GorillaTagger.Instance.offlineVRRig.PlayHandTapLocal(soundIndex, false, 99999999f);
+            }
         }
     }
 }
