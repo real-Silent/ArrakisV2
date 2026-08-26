@@ -921,7 +921,7 @@ namespace Arrakis.Mods
             }
         }
 
-        public static void BreakAudio(NetPlayer player, int soundIndex)
+        private static void BreakAudio(NetPlayer player, int soundIndex)
         {
             if (NetworkSystem.Instance.InRoom)
             {
@@ -935,7 +935,7 @@ namespace Arrakis.Mods
                 GorillaTagger.Instance.offlineVRRig.PlayHandTapLocal(soundIndex, false, 99999999f);
             }
         }
-        public static void BreakAudio(RpcTarget target, int soundIndex)
+        private static void BreakAudio(RpcTarget target, int soundIndex)
         {
             if (NetworkSystem.Instance.InRoom)
             {
