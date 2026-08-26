@@ -18,6 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+using Arrakis.Managers;
 using ExitGames.Client.Photon;
 using GorillaNetworking;
 using GorillaTag.CosmeticSystem;
@@ -26,7 +27,7 @@ using Photon.Realtime;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.InputSystem;
+using UnityEngine.XR;
 
 namespace Arrakis.Mods
 {
@@ -34,7 +35,7 @@ namespace Arrakis.Mods
     {
         public static void SnowballGun()
         {
-            if (ControllerInputPoller.instance.rightGrab || Mouse.current.leftButton.isPressed)
+            if (InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Right, !XRSettings.isDeviceActive))
                 SpawnProjectile("SnowballRightAnchor", GorillaTagger.Instance.rightHandTransform.position, -GorillaTagger.Instance.rightHandTransform.up * 50f, Settings.projectileColor);
             else
                 cachedThrow.SetSnowballActiveLocal(false);
@@ -42,7 +43,7 @@ namespace Arrakis.Mods
 
         public static void GrowingSnowballGun()
         {
-            if (ControllerInputPoller.instance.rightGrab || Mouse.current.leftButton.isPressed)
+            if (InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Right, !XRSettings.isDeviceActive))
                 SpawnProjectile("GrowingSnowballRightAnchor", GorillaTagger.Instance.rightHandTransform.position, -GorillaTagger.Instance.rightHandTransform.up * 50f, Settings.allowbigsnowballcolor ? Settings.projectileColor : Color.white, 5);
             else
             {
@@ -52,42 +53,42 @@ namespace Arrakis.Mods
         }
         public static void WaterBalloonGun()
         {
-            if (ControllerInputPoller.instance.rightGrab || Mouse.current.leftButton.isPressed)
+            if (InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Right, !XRSettings.isDeviceActive))
                 SpawnProjectile("WaterBalloonRightAnchor", GorillaTagger.Instance.rightHandTransform.position, -GorillaTagger.Instance.rightHandTransform.up * 50f, Settings.projectileColor);
             else
                 cachedThrow.SetSnowballActiveLocal(false);
         }
         public static void LavaRockGun()
         {
-            if (ControllerInputPoller.instance.rightGrab || Mouse.current.leftButton.isPressed)
+            if (InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Right, !XRSettings.isDeviceActive))
                 SpawnProjectile("LavaRockAnchor", GorillaTagger.Instance.rightHandTransform.position, -GorillaTagger.Instance.rightHandTransform.up * 50f, Settings.projectileColor);
             else
                 cachedThrow.SetSnowballActiveLocal(false);
         }
         public static void BucketGiftGun()
         {
-            if (ControllerInputPoller.instance.rightGrab || Mouse.current.leftButton.isPressed)
+            if (InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Right, !XRSettings.isDeviceActive))
                 SpawnProjectile("BucketGiftFunctionalAnchor_Right", GorillaTagger.Instance.rightHandTransform.position, -GorillaTagger.Instance.rightHandTransform.up * 50f, Settings.projectileColor);
             else
                 cachedThrow.SetSnowballActiveLocal(false);
         }
         public static void CandyGun()
         {
-            if (ControllerInputPoller.instance.rightGrab || Mouse.current.leftButton.isPressed)
+            if (InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Right, !XRSettings.isDeviceActive))
                 SpawnProjectile("ScienceCandyRightAnchor", GorillaTagger.Instance.rightHandTransform.position, -GorillaTagger.Instance.rightHandTransform.up * 50f, Settings.projectileColor);
             else
                 cachedThrow.SetSnowballActiveLocal(false);
         }
         public static void FishFoodGun()
         {
-            if (ControllerInputPoller.instance.rightGrab || Mouse.current.leftButton.isPressed)
+            if (InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Right, !XRSettings.isDeviceActive))
                 SpawnProjectile("FishFoodRightAnchor", GorillaTagger.Instance.rightHandTransform.position, -GorillaTagger.Instance.rightHandTransform.up * 50f, Settings.projectileColor);
             else
                 cachedThrow.SetSnowballActiveLocal(false);
         }
         public static void HotdogGun()
         {
-            if (ControllerInputPoller.instance.rightGrab || Mouse.current.leftButton.isPressed)
+            if (InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Right, !XRSettings.isDeviceActive))
                 SpawnProjectile("HotDogRightAnchor", GorillaTagger.Instance.rightHandTransform.position, -GorillaTagger.Instance.rightHandTransform.up * 50f, Settings.projectileColor);
             else
                 cachedThrow.SetSnowballActiveLocal(false);

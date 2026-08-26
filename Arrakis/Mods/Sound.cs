@@ -18,6 +18,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+using Arrakis.Managers;
+using UnityEngine.XR;
+
 namespace Arrakis.Mods
 {
     public class Sound
@@ -36,6 +39,6 @@ namespace Arrakis.Mods
             }
         }
         public static void SoundSpam(int index) =>
-            PlaySound(index, false, 99f, ControllerInputPoller.instance.rightControllerTriggerButton);
+            PlaySound(index, false, 99f, InputManager.GetInput(InputManager.InputType.Trigger, InputManager.Hand.Right, !XRSettings.isDeviceActive));
     }
 }

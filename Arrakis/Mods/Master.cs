@@ -18,16 +18,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+using Arrakis.Managers;
+using Arrakis.Notifications;
+using GorillaTagScripts;
+using Photon.Pun;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Arrakis.Notifications;
-using BepInEx;
-using GorillaTagScripts;
-using Photon.Pun;
 using UnityEngine;
+using UnityEngine.XR;
 using static Arrakis.Menu.Main;
-using static GameEntityManager;
 
 namespace Arrakis.Mods
 {
@@ -137,7 +137,7 @@ namespace Arrakis.Mods
             }
         }
 
-        public static void GetAllPhotonViews()
+        public static void GetAllPhotonViews() // Dictionary
         {
             foreach (PhotonView view in GetPhotonViews())
             {
@@ -451,17 +451,11 @@ namespace Arrakis.Mods
 
             if (!inGhostReactor)
                 return;
-
-
-            if (!ControllerInputPoller.instance.rightGrab || !UnityInput.Current.GetMouseButton(0))
+            if (!InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Right, !XRSettings.isDeviceActive))
                 return;
-
             MethodInfo createNetId = typeof(GameEntityManager).GetMethod("CreateNetId", BindingFlags.Instance | BindingFlags.NonPublic);
-
             int netId = (int)createNetId.Invoke( _GRM.gameEntityManager,  new object[] { 1 });
-
             createData ??= new long[] { 0L };
-
             _GRM.gameEntityManager.photonView.RPC("CreateItemRPC", RpcTarget.AllBuffered, new int[] { netId }, new int[] { hash }, new long[] { BitPackUtils.PackWorldPosForNetwork(position) }, new int[] { BitPackUtils.PackQuaternionForNetwork(rotation) }, createData, new int[] { 0 });
             Safety.RPCProc();
         }
@@ -615,13 +609,13 @@ namespace Arrakis.Mods
         //{
         //    if (Lucy.IsMine)
         //    {
-        //        if (ControllerInputPoller.instance.rightGrab)
+        //        if (InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Right, !XRSettings.isDeviceActive))
         //        {
         //            Lucy.targetPlayer = null;
         //            Lucy.currentState = HalloweenGhostChaser.ChaseState.Chasing;
         //            Lucy.transform.position = VRRig.LocalRig.rightHandTransform.position;
         //        }
-        //        if (ControllerInputPoller.instance.leftGrab)
+        //        if (InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Right, !XRSettings.isDeviceActive))
         //        {
         //            Lucy.targetPlayer = null;
         //            Lucy.currentState = HalloweenGhostChaser.ChaseState.Chasing;

@@ -137,7 +137,7 @@ namespace Arrakis.Mods
         public static void CLearNotis() =>
             NotificationManager.ClearAllNotifications();
 
-        public static void BuyBarrel() =>
+        public static void BuyBarrel() => // Prompt System foro when not enough sr
             CosmeticsController.instance.currentCart.Insert(0, CosmeticsController.instance.GetItemFromDict("LMAPE."));
 
         public static async void CreatePublicLobby(string roomName)

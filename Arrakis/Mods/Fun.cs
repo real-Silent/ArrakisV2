@@ -18,6 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+using Arrakis.Managers;
 using Arrakis.Notifications;
 using GorillaLocomotion;
 using GorillaNetworking;
@@ -30,10 +31,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.Animations.Rigging;
-using UnityEngine.InputSystem;
+using UnityEngine.XR;
 using Voxels;
 using static Arrakis.Menu.Main;
 
@@ -123,12 +122,12 @@ namespace Arrakis.Mods
 
         public static void GrabBug()
         {
-            if (ControllerInputPoller.instance.rightGrab)
+            if (InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Right, !XRSettings.isDeviceActive))
             {
                 GameObject.Find("Floating Bug Holdable").transform.position = GorillaTagger.Instance.rightHandTransform.position;
                 GameObject.Find("Floating Bug Holdable").transform.rotation = GorillaTagger.Instance.rightHandTransform.rotation;
             }
-            if (ControllerInputPoller.instance.leftGrab)
+            if (InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Left, !XRSettings.isDeviceActive))
             {
                 GameObject.Find("Floating Bug Holdable").transform.position = GorillaTagger.Instance.leftHandTransform.position;
                 GameObject.Find("Floating Bug Holdable").transform.rotation = GorillaTagger.Instance.leftHandTransform.rotation;
@@ -136,12 +135,12 @@ namespace Arrakis.Mods
         }
         public static void GrabBat()
         {
-            if (ControllerInputPoller.instance.rightGrab)
+            if (InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Right, !XRSettings.isDeviceActive))
             {
                 GameObject.Find("Cave Bat Holdable").transform.position = GorillaTagger.Instance.rightHandTransform.position;
                 GameObject.Find("Cave Bat Holdable").transform.rotation = GorillaTagger.Instance.rightHandTransform.rotation;
             }
-            if (ControllerInputPoller.instance.leftGrab)
+            if (InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Left, !XRSettings.isDeviceActive))
             {
                 GameObject.Find("Cave Bat Holdable").transform.position = GorillaTagger.Instance.leftHandTransform.position;
                 GameObject.Find("Cave Bat Holdable").transform.rotation = GorillaTagger.Instance.leftHandTransform.rotation;
@@ -185,9 +184,9 @@ namespace Arrakis.Mods
 
         public static void WaterSplashSelf()
         {
-            if (ControllerInputPoller.instance.rightGrab)
+            if (InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Right, !XRSettings.isDeviceActive))
                 SpawnWater(GorillaTagger.Instance.rightHandTransform.position, GorillaTagger.Instance.rightHandTransform.rotation, 5f, 100f, true, false);
-            if (ControllerInputPoller.instance.leftGrab)
+            if (InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Left, !XRSettings.isDeviceActive))
                 SpawnWater(GorillaTagger.Instance.leftHandTransform.position, GorillaTagger.Instance.leftHandTransform.rotation, 5f, 100f, true, false);
         }
 
@@ -226,14 +225,14 @@ namespace Arrakis.Mods
         {
             foreach (GliderHoldable glider in GetGliders())
             {
-                if (ControllerInputPoller.instance.rightGrab)
+                if (InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Right, !XRSettings.isDeviceActive))
                 {
                     if (!glider.IsMine)
                         glider.OnHover(null, null);
                     else
                         glider.gameObject.transform.position = GorillaTagger.Instance.rightHandTransform.position;
                 }
-                if (ControllerInputPoller.instance.leftGrab)
+                if (InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Left, !XRSettings.isDeviceActive))
                 {
                     if (!glider.IsMine)
                         glider.OnHover(null, null);
@@ -269,12 +268,12 @@ namespace Arrakis.Mods
         }
         public static void SpawnHoverboardSpam()
         {
-            if (ControllerInputPoller.instance.rightGrab)
+            if (InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Right, !XRSettings.isDeviceActive))
             {
                 FreeHoverboardManager.instance.SendDropBoardRPC(GorillaTagger.Instance.rightHandTransform.transform.position, Quaternion.identity, Vector3.zero, Vector3.zero, VRRig.LocalRig.playerColor);
                 Safety.RPCProc();
             }
-            if (ControllerInputPoller.instance.leftGrab)
+            if (InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Left, !XRSettings.isDeviceActive))
             {
                 FreeHoverboardManager.instance.SendDropBoardRPC(GorillaTagger.Instance.leftHandTransform.transform.position, Quaternion.identity, Vector3.zero, Vector3.zero, VRRig.LocalRig.playerColor);
                 Safety.RPCProc();
@@ -320,7 +319,6 @@ namespace Arrakis.Mods
             if (Time.time > flashTimer)
             {
                 flashTimer = Time.time + 0.1f;
-
                 if (VRRig.LocalRig.ShowGoldNameTag)
                 {
                     VRRig.LocalRig.ShowGoldNameTag = false;
@@ -333,6 +331,7 @@ namespace Arrakis.Mods
                 }
             }
         }
+
         private static List<TransferrableObject> cachedHoldables = new List<TransferrableObject>();
         private static float lastCacheTime = 0f;
         private static float cacheInterval = 0.5f;
@@ -479,7 +478,6 @@ namespace Arrakis.Mods
         {
             bool inCity = GameObject.Find("City_Pretty") != null;
             bool inMountain = GameObject.Find("Mountain") != null;
-
             if (!inCity && !inMountain)
             {
                 yield break;
@@ -661,7 +659,7 @@ namespace Arrakis.Mods
             FindCoconutCamera();
             if (coconutCamera == null) return;
 
-            if (ControllerInputPoller.instance.rightGrab)
+            if (InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Right, !XRSettings.isDeviceActive))
             {
                 coconutCamera.SetVisualsActive(true);
                 coconutCamera.SetRecordingState(true);
@@ -669,7 +667,7 @@ namespace Arrakis.Mods
                 coconutCamera.transform.rotation = GorillaTagger.Instance.rightHandTransform.rotation;
                 coconutCamera.transform.SetParent(GorillaTagger.Instance.rightHandTransform);
             }
-            if (ControllerInputPoller.instance.leftGrab)
+            if (InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Left, !XRSettings.isDeviceActive))
             {
                 coconutCamera.SetVisualsActive(true);
                 coconutCamera.SetRecordingState(true);
@@ -721,7 +719,7 @@ namespace Arrakis.Mods
 
         public static void GrabTablet()
         {
-            if (ControllerInputPoller.instance.rightGrab)
+            if (InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Right, !XRSettings.isDeviceActive))
             {
                 LckSocialCamera camera = LckSocialCameraManager.Instance._networkedTablet;
                 if (camera != null)
@@ -735,7 +733,7 @@ namespace Arrakis.Mods
                     camera.transform.SetParent(GorillaTagger.Instance.rightHandTransform);
                 }
             }
-            if (ControllerInputPoller.instance.leftGrab)
+            if (InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Left, !XRSettings.isDeviceActive))
             {
                 LckSocialCamera camera = LckSocialCameraManager.Instance._networkedTablet;
                 if (camera != null)
@@ -828,9 +826,9 @@ namespace Arrakis.Mods
         }
         public static void MonkeyBlocksSizeChanger()
         {
-            if (ControllerInputPoller.instance.rightControllerTriggerButton || Keyboard.current.lKey.isPressed)
+            if (InputManager.GetInput(InputManager.InputType.Trigger, InputManager.Hand.Right, !XRSettings.isDeviceActive))
                 VRRig.LocalRig.sizeManager.currentSizeLayerMaskValue = 13;
-            if (ControllerInputPoller.instance.leftControllerTriggerButton || Keyboard.current.pKey.isPressed)
+            if (InputManager.GetInput(InputManager.InputType.Trigger, InputManager.Hand.Left, !XRSettings.isDeviceActive))
                 VRRig.LocalRig.sizeManager.currentSizeLayerMaskValue = 2;
         }
         public static void MultiBlock()
@@ -915,7 +913,7 @@ namespace Arrakis.Mods
 
         public static void BreakAudioAll()
         {
-            if (ControllerInputPoller.instance.rightControllerTriggerButton || Keyboard.current.gKey.isPressed)
+            if (InputManager.GetInput(InputManager.InputType.Trigger, InputManager.Hand.Right, !XRSettings.isDeviceActive))
             {
                 BreakAudio(RpcTarget.All, 111);
             }

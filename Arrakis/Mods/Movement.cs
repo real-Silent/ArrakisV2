@@ -18,13 +18,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+using Arrakis.Managers;
 using Arrakis.Patches.Patchers;
 using GorillaExtensions;
 using GorillaLocomotion;
 using GorillaLocomotion.Climbing;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Valve.VR;
+using UnityEngine.XR;
 using static Arrakis.Menu.Main;
 
 namespace Arrakis.Mods
@@ -33,7 +34,7 @@ namespace Arrakis.Mods
     {
         public static void Fly()
         {
-            if (ControllerInputPoller.instance.rightControllerPrimaryButton)
+            if (InputManager.GetInput(InputManager.InputType.Primary, InputManager.Hand.Right, !XRSettings.isDeviceActive))
             {
                 GTPlayer.Instance.transform.position += GTPlayer.Instance.headCollider.transform.forward * Time.deltaTime * Settings.flyspeed;
                 GTPlayer.Instance.bodyCollider.attachedRigidbody.linearVelocity = Vector3.zero;
@@ -41,7 +42,7 @@ namespace Arrakis.Mods
         }
         public static void TriggerFly()
         {
-            if (ControllerInputPoller.instance.rightControllerTriggerButton)
+            if (InputManager.GetInput(InputManager.InputType.Trigger, InputManager.Hand.Right, !XRSettings.isDeviceActive))
             {
                 GTPlayer.Instance.transform.position += GTPlayer.Instance.headCollider.transform.forward * Time.deltaTime * Settings.flyspeed;
                 GTPlayer.Instance.bodyCollider.attachedRigidbody.linearVelocity = Vector3.zero;
@@ -49,7 +50,7 @@ namespace Arrakis.Mods
         }
         public static void HandFly()
         {
-            if (ControllerInputPoller.instance.rightControllerPrimaryButton)
+            if (InputManager.GetInput(InputManager.InputType.Primary, InputManager.Hand.Right, !XRSettings.isDeviceActive))
             {
                 GTPlayer.Instance.transform.position += GTPlayer.Instance.RightHand.controllerTransform.transform.forward * Time.deltaTime * Settings.flyspeed;
                 GTPlayer.Instance.bodyCollider.attachedRigidbody.linearVelocity = Vector3.zero;
@@ -57,12 +58,12 @@ namespace Arrakis.Mods
         }
         public static void NoclipFly()
         {
-            if (ControllerInputPoller.instance.rightControllerPrimaryButton)
+            if (InputManager.GetInput(InputManager.InputType.Primary, InputManager.Hand.Right, !XRSettings.isDeviceActive))
             {
                 GTPlayer.Instance.transform.position += GTPlayer.Instance.headCollider.transform.forward * Time.deltaTime * Settings.flyspeed;
                 GTPlayer.Instance.bodyCollider.attachedRigidbody.linearVelocity = Vector3.zero;
                 foreach (MeshCollider collider in GameObject.FindObjectsByType<MeshCollider>(FindObjectsSortMode.None))
-                    collider.enabled = !ControllerInputPoller.instance.rightControllerPrimaryButton;
+                    collider.enabled = !InputManager.GetInput(InputManager.InputType.Primary, InputManager.Hand.Right, !XRSettings.isDeviceActive);
             }
         }
 
@@ -80,7 +81,7 @@ namespace Arrakis.Mods
 
         public static void PSA()
         {
-            if (ControllerInputPoller.instance.rightControllerPrimaryButton)
+            if (InputManager.GetInput(InputManager.InputType.Primary, InputManager.Hand.Right, !XRSettings.isDeviceActive))
             {
                 GTPlayer.Instance.transform.position += GorillaTagger.Instance.bodyCollider.transform.forward * (Time.deltaTime * 5f);
                 if (!GTPlayer.Instance.IsGroundedHand)
@@ -99,9 +100,9 @@ namespace Arrakis.Mods
 
         public static void ExcelFly()
         {
-            if (ControllerInputPoller.instance.rightControllerPrimaryButton)
+            if (InputManager.GetInput(InputManager.InputType.Primary, InputManager.Hand.Right, !XRSettings.isDeviceActive))
                 GTPlayer.Instance.bodyCollider.attachedRigidbody.linearVelocity += GTPlayer.Instance.RightHand.controllerTransform.right / 2f;
-            if (ControllerInputPoller.instance.leftControllerPrimaryButton)
+            if (InputManager.GetInput(InputManager.InputType.Primary, InputManager.Hand.Left, !XRSettings.isDeviceActive))
                 GTPlayer.Instance.bodyCollider.attachedRigidbody.linearVelocity += -GTPlayer.Instance.LeftHand.controllerTransform.right / 2f;
         }
 
@@ -148,7 +149,7 @@ namespace Arrakis.Mods
         private static GameObject platL = null;
         public static void Platforms(bool trigger = false, bool invis = false)
         {
-            if (trigger ? ControllerInputPoller.instance.rightControllerTriggerButton : ControllerInputPoller.instance.rightGrab)
+            if (trigger ? InputManager.GetInput(InputManager.InputType.Trigger, InputManager.Hand.Right, !XRSettings.isDeviceActive) : InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Right, !XRSettings.isDeviceActive))
             {
                 if (platR == null)
                 {
@@ -170,7 +171,7 @@ namespace Arrakis.Mods
                     platR = null;
                 }
             }
-            if (trigger ? ControllerInputPoller.instance.leftControllerTriggerButton : ControllerInputPoller.instance.leftGrab)
+            if (trigger ? InputManager.GetInput(InputManager.InputType.Trigger, InputManager.Hand.Left, !XRSettings.isDeviceActive) : InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Left, !XRSettings.isDeviceActive))
             {
                 if (platL == null)
                 {
@@ -272,19 +273,19 @@ namespace Arrakis.Mods
 
         public static void GrabRig()
         {
-            if (ControllerInputPoller.instance.rightGrab)
+            if (InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Right, !XRSettings.isDeviceActive))
             {
                 VRRig.LocalRig.enabled = false;
                 VRRig.LocalRig.transform.position = GorillaTagger.Instance.rightHandTransform.position;
                 VRRig.LocalRig.transform.rotation = GorillaTagger.Instance.rightHandTransform.rotation;
             }
-            if (ControllerInputPoller.instance.leftGrab)
+            if (InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Left, !XRSettings.isDeviceActive))
             {
                 VRRig.LocalRig.enabled = false;
                 VRRig.LocalRig.transform.position = GorillaTagger.Instance.leftHandTransform.position;
                 VRRig.LocalRig.transform.rotation = GorillaTagger.Instance.leftHandTransform.rotation;
             }
-            if (!ControllerInputPoller.instance.rightGrab && !ControllerInputPoller.instance.leftGrab)
+            if (!InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Right, !XRSettings.isDeviceActive) && !InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Left, !XRSettings.isDeviceActive))
                 VRRig.LocalRig.enabled = true;
         }
 
@@ -294,7 +295,7 @@ namespace Arrakis.Mods
         
         public static void GhostMonkey()
         {
-            if (ControllerInputPoller.instance.rightControllerSecondaryButton)
+            if (InputManager.GetInput(InputManager.InputType.Secondary, InputManager.Hand.Right, !XRSettings.isDeviceActive))
                 VRRig.LocalRig.enabled = false;
             else
                 VRRig.LocalRig.enabled = true;
@@ -305,7 +306,7 @@ namespace Arrakis.Mods
         private static bool invisButtonLast;
         public static void ToggleGhostMonkey()
         {
-            bool button = ControllerInputPoller.instance.rightControllerSecondaryButton;
+            bool button = InputManager.GetInput(InputManager.InputType.Secondary, InputManager.Hand.Right, !XRSettings.isDeviceActive);
             if (button && !ghostButtonLast)
                 VRRig.LocalRig.enabled = !VRRig.LocalRig.enabled;
             ghostButtonLast = button;
@@ -313,7 +314,7 @@ namespace Arrakis.Mods
 
         public static void InvisMonke()
         {
-            if (ControllerInputPoller.instance.rightControllerPrimaryButton)
+            if (InputManager.GetInput(InputManager.InputType.Primary, InputManager.Hand.Right, !XRSettings.isDeviceActive))
             {
                 VRRig.LocalRig.enabled = false;
                 VRRig.LocalRig.transform.position = new Vector3(3423f, 32432f, 324324f);
@@ -323,7 +324,7 @@ namespace Arrakis.Mods
         }
         public static void ToggleInvisMonkey()
         {
-            bool button = ControllerInputPoller.instance.rightControllerPrimaryButton;
+            bool button = InputManager.GetInput(InputManager.InputType.Primary, InputManager.Hand.Right, !XRSettings.isDeviceActive);
             if (button && !invisButtonLast)
             {
                 bool enabled = !VRRig.LocalRig.enabled;
@@ -358,8 +359,8 @@ namespace Arrakis.Mods
             VRRig.LocalRig.leftHand.MapMine(VRRig.LocalRig.lastScaleFactor, VRRig.LocalRig.playerOffsetTransform);
             VRRig.LocalRig.rightHand.MapMine(VRRig.LocalRig.lastScaleFactor, VRRig.LocalRig.playerOffsetTransform);
         }
-        public static void SpazBody() => Rotate(Random.rotation);
-
+        public static void SpazBody() => 
+            Rotate(Random.rotation);
 
         static Vector3 normal2;
         static Vector3 vel1;
@@ -371,7 +372,7 @@ namespace Arrakis.Mods
         static float maxD2;
         public static void WallWalk()
         {
-            if (ControllerInputPoller.instance.rightGrab)
+            if (InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Right, !XRSettings.isDeviceActive))
             {
                 if (!DoOnce2)
                 {
@@ -411,12 +412,12 @@ namespace Arrakis.Mods
         }
         public static void AutoKayflock()
         {
-            if (ControllerInputPoller.instance.rightControllerTriggerButton)
+            if (InputManager.GetInput(InputManager.InputType.Trigger, InputManager.Hand.Right, !XRSettings.isDeviceActive))
             {
                 GorillaTagger.Instance.rightHandTransform.position = RandomVector3(310);
                 GTPlayer.Instance.transform.position += GTPlayer.Instance.headCollider.transform.forward * Time.deltaTime * Settings.flyspeed;
             }
-            if (ControllerInputPoller.instance.leftControllerTriggerButton)
+            if (InputManager.GetInput(InputManager.InputType.Trigger, InputManager.Hand.Left, !XRSettings.isDeviceActive))
             {
                 GorillaTagger.Instance.leftHandTransform.position = RandomVector3(310);
                 GTPlayer.Instance.transform.position += GTPlayer.Instance.headCollider.transform.forward * Time.deltaTime * Settings.flyspeed;
@@ -426,7 +427,7 @@ namespace Arrakis.Mods
         private static GameObject checkpoint = null;
         public static void CheckPoint()
         {
-            if (ControllerInputPoller.instance.rightGrab)
+            if (InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Right, !XRSettings.isDeviceActive))
             {
                 if (checkpoint == null)
                 {
@@ -438,7 +439,7 @@ namespace Arrakis.Mods
                 checkpoint.transform.position = VRRig.LocalRig.rightHandTransform.position;
                 checkpoint.transform.rotation = VRRig.LocalRig.rightHandTransform.rotation;
             }
-            if (ControllerInputPoller.instance.rightControllerTriggerButton)
+            if (InputManager.GetInput(InputManager.InputType.Trigger, InputManager.Hand.Right, !XRSettings.isDeviceActive))
             {
                 GTPlayer.Instance.transform.position = checkpoint.transform.position + new Vector3(0f, 0.5f, 0f);
                 GameObject.Destroy(checkpoint, 0.2f);
@@ -546,7 +547,7 @@ namespace Arrakis.Mods
 
         public static void PlatformSpam()
         {
-            if (ControllerInputPoller.instance.rightGrab)
+            if (InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Right, !XRSettings.isDeviceActive))
             {
                 GameObject platform = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 GameObject.Destroy(platform.GetComponent<Collider>());
@@ -556,7 +557,7 @@ namespace Arrakis.Mods
                 platform.GetComponent<Renderer>().material.color = Settings.backgroundColor.GetCurrentColor();
                 GameObject.Destroy(platform, 5f);
             }
-            if (ControllerInputPoller.instance.leftGrab)
+            if (InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Left, !XRSettings.isDeviceActive))
             {
                 GameObject platform = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 GameObject.Destroy(platform.GetComponent<Collider>());
@@ -570,7 +571,7 @@ namespace Arrakis.Mods
 
         public static void Frozone()
         {
-            if (ControllerInputPoller.instance.rightGrab)
+            if (InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Right, !XRSettings.isDeviceActive))
             {
                 GameObject platform = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 platform.transform.position = GorillaTagger.Instance.rightHandTransform.position;
@@ -580,7 +581,7 @@ namespace Arrakis.Mods
                 platform.GetComponent<Renderer>().material.color = Settings.backgroundColor.GetCurrentColor();
                 GameObject.Destroy(platform, 5f);
             }
-            if (ControllerInputPoller.instance.leftGrab)
+            if (InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Left, !XRSettings.isDeviceActive))
             {
                 GameObject platform = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 platform.transform.position = GorillaTagger.Instance.leftHandTransform.position;
@@ -593,7 +594,7 @@ namespace Arrakis.Mods
         }
         public static void PullBoost()
         {
-            if (!SteamVR_Actions.gorillaTag_RightJoystickClick.GetState(SteamVR_Input_Sources.RightHand)) return;
+            if (!InputManager.GetInput(InputManager.InputType.Joystick, InputManager.Hand.Right, !XRSettings.isDeviceActive)) return;
             if (!GTPlayer.Instance.leftHand.wasColliding && !GTPlayer.Instance.rightHand.wasColliding) return;
             Vector3 moveDir = GTPlayer.Instance.bodyCollider.transform.forward;
             float currentStrength = 15f;
@@ -623,11 +624,12 @@ namespace Arrakis.Mods
             GTPlayer.Instance.transform.position += moveDir * (Time.deltaTime * currentStrength);
             rb.linearVelocity = originalVelocity;
         }
+
         public static bool LastTouchL;
         public static bool LastTouchR;
         public static void PullMod()
         {
-            if ((!GTPlayer.Instance.IsHandTouching(true) && LastTouchL) && SteamVR_Actions.gorillaTag_RightJoystickClick.GetState(SteamVR_Input_Sources.RightHand) || (!GTPlayer.Instance.IsHandTouching(false) && LastTouchR) && SteamVR_Actions.gorillaTag_RightJoystickClick.GetState(SteamVR_Input_Sources.RightHand))
+            if ((!GTPlayer.Instance.IsHandTouching(true) && LastTouchL) && InputManager.GetInput(InputManager.InputType.Joystick, InputManager.Hand.Left, !XRSettings.isDeviceActive) || (!GTPlayer.Instance.IsHandTouching(false) && LastTouchR) && InputManager.GetInput(InputManager.InputType.Joystick, InputManager.Hand.Right, !XRSettings.isDeviceActive))
             {
                 Vector3 velocity = GTPlayer.Instance.GetComponent<Rigidbody>().velocity;
                 GTPlayer.Instance.transform.position += new Vector3(velocity.x * 0.08f, 0f, velocity.z * 0.08f);
@@ -635,11 +637,13 @@ namespace Arrakis.Mods
             LastTouchL = GTPlayer.Instance.IsHandTouching(true);
             LastTouchR = GTPlayer.Instance.IsHandTouching(false);
         }
+
         public static void StopFlip()
         {
             GTPlayer.Instance.UnsetGravityOverride(GTPlayer.Instance);
             GTPlayerTransform.ApplyRotationOverride(Quaternion.identity, Time.frameCount);
         }
+
         public static bool flipping;
         public static float flipStart;
         public static Quaternion flipFrom;
@@ -647,13 +651,13 @@ namespace Arrakis.Mods
         public const float flipDuration = 1f;
         public static void Flip()
         {
-            if (!flipping && (ControllerInputPoller.instance.rightControllerTriggerButton || ControllerInputPoller.instance.leftControllerTriggerButton) && VRRig.LocalRig.enabled)
+            if (!flipping && (InputManager.GetInput(InputManager.InputType.Trigger, InputManager.Hand.Right, !XRSettings.isDeviceActive) || InputManager.GetInput(InputManager.InputType.Trigger, InputManager.Hand.Left, !XRSettings.isDeviceActive)) && VRRig.LocalRig.enabled)
             {
                 if (GTPlayer.Instance.playerRigidBody)
                 {
                     flipping = true;
                     flipStart = Time.time;
-                    flipAxis = ControllerInputPoller.instance.rightControllerTriggerButton ? VRRig.LocalRig.transform.right : -VRRig.LocalRig.transform.right;
+                    flipAxis = InputManager.GetInput(InputManager.InputType.Trigger, InputManager.Hand.Right, !XRSettings.isDeviceActive) ? VRRig.LocalRig.transform.right : -VRRig.LocalRig.transform.right;
                     flipFrom = GTPlayer.Instance?.playerRigidBody?.rotation ?? Quaternion.identity;
                 }
             }

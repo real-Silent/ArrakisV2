@@ -25,6 +25,7 @@ using System.IO;
 using System.Linq;
 using Arrakis.Classes;
 using Arrakis.Classes.Menu;
+using Arrakis.Managers;
 using Arrakis.Menu;
 using Arrakis.Notifications;
 using Arrakis.Patches.Patchers;
@@ -35,7 +36,7 @@ using GorillaTagScripts;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
-using UnityEngine.InputSystem;
+using UnityEngine.XR;
 using static Arrakis.Classes.RigManager;
 using static Arrakis.Menu.Main;
 using JoinType = GorillaNetworking.JoinType;
@@ -70,7 +71,7 @@ namespace Arrakis.Mods
                 NotificationManager.SendNotification("<color=grey>[</color><color=red>ERROR</color><color=grey>]</color> You are not in a party.");
         }
         private static bool antiKickEvents;
-        public static bool AntiKickEvents // kidnda works? -sleepy
+        public static bool AntiKickEvents // kinda works? -sleepy
         {
             get
             {
@@ -111,7 +112,6 @@ namespace Arrakis.Mods
                 CustomConsole.Log("PhotonView was null.", CustomConsole.LogType.Error);
                 return;
             }
-
             List<object> data = PhotonNetwork.OnSerializeWrite(view);
             if (data == null || data.Count == 0)
                 return;
@@ -174,14 +174,15 @@ namespace Arrakis.Mods
                 var GunData = RenderGun();
                 GameObject NewPointer = GunData.NewPointer;
                 RaycastHit Ray = GunData.Ray;
+
                 if (lockTarget != null && gunLocked && FriendshipGroupDetection.Instance.IsInMyGroup(lockTarget.Creator.GetPlayerRef().UserId))
                 {
                     AntiKickEvents = true;
                     for (int i = 0; i < 3400; i++)
                         FriendshipGroupDetection.Instance.photonView.RPC("RequestPartyGameMode", lockTarget.Creator.GetPlayerRef(), new object[] { GameMode.gameModeKeyByName.Keys.ToArray()[Random.Range(0, GameMode.gameModeKeyByName.Keys.Count)] });
-
                     Safety.RPCProc();
                 }
+
                 if (GetGunInput(true))
                 {
                     VRRig rig = Ray.collider.GetComponentInParent<VRRig>();
@@ -235,7 +236,7 @@ namespace Arrakis.Mods
         }
         public static void SpamPrideCube()
         {
-            if (ControllerInputPoller.instance.rightIndexPressed || Mouse.current.leftButton.isPressed)
+            if (InputManager.GetInput(InputManager.InputType.Trigger, InputManager.Hand.Right, !XRSettings.isDeviceActive))
             {
                 Texture2D texture = AssetBundleLoader.LoadTexture("pride.png");
                 Material mat = new Material(Shader.Find("Universal Render Pipeline/Unlit"));
