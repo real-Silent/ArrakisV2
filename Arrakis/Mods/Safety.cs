@@ -64,12 +64,29 @@ namespace Arrakis.Mods
 
         public static void Panic()
         {
-            foreach (ButtonInfo[] b in Buttons.buttons)
+            if (Settings.panicPrompt)
             {
-                foreach (ButtonInfo v in b)
+                Prompt("Would you like to disable all your mods ?", () =>
                 {
-                    if (v.enabled)
-                        Toggle(v.buttonText);
+                    foreach (ButtonInfo[] b in Buttons.buttons)
+                    {
+                        foreach (ButtonInfo v in b)
+                        {
+                            if (v.enabled)
+                                Toggle(v.buttonText);
+                        }
+                    }
+                });
+            }
+            else
+            {
+                foreach (ButtonInfo[] b in Buttons.buttons)
+                {
+                    foreach (ButtonInfo v in b)
+                    {
+                        if (v.enabled)
+                            Toggle(v.buttonText);
+                    }
                 }
             }
         }
