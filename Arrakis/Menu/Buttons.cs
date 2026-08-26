@@ -24,7 +24,6 @@ using Arrakis.Mods;
 using Arrakis.Notifications;
 using Arrakis.Patches;
 using Arrakis.Patches.Patchers;
-using GorillaNetworking;
 using GorillaTagScripts;
 using Photon.Pun;
 using static Arrakis.Menu.Main;
