@@ -1040,11 +1040,11 @@ namespace Arrakis.Menu
         public static int gunLineStyle = 0;
         public static float gunPointerSize = 0.15f; // ill add a setting for this later -sleepy
         public static float gunLineWidth = 0.025f; // ill add a setting for this later -sleepy
-
-        public static bool GetGunInput(bool isShooting)
-        {
-            return isShooting ? ControllerInputPoller.instance.rightControllerTriggerButton || Mouse.current.leftButton.isPressed : ControllerInputPoller.instance.rightGrab || Mouse.current.rightButton.isPressed;
-        }
+        public static bool swapgunhand = false;
+        public static bool GetGunInput(bool isShooting) =>
+            GetGunHand(swapgunhand, isShooting);
+        private static bool GetGunHand(bool lefthand, bool shoot) =>
+            shoot ? InputManager.GetInput(InputManager.InputType.Trigger, lefthand ? InputManager.Hand.Left : InputManager.Hand.Right, XRSettings.isDeviceActive) : InputManager.GetInput(InputManager.InputType.Grip, lefthand ? InputManager.Hand.Left : InputManager.Hand.Right, XRSettings.isDeviceActive);
 
         public static Vector3 MidPosition;
         public static Vector3 MidVelocity;
