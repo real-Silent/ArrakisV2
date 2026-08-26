@@ -20,6 +20,7 @@
 
 using Arrakis.Classes;
 using Arrakis.Classes.Menu;
+using Arrakis.Managers;
 using Arrakis.Menu;
 using Arrakis.Mods;
 using Arrakis.Notifications;
@@ -159,59 +160,6 @@ namespace Arrakis
 
         public static float gradientSpeed = 0.5f;
         public static bool FloatMenu = false;
-        public static int buttonsound = 67;
-        private static int clicksound = 0;
-        public static void ChangeClickSound()
-        {
-            clicksound = (clicksound + 1) % 11;
-            switch (clicksound)
-            {
-                case 0:
-                    buttonsound = 67;
-                    GetIndex("Change Click Sound").overlapText = $"Change Click Sound <color=grey>[<color=cyan>{GTPlayer.Instance.materialData[buttonsound].matName}</color>]</color>";
-                    break;
-                case 1:
-                    buttonsound = 66;
-                    GetIndex("Change Click Sound").overlapText = $"Change Click Sound <color=grey>[<color=cyan>{GTPlayer.Instance.materialData[buttonsound].matName}</color>]</color>";
-                    break;
-                case 2:
-                    buttonsound = 8;
-                    GetIndex("Change Click Sound").overlapText = $"Change Click Sound <color=grey>[<color=cyan>{GTPlayer.Instance.materialData[buttonsound].matName}</color>]</color>";
-                    break;
-                case 3:
-                    buttonsound = 84;
-                    GetIndex("Change Click Sound").overlapText = $"Change Click Sound <color=grey>[<color=cyan>{GTPlayer.Instance.materialData[buttonsound].matName}</color>]</color>";
-                    break;
-                case 4:
-                    buttonsound = 32;
-                    GetIndex("Change Click Sound").overlapText = $"Change Click Sound <color=grey>[<color=cyan>{GTPlayer.Instance.materialData[buttonsound].matName}</color>]</color>";
-                    break;
-                case 5:
-                    buttonsound = 106;
-                    GetIndex("Change Click Sound").overlapText = $"Change Click Sound <color=grey>[<color=cyan>{GTPlayer.Instance.materialData[buttonsound].matName}</color>]</color>";
-                    break;
-                case 6:
-                    buttonsound = 189;
-                    GetIndex("Change Click Sound").overlapText = $"Change Click Sound <color=grey>[<color=cyan>{GTPlayer.Instance.materialData[buttonsound].matName}</color>]</color>";
-                    break;
-                case 7:
-                    buttonsound = 22;
-                    GetIndex("Change Click Sound").overlapText = $"Change Click Sound <color=grey>[<color=cyan>{GTPlayer.Instance.materialData[buttonsound].matName}</color>]</color>";
-                    break;
-                case 8:
-                    buttonsound = 43;
-                    GetIndex("Change Click Sound").overlapText = $"Change Click Sound <color=grey>[<color=cyan>{GTPlayer.Instance.materialData[buttonsound].matName}</color>]</color>";
-                    break;
-                case 9:
-                    buttonsound = 210;
-                    GetIndex("Change Click Sound").overlapText = $"Change Click Sound <color=grey>[<color=cyan>{GTPlayer.Instance.materialData[buttonsound].matName}</color>]</color>"; 
-                    break;
-                case 10:
-                    buttonsound = 217;
-                    GetIndex("Change Click Sound").overlapText = $"Change Click Sound <color=grey>[<color=cyan>{GTPlayer.Instance.materialData[buttonsound].matName}</color>]</color>";
-                    break;
-            }
-        }
 
         public static float buttonclickvolume = 0.4f;
         private static int buttonclickvolumeindex = 0;
@@ -546,7 +494,7 @@ namespace Arrakis
 
             SavedSettings settings = new SavedSettings
             {
-                clicksound = clicksound,
+                clicksound = AudioManager.clicksound,
                 buttonclickvolumeindex = buttonclickvolumeindex,
                 currentTheme = currentTheme,
                 fontstyle = fontstyle,
@@ -573,8 +521,8 @@ namespace Arrakis
                 SavedSettings settings = JsonConvert.DeserializeObject<SavedSettings>(File.ReadAllText(path));
                 if (settings == null)
                     return;
-                clicksound = settings.clicksound - 1;
-                ChangeClickSound();
+                AudioManager.clicksound = settings.clicksound - 1;
+                AudioManager.ChangeClickSound();
 
                 buttonclickvolumeindex = settings.buttonclickvolumeindex - 1;
                 ChangeButtonClickVolume();

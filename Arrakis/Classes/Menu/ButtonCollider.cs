@@ -18,6 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+using Arrakis.Managers;
 using UnityEngine;
 using static Arrakis.Menu.Main;
 using static Arrakis.Settings;
@@ -35,7 +36,7 @@ namespace Arrakis.Classes
                 buttonCooldown = Time.time + 0.2f;
 				if (!disablevibrations)
 					GorillaTagger.Instance.StartVibration(rightHanded, GorillaTagger.Instance.tagHapticStrength / 2f, GorillaTagger.Instance.tagHapticDuration / 2f);
-				VRRig.LocalRig.PlayHandTapLocal(buttonsound, rightHanded, buttonclickvolume);
+				AudioManager.PlayButtonSound(rightHanded, buttonclickvolume);
                 Toggle(relatedText);
             }
 		}

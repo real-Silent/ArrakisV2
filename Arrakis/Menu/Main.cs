@@ -46,15 +46,21 @@ namespace Arrakis.Menu
     [HarmonyPatch(typeof(GTPlayer), "LateUpdate")]
     public class Main : MonoBehaviour
     {
+        public static void OnLoad()
+        {
+            AudioManager.Init();
+            try
+            {
+                Plugins.LoadPlugins();
+            }
+            catch { }
+        }
+
         public static void Prefix()
         {
             if (!loadonce)
             {
-                try
-                {
-                    Plugins.LoadPlugins();
-                }
-                catch { }
+                OnLoad();
                 loadonce = true;
             }
 

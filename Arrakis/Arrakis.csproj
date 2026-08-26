@@ -19,9 +19,11 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <None Remove="Resources\Audio\creamy.wav" />
 	  <None Remove="Resources\Audio\menuclose.wav" />
 	  <None Remove="Resources\Audio\menuopen.wav" />
 	  <None Remove="Resources\Audio\smooth.wav" />
+	  <None Remove="Resources\Audio\windows.wav" />
 	  <None Remove="Resources\Bundles\arrakisassets" />
 	  <None Remove="Resources\Bundles\maxwell" />
 	  <None Remove="Resources\Bundles\zeldasword" />
@@ -31,9 +33,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <EmbeddedResource Include="Resources\Audio\creamy.wav" />
 	  <EmbeddedResource Include="Resources\Audio\menuclose.wav" />
 	  <EmbeddedResource Include="Resources\Audio\menuopen.wav" />
 	  <EmbeddedResource Include="Resources\Audio\smooth.wav" />
+	  <EmbeddedResource Include="Resources\Audio\windows.wav" />
 	  <EmbeddedResource Include="Resources\Bundles\arrakisassets" />
 	  <EmbeddedResource Include="Resources\Bundles\maxwell" />
 	  <EmbeddedResource Include="Resources\Bundles\zeldasword" />
