@@ -24,10 +24,12 @@ using GorillaNetworking;
 using Meta.WitAi.Json;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
+using static Arrakis.Menu.Main;
 
 namespace Arrakis.Classes
 {
@@ -38,6 +40,8 @@ namespace Arrakis.Classes
         public static string motd;
         public static string menustate;
         public static string[] detectedmods;
+
+        private static bool showprompt = false;
 
         private static GameObject motdTextObj;
         private static TextMeshPro motdTextTMP;
@@ -143,7 +147,19 @@ namespace Arrakis.Classes
                     {
                         if (PluginInfo.Version != serverversion)
                         {
-                            NotificationManager.SendNotification("<color=cyan>[UPDATE]</color> Arrakis Needs a update please update.");
+                            if (!showprompt)
+                            {
+                                showprompt = true;
+                                NotificationManager.SendNotification("<color=cyan>[UPDATE]</color> Arrakis Needs a update please update.");
+                                Prompt($"Arrakis is on version {PluginInfo.Version} it needs to be on version {serverversion}, would you like to update the menu.", () =>
+                                {
+                                    Process.Start($"https://github.com/real-Silent/ArrakisV2/releases/tag/V{serverversion}");
+                                    NotificationManager.SendNotification("<color=cyan>[UPDATE]</color> Please check your computer for latest install.");
+                                }, () =>
+                                {
+                                    NotificationManager.SendNotification("<color=cyan>[UPDATE]</color> Make sure to update the menu later.");
+                                });
+                            }
                         }
                     }
                 }
