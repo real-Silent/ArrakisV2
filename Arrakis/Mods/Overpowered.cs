@@ -256,8 +256,19 @@ namespace Arrakis.Mods
                 }
             }
         }
+
+        public static bool OwnsBarrel() =>
+            VRRig.LocalRig._playerOwnedCosmetics.Concat().Contains("LMAPE.");
+
         public static void BarrelFlingGun()
         {
+            if (!OwnsBarrel())
+            {
+                PromptSingle("You do not own the barrel these mods wont work otherwise.");
+                Toggle("Barrel Fling Gun");
+                return;
+            }
+
             if (GetGunInput(false))
             {
                 var GunData = RenderGun();
@@ -287,6 +298,13 @@ namespace Arrakis.Mods
         }
         public static void BarrelBringGun()
         {
+            if (!OwnsBarrel())
+            {
+                PromptSingle("You do not own the barrel these mods wont work otherwise.");
+                Toggle("Barrel Bring Gun");
+                return;
+            }
+
             if (GetGunInput(false))
             {
                 var GunData = RenderGun();
@@ -316,6 +334,13 @@ namespace Arrakis.Mods
         }
         public static void BarrelCrashGun()
         {
+            if (!OwnsBarrel())
+            {
+                PromptSingle("You do not own the barrel these mods wont work otherwise.");
+                Toggle("Barrel Crash Mod");
+                return;
+            }
+
             if (GetGunInput(false))
             {
                 var GunData = RenderGun();
@@ -345,6 +370,13 @@ namespace Arrakis.Mods
         }
         public static void CityBarrelKickGun()
         {
+            if (!OwnsBarrel())
+            {
+                PromptSingle("You do not own the barrel these mods wont work otherwise.");
+                Toggle("City Barrel Kick Gun");
+                return;
+            }
+
             string Map = Main.GetCurrentMapName();
             if (Map == "City")
             {
@@ -383,6 +415,13 @@ namespace Arrakis.Mods
         }
         public static void BarrelPunchMod()
         {
+            if (!OwnsBarrel())
+            {
+                PromptSingle("You do not own the barrel these mods wont work otherwise.");
+                Toggle("Barrel Punch Mod");
+                return;
+            }
+
             foreach (VRRig rig in VRRigCache.ActiveRigs)
             {
                 if (!rig.isLocal && (Vector3.Distance(GorillaTagger.Instance.leftHandTransform.position, rig.headMesh.transform.position) < 0.25f || Vector3.Distance(GorillaTagger.Instance.rightHandTransform.position, rig.headMesh.transform.position) < 0.25f))
