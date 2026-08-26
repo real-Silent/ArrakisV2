@@ -42,7 +42,7 @@ namespace Arrakis.Managers
 
         private static bool CheckPC()
         {
-            return XRSettings.isDeviceActive && UnityEngine.Application.platform != RuntimePlatform.Android;
+            return !XRSettings.isDeviceActive && UnityEngine.Application.platform != RuntimePlatform.Android;
         }
 
         private static bool PCControl(Hand hand, InputType type)
@@ -101,7 +101,7 @@ namespace Arrakis.Managers
 
         private static bool GetHandControl(Hand hand, InputType type)
         {
-            bool isSteam = PlayFabAuthenticator.instance.platform.PlatformTag == "Steam";
+            bool isSteam = PlayFabAuthenticator.instance.platform;
             switch (type)
             {
                 case InputType.Joystick:
