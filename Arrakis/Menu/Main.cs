@@ -1041,6 +1041,7 @@ namespace Arrakis.Menu
         public static float gunPointerSize = 0.15f; // ill add a setting for this later -sleepy
         public static float gunLineWidth = 0.025f; // ill add a setting for this later -sleepy
         public static bool swapgunhand = false;
+
         public static bool GetGunInput(bool isShooting) =>
             GetGunHand(swapgunhand, isShooting);
         private static bool GetGunHand(bool lefthand, bool shoot) =>
@@ -1051,7 +1052,7 @@ namespace Arrakis.Menu
 
         public static (RaycastHit Ray, GameObject NewPointer) RenderGun(int? overrideLayerMask = null)
         {
-            Transform gunTransform = GorillaTagger.Instance.rightHandTransform;
+            Transform gunTransform = swapgunhand ? GorillaTagger.Instance.leftHandTransform : GorillaTagger.Instance.rightHandTransform;
             Vector3 startPos = gunTransform.position;
             Vector3 direction = gunTransform.forward;
             Vector3 up = gunTransform.up;

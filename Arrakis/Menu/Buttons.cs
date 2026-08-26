@@ -148,6 +148,7 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Disable Gun Pointer", method =() => gunpointer = false, disableMethod =() => gunpointer = true, isTogglable = true, toolTip = "Disables the gun pointer.", ShowInArraylist = false },
                 new ButtonInfo { buttonText = "Disable Gun Line", method =() => gunline = false, disableMethod =() => gunline = true, isTogglable = true, toolTip = "Disables the gun line.", ShowInArraylist = false },
                 new ButtonInfo { buttonText = "Change Gun Line", overlapText = "Change Gun Line <color=grey>[<color=cyan>Default</color>]</color>", method =() => ChangeGunline(), isTogglable = false, toolTip = "Changes the gunline.", ShowInArraylist = false },
+                new ButtonInfo { buttonText = "Swap Gun Hand", enableMethod =() => swapgunhand = true, disableMethod =() => swapgunhand = false, isTogglable = true, toolTip = "Swap what hand the gun is on.", ShowInArraylist = false },
             },
 
             new ButtonInfo[] { // Plugin Settings
