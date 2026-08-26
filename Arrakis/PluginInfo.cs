@@ -29,5 +29,10 @@ namespace Arrakis
         public const string BaseDirectory = "Arrakis";
         public const string ServerApi = "https://novax.lol/arrakis/api";
         public const string DiscordLink = "https://discord.gg/dtQdz59FJG";
+        #if DEBUG
+        public static bool BetaBuild = true;
+        #else
+        public static bool BetaBuild = false;
+        #endif
     }
 }

@@ -44,7 +44,7 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Enabled", method =() => CurrentCategoryName = "Enabled", isTogglable = false, toolTip = "Opens the enabled page for the menu." },
                 new ButtonInfo { buttonText = "Favorites", method =() => CurrentCategoryName = "Favorites", isTogglable = false, toolTip = "Opens the favorites page for the menu." },
 
-                new ButtonInfo { buttonText = "Rooms", method =() => Main.LoadRooms(), isTogglable = false, toolTip = "Opens the rooms page for the menu." },
+                new ButtonInfo { buttonText = "Rooms", method =() => LoadRooms(), isTogglable = false, toolTip = "Opens the rooms page for the menu." },
                 new ButtonInfo { buttonText = "Global", method =() => CurrentCategoryName = "Global", isTogglable = false, toolTip = "Opens the global page for the menu." },
 
                 new ButtonInfo { buttonText = "Important", method =() => CurrentCategoryName = "Important", isTogglable = false, toolTip = "Opens the important page for the menu." },
@@ -510,6 +510,10 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Switch To Tcp", enableMethod =() => Experimental.SwitchToTcp(), disableMethod =() => Experimental.SwitchToUdp(), isTogglable = true, toolTip = "Swaps the networking to tcp, this breaks somethings." },
             },
 
+            new ButtonInfo[] { // Beta
+                new ButtonInfo { buttonText = "Exit Beta", method =() => CurrentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },
+            },
+
             new ButtonInfo[] { // Soundboard
                 new ButtonInfo { buttonText = "Exit Soundboard", method =() => CurrentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },
 
@@ -590,6 +594,7 @@ namespace Arrakis.Menu
             "Overpowered",
             "Master",
             "Experimental",
+            "Beta",
             "Soundboard",
             "Admin",
             "Players",

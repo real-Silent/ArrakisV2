@@ -22,6 +22,7 @@ using Arrakis.Menu;
 using Arrakis.Notifications;
 using GorillaNetworking;
 using Meta.WitAi.Json;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -145,7 +146,25 @@ namespace Arrakis.Classes
 
                     if (!bypass)
                     {
-                        if (PluginInfo.Version != serverversion)
+                        if (PluginInfo.BetaBuild)
+                        {
+                            if (!showprompt)
+                            {
+                                showprompt = true;
+                                NotificationManager.SendNotification($"<color=cyan>[BETA]</color> You are using a beta build of the menu some mods may be buggy the actual version is {serverversion}.", 7f);
+                                List<ButtonInfo> buttons = Buttons.buttons[GetCategory("Main")].ToList();
+                                buttons.Add(new ButtonInfo { buttonText = "<color=red>B</color><color=green>e</color><color=cyan>t</color><color=yellow>a</color>", method = () => CurrentCategoryName = "Beta", isTogglable = false, toolTip = "Opens the beta mods." });
+                                Buttons.buttons[GetCategory("Main")] = buttons.ToArray();
+
+                                List<ButtonInfo> betaButtons = Buttons.buttons[GetCategory("Beta")].ToList();
+                                Buttons.buttons[GetCategory("Beta")] = betaButtons.ToArray();
+                                betaButtons.AddRange(new ButtonInfo[]
+                                {
+                                    new ButtonInfo {  buttonText = "Spider Man", isTogglable = true, toolTip = "Lets you become spiderman." },
+                                });
+                            }
+                        }
+                        else if (Version.Parse(PluginInfo.Version) < Version.Parse(serverversion))
                         {
                             if (!showprompt)
                             {
