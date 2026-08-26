@@ -125,72 +125,40 @@ namespace Arrakis.Managers
                 case InputType.Trigger:
                     if (hand == Hand.Left)
                     {
-                        if (isSteam)
-                        {
-                            return SteamVR_Actions.gorillaTag_LeftTriggerClick.GetState(SteamVR_Input_Sources.LeftHand);
-                        }
                         return ControllerInputPoller.instance.leftControllerDevice.TryGetFeatureValue(CommonUsages.triggerButton, out bool leftTrigger) && leftTrigger;
                     }
                     if (hand == Hand.Right)
                     {
-                        if (isSteam)
-                        {
-                            return SteamVR_Actions.gorillaTag_RightTriggerClick.GetState(SteamVR_Input_Sources.RightHand);
-                        }
                         return ControllerInputPoller.instance.rightControllerDevice.TryGetFeatureValue(CommonUsages.triggerButton, out bool rightTrigger) && rightTrigger;
                     }
                     break;
                 case InputType.Grip:
                     if (hand == Hand.Left)
                     {
-                        if (isSteam)
-                        {
-                            return SteamVR_Actions.gorillaTag_LeftGripClick.GetState(SteamVR_Input_Sources.LeftHand);
-                        }
                         return ControllerInputPoller.instance.leftControllerDevice.TryGetFeatureValue(CommonUsages.gripButton, out bool leftGrip) && leftGrip;
                     }
                     if (hand == Hand.Right)
                     {
-                        if (isSteam)
-                        {
-                            return SteamVR_Actions.gorillaTag_RightGripClick.GetState(SteamVR_Input_Sources.RightHand);
-                        }
                         return ControllerInputPoller.instance.rightControllerDevice.TryGetFeatureValue(CommonUsages.gripButton, out bool rightGrip) && rightGrip;
                     }
                     break;
                 case InputType.Secondary:
                     if (hand == Hand.Left)
                     {
-                        if (isSteam)
-                        {
-                            return SteamVR_Actions.gorillaTag_LeftSecondaryClick.GetState(SteamVR_Input_Sources.LeftHand);
-                        }
                         return ControllerInputPoller.instance.leftControllerDevice.TryGetFeatureValue(CommonUsages.secondaryButton, out bool leftSecondary) && leftSecondary;
                     }
                     if (hand == Hand.Right)
                     {
-                        if (isSteam)
-                        {
-                            return SteamVR_Actions.gorillaTag_RightSecondaryClick.GetState(SteamVR_Input_Sources.RightHand);
-                        }
                         return ControllerInputPoller.instance.rightControllerDevice.TryGetFeatureValue(CommonUsages.secondaryButton, out bool rightSecondary) && rightSecondary;
                     }
                     break;
                 case InputType.Primary:
                     if (hand == Hand.Left)
                     {
-                        if (isSteam)
-                        {
-                            return SteamVR_Actions.gorillaTag_LeftPrimaryClick.GetState(SteamVR_Input_Sources.LeftHand);
-                        }
                         return ControllerInputPoller.instance.leftControllerDevice.TryGetFeatureValue(CommonUsages.primaryButton, out bool leftPrimary) && leftPrimary;
                     }
                     if (hand == Hand.Right)
                     {
-                        if (isSteam)
-                        {
-                            return SteamVR_Actions.gorillaTag_RightPrimaryClick.GetState(SteamVR_Input_Sources.RightHand);
-                        }
                         return ControllerInputPoller.instance.rightControllerDevice.TryGetFeatureValue(CommonUsages.primaryButton, out bool rightPrimary) && rightPrimary;
                     }
                     break;
