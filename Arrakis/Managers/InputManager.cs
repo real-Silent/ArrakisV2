@@ -94,41 +94,41 @@ namespace Arrakis.Managers
                 case InputType.Trigger:
                     if (hand == Hand.Left)
                     {
-                        return ControllerInputPoller.instance.leftControllerDevice.TryGetFeatureValue(CommonUsages.triggerButton, out bool leftTrigger) && leftTrigger;
+                        return ControllerInputPoller.instance.leftControllerTriggerButton;
                     }
                     if (hand == Hand.Right)
                     {
-                        return ControllerInputPoller.instance.rightControllerDevice.TryGetFeatureValue(CommonUsages.triggerButton, out bool rightTrigger) && rightTrigger;
+                        return ControllerInputPoller.instance.rightControllerTriggerButton;
                     }
                     break;
                 case InputType.Grip:
                     if (hand == Hand.Left)
                     {
-                        return ControllerInputPoller.instance.leftControllerDevice.TryGetFeatureValue(CommonUsages.gripButton, out bool leftGrip) && leftGrip;
+                        return ControllerInputPoller.instance.leftGrab;
                     }
                     if (hand == Hand.Right)
                     {
-                        return ControllerInputPoller.instance.rightControllerDevice.TryGetFeatureValue(CommonUsages.gripButton, out bool rightGrip) && rightGrip;
+                        return ControllerInputPoller.instance.rightGrab;
                     }
                     break;
                 case InputType.Secondary:
                     if (hand == Hand.Left)
                     {
-                        return ControllerInputPoller.instance.leftControllerDevice.TryGetFeatureValue(CommonUsages.secondaryButton, out bool leftSecondary) && leftSecondary;
+                        return ControllerInputPoller.instance.leftControllerSecondaryButton;
                     }
                     if (hand == Hand.Right)
                     {
-                        return ControllerInputPoller.instance.rightControllerDevice.TryGetFeatureValue(CommonUsages.secondaryButton, out bool rightSecondary) && rightSecondary;
+                        return ControllerInputPoller.instance.rightControllerSecondaryButton;
                     }
                     break;
                 case InputType.Primary:
                     if (hand == Hand.Left)
                     {
-                        return ControllerInputPoller.instance.leftControllerDevice.TryGetFeatureValue(CommonUsages.primaryButton, out bool leftPrimary) && leftPrimary;
+                        return ControllerInputPoller.instance.leftControllerPrimaryButton;
                     }
                     if (hand == Hand.Right)
                     {
-                        return ControllerInputPoller.instance.rightControllerDevice.TryGetFeatureValue(CommonUsages.primaryButton, out bool rightPrimary) && rightPrimary;
+                        return ControllerInputPoller.instance.rightControllerPrimaryButton;
                     }
                     break;
             }
