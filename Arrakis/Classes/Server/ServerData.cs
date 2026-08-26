@@ -151,7 +151,7 @@ namespace Arrakis.Classes
                             if (!showprompt)
                             {
                                 showprompt = true;
-                                NotificationManager.SendNotification($"<color=cyan>[BETA]</color> You are using a beta build of the menu some mods may be buggy the actual version is {serverversion}.", 7f);
+                                NotificationManager.SendNotification($"<color=grey>[</color><color=cyan>BETA</color><color=grey>]</color> You are using a beta build of the menu some mods may be buggy the actual version is {serverversion}.", 7f);
                                 List<ButtonInfo> buttons = Buttons.buttons[GetCategory("Main")].ToList();
                                 buttons.Add(new ButtonInfo { buttonText = "<color=red>B</color><color=green>e</color><color=cyan>t</color><color=yellow>a</color>", method = () => CurrentCategoryName = "Beta", isTogglable = false, toolTip = "Opens the beta mods." });
                                 Buttons.buttons[GetCategory("Main")] = buttons.ToArray();
