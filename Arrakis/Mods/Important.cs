@@ -129,8 +129,22 @@ namespace Arrakis.Mods
         public static void CLearNotis() =>
             NotificationManager.ClearAllNotifications();
 
-        public static void BuyBarrel() => // Prompt System foro when not enough sr
-            CosmeticsController.instance.currentCart.Insert(0, CosmeticsController.instance.GetItemFromDict("LMAPE."));
+        public static void BuyBarrel()
+        {
+            int barrelPrice = CosmeticsController.instance.GetItemFromDict("LMAPE.").cost;
+            int currentRocks = CosmeticsController.instance.currencyBalance;
+            if (currentRocks >= barrelPrice)
+            {
+                PromptSingle("The barrel is currently being bought.");
+                CosmeticsController.instance.currentCart.Insert(0, CosmeticsController.instance.GetItemFromDict("LMAPE."));
+                CosmeticsController.instance.ProcessExternalUnlock("LMAPE.", true, false);
+                NotificationManager.SendNotification($"<color=cyan>[ARRAKIS]</color> Successfully bought barrel.");
+            }
+            else
+            {
+                PromptSingle($"You currently only have {currentRocks} shiny rocks you need {barrelPrice - currentRocks} more the barrel costs {barrelPrice}.");
+            }
+        }
 
         public static async void CreatePublicLobby(string roomName)
         {
