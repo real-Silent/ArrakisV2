@@ -29,15 +29,11 @@ namespace Arrakis.Managers
 {
     public class InputManager
     {
-        public static bool GetInput(InputType type, Hand hand, bool pc = false)
+        public static bool GetInput(InputType type, Hand hand, bool pc = false, bool forpcgun = false)
         {
             if (pc && !CheckPC())
                 return false;
-            if (pc && CheckPC())
-            {
-                return PCControl(hand, type);
-            }
-            return GetHandControl(hand, type);
+            return pc ? PCControl(hand, type, forpcgun) : GetHandControl(hand, type);
         }
 
         private static bool CheckPC()
@@ -45,55 +41,28 @@ namespace Arrakis.Managers
             return !XRSettings.isDeviceActive && UnityEngine.Application.platform != RuntimePlatform.Android;
         }
 
-        private static bool PCControl(Hand hand, InputType type)
+        private static bool PCControl(Hand hand, InputType type, bool pcgun = false)
         {
+            Keyboard keyboard = Keyboard.current;
+            Mouse mouse = Mouse.current;
+            if (keyboard == null)
+                return false;
             switch (type)
             {
                 case InputType.Joystick:
-                    if (hand == Hand.Left)
-                    {
-                        return Keyboard.current.leftAltKey.isPressed;
-                    }
-                    else
-                    {
-                        return Keyboard.current.rightAltKey.isPressed;
-                    }
+                    return hand == Hand.Left ? keyboard.leftAltKey.isPressed : keyboard.rightAltKey.isPressed;
                 case InputType.Trigger:
-                    if (hand == Hand.Left)
-                    {
-                        return Keyboard.current.minusKey.isPressed;
-                    }
-                    else
-                    {
-                        return Keyboard.current.equalsKey.isPressed;
-                    }
+                    if (pcgun)
+                        return mouse != null && mouse.leftButton.isPressed;
+                    return hand == Hand.Left ? keyboard.minusKey.isPressed : keyboard.equalsKey.isPressed;
                 case InputType.Grip:
-                    if (hand == Hand.Left)
-                    {
-                        return Keyboard.current.leftBracketKey.isPressed;
-                    }
-                    else
-                    {
-                        return Keyboard.current.rightBracketKey.isPressed;
-                    }
+                    if (pcgun)
+                        return mouse != null && mouse.rightButton.isPressed;
+                    return hand == Hand.Left ? keyboard.leftBracketKey.isPressed : keyboard.rightBracketKey.isPressed;
                 case InputType.Secondary:
-                    if (hand == Hand.Left)
-                    {
-                        return Keyboard.current.rKey.isPressed;
-                    }
-                    else
-                    {
-                        return Keyboard.current.tKey.isPressed;
-                    }
+                    return hand == Hand.Left ? keyboard.rKey.isPressed : keyboard.tKey.isPressed;
                 case InputType.Primary:
-                    if (hand == Hand.Left)
-                    {
-                        return Keyboard.current.cKey.isPressed;
-                    }
-                    else
-                    {
-                        return Keyboard.current.vKey.isPressed;
-                    }
+                    return hand == Hand.Left ? keyboard.cKey.isPressed : keyboard.vKey.isPressed;
                 default:
                     return false;
             }
