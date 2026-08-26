@@ -1,4 +1,4 @@
-﻿/*
+﻿ /*
  * Arrakis | Mods/Soundboard.cs
  *
  * Copyright (C) 2026 Arrakis
@@ -35,66 +35,110 @@ namespace Arrakis.Mods
         private static readonly Dictionary<string, AudioClip> Cache = new Dictionary<string, AudioClip>();
         private static GameObject audioObject;
         private static AudioSource audioSource;
+
         public static bool LoopAudio = false;
         public static bool HearSelf = true;
         public static float LocalVolume = 0.2f;
         public static bool IsPlaying { get; private set; }
-        public static void Play(string url)
+
+        private static string SoundsPath
         {
-            if (!IsSupportedUrl(url))
+            get { return Path.Combine(Application.dataPath, "..", "Arrakis", "Sounds"); }
+        }
+
+        public static void Play(string fileName)
+        {
+            if (string.IsNullOrEmpty(fileName))
                 return;
+
+            fileName = Path.GetFileName(fileName);
+
+            if (!IsSupportedFile(fileName))
+                return;
+
+            string path = Path.Combine(SoundsPath, fileName);
+
+            if (!File.Exists(path))
+            {
+                CustomConsole.Log("Sound not found: " + path, CustomConsole.LogType.Error);
+                return;
+            }
+
             Stop();
             EnsureObject();
-            CRunner.instance.StartCoroutine(Load(url));
+
+            CRunner.instance.StartCoroutine(Load(path));
         }
-        private static IEnumerator Load(string url)
+
+        private static IEnumerator Load(string path)
         {
+            string fileName = Path.GetFileName(path);
             AudioClip clip;
-            if (Cache.TryGetValue(url, out clip) && clip != null)
+
+            if (Cache.TryGetValue(fileName, out clip) && clip != null)
             {
                 PlayClip(clip);
                 yield break;
             }
-            using (UnityWebRequest request = UnityWebRequestMultimedia.GetAudioClip(url, GetAudioType(url)))
+
+            using (UnityWebRequest request = UnityWebRequestMultimedia.GetAudioClip(new Uri(path).AbsoluteUri, GetAudioType(path)))
             {
                 yield return request.SendWebRequest();
+
                 if (request.result != UnityWebRequest.Result.Success)
+                {
+                    CustomConsole.Log("Failed to load sound: " + request.error, CustomConsole.LogType.Error);
                     yield break;
+                }
+
                 clip = DownloadHandlerAudioClip.GetContent(request);
+
                 if (clip == null)
                     yield break;
+
                 clip.name = "ArrakisClip";
-                Cache[url] = clip;
+                Cache[fileName] = clip;
             }
+
             PlayClip(clip);
         }
+
         private static void PlayClip(AudioClip clip)
         {
             if (clip == null)
                 return;
+
             if (HearSelf)
                 PlayLocal(clip);
-            if (PhotonNetwork.InRoom)
+
+            if (NetworkSystem.Instance.InRoom)
                 PlayPhoton(clip);
+
             IsPlaying = true;
         }
+
         private static void PlayPhoton(AudioClip clip)
         {
             try
             {
                 Recorder recorder = GorillaTagger.Instance.myRecorder;
+
                 if (recorder == null)
+                {
+                    CustomConsole.Log("Soundboard: Recorder is null. (fucking what)", CustomConsole.LogType.Error);
                     return;
+                }
                 recorder.StopRecording();
-                recorder.SourceType = Recorder.InputSourceType.AudioClip;
+
                 recorder.AudioClip = clip;
                 recorder.LoopAudioClip = LoopAudio;
-                recorder.IsRecording = true;
+                recorder.SourceType = Recorder.InputSourceType.AudioClip;
+
                 recorder.RestartRecording(true);
             }
             catch (Exception e)
             {
-                CustomConsole.Log("Error playing soundboard through mic: " + e, CustomConsole.LogType.Error);
+                CustomConsole.Log("Soundboard: Photon playback error: " + e, CustomConsole.LogType.Error);
             }
         }
         private static void PlayLocal(AudioClip clip)
@@ -106,19 +150,23 @@ namespace Arrakis.Mods
             audioSource.volume = Mathf.Clamp(LocalVolume, 0f, 5f);
             audioSource.Play();
         }
+
         public static void Stop()
         {
             IsPlaying = false;
+
             if (audioSource != null)
             {
                 audioSource.Stop();
                 audioSource.clip = null;
             }
+
             try
             {
                 if (PhotonNetwork.InRoom)
                 {
                     Recorder recorder = GorillaTagger.Instance.myRecorder;
+
                     if (recorder != null)
                     {
                         recorder.SourceType = Recorder.InputSourceType.Microphone;
@@ -128,40 +176,92 @@ namespace Arrakis.Mods
                     }
                 }
             }
-            catch { }
+            catch
+            {
+            }
         }
-        private static bool IsSupportedUrl(string url)
-        {
-            if (string.IsNullOrEmpty(url))
-                return false;
-            string lower = url.ToLower();
-            return lower.Contains("cdn.discordapp.com") || lower.Contains("media.discordapp.net") || lower.EndsWith(".mp3") ||  lower.EndsWith(".wav") || lower.EndsWith(".ogg");
-        }
-        private static AudioType GetAudioType(string url)
-        {
-            string ext = "";
-            try { ext = Path.GetExtension(new Uri(url).AbsolutePath).ToLower(); }
-            catch { }
 
-            switch (ext)
+        private static bool IsSupportedFile(string fileName)
+        {
+            string extension = Path.GetExtension(fileName).ToLowerInvariant();
+
+            return extension == ".mp3" ||
+                   extension == ".wav" ||
+                   extension == ".ogg";
+        }
+        public static void StartSoundboard()
+        {
+            Arrakis.Menu.Main.CurrentCategoryName = "Soundboard";
+
+            string soundsPath = Path.Combine(Environment.CurrentDirectory, "Arrakis", "Sounds");
+
+            List<ButtonInfo> buttons = new List<ButtonInfo>();
+
+            buttons.Add(new ButtonInfo
+            {
+                buttonText = "Exit Soundboard",
+                method = () => Arrakis.Menu.Main.CurrentCategoryName = "Main",
+                isTogglable = false,
+                toolTip = "Returns to the main page for the menu."
+            });
+
+            if (!Directory.Exists(soundsPath))
+                Directory.CreateDirectory(soundsPath);
+
+            foreach (string file in Directory.GetFiles(soundsPath))
+            {
+                string extension = Path.GetExtension(file).ToLowerInvariant();
+
+                if (extension != ".mp3" &&
+                    extension != ".wav" &&
+                    extension != ".ogg")
+                    continue;
+
+                string fileName = Path.GetFileName(file);
+
+                ButtonInfo soundButton = new ButtonInfo
+                {
+                    buttonText = Path.GetFileNameWithoutExtension(file),
+                    enableMethod =() => Soundboard.Play(fileName),
+                    disableMethod =() => Soundboard.Stop(),
+                    isTogglable = true,
+                    toolTip = "Play " + Path.GetFileNameWithoutExtension(file)
+                };
+
+                buttons.Add(soundButton);
+            }
+
+            Arrakis.Menu.Buttons.buttons[Array.IndexOf( Arrakis.Menu.Buttons.categoryNames, "Soundboard")] = buttons.ToArray();
+        }
+        private static AudioType GetAudioType(string path)
+        {
+            string extension = Path.GetExtension(path).ToLowerInvariant();
+
+            switch (extension)
             {
                 case ".wav":
                     return AudioType.WAV;
                 case ".ogg":
                     return AudioType.OGGVORBIS;
-                default:
+                case ".mp3":
                     return AudioType.MPEG;
+                default:
+                    return AudioType.UNKNOWN;
             }
         }
+
         private static void EnsureObject()
         {
             if (audioObject != null)
                 return;
+
             audioObject = new GameObject("Arrakis Soundboard");
             UnityEngine.Object.DontDestroyOnLoad(audioObject);
+
             audioSource = audioObject.AddComponent<AudioSource>();
             audioSource.playOnAwake = false;
         }
+
         public static void ClearCache()
         {
             foreach (AudioClip clip in Cache.Values)
@@ -169,6 +269,7 @@ namespace Arrakis.Mods
                 if (clip != null)
                     UnityEngine.Object.Destroy(clip);
             }
+
             Cache.Clear();
         }
     }
