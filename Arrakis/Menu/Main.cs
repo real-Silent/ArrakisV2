@@ -1045,7 +1045,7 @@ namespace Arrakis.Menu
         public static bool GetGunInput(bool isShooting) =>
             GetGunHand(swapgunhand, isShooting);
         private static bool GetGunHand(bool lefthand, bool shoot) =>
-            shoot ? InputManager.GetInput(InputManager.InputType.Trigger, lefthand ? InputManager.Hand.Left : InputManager.Hand.Right, XRSettings.isDeviceActive) : InputManager.GetInput(InputManager.InputType.Grip, lefthand ? InputManager.Hand.Left : InputManager.Hand.Right, XRSettings.isDeviceActive);
+            shoot ? InputManager.GetInput(InputManager.InputType.Trigger, lefthand ? InputManager.Hand.Left : InputManager.Hand.Right, !XRSettings.isDeviceActive) : InputManager.GetInput(InputManager.InputType.Grip, lefthand ? InputManager.Hand.Left : InputManager.Hand.Right, !XRSettings.isDeviceActive);
 
         public static Vector3 MidPosition;
         public static Vector3 MidVelocity;
