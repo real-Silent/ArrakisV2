@@ -1,28 +1,26 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+/*
+ * Arrakis | Classes/Mods/PlayerInfoBehavior.cs
+ *
+ * Copyright (C) 2026 Arrakis
+ * https://github.com/real-Silent/ArrakisV2
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 using Arrakis.Menu;
 using Photon.Pun;
-using Photon.Realtime;
-using PlayFab;
-using PlayFab.ClientModels;
-using TMPro;
-using Unity.Cinemachine;
 using UnityEngine;
-using UnityEngine.Animations.Rigging;
-using UnityEngine.Experimental.GlobalIllumination;
-using UnityEngine.InputSystem;
-using UnityEngine.SceneManagement;
-using UnityEngine.UI;
-using UnityEngine.UIElements;
-using UnityEngine.XR;
-using static Unity.Burst.Intrinsics.X86.Avx;
-using Application = UnityEngine.Application;
-using Image = UnityEngine.UI.Image;
-using Object = UnityEngine.Object;
-using Text = UnityEngine.UI.Text;
 
 namespace Arrakis.Classes.Mods
 {
