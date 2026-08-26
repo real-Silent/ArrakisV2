@@ -137,24 +137,36 @@ namespace Arrakis.Mods
             }
         }
 
-        public static void GetAllPhotonViews() // Dictionary
+        private static Dictionary<PhotonView, LineRenderer> tp = new Dictionary<PhotonView, LineRenderer>();
+        public static void GetAllPhotonViews()
         {
-            foreach (PhotonView view in GetPhotonViews())
+            foreach (PhotonView view in GetViews())
             {
-                Color tracerColor = Color.cyan;
-                GameObject holder = new GameObject("PhotonViewTracer");
-                LineRenderer line = holder.AddComponent<LineRenderer>();
-                line.useWorldSpace = true;
-                line.material = new Material(Shader.Find("GUI/Text Shader"));
-                line.positionCount = 2;
-                line.startWidth = 0.02f;
-                line.endWidth = 0.02f;
-                line.startColor = tracerColor;
-                line.endColor = tracerColor;
+                if (!tp.TryGetValue(view, out LineRenderer line))
+                {
+                    GameObject holder = new GameObject();
+                    line = holder.AddComponent<LineRenderer>();
+                    line.useWorldSpace = true;
+                    line.material = new Material(Shader.Find("GUI/Text Shader"));
+                    line.positionCount = 2;
+                    line.startWidth = 0.02f;
+                    line.endWidth = 0.02f;
+                    tp[view] = line;
+                }
+                line.startColor = Settings.backgroundColor.GetCurrentColor();
+                line.endColor = Settings.backgroundColor.GetCurrentColor();
                 line.SetPosition(0, GorillaTagger.Instance.rightHandTransform.position);
                 line.SetPosition(1, view.transform.position);
-                Object.Destroy(holder, Time.deltaTime);
             }
+        }
+
+        public static void DisableViewTracers()
+        {
+            foreach (var view in tp.Values)
+            {
+                GameObject.Destroy(view.gameObject);
+            }
+            tp.Clear();
         }
 
         public static void DestroyViewGun()

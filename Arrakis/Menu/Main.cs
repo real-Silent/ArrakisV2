@@ -1215,17 +1215,28 @@ namespace Arrakis.Menu
                 currentCategoryIndex = GetCategory(value);
         }
 
-        private static readonly List<PhotonView> allViews = new List<PhotonView>();
-        public static PhotonView[] GetPhotonViews()
+        private static readonly Dictionary<PhotonView, GameObject> views = new Dictionary<PhotonView, GameObject>();
+        private static PhotonView[] cachedViews;
+        private static bool cached = true;
+        public static PhotonView[] GetViews()
         {
-            allViews.RemoveAll(x => x == null);
-            foreach (var view in GameObject.FindObjectsByType<PhotonView>(FindObjectsSortMode.None))
+            if (!cached && cachedViews != null)
+                return cachedViews;
+            views.Clear();
+            PhotonView[] foundViews = GameObject.FindObjectsOfType<PhotonView>(true);
+            foreach (PhotonView view in foundViews)
             {
-                if (!allViews.Contains(view))
-                    allViews.Add(view);
+                if (view == null)
+                    continue;
+                GameObject go = view.gameObject;
+                if (go != null)
+                    views[view] = go;
             }
-            return allViews.ToArray();
+            cachedViews = views.Keys.ToArray();
+            cached = false;
+            return cachedViews;
         }
+
 
         private static readonly List<GorillaGuardianZoneManager> allGZMans = new List<GorillaGuardianZoneManager>();
         public static GorillaGuardianZoneManager[] GuardianZMan()

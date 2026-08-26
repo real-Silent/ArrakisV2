@@ -481,7 +481,7 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Unguardian Self", method =() => Master.NoGuardian(), isTogglable = false, toolTip = "Removes you from being guardian." },
                 new ButtonInfo { buttonText = "Set Guardian Gun", method =() => Master.SetGuardianGun(), isTogglable = true, toolTip = "Makes who you shoot guardian." },
                 new ButtonInfo { buttonText = "Unguardian Gun", method =() => Master.UnGuardianGun(), isTogglable = true, toolTip = "Makes who you shoot not guardian." },
-                new ButtonInfo { buttonText = "Find PhotonViews", method =() => Master.GetAllPhotonViews(), isTogglable = true, toolTip = "Shows everything with a photon view." },
+                new ButtonInfo { buttonText = "Find PhotonViews", method =() => Master.GetAllPhotonViews(), disableMethod =() => Master.DisableViewTracers(), isTogglable = true, toolTip = "Shows everything with a photon view." },
                 new ButtonInfo { buttonText = "Destroy PhotonView Gun", method =() => Master.DestroyViewGun(), isTogglable = true, toolTip = "Lets you destroy a photon view." },
                 new ButtonInfo { buttonText = "Spawn Block Gun", method =() => Master.SpawnBlockGun(), isTogglable = true, toolTip = "Spawns a random block where ever you shoot." },
                 new ButtonInfo { buttonText = "Block Crash All", method =() => Master.BlockCrashAll(), isTogglable = true, toolTip = "Crashes everyone with blocks." },
