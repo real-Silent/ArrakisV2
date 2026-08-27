@@ -458,9 +458,8 @@ namespace Arrakis.Mods
         public static void SpawnThingGhostReact(int hash, Vector3 position, Quaternion rotation, long[] createData = null)
         {
             GetGRM();
-
-            bool inGhostReactor = ZoneManagement.instance.IsZoneActive(GTZone.ghostReactor) || ZoneManagement.instance.IsZoneActive(GTZone.ghostReactorDrill) || ZoneManagement.instance.IsZoneActive(GTZone.ghostReactorTunnel);
-
+            bool inGhostReactor = ZoneManagement.instance.IsZoneActive(GTZone.ghostReactor) || ZoneManagement.instance.IsZoneActive(GTZone.ghostReactorDrill) 
+            || ZoneManagement.instance.IsZoneActive(GTZone.ghostReactorTunnel);
             if (!inGhostReactor)
                 return;
             if (!InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Right, !XRSettings.isDeviceActive))
