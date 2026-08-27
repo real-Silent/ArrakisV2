@@ -48,8 +48,11 @@
 
 	<!-- AssemblyPublicizer usage inspired from GorillaShirts -->
 	<ItemGroup>
-		<PackageReference Include="BepInEx.AssemblyPublicizer.MSBuild" />
-		<PackageReference Include="Newtonsoft.Json" />
+		<PackageReference Include="BepInEx.AssemblyPublicizer.MSBuild" Version="0.4.3">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
 	</ItemGroup>
 
 	<PropertyGroup>
