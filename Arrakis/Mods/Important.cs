@@ -75,7 +75,6 @@ namespace Arrakis.Mods
             GameObject.Find("Environment Objects/LocalObjects_Prefab/ForestToHoverboard/TurnOnInForestAndHoverboard/ForestDome_CollisionOnly").SetActive(true);
         }
 
-        private static Vector3? localPos;
         public static void ButtonClick()
         {
             if (Mouse.current.leftButton.isPressed)
