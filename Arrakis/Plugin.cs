@@ -32,16 +32,16 @@ namespace Arrakis
     [BepInPlugin(PluginInfo.GUID, PluginInfo.Name, PluginInfo.Version)]
     public class Plugin : BaseUnityPlugin
     {
+        public static GameObject holder;
         private void Awake()
         {
             HarmonyLoader.ApplyPatches();
             CustomConsole.LoadStart();
             GorillaTagger.OnPlayerSpawned(OnPlayerSpawned);
         }
-
         public void OnPlayerSpawned()
         {
-            GameObject holder = new GameObject("Arrakis");
+            holder = new GameObject("Arrakis");
             holder.AddComponent<ServerData>();
             holder.AddComponent<NotificationManager>();
             holder.AddComponent<CRunner>();

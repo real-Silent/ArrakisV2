@@ -1615,8 +1615,8 @@ namespace Arrakis.Menu
         }
         public static void DestroyMenu()
         {
-            if (GetIndex("First Person").enabled)
-                Toggle("First Person");
+            HarmonyLoader.RemovePatches();
+            Safety.Panic(true);
             disablecustomboards = true;
             GameObject.Destroy(menu);
             menu = null;
@@ -1632,8 +1632,7 @@ namespace Arrakis.Menu
                 GameObject.Destroy(rightReference);
                 rightReference = null;
             }
-            GameObject.Destroy(GameObject.Find("Arrakis"));
-            HarmonyLoader.RemovePatches();
+            GameObject.Destroy(Plugin.holder);
         }
 
         private const string RandomChars = "ABCDEFGHIJKLMNPQRSTUVWXYZ123456789";

@@ -62,11 +62,36 @@ namespace Arrakis.Mods
             }
         }
 
-        public static void Panic()
+        public static void Panic(bool force = false)
         {
-            if (Settings.panicPrompt)
+            if (force)
             {
-                Prompt("Would you like to disable all your mods ?", () =>
+                foreach (ButtonInfo[] b in Buttons.buttons)
+                {
+                    foreach (ButtonInfo v in b)
+                    {
+                        if (v.enabled)
+                            Toggle(v.buttonText);
+                    }
+                }
+            }
+            else
+            {
+                if (Settings.panicPrompt)
+                {
+                    Prompt("Would you like to disable all your mods ?", () =>
+                    {
+                        foreach (ButtonInfo[] b in Buttons.buttons)
+                        {
+                            foreach (ButtonInfo v in b)
+                            {
+                                if (v.enabled)
+                                    Toggle(v.buttonText);
+                            }
+                        }
+                    });
+                }
+                else
                 {
                     foreach (ButtonInfo[] b in Buttons.buttons)
                     {
@@ -75,17 +100,6 @@ namespace Arrakis.Mods
                             if (v.enabled)
                                 Toggle(v.buttonText);
                         }
-                    }
-                });
-            }
-            else
-            {
-                foreach (ButtonInfo[] b in Buttons.buttons)
-                {
-                    foreach (ButtonInfo v in b)
-                    {
-                        if (v.enabled)
-                            Toggle(v.buttonText);
                     }
                 }
             }
