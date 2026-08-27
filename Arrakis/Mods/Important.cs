@@ -75,6 +75,7 @@ namespace Arrakis.Mods
             GameObject.Find("Environment Objects/LocalObjects_Prefab/ForestToHoverboard/TurnOnInForestAndHoverboard/ForestDome_CollisionOnly").SetActive(true);
         }
 
+        private static Vector3? localPos;
         public static void ButtonClick()
         {
             if (Mouse.current.leftButton.isPressed)
@@ -83,6 +84,10 @@ namespace Arrakis.Mods
                 Physics.Raycast(ray, out var Ray, 512f, NoInvisLayerMask());
                 GorillaTagger.Instance.rightHandTriggerCollider.GetComponent<TransformFollow>().enabled = false;
                 GorillaTagger.Instance.rightHandTriggerCollider.transform.position = Ray.point;
+            }
+            else
+            {
+                GorillaTagger.Instance.rightHandTriggerCollider.GetComponent<TransformFollow>().enabled = true;
             }
         }
 
