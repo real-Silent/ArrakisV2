@@ -105,6 +105,7 @@ namespace Arrakis
         public static bool logphotonevents = false;
 
         public static bool disablevibrations;
+        public static bool disablebuttonsounds;
 
         public static void JoinDiscord()
         {

@@ -36,7 +36,8 @@ namespace Arrakis.Classes
                 buttonCooldown = Time.time + 0.2f;
 				if (!disablevibrations)
 					AudioManager.Vibration(rightHanded, GorillaTagger.Instance.tagHapticStrength / 2f, GorillaTagger.Instance.tagHapticDuration / 2f);
-				AudioManager.PlayButtonSound(rightHanded, buttonclickvolume);
+				if (!disablebuttonsounds)
+					AudioManager.PlayButtonSound(rightHanded, buttonclickvolume);
                 Toggle(relatedText);
             }
 		}
