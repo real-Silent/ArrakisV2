@@ -71,6 +71,20 @@ namespace Arrakis.Classes
         public static NetPlayer GetNetPlayerFromVRRig(VRRig p) =>
             GetNetworkViewFromVRRig(p).Owner;
 
+        public static NetPlayer GetNetPlayerFromID(string id)
+        {
+            NetPlayer found = null;
+            foreach (NetPlayer target in NetworkSystem.Instance.PlayerListOthers)
+            {
+                if (target.UserId == id)
+                {
+                    found = target;
+                    break;
+                }
+            }
+            return found;
+        }
+
         public static Player GetPlayerFromID(string id)
         {
             Player found = null;

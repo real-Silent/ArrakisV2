@@ -358,8 +358,11 @@ namespace Arrakis.Mods
         }
         public static void GetMenuUsers()
         {
-            Admin.indicatorDelay = Time.time + 2f;
-            Admin.ExecuteCommand("isusing", ReceiverGroup.All);
+            if (Time.time > Admin.indicatorDelay)
+            {
+                Admin.ExecuteCommand("isusing", ReceiverGroup.All);
+                Admin.indicatorDelay = Time.time + 2f;
+            }
         }
     }
 }

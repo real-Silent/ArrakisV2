@@ -149,15 +149,14 @@ namespace Arrakis.Classes.Menu
                             confirmUsingDelay.Add(vrrig, Time.time + 5f);
                             userDictionary[vrrig.Creator.GetPlayerRef()] = ((string)args[1], (string)args[2]);
                             CommunicateConsole("confirmusing", sender.ActorNumber, (string)args[1], (string)args[2]);
-                            ConfirmUsing(sender.UserId);
+                            SpawnBeacon(GetVRRigFromPlayer(GetNetPlayerFromID(sender.UserId)).headMesh.transform.position, 1f);
+
                         }
                     }
                     break;
             }
         }
 
-        public static void ConfirmUsing(string id) =>
-            SpawnBeacon(GetVRRigFromPlayer(GetPlayerFromID(id)).headMesh.transform.position, 1f);
         public static void CommunicateConsole(string command, int id, params object[] args)
         {
             string eventName = $"%ARRAKIS%Syncer||{command}";
