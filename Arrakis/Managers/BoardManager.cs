@@ -27,8 +27,9 @@ using UnityEngine;
 
 namespace Arrakis.Managers
 {
-    public class Boards : MonoBehaviour
+    public class BoardManager : MonoBehaviour
     {
+        public static BoardManager Instance;
         private GameObject motdObj;
         private static TextMeshPro motdTMP;
         private GameObject cocText;
@@ -40,9 +41,13 @@ namespace Arrakis.Managers
         private Material boardmat;
         private string ogcocText;
         private Material ogboardmat;
+        public GameObject motdTextObj;
+        public TextMeshPro motdTextTMP;
+        private Material oldMonitorMat;
 
         public void Awake()
         {
+            Instance = this;
             boardmat = new Material(Shader.Find("GorillaTag/UberShader"));
             boardmat.color = Settings.backgroundColor.GetCurrentColor();
         }
@@ -57,10 +62,13 @@ namespace Arrakis.Managers
             cocHeadingTMP = cocHeading?.GetComponent<TextMeshPro>();
             boardRenders = boards.GetComponent<MeshRenderer>();
             ogboardmat = boardRenders.material;
+            motdTextObj = GameObject.Find("Environment Objects/LocalObjects_Prefab/TreeRoom/motdBodyText");
+            motdTextTMP = motdTextObj?.GetComponent<TextMeshPro>();
 
             ogcocText = cocTextTMP.text;
 
             monitorObj = GameObject.Find("Environment Objects/LocalObjects_Prefab/TreeRoom/TreeRoomInteractables/GorillaComputerObject/ComputerUI/monitor/monitorScreen");
+            oldMonitorMat = monitorObj.GetComponent<MeshRenderer>().material;
         }
 
         public void Update()
@@ -85,7 +93,7 @@ namespace Arrakis.Managers
             {
                 if (Settings.disablecustomboards)
                 {
-                    monitorObj.GetComponent<MeshRenderer>().material = ogboardmat;
+                    monitorObj.GetComponent<MeshRenderer>().material = oldMonitorMat;
                     boardRenders.material = ogboardmat;
                 }
                 else
@@ -94,6 +102,15 @@ namespace Arrakis.Managers
                     boardRenders.material = boardmat;
                 }
             }
+        }
+
+        public static void DisableBoards()
+        {
+            if (Instance == null) return;
+            Instance.cocTextTMP.text = Instance.ogcocText;
+            Instance.cocHeadingTMP.text = "GORILLA CODE OF CONDUCT";
+            motdTMP.text = "MESSAGE OF THE DAY";
+            Instance.motdTextTMP.text = Instance.motdTextTMP.gameObject.GetComponent<PlayFabTitleDataTextDisplay>()._cachedText;
         }
 
         public static GameObject _boards;

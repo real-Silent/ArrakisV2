@@ -49,7 +49,7 @@ namespace Arrakis
             holder.AddComponent<PcGui>();
             holder.AddComponent<Admin>();
             holder.AddComponent<UserCount>();
-            holder.AddComponent<Boards>();
+            holder.AddComponent<BoardManager>();
 
             if (!Directory.Exists(PluginInfo.BaseDirectory))
                 Directory.CreateDirectory(PluginInfo.BaseDirectory);

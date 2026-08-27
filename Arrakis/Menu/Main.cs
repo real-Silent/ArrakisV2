@@ -1615,9 +1615,8 @@ namespace Arrakis.Menu
         }
         public static void DestroyMenu()
         {
-            HarmonyLoader.RemovePatches();
             Safety.Panic(true);
-            disablecustomboards = true;
+
             GameObject.Destroy(menu);
             menu = null;
             GameObject.Destroy(reference);
@@ -1633,6 +1632,7 @@ namespace Arrakis.Menu
                 rightReference = null;
             }
             GameObject.Destroy(Plugin.holder);
+            HarmonyLoader.RemovePatches();
         }
 
         private const string RandomChars = "ABCDEFGHIJKLMNPQRSTUVWXYZ123456789";

@@ -18,6 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+using Arrakis.Managers;
 using Arrakis.Menu;
 using Arrakis.Mods;
 using Arrakis.Notifications;
@@ -44,9 +45,6 @@ namespace Arrakis.Classes
         public static string[] detectedmods;
 
         private static bool showprompt = false;
-
-        private static GameObject motdTextObj;
-        private static TextMeshPro motdTextTMP;
 
         private static bool loaded = false;
         private static bool bypass = false;
@@ -114,20 +112,14 @@ namespace Arrakis.Classes
             }
         }
 
-        public void Start()
-        {
-            motdTextObj = GameObject.Find("Environment Objects/LocalObjects_Prefab/TreeRoom/motdBodyText");
-            motdTextTMP = motdTextObj?.GetComponent<TextMeshPro>();
-        }
-
         public void Update()
         {
             if (loaded || bypass)
             {
                 if (Settings.disablecustomboards)
                 {
-                    if (motdTextTMP != null)
-                        motdTextTMP.text = motdTextTMP.gameObject.GetComponent<PlayFabTitleDataTextDisplay>()._cachedText;
+                    if (BoardManager.Instance.motdTextTMP != null)
+                        BoardManager.Instance.motdTextTMP.text = BoardManager.Instance.motdTextTMP.gameObject.GetComponent<PlayFabTitleDataTextDisplay>()._cachedText;
                 }
                 else 
                 {
@@ -140,10 +132,10 @@ namespace Arrakis.Classes
                         }
                     }
 
-                    if (motdTextTMP == null)
+                    if (BoardManager.Instance.motdTextTMP == null)
                         return;
                     if (!string.IsNullOrEmpty(motd))
-                        motdTextTMP.text = string.Format(motd, PluginInfo.Version, Buttons.buttons.SelectMany(list => list).ToArray().Length);
+                        BoardManager.Instance.motdTextTMP.text = string.Format(motd, PluginInfo.Version, Buttons.buttons.SelectMany(list => list).ToArray().Length);
 
                     if (!bypass)
                     {
