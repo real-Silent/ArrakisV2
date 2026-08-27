@@ -467,7 +467,8 @@ namespace Arrakis.Mods
             MethodInfo createNetId = typeof(GameEntityManager).GetMethod("CreateNetId", BindingFlags.Instance | BindingFlags.NonPublic);
             int netId = (int)createNetId.Invoke( _GRM.gameEntityManager,  new object[] { 1 });
             createData ??= new long[] { 0L };
-            _GRM.gameEntityManager.photonView.RPC("CreateItemRPC", RpcTarget.AllBuffered, new int[] { netId }, new int[] { hash }, new long[] { BitPackUtils.PackWorldPosForNetwork(position) }, new int[] { BitPackUtils.PackQuaternionForNetwork(rotation) }, createData, new int[] { 0 });
+            _GRM.gameEntityManager.photonView.RPC("CreateItemRPC", RpcTarget.AllBuffered, new int[] { netId }, new int[] { hash }, 
+            new long[] { BitPackUtils.PackWorldPosForNetwork(position) }, new int[] { BitPackUtils.PackQuaternionForNetwork(rotation) }, createData, new int[] { 0 });
             Safety.RPCProc();
         }
         public static void VIMKickAll()
