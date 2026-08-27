@@ -18,11 +18,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-using GorillaLocomotion;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using GorillaLocomotion;
 using UnityEngine;
 using static Arrakis.Menu.Main;
 
@@ -31,6 +31,7 @@ namespace Arrakis.Managers
     public static class AudioManager
     {
         private const string ResourcePrefix = "Arrakis.Resources.Audio.";
+        private static readonly string CustomButtonPath = Path.Combine(Directory.GetParent(Application.dataPath).FullName, "Arrakis", "Cbutton.wav");
         private static readonly Dictionary<string, AudioClip> audioClips = new Dictionary<string, AudioClip>(StringComparer.OrdinalIgnoreCase);
         private static readonly Dictionary<int, string> customSoundNames = new Dictionary<int, string>();
         private static AudioSource audioSource;
@@ -128,20 +129,25 @@ namespace Arrakis.Managers
         }
         public static void ChangeClickSound()
         {
-            int totalSlots = ButtonSounds.Length + SoundNames.Length;
+            int totalSlots = ButtonSounds.Length + SoundNames.Length + 1; // +1 for Cbutton.wav
             clicksound++;
-            if (clicksound >= totalSlots) clicksound = 0;
+            if (clicksound >= totalSlots)
+                clicksound = 0;
             if (clicksound < ButtonSounds.Length)
             {
                 buttonsound = ButtonSounds[clicksound];
                 currentAudio = null;
             }
-            else
+            else if (clicksound < ButtonSounds.Length + SoundNames.Length)
             {
                 int embedIndex = clicksound - ButtonSounds.Length;
                 string soundName = SoundNames[embedIndex];
                 currentAudio = LoadSound(soundName);
                 customSoundNames[embedIndex] = soundName;
+            }
+            else
+            {
+                currentAudio = LoadSoundFromFile(CustomButtonPath, "Cbutton");
             }
             UpdateClickSoundText();
         }
@@ -247,9 +253,15 @@ namespace Arrakis.Managers
             else
             {
                 int customIndex = clicksound - ButtonSounds.Length;
-                if (customSoundNames.TryGetValue(customIndex, out string registered))
+
+                if (customIndex < SoundNames.Length &&
+                    customSoundNames.TryGetValue(customIndex, out string registered))
                 {
                     name = registered;
+                }
+                else if (customIndex == SoundNames.Length)
+                {
+                    name = "Custom";
                 }
                 else if (currentAudio != null)
                 {
