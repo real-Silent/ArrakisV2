@@ -41,15 +41,17 @@ namespace Arrakis
         }
         public void OnPlayerSpawned()
         {
+            Settings.LoadSettings();
+
             holder = new GameObject("Arrakis");
-            holder.AddComponent<ServerData>();
+            holder.AddComponent<BoardManager>();
             holder.AddComponent<NotificationManager>();
             holder.AddComponent<CRunner>();
             holder.AddComponent<CosmeticsFinder>();
             holder.AddComponent<PcGui>();
-            holder.AddComponent<Admin>();
+            holder.AddComponent<ServerData>();
             holder.AddComponent<UserCount>();
-            holder.AddComponent<BoardManager>();
+            holder.AddComponent<Admin>();
 
             if (!Directory.Exists(PluginInfo.BaseDirectory))
                 Directory.CreateDirectory(PluginInfo.BaseDirectory);
@@ -58,7 +60,6 @@ namespace Arrakis
             if (!File.Exists($"{PluginInfo.BaseDirectory}/CustomTitle.txt"))
                 File.WriteAllText($"{PluginInfo.BaseDirectory}/CustomTitle.txt", "your title");
 
-            Settings.LoadSettings();
             Patches.CosmeticPatch.enabled = true;
             if (Main.OneIn(500))
                 Main.RareChance = true;

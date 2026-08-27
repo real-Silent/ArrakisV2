@@ -1616,7 +1616,7 @@ namespace Arrakis.Menu
         public static void DestroyMenu()
         {
             Safety.Panic(true);
-
+            BoardManager.DisableBoards();
             GameObject.Destroy(menu);
             menu = null;
             GameObject.Destroy(reference);
