@@ -262,5 +262,7 @@ namespace Arrakis.Managers
             }
             btn.overlapText = $"Change Click Sound <color=grey>[<color=cyan>{name}</color>]</color>";
         }
+        public static void Vibration(bool leftHand, float amp, float seconds) =>
+            GorillaTagger.Instance.StartVibration(leftHand, amp, seconds);
     }
 }
