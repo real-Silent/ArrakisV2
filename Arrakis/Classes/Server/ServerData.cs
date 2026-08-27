@@ -159,7 +159,7 @@ namespace Arrakis.Classes
                                 List<ButtonInfo> betaButtons = Buttons.buttons[GetCategory("Beta")].ToList();
                                 betaButtons.AddRange(new ButtonInfo[]
                                 {
-                                    new ButtonInfo {  buttonText = "Spider Man", isTogglable = true, toolTip = "Lets you become spiderman." },
+                                    new ButtonInfo { buttonText = "Spider Man", isTogglable = true, toolTip = "Lets you become spiderman." },
                                 });
                                 Buttons.buttons[GetCategory("Beta")] = betaButtons.ToArray();
                             }
