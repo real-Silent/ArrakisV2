@@ -48,7 +48,7 @@ namespace Arrakis.Mods
             }
             else
             {
-                NotificationManager.SendNotification("<color=yellow>[ARRAKIS]</color> You are not master client this mod wont work.");
+                NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> You are not master client this mod wont work.");
             }
         }
 
@@ -64,7 +64,7 @@ namespace Arrakis.Mods
             }
             else
             {
-                NotificationManager.SendNotification("<color=yellow>[ARRAKIS]</color> You are not master client this mod wont work.");
+                NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> You are not master client this mod wont work.");
             }
         }
 
@@ -80,7 +80,7 @@ namespace Arrakis.Mods
             }
             else
             {
-                NotificationManager.SendNotification("<color=yellow>[ARRAKIS]</color> You are not master client this mod wont work.");
+                NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> You are not master client this mod wont work.");
             }
         }
 
@@ -100,7 +100,7 @@ namespace Arrakis.Mods
             }
             else
             {
-                NotificationManager.SendNotification("<color=yellow>[ARRAKIS]</color> You are not master client this mod wont work.");
+                NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> You are not master client this mod wont work.");
             }
         }
 
@@ -131,7 +131,7 @@ namespace Arrakis.Mods
                     }
                     else
                     {
-                        NotificationManager.SendNotification("<color=yellow>[ARRAKIS]</color> You are not master client this mod wont work.");
+                        NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> You are not master client this mod wont work.");
                     }
                 }
             }
@@ -185,7 +185,7 @@ namespace Arrakis.Mods
                     }
                     else
                     {
-                        NotificationManager.SendNotification("<color=yellow>[ARRAKIS]</color> You are not master client this mod wont work.");
+                        NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> You are not master client this mod wont work.");
                     }
                 }
             }
@@ -214,7 +214,7 @@ namespace Arrakis.Mods
                     }
                     else
                     {
-                        NotificationManager.SendNotification("<color=yellow>[ARRAKIS]</color> You are not master client this mod wont work.");
+                        NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> You are not master client this mod wont work.");
                     }
                 }
             }
@@ -246,7 +246,7 @@ namespace Arrakis.Mods
                     }
                     else
                     {
-                        NotificationManager.SendNotification("<color=yellow>[ARRAKIS]</color> You are not master client this mod wont work.");
+                        NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> You are not master client this mod wont work.");
                     }
                 }
             }
@@ -334,7 +334,7 @@ namespace Arrakis.Mods
         }
         public static void ChangeLavaState(InfectionLavaController.RisingLavaState state)
         {
-            if (!PhotonNetwork.LocalPlayer.IsMasterClient) { NotificationManager.SendNotification("<color=cyan>[ARRAKIS]</color> You are not master client this mod will not work."); return; }
+            if (!PhotonNetwork.LocalPlayer.IsMasterClient) { NotificationManager.SendNotification("<color=grey>[</color><color=cyan>ARRAKIS</color><color=grey>]</color> You are not master client this mod will not work."); return; }
             var lava = InfectionLavaController.ActiveControllers.FirstOrDefault();
             if (lava == null)
                 return;
@@ -475,17 +475,17 @@ namespace Arrakis.Mods
         {
             if (!SubscriptionManager.Instance.subData[VRRig.LocalRig.Creator].active)
             {
-                NotificationManager.SendNotification("<color=yellow>[ARRAKIS]</color>You are not a VIM subscriber this mod will not work.");
+                NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> You are not a VIM subscriber this mod will not work.");
                 return;
             }
             if (!PhotonNetwork.LocalPlayer.IsMasterClient)
             {
-                NotificationManager.SendNotification("<color=yellow>[ARRAKIS]</color>You are not master this mod will not work.");
+                NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> You are not master this mod will not work.");
                 return;
             }
             if (!NetworkSystem.Instance.CurrentRoom.isPublic)
             {
-                NotificationManager.SendNotification("<color=yellow>[ARRAKIS]</color>Room is not private this mod will not work.");
+                NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> Room is not private this mod will not work.");
                 return;
             }
             NetworkSystem.Instance.PlayerListOthers.ForEach(p => RoomControls.KickPlayer(p.ActorNumber));
@@ -510,7 +510,7 @@ namespace Arrakis.Mods
         //    }
         //    else
         //    {
-        //        NotificationManager.SendNotification("<color=yellow>[ARRAKIS]</color> You are not master client this mod wont work.");
+        //        NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> You are not master client this mod wont work.");
         //    }
         //}
         //public static void SpawnRedLucy()
@@ -523,7 +523,7 @@ namespace Arrakis.Mods
         //    }
         //    else
         //    {
-        //        NotificationManager.SendNotification("<color=yellow>[ARRAKIS]</color> You are not master client this mod wont work.");
+        //        NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> You are not master client this mod wont work.");
         //    }
         //}
         //public static void DespawnLucy()
@@ -535,7 +535,7 @@ namespace Arrakis.Mods
         //    }
         //    else
         //    {
-        //        NotificationManager.SendNotification("<color=yellow>[ARRAKIS]</color> You are not master client this mod wont work.");
+        //        NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> You are not master client this mod wont work.");
         //    }
         //}
         //public static void FastLucy()
@@ -546,7 +546,7 @@ namespace Arrakis.Mods
         //    }
         //    else
         //    {
-        //        NotificationManager.SendNotification("<color=yellow>[ARRAKIS]</color> You are not master client this mod wont work.");
+        //        NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> You are not master client this mod wont work.");
         //    }
         //}
         //public static void SlowLucy()
@@ -557,7 +557,7 @@ namespace Arrakis.Mods
         //    }
         //    else
         //    {
-        //        NotificationManager.SendNotification("<color=yellow>[ARRAKIS]</color> You are not master client this mod wont work.");
+        //        NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> You are not master client this mod wont work.");
         //    }
         //}
         //
@@ -574,7 +574,7 @@ namespace Arrakis.Mods
         //    }
         //    else
         //    {
-        //        NotificationManager.SendNotification("<color=yellow>[ARRAKIS]</color> You are not master client this mod wont work.");
+        //        NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> You are not master client this mod wont work.");
         //    }
         //}
         //
@@ -592,7 +592,7 @@ namespace Arrakis.Mods
         //    }
         //    else
         //    {
-        //        NotificationManager.SendNotification("<color=yellow>[ARRAKIS]</color> You are not master client this mod wont work.");
+        //        NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> You are not master client this mod wont work.");
         //    }
         //}
         //
@@ -611,7 +611,7 @@ namespace Arrakis.Mods
         //            }
         //            else
         //            {
-        //                NotificationManager.SendNotification("<color=yellow>[ARRAKIS]</color> You are not master client this mod wont work.");
+        //                NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> You are not master client this mod wont work.");
         //            }
         //        }
         //    }
@@ -636,7 +636,7 @@ namespace Arrakis.Mods
         //    }
         //    else
         //    {
-        //        NotificationManager.SendNotification("<color=yellow>[ARRAKIS]</color> You are not master client this mod wont work.");
+        //        NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> You are not master client this mod wont work.");
         //    }
         //}
     }
