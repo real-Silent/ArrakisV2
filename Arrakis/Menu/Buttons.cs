@@ -171,6 +171,7 @@ namespace Arrakis.Menu
 
             new ButtonInfo[] { // Global
                 new ButtonInfo { buttonText = "Exit Global", method =() => CurrentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },
+
                 new ButtonInfo { buttonText = "Connect to <color=grey>[<color=cyan>EU</color>]</color>", method =() => Important.ConnectToRegion("EU"), isTogglable = false, toolTip = "Connects to EU region." },
                 new ButtonInfo { buttonText = "Connect to <color=grey>[<color=cyan>USW</color>]</color>", method =() => Important.ConnectToRegion("USW"), isTogglable = false, toolTip = "Connects to USW region." },
                 new ButtonInfo { buttonText = "Connect to <color=grey>[<color=cyan>US</color>]</color>", method =() => Important.ConnectToRegion("US"), isTogglable = false, toolTip = "Connects to US region." },
