@@ -71,13 +71,15 @@ namespace Arrakis.Mods
                         {
                             case 0:
                                 rig.mainSkin.material.shader = Shader.Find("GUI/Text Shader");
-                                rig.mainSkin.material.color = followmenutheme ? backgroundColor.GetCurrentColor() : (rig.IsTagged() || rig.mainSkin.material.name.ToLower().Contains("it")) ? new Color(0.6f, 0f, 0f, 0.6f) : new Color(0.46f, 0.6f, 0.6f, 0.6f);
+                                rig.mainSkin.material.color = followmenutheme ? backgroundColor.GetCurrentColor() : (rig.IsTagged() || 
+                                    rig.mainSkin.material.name.ToLower().Contains("it")) ? new Color(0.6f, 0f, 0f, 0.6f) : new Color(0.46f, 0.6f, 0.6f, 0.6f);
                                 break;
                             case 1:
                                 if (BehindStuff(rig))
                                 {
                                     rig.mainSkin.material.shader = Shader.Find("GUI/Text Shader");
-                                    rig.mainSkin.material.color = followmenutheme ? backgroundColor.GetCurrentColor() : (rig.IsTagged() ? new Color(0.6f, 0f, 0f, 0.6f) : new Color(0.46f, 0.6f, 0.6f, 0.6f));
+                                    rig.mainSkin.material.color = followmenutheme ? backgroundColor.GetCurrentColor() : 
+                                        (rig.IsTagged() ? new Color(0.6f, 0f, 0f, 0.6f) : new Color(0.46f, 0.6f, 0.6f, 0.6f));
                                 }
                                 else
                                 {
@@ -204,7 +206,8 @@ namespace Arrakis.Mods
                     continue;
                 if (!boxEspPool.TryGetValue(rig, out GameObject box))
                 {
-                    box = CreateObject(rig.transform, PrimitiveType.Cube, new Vector3(0.5f, 0.5f, 0.1f), followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor, Shader.Find("GUI/Text Shader"));
+                    box = CreateObject(rig.transform, PrimitiveType.Cube, new Vector3(0.5f, 0.5f, 0.1f), 
+                        followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor, Shader.Find("GUI/Text Shader"));
                     boxEspPool[rig] = box;
                 }
                 Color color = followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor;
@@ -245,7 +248,8 @@ namespace Arrakis.Mods
                     {
                         if (!nameTagPool.TryGetValue(rig, out var tag))
                         {
-                            tag = CreateText(followheadmesh ? rig.headMesh.transform : rig.transform, TextAlignmentOptions.Center, rig.Creator.NickName, followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor, 0.7f, 0);
+                            tag = CreateText(followheadmesh ? rig.headMesh.transform : rig.transform, TextAlignmentOptions.Center, rig.Creator.NickName, 
+                                followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor, 0.7f, 0);
                             nameTagPool.Add(rig, tag);
                         }
                         tag.text = rig.Creator.NickName;
@@ -284,7 +288,8 @@ namespace Arrakis.Mods
                     {
                         if (!IDnameTagPool.TryGetValue(rig, out var tag))
                         {
-                            tag = CreateText(followheadmesh ? rig.headMesh.transform : rig.transform, TextAlignmentOptions.Center, rig.Creator.UserId, followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor, 0.7f, 1);
+                            tag = CreateText(followheadmesh ? rig.headMesh.transform : rig.transform, TextAlignmentOptions.Center, rig.Creator.UserId, 
+                                followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor, 0.7f, 1);
                             IDnameTagPool.Add(rig, tag);
                         }
                         Transform parent = followheadmesh ? rig.headMesh.transform : rig.transform;
@@ -322,7 +327,8 @@ namespace Arrakis.Mods
                         string platform = rig.Cosmetics().Contains("S. FIRST LOGIN") ? "Steam" : "Quest";
                         if (!PlatformnameTagPool.TryGetValue(rig, out var tag))
                         {
-                            tag = CreateText(followheadmesh ? rig.headMesh.transform : rig.transform, TextAlignmentOptions.Center, platform, followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor, 0.7f, 2);
+                            tag = CreateText(followheadmesh ? rig.headMesh.transform : rig.transform, TextAlignmentOptions.Center, platform, 
+                                followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor, 0.7f, 2);
                             PlatformnameTagPool.Add(rig, tag);
                         }
                         Transform parent = followheadmesh ? rig.headMesh.transform : rig.transform;
@@ -358,7 +364,8 @@ namespace Arrakis.Mods
                     {
                         if (!FpsnametagPool.TryGetValue(rig, out var tag))
                         {
-                            tag = CreateText(followheadmesh ? rig.headMesh.transform : rig.transform, TextAlignmentOptions.Center, "72", followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor, 0.7f, 4);
+                            tag = CreateText(followheadmesh ? rig.headMesh.transform : rig.transform, TextAlignmentOptions.Center, "72", 
+                                followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor, 0.7f, 4);
                             FpsnametagPool.Add(rig, tag);
                         }
                         if (rig.fps < 30)
@@ -411,7 +418,8 @@ namespace Arrakis.Mods
                     {
                         if (!TaggednametagPool.TryGetValue(rig, out var tag))
                         {
-                            tag = CreateText(followheadmesh ? rig.headMesh.transform : rig.transform, TextAlignmentOptions.Center, "Not Tagged", followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor, 0.7f, 5);
+                            tag = CreateText(followheadmesh ? rig.headMesh.transform : rig.transform, TextAlignmentOptions.Center, "Not Tagged", 
+                                followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor, 0.7f, 5);
                             TaggednametagPool.Add(rig, tag);
                         }
                         Transform parent = followheadmesh ? rig.headMesh.transform : rig.transform;
@@ -496,6 +504,7 @@ namespace Arrakis.Mods
             GameObject.Find("Environment Objects/LocalObjects_Prefab/Forest/Environment/WeatherDayNight/snow/").SetActive(toggle);
         public static void Rain(bool toggle) =>
             GameObject.Find("Environment Objects/LocalObjects_Prefab/Forest/Environment/WeatherDayNight/rain/").SetActive(toggle);
+
 
         private static GameObject arraylistHub; // Did you know that ccmv2 was actually the best cheat menu -nova
         private static Text arraylistText; // Did you know that ccmv2 was actually the best cheat menu -nova
@@ -708,14 +717,14 @@ namespace Arrakis.Mods
                 return;
             }
             Object.Destroy(trail.gameObject);
-            trail = null; // idfk if needs to set but just incase -sleepy
+            trail = null;
         }
         private static GameObject hudInstance; // pasted RIGHT from my plugin so code might be ass -sleepy
         public static void PlayerInfo()
         {
             if (hudInstance == null)
             {
-                hudInstance = new GameObject("arrakis_infohud"); // only changed this name bcz before it was the fslur 25 times :3 -sleepy
+                hudInstance = new GameObject("Arrakis_InfoHud"); // only changed this name bcz before it was the fslur 25 times :3 -sleepy
                 hudInstance.AddComponent<PlayerInfoBehavior>();
             }
         }

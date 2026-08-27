@@ -148,7 +148,7 @@ namespace Arrakis.Menu
             buttonStyle.active.textColor = color;
             labelStyle.normal.textColor = color;
         }
-        private static int GetPing() => // did you know this returns 0 even if your not event connected sleepy -nova
+        private static int GetPing() =>
             PhotonNetwork.GetPing();
         private static void DrawInfoBar()
         {

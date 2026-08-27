@@ -1243,7 +1243,6 @@ namespace Arrakis.Menu
             return cachedViews;
         }
 
-
         private static readonly List<GorillaGuardianZoneManager> allGZMans = new List<GorillaGuardianZoneManager>();
         public static GorillaGuardianZoneManager[] GuardianZMan()
         {
@@ -1614,7 +1613,6 @@ namespace Arrakis.Menu
             }
             buttons[category] = buttonInfoList.ToArray();
         }
-
         public static void DestroyMenu()
         {
             if (GetIndex("First Person").enabled)
@@ -1637,6 +1635,7 @@ namespace Arrakis.Menu
             GameObject.Destroy(GameObject.Find("Arrakis"));
             HarmonyLoader.RemovePatches();
         }
+
         private const string RandomChars = "ABCDEFGHIJKLMNPQRSTUVWXYZ123456789";
         public static string GenerateRandomString(int length = 8)
         {

@@ -27,7 +27,6 @@ namespace Arrakis.Classes
         public void Start()
         {
             targetRenderer.gameObject.GetComponent<ColorChanger>()?.Start();
-
             gameObjectRenderer = GetComponent<Renderer>();
             Update();
         }
@@ -39,7 +38,6 @@ namespace Arrakis.Classes
                 gameObjectRenderer.material.mainTexture = targetRenderer.material.mainTexture;
             gameObjectRenderer.material.color = targetRenderer.material.color;
         }
-
         public Renderer gameObjectRenderer;
         public Renderer targetRenderer;
     }

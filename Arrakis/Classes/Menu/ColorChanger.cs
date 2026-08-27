@@ -40,7 +40,6 @@ namespace Arrakis.Classes
             }
             Update();
         }
-
         public void Update()
         {
             targetRenderer.enabled = !colors.transparent;
@@ -48,7 +47,6 @@ namespace Arrakis.Classes
                 return;
             targetRenderer.material.color = colors.GetCurrentColor();
         }
-
         public Renderer targetRenderer;
         public ExtGradient colors;
     }

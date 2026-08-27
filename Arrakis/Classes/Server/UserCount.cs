@@ -31,7 +31,7 @@ namespace Arrakis.Classes.Menu
     public class UserCount : MonoBehaviour
     {
         public static int CurrentUsers;
-        private void Start()
+        public void Start()
         {
             StartCoroutine(UpdateHeartbeat());
         }

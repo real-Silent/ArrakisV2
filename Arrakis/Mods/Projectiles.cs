@@ -121,8 +121,10 @@ namespace Arrakis.Mods
                             cachedGThrow = growing;
                             if (NetworkSystem.Instance.InRoom)
                             {
-                                PhotonNetwork.RaiseEvent(176, new object[] { growing.changeSizeEvent._eventId, scale }, new RaiseEventOptions { Receivers = ReceiverGroup.All }, new SendOptions { Encrypt = true, Reliability = false });
-                                PhotonNetwork.RaiseEvent(176, new object[] { growing.snowballThrowEvent._eventId, position, velocity, GetIncrement(position, velocity, scale) }, new RaiseEventOptions { Receivers = ReceiverGroup.All }, new SendOptions { Encrypt = true, Reliability = false });
+                                PhotonNetwork.RaiseEvent(176, new object[] { growing.changeSizeEvent._eventId, scale }, 
+                                    new RaiseEventOptions { Receivers = ReceiverGroup.All }, new SendOptions { Encrypt = true, Reliability = false });
+                                PhotonNetwork.RaiseEvent(176, new object[] { growing.snowballThrowEvent._eventId, position, velocity, GetIncrement(position, velocity, scale) }, 
+                                    new RaiseEventOptions { Receivers = ReceiverGroup.All }, new SendOptions { Encrypt = true, Reliability = false });
                             }
                         }
                         else
@@ -172,14 +174,16 @@ namespace Arrakis.Mods
         {
             if (CosmeticsV2Spawner_Dirty.isPrepared)
             {
-                var throwables = ((AllCosmeticsArraySO)CosmeticsController.instance.v2_allCosmeticsInfoAssetRef.Asset).sturdyAssetRefs.Where(x => x.obj != null && x.obj.info.isThrowable).Select(x => x.obj.info.playFabID).Distinct().ToList();
+                var throwables = ((AllCosmeticsArraySO)CosmeticsController.instance.v2_allCosmeticsInfoAssetRef.Asset).sturdyAssetRefs.Where(x => x.obj != null 
+                && x.obj.info.isThrowable).Select(x => x.obj.info.playFabID).Distinct().ToList();
                 if (snowballs == null || snowballs.Count != (throwables.Count - 3))
                 {
                     if (!CosmeticsV2Spawner_Dirty.isPrepared)
                         return null;
                     if (!GorillaComputer.instance.isConnectedToMaster)
                         return null;
-                    if (!loaded && (CosmeticsV2Spawner_Dirty.materialIndexToSnowballThrowablePlayfabIdStringLeft.Count >= 1 && CosmeticsV2Spawner_Dirty.materialIndexToSnowballThrowablePlayfabIdStringRight.Count >= 1))
+                    if (!loaded && (CosmeticsV2Spawner_Dirty.materialIndexToSnowballThrowablePlayfabIdStringLeft.Count >= 1 
+                        && CosmeticsV2Spawner_Dirty.materialIndexToSnowballThrowablePlayfabIdStringRight.Count >= 1))
                     {
                         loaded = true;
                         CosmeticsV2Spawner_Dirty.materialIndexToSnowballThrowablePlayfabIdStringLeft.ForEach(v => VRRig.LocalRig.cosmeticsObjectRegistry.Cosmetic(v.Value));

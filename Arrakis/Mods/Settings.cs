@@ -24,7 +24,6 @@ using Arrakis.Managers;
 using Arrakis.Menu;
 using Arrakis.Mods;
 using Arrakis.Notifications;
-using GorillaLocomotion;
 using Newtonsoft.Json;
 using Photon.Pun;
 using Photon.Realtime;

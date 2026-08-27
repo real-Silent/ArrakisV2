@@ -88,7 +88,8 @@ namespace Arrakis.Mods
                 {
                     if (GTPlayer.Instance.transform.position.y > 1f)
                     {
-                        GorillaTagger.Instance.rigidbody.linearVelocity = new Vector3(GorillaTagger.Instance.rigidbody.linearVelocity.x, -15f,GorillaTagger.Instance.rigidbody.linearVelocity.z);
+                        GorillaTagger.Instance.rigidbody.linearVelocity = new Vector3(GorillaTagger.Instance.rigidbody.linearVelocity.x, 
+                            -15f,GorillaTagger.Instance.rigidbody.linearVelocity.z);
                     }
                 }
                 else
@@ -562,7 +563,7 @@ namespace Arrakis.Mods
                 platform.transform.rotation = GorillaTagger.Instance.rightHandTransform.rotation;
                 platform.transform.localScale = new Vector3(0.0125f, 0.28f, 0.3825f);
                 platform.GetComponent<Renderer>().material.color = Settings.backgroundColor.GetCurrentColor();
-                GameObject.Destroy(platform, 5f);
+                GameObject.Destroy(platform, 2f);
             }
             if (InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Left, !XRSettings.isDeviceActive))
             {
@@ -572,7 +573,7 @@ namespace Arrakis.Mods
                 platform.transform.rotation = GorillaTagger.Instance.leftHandTransform.rotation;
                 platform.transform.localScale = new Vector3(0.0125f, 0.28f, 0.3825f);
                 platform.GetComponent<Renderer>().material.color = Settings.backgroundColor.GetCurrentColor();
-                GameObject.Destroy(platform, 5f);
+                GameObject.Destroy(platform, 2f);
             }
         }
 
@@ -586,7 +587,7 @@ namespace Arrakis.Mods
                 platform.transform.localScale = new Vector3(0.0125f, 0.28f, 0.3825f);
                 platform.GetOrAddComponent<GorillaSurfaceOverride>().overrideIndex = 61;
                 platform.GetComponent<Renderer>().material.color = Settings.backgroundColor.GetCurrentColor();
-                GameObject.Destroy(platform, 5f);
+                GameObject.Destroy(platform, 2f);
             }
             if (InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Left, !XRSettings.isDeviceActive))
             {
@@ -596,7 +597,7 @@ namespace Arrakis.Mods
                 platform.transform.localScale = new Vector3(0.0125f, 0.28f, 0.3825f);
                 platform.GetOrAddComponent<GorillaSurfaceOverride>().overrideIndex = 61;
                 platform.GetComponent<Renderer>().material.color = Settings.backgroundColor.GetCurrentColor();
-                GameObject.Destroy(platform, 5f);
+                GameObject.Destroy(platform, 2f);
             }
         }
         public static void PullBoost()
@@ -694,7 +695,8 @@ namespace Arrakis.Mods
             ToggleTorsoPatch(true, 3);
             if (VRRigTorso == null)
                 VRRigTorso = new GameObject("Arrakis_vrrigtorso");
-            VRRigTorso.transform.rotation = Quaternion.Lerp(VRRigTorso.transform.rotation, Quaternion.Euler(0f, GorillaTagger.Instance.headCollider.transform.rotation.eulerAngles.y, 0f), Time.deltaTime * 6.5f);
+            VRRigTorso.transform.rotation = Quaternion.Lerp(VRRigTorso.transform.rotation, 
+                Quaternion.Euler(0f, GorillaTagger.Instance.headCollider.transform.rotation.eulerAngles.y, 0f), Time.deltaTime * 6.5f);
         }
 
         private static LineRenderer lineL;

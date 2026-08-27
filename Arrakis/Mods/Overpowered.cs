@@ -219,7 +219,8 @@ namespace Arrakis.Mods
                         if (idol.manager != null && !idol.isChangingPositions)
                         {
                             GorillaGuardianZoneManager zoneManager = idol.zoneManager;
-                            if (zoneManager.IsZoneValid() && idol.manager != null && zoneManager.CurrentGuardian != null && zoneManager.CurrentGuardian == NetworkSystem.Instance.LocalPlayer)
+                            if (zoneManager.IsZoneValid() && idol.manager != null && zoneManager.CurrentGuardian != null && 
+                                zoneManager.CurrentGuardian == NetworkSystem.Instance.LocalPlayer)
                             {
                                 float DR = Vector3.Distance(idol.transform.position, rig.rightHandTransform.position);
                                 float DL = Vector3.Distance(idol.transform.position, rig.leftHandTransform.position);
@@ -242,7 +243,8 @@ namespace Arrakis.Mods
                 if (idol.manager != null && !idol.isChangingPositions)
                 {
                     GorillaGuardianZoneManager zoneManager = idol.zoneManager;
-                    if (zoneManager.IsZoneValid() && idol.manager != null && zoneManager.CurrentGuardian != null && zoneManager.CurrentGuardian != NetworkSystem.Instance.LocalPlayer)
+                    if (zoneManager.IsZoneValid() && idol.manager != null && zoneManager.CurrentGuardian != null &&
+                        zoneManager.CurrentGuardian != NetworkSystem.Instance.LocalPlayer)
                     {
                         VRRig.LocalRig.enabled = false;
                         VRRig.LocalRig.transform.position = idol.transform.position;
@@ -276,7 +278,8 @@ namespace Arrakis.Mods
 
                 if (lockTarget != null && gunLocked)
                 {
-                    BarrelFling(lockTarget.transform.position, lockTarget.transform.position + new Vector3(0f, 999f, 0f), Quaternion.identity, new RaiseEventOptions { TargetActors = new[] { RigManager.GetNetPlayerFromVRRig(lockTarget).ActorNumber } });
+                    BarrelFling(lockTarget.transform.position, lockTarget.transform.position + new Vector3(0f, 999f, 0f), Quaternion.identity, 
+                        new RaiseEventOptions { TargetActors = new[] { RigManager.GetNetPlayerFromVRRig(lockTarget).ActorNumber } });
                 }
 
                 if (GetGunInput(true))
@@ -312,7 +315,9 @@ namespace Arrakis.Mods
 
                 if (lockTarget != null && gunLocked)
                 {
-                    BarrelFling(lockTarget.transform.position + (GorillaTagger.Instance.headCollider.transform.position - lockTarget.headMesh.transform.position).normalized * 0.1f, (GorillaTagger.Instance.bodyCollider.transform.position - lockTarget.transform.position).normalized * 5000f, Quaternion.identity, new RaiseEventOptions { TargetActors = new[] { RigManager.GetNetPlayerFromVRRig(lockTarget).ActorNumber } });
+                    BarrelFling(lockTarget.transform.position + (GorillaTagger.Instance.headCollider.transform.position - lockTarget.headMesh.transform.position).normalized * 0.1f,
+                        (GorillaTagger.Instance.bodyCollider.transform.position - lockTarget.transform.position).normalized * 5000f, Quaternion.identity, 
+                        new RaiseEventOptions { TargetActors = new[] { RigManager.GetNetPlayerFromVRRig(lockTarget).ActorNumber } });
                 }
 
                 if (GetGunInput(true))
@@ -348,7 +353,8 @@ namespace Arrakis.Mods
 
                 if (lockTarget != null && gunLocked)
                 {
-                    BarrelFling(lockTarget.transform.position + Vector3.down * 0.2f, lockTarget.bodyTransform.up * 10000f, Quaternion.identity, new RaiseEventOptions { TargetActors = new[] { RigManager.GetNetPlayerFromVRRig(lockTarget).ActorNumber } });
+                    BarrelFling(lockTarget.transform.position + Vector3.down * 0.2f, lockTarget.bodyTransform.up * 10000f, Quaternion.identity, 
+                        new RaiseEventOptions { TargetActors = new[] { RigManager.GetNetPlayerFromVRRig(lockTarget).ActorNumber } });
                 }
 
                 if (GetGunInput(true))
@@ -387,7 +393,9 @@ namespace Arrakis.Mods
 
                     if (lockTarget != null && gunLocked)
                     {
-                        BarrelFling(lockTarget.transform.position + (lockTarget.transform.position - new Vector3(-71.14215f, 13.73829f, -95.17883f)).normalized * 0.1f, (new Vector3(-71.14215f, 13.73829f, -95.17883f) - lockTarget.transform.position).normalized * 5000f, Quaternion.identity, new RaiseEventOptions { TargetActors = new[] { RigManager.GetNetPlayerFromVRRig(lockTarget).ActorNumber } });
+                        BarrelFling(lockTarget.transform.position + (lockTarget.transform.position - new Vector3(-71.14215f, 13.73829f, -95.17883f)).normalized * 0.1f, 
+                            (new Vector3(-71.14215f, 13.73829f, -95.17883f) - lockTarget.transform.position).normalized * 5000f, Quaternion.identity, 
+                            new RaiseEventOptions { TargetActors = new[] { RigManager.GetNetPlayerFromVRRig(lockTarget).ActorNumber } });
                     }
 
                     if (GetGunInput(true))
@@ -423,10 +431,13 @@ namespace Arrakis.Mods
 
             foreach (VRRig rig in VRRigCache.ActiveRigs)
             {
-                if (!rig.isLocal && (Vector3.Distance(GorillaTagger.Instance.leftHandTransform.position, rig.headMesh.transform.position) < 0.25f || Vector3.Distance(GorillaTagger.Instance.rightHandTransform.position, rig.headMesh.transform.position) < 0.25f))
+                if (!rig.isLocal && (Vector3.Distance(GorillaTagger.Instance.leftHandTransform.position, rig.headMesh.transform.position) < 0.25f 
+                    || Vector3.Distance(GorillaTagger.Instance.rightHandTransform.position, rig.headMesh.transform.position) < 0.25f))
                 {
                     Vector3 targetDirection = rig.headMesh.transform.position - GorillaTagger.Instance.headCollider.transform.position;
-                    BarrelFling(rig.transform.position + (GorillaTagger.Instance.headCollider.transform.position - rig.headMesh.transform.position).normalized * 0.1f, targetDirection.normalized * 50f, Quaternion.Euler(Random.Range(0, 360), Random.Range(0, 360), Random.Range(0, 360)), new RaiseEventOptions { TargetActors = new[] { RigManager.GetNetPlayerFromVRRig(lockTarget).ActorNumber } });
+                    BarrelFling(rig.transform.position + (GorillaTagger.Instance.headCollider.transform.position - rig.headMesh.transform.position).normalized * 0.1f,
+                        targetDirection.normalized * 50f, Quaternion.Euler(Random.Range(0, 360), Random.Range(0, 360), Random.Range(0, 360)), 
+                        new RaiseEventOptions { TargetActors = new[] { RigManager.GetNetPlayerFromVRRig(lockTarget).ActorNumber } });
                 }
             }
         }
@@ -485,7 +496,8 @@ namespace Arrakis.Mods
 				return;
 			}
 			Vector3 position = gameObject.transform.position;
-			GTPlayer.Instance.TeleportTo(position - GorillaTagger.Instance.bodyCollider.transform.position + GorillaTagger.Instance.transform.position, GTPlayer.Instance.transform.rotation, false, false);
+			GTPlayer.Instance.TeleportTo(position - GorillaTagger.Instance.bodyCollider.transform.position + GorillaTagger.Instance.transform.position, 
+                GTPlayer.Instance.transform.rotation, false, false);
 			VRRig.LocalRig.transform.position = position;
 			Rigidbody attachedRigidbody = GorillaTagger.Instance.bodyCollider.attachedRigidbody;
 			if (attachedRigidbody != null)
@@ -528,10 +540,13 @@ namespace Arrakis.Mods
 			{
 				return;
 			}
-			if (string.IsNullOrEmpty(CosmeticsController.instance.concatStringCosmeticsAllowed) || !CosmeticsController.instance.concatStringCosmeticsAllowed.Contains("Lucky Smash Barrel"))
+			if (string.IsNullOrEmpty(CosmeticsController.instance.concatStringCosmeticsAllowed) 
+                || !CosmeticsController.instance.concatStringCosmeticsAllowed.Contains("Lucky Smash Barrel"))
 			{
 				TeleportToTryOnRoom();
-				CosmeticsController.CosmeticItem cosmeticItem = CosmeticsController.instance.allCosmetics.FirstOrDefault<CosmeticsController.CosmeticItem>((CosmeticsController.CosmeticItem c) => string.Equals(c.overrideDisplayName, "Lucky Smash Barrel", StringComparison.OrdinalIgnoreCase));
+				CosmeticsController.CosmeticItem cosmeticItem = 
+                    CosmeticsController.instance.allCosmetics.FirstOrDefault<CosmeticsController.CosmeticItem>((CosmeticsController.CosmeticItem c) => 
+                    string.Equals(c.overrideDisplayName, "Lucky Smash Barrel", StringComparison.OrdinalIgnoreCase));
 				if (!string.IsNullOrEmpty(cosmeticItem.itemName))
 				{
 					CosmeticsController.instance.PressWardrobeItemButton(cosmeticItem, false, false);
@@ -616,7 +631,8 @@ namespace Arrakis.Mods
             Velocity = Velocity.ClampMagnitudeSafe(15f);
             if (RopeSwingManager.instance.ropes.TryGetValue(RopeId, out GorillaRopeSwing Rope))
             {
-                var rope = Rope.nodes.Skip(1).Select((v, i) => new { index = i, transform = v, distance = Vector3.Distance(GorillaTagger.Instance.bodyCollider.transform.position, v.transform.position) }).OrderBy(x => x.distance).First();
+                var rope = Rope.nodes.Skip(1).Select((v, i) => new { index = i, transform = v, 
+                    distance = Vector3.Distance(GorillaTagger.Instance.bodyCollider.transform.position, v.transform.position) }).OrderBy(x => x.distance).First();
                 if (rope.distance > 5f)
                 {
                     if (RopeCoroutine != null)
@@ -723,7 +739,8 @@ namespace Arrakis.Mods
         }
 
         public static bool IsBeingHeld(VRRig rig, VRRig remoteRig = null) => // im lazy so fuck you helper method -sleepy
-            rig != null && ((!rig.leftHandLink.CanBeGrabbed() && (remoteRig == null || rig.leftHandLink.grabbedPlayer == remoteRig.GetPlayer())) || (!rig.rightHandLink.CanBeGrabbed() && (remoteRig == null || rig.rightHandLink.grabbedPlayer == remoteRig.GetPlayer())));
+            rig != null && ((!rig.leftHandLink.CanBeGrabbed() && (remoteRig == null || rig.leftHandLink.grabbedPlayer == remoteRig.GetPlayer())) 
+            || (!rig.rightHandLink.CanBeGrabbed() && (remoteRig == null || rig.rightHandLink.grabbedPlayer == remoteRig.GetPlayer())));
 
         public static void OldFlingOnGrab()
         {
@@ -817,7 +834,6 @@ namespace Arrakis.Mods
         {
             if (target == null || target.IsLocal()) // yes this SOMEHOW happend to me. -sleepy
                 return false;
-
             bool doleft = target.leftHandLink.CanBeGrabbed();
             bool doright = target.rightHandLink.CanBeGrabbed();
             if (!doleft && !doright)
@@ -840,13 +856,10 @@ namespace Arrakis.Mods
 
                     return true;
                 }
-
                 return false;
             }
-
             if (grabCooldown <= 0f)
                 grabCooldown = Mathf.Max(targetHand.rejectGrabsUntilTimestamp, Time.time + 1f);
-
             if (Time.time >= grabCooldown)
             {
                 localHand.TentacleTryCreateLink(targetHand);

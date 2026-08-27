@@ -103,7 +103,8 @@ namespace Arrakis.Managers
             {
                 if (_boards == null)
                 {
-                    var stumpChildren = GameObject.Find("Environment Objects/LocalObjects_Prefab/TreeRoom").transform.Children().Where(x => x.name.Contains("UnityTempFile")).ToList();
+                    var stumpChildren = GameObject.Find("Environment Objects/LocalObjects_Prefab/TreeRoom").transform.Children().Where(x => 
+                    x.name.Contains("UnityTempFile")).ToList();
                     if (3 >= 0 && 3 < stumpChildren.Count)
                     {
                         var stumpBoard = stumpChildren[3];

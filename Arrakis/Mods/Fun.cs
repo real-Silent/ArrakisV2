@@ -500,7 +500,8 @@ namespace Arrakis.Mods
             }
             else
             {
-                GorillaTagger.Instance.myVRRig.SendRPC( "RPC_UpdateCosmeticsWithTryonPacked", RpcTarget.All, new object[] { cosmeticSet.ToPackedIDArray(), cosmetics.tryOnSet.ToPackedIDArray(), false });
+                GorillaTagger.Instance.myVRRig.SendRPC( "RPC_UpdateCosmeticsWithTryonPacked", RpcTarget.All, 
+                    new object[] { cosmeticSet.ToPackedIDArray(), cosmetics.tryOnSet.ToPackedIDArray(), false });
             }
             yield return new WaitForSeconds(0.1f);
             if (mode == -1)
@@ -525,7 +526,8 @@ namespace Arrakis.Mods
                 List<CosmeticsController.CosmeticItem> cosmeticsList = new List<CosmeticsController.CosmeticItem>();
                 if (mode == 1 || mode == 2)
                 {
-                    cosmeticsList = cosmetics.allCosmetics.Where(item => item.canTryOn && (int)item.itemCategory != 3 && !item.isHoldable && !item.isThrowable && (int)item.itemCategory != 6 && (int)item.itemCategory != 2 && (int)item.itemCategory != 11).ToList();
+                    cosmeticsList = cosmetics.allCosmetics.Where(item => item.canTryOn && (int)item.itemCategory != 3 && !item.isHoldable 
+                    && !item.isThrowable && (int)item.itemCategory != 6 && (int)item.itemCategory != 2 && (int)item.itemCategory != 11).ToList();
                 }
                 else if (mode == 3)
                 {
@@ -552,7 +554,8 @@ namespace Arrakis.Mods
         {
             if (Time.time > hatTryOnDelay)
             {
-                List<CosmeticsController.CosmeticItem> hats = CosmeticsController.instance.allCosmetics.Where(x => x.itemCategory == CosmeticsController.CosmeticCategory.Hat && x.canTryOn).ToList();
+                List<CosmeticsController.CosmeticItem> hats = CosmeticsController.instance.allCosmetics.Where(x => 
+                x.itemCategory == CosmeticsController.CosmeticCategory.Hat && x.canTryOn).ToList();
                 CosmeticsController.CosmeticItem item = hats[chi];
                 foreach (FittingRoomButton button in GameObject.FindObjectsByType<FittingRoomButton>(FindObjectsSortMode.None))
                 {
@@ -568,7 +571,8 @@ namespace Arrakis.Mods
         {
             if (Time.time > hatTryOnDelay)
             {
-                List<CosmeticsController.CosmeticItem> hats = CosmeticsController.instance.allCosmetics.Where(x => x.itemCategory == CosmeticsController.CosmeticCategory.Badge && x.canTryOn).ToList();
+                List<CosmeticsController.CosmeticItem> hats = CosmeticsController.instance.allCosmetics.Where(x => 
+                x.itemCategory == CosmeticsController.CosmeticCategory.Badge && x.canTryOn).ToList();
                 CosmeticsController.CosmeticItem item = hats[chi];
                 foreach (FittingRoomButton button in GameObject.FindObjectsByType<FittingRoomButton>(FindObjectsSortMode.None))
                 {
@@ -584,7 +588,8 @@ namespace Arrakis.Mods
         {
             if (Time.time > hatTryOnDelay)
             {
-                List<CosmeticsController.CosmeticItem> hats = CosmeticsController.instance.allCosmetics.Where(x => x.itemCategory == CosmeticsController.CosmeticCategory.Face && x.canTryOn).ToList();
+                List<CosmeticsController.CosmeticItem> hats = CosmeticsController.instance.allCosmetics.Where(x => 
+                x.itemCategory == CosmeticsController.CosmeticCategory.Face && x.canTryOn).ToList();
                 CosmeticsController.CosmeticItem item = hats[chi];
                 foreach (FittingRoomButton button in GameObject.FindObjectsByType<FittingRoomButton>(FindObjectsSortMode.None))
                 {
@@ -600,7 +605,8 @@ namespace Arrakis.Mods
         {
             if (Time.time > hatTryOnDelay)
             {
-                List<CosmeticsController.CosmeticItem> hats = CosmeticsController.instance.allCosmetics.Where(x => x.itemCategory == CosmeticsController.CosmeticCategory.Arms && x.canTryOn).ToList();
+                List<CosmeticsController.CosmeticItem> hats = CosmeticsController.instance.allCosmetics.Where(x => 
+                x.itemCategory == CosmeticsController.CosmeticCategory.Arms && x.canTryOn).ToList();
                 CosmeticsController.CosmeticItem item = hats[chi];
                 foreach (FittingRoomButton button in GameObject.FindObjectsByType<FittingRoomButton>(FindObjectsSortMode.None))
                 {

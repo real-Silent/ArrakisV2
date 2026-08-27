@@ -275,12 +275,14 @@ namespace Arrakis.Mods
             int index = random.Next(blockIds.Count);
             return blockIds[index];
         }
-        public static void SpawnBlock(int id, Vector3 position, Quaternion rotation, RpcTarget target = RpcTarget.All) // if nova says this looks bad im gonna cry bcz i think it looks good -sleepy
+        public static void SpawnBlock(int id, Vector3 position, Quaternion rotation, RpcTarget target = RpcTarget.All)
         {
             if (PhotonNetwork.InRoom && PhotonNetwork.IsMasterClient)
             {
                 BuilderTable table = GameObject.Find("Environment Objects/MonkeBlocksRoomPersistent/BuilderTable").GetComponent<BuilderTable>();
-                GameObject.Find("Environment Objects/MonkeBlocksRoomPersistent/BuilderNetworking").GetComponent<BuilderTableNetworking>().photonView.RPC("PieceCreatedByShelfRPC", target, new object[] { id, table.CreatePieceId(), BitPackUtils.PackWorldPosForNetwork(position), BitPackUtils.PackQuaternionForNetwork(rotation), 0, (byte)4, 1, PhotonNetwork.LocalPlayer });
+                GameObject.Find("Environment Objects/MonkeBlocksRoomPersistent/BuilderNetworking").GetComponent<BuilderTableNetworking>().photonView
+                .RPC("PieceCreatedByShelfRPC", target, new object[] { id, table.CreatePieceId(), BitPackUtils.PackWorldPosForNetwork(position), 
+                    BitPackUtils.PackQuaternionForNetwork(rotation), 0, (byte)4, 1, PhotonNetwork.LocalPlayer });
             }
         }
         public static void DestroyBlock(int id, Vector3 position, Quaternion rotation, bool PlaySfx)
@@ -288,7 +290,8 @@ namespace Arrakis.Mods
             if (PhotonNetwork.InRoom && PhotonNetwork.IsMasterClient)
             {
                 BuilderTableNetworking network = GameObject.Find("Environment Objects/MonkeBlocksRoomPersistent/BuilderNetworking").GetComponent<BuilderTableNetworking>();
-                network.photonView.RPC("PieceDestroyedRPC", RpcTarget.All, new object[] { id, BitPackUtils.PackWorldPosForNetwork(position), BitPackUtils.PackQuaternionForNetwork(rotation), PlaySfx, (short)1 });
+                network.photonView.RPC("PieceDestroyedRPC", RpcTarget.All, 
+                new object[] { id, BitPackUtils.PackWorldPosForNetwork(position), BitPackUtils.PackQuaternionForNetwork(rotation), PlaySfx, (short)1 });
             }
         }
         public static void SpawnBlockGun()
@@ -334,7 +337,11 @@ namespace Arrakis.Mods
         }
         public static void ChangeLavaState(InfectionLavaController.RisingLavaState state)
         {
-            if (!PhotonNetwork.LocalPlayer.IsMasterClient) { NotificationManager.SendNotification("<color=grey>[</color><color=cyan>ARRAKIS</color><color=grey>]</color> You are not master client this mod will not work."); return; }
+            if (!PhotonNetwork.LocalPlayer.IsMasterClient) 
+            { 
+                NotificationManager.SendNotification("<color=grey>[</color><color=cyan>ARRAKIS</color><color=grey>]</color> You are not master client this mod will not work."); 
+                return; 
+            }
             var lava = InfectionLavaController.ActiveControllers.FirstOrDefault();
             if (lava == null)
                 return;
