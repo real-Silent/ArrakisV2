@@ -689,5 +689,60 @@ namespace Arrakis.Mods
                 VRRigTorso = new GameObject("Arrakis_vrrigtorso");
             VRRigTorso.transform.rotation = Quaternion.Lerp(VRRigTorso.transform.rotation, Quaternion.Euler(0f, GorillaTagger.Instance.headCollider.transform.rotation.eulerAngles.y, 0f), Time.deltaTime * 6.5f);
         }
+
+        private static LineRenderer lineL;
+        private static LineRenderer lineR;
+        public static void SpiderMan()
+        {
+            if (InputManager.GetInput(InputManager.InputType.Trigger, InputManager.Hand.Right))
+            {
+                if (lineR == null)
+                {
+                    lineR = new GameObject().AddComponent<LineRenderer>();
+                    lineR.useWorldSpace = true;
+                    lineR.startWidth = 0.02f;
+                    lineR.endWidth = 0.02f;
+                    lineR.startColor = Settings.backgroundColor.GetCurrentColor();
+                    lineR.endColor = Settings.backgroundColor.GetCurrentColor();
+                    lineR.positionCount = 2;
+                }
+                RaycastHit hit;
+                Physics.Raycast(GorillaTagger.Instance.rightHandTransform.position, GorillaTagger.Instance.rightHandTransform.forward, out hit, 512f, NoInvisLayerMask());
+                lineR.SetPosition(0, GorillaTagger.Instance.rightHandTransform.position);
+                lineR.SetPosition(1, hit.point);
+            }
+
+            if (InputManager.GetInput(InputManager.InputType.Trigger, InputManager.Hand.Right))
+            {
+                if (lineL == null)
+                {
+                    lineL = new GameObject().AddComponent<LineRenderer>();
+                    lineL.useWorldSpace = true;
+                    lineL.startWidth = 0.02f;
+                    lineL.endWidth = 0.02f;
+                    lineL.startColor = Settings.backgroundColor.GetCurrentColor();
+                    lineL.endColor = Settings.backgroundColor.GetCurrentColor();
+                    lineL.positionCount = 2;
+                }
+                RaycastHit hit;
+                Physics.Raycast(GorillaTagger.Instance.leftHandTransform.position, GorillaTagger.Instance.leftHandTransform.forward, out hit, 512f, NoInvisLayerMask());
+                lineL.SetPosition(0, GorillaTagger.Instance.leftHandTransform.position);
+                lineL.SetPosition(1, hit.point);
+            }
+        }
+
+        public static void DisableSpiderMan()
+        {
+            if (lineR != null)
+            {
+                GameObject.Destroy(lineR.gameObject);
+                lineR = null;
+            }
+            if (lineL != null)
+            {
+                GameObject.Destroy(lineL.gameObject);
+                lineL = null;
+            }
+        }
     }
 }

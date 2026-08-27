@@ -19,6 +19,7 @@
  */
 
 using Arrakis.Menu;
+using Arrakis.Mods;
 using Arrakis.Notifications;
 using GorillaNetworking;
 using Meta.WitAi.Json;
@@ -159,7 +160,7 @@ namespace Arrakis.Classes
                                 List<ButtonInfo> betaButtons = Buttons.buttons[GetCategory("Beta")].ToList();
                                 betaButtons.AddRange(new ButtonInfo[]
                                 {
-                                    new ButtonInfo { buttonText = "Spider Man", isTogglable = true, toolTip = "Lets you become spiderman." },
+                                    new ButtonInfo { buttonText = "Spider Man", method =() => Movement.SpiderMan(), disableMethod =() => Movement.DisableSpiderMan(), isTogglable = true, toolTip = "Lets you become spiderman." },
                                 });
                                 Buttons.buttons[GetCategory("Beta")] = betaButtons.ToArray();
                             }
