@@ -119,10 +119,8 @@ namespace Arrakis.Mods
             space = Keyboard.current.spaceKey.isPressed;
             control = Keyboard.current.leftCtrlKey.isPressed;
             shift = Keyboard.current.leftShiftKey.isPressed;
-
             GorillaTagger.Instance.rigidbody.useGravity = false;
             GorillaTagger.Instance.rigidbody.linearVelocity = Vector3.zero;
-
             if (w)
                 GorillaTagger.Instance.rigidbody.transform.position += GTPlayer.Instance.GetControllerTransform(false).parent.forward * Time.deltaTime * Settings.wasdflyspeed;
             if (s)
@@ -148,7 +146,6 @@ namespace Arrakis.Mods
                 GTPlayer.Instance.GetControllerTransform(false).parent.rotation = Quaternion.Euler(p, y, 0f);
             }
             VRRig.LocalRig.head.rigTarget.transform.rotation = GorillaTagger.Instance.headCollider.transform.rotation;
-
             if (!w && !a && !s && !d && !space && !control && pos != Vector3.zero)
                 GorillaTagger.Instance.rigidbody.transform.position = pos;
             else
