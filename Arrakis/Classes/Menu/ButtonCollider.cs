@@ -31,7 +31,7 @@ namespace Arrakis.Classes
 		public static float buttonCooldown = 0f;
 		public void OnTriggerEnter(Collider collider)
 		{
-			if (Time.time > buttonCooldown && collider == buttonCollider || Time.time > buttonCooldown && collider == leftButtonCollider || Time.time > buttonCooldown && collider == rightButtonCollider && menu != null)
+			if (Time.time > buttonCooldown && Check(collider) && menu != null)
 			{
                 buttonCooldown = Time.time + 0.2f;
 				if (!disablevibrations)
@@ -40,5 +40,8 @@ namespace Arrakis.Classes
                 Toggle(relatedText);
             }
 		}
-	}
+
+        private bool Check(Collider other) =>
+			other == buttonCollider || other == leftButtonCollider || other == rightButtonCollider;
+    }
 }
