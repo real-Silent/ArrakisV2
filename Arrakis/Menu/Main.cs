@@ -18,12 +18,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
 using Arrakis.Classes;
 using Arrakis.Managers;
 using Arrakis.Mods;
@@ -34,6 +28,12 @@ using GorillaLocomotion;
 using GorillaNetworking;
 using HarmonyLib;
 using Photon.Pun;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -71,10 +71,12 @@ namespace Arrakis.Menu
                     GameObject.Destroy(menu);
             }
 
+            UpdateKeyboard();
+
             try
             {
                 bool toOpen = (!rightHanded && ControllerInputPoller.instance.leftControllerSecondaryButton) || (rightHanded && ControllerInputPoller.instance.rightControllerSecondaryButton);
-                bool keyboardOpen = UnityInput.Current.GetKey(keyboardButton);
+                bool keyboardOpen = UnityInput.Current.GetKey(keyboardButton) || searching;
 
                 if (menu == null)
                 {
@@ -444,36 +446,51 @@ namespace Arrakis.Menu
             canvasScaler.dynamicPixelsPerUnit = highqualitytext ? 2000f : 1000f;
 
             // Title
-            Text text = new GameObject
+            title = new GameObject
             {
                 transform =
                 {
                     parent = canvasObject.transform
                 }
             }.AddComponent<Text>();
-            text.font = currentFont;
-            if (!disablemenutitle)
+            title.font = currentFont;
+            if (searching)
             {
-                if (custommenutitle)
+                if (string.IsNullOrEmpty(keyboardInput))
                 {
-                    if (!File.Exists($"{PluginInfo.BaseDirectory}/CustomTitle.txt"))
-                        File.WriteAllText($"{PluginInfo.BaseDirectory}/CustomTitle.txt", "your title");
-                    else
-                        text.text = File.ReadAllText($"{PluginInfo.BaseDirectory}/CustomTitle.txt") + (disablepagenumber ? "" : " <color=grey>[</color><color=white>" + (pageNumber + 1).ToString() + "</color><color=grey>]</color>");
+                    int dots = Mathf.FloorToInt(Time.time * 2f) % 4;
+                    title.text = "Search" + new string('.', dots);
                 }
                 else
-                    text.text = (RareChance ? "Femboy Lover Menu UwU" : PluginInfo.Name) + (disablepagenumber ? "" : " <color=grey>[</color><color=white>" + (pageNumber + 1).ToString() + "</color><color=grey>]</color>");
+                {
+                    title.text = keyboardInput;
+                }
             }
-            else
-                text.text = "";
-            text.fontSize = 1;
-            text.color = textColors[0];
-            text.supportRichText = true;
-            text.fontStyle = currentStyle;
-            text.alignment = TextAnchor.MiddleCenter;
-            text.resizeTextForBestFit = true;
-            text.resizeTextMinSize = 0;
-            RectTransform component = text.GetComponent<RectTransform>();
+            else 
+            {
+                if (!disablemenutitle)
+                {
+                    if (custommenutitle)
+                    {
+                        if (!File.Exists($"{PluginInfo.BaseDirectory}/CustomTitle.txt"))
+                            File.WriteAllText($"{PluginInfo.BaseDirectory}/CustomTitle.txt", "your title");
+                        else
+                            title.text = File.ReadAllText($"{PluginInfo.BaseDirectory}/CustomTitle.txt") + (disablepagenumber ? "" : " <color=grey>[</color><color=white>" + (pageNumber + 1).ToString() + "</color><color=grey>]</color>");
+                    }
+                    else
+                        title.text = (RareChance ? "Femboy Lover Menu UwU" : PluginInfo.Name) + (disablepagenumber ? "" : " <color=grey>[</color><color=white>" + (pageNumber + 1).ToString() + "</color><color=grey>]</color>");
+                }
+                else
+                    title.text = "";
+            }
+            title.fontSize = 1;
+            title.color = textColors[0];
+            title.supportRichText = true;
+            title.fontStyle = currentStyle;
+            title.alignment = TextAnchor.MiddleCenter;
+            title.resizeTextForBestFit = true;
+            title.resizeTextMinSize = 0;
+            RectTransform component = title.GetComponent<RectTransform>();
             component.localPosition = Vector3.zero;
             component.sizeDelta = new Vector2(0.28f, 0.05f);
             component.position = new Vector3(0.06f, 0f, 0.165f);
@@ -549,7 +566,7 @@ namespace Arrakis.Menu
             colorChanger = gameObject.AddComponent<ColorChanger>();
             colorChanger.colors = buttonColors[0];
 
-            text = new GameObject
+            Text text = new GameObject
             {
                 transform =
                 {
@@ -609,32 +626,56 @@ namespace Arrakis.Menu
             // Button Creation
             int buttonIndexOffset = 0;
             ButtonInfo[] renderButtons = new ButtonInfo[] { };
-            if (CurrentPrompt != null)
-                ShowPrompt();
-            else 
+            if (searching)
             {
-                switch (CurrentCategoryName)
+                List<ButtonInfo> searchResults = new List<ButtonInfo>();
+                string search = keyboardInput.Replace(" ", "").ToLower();
+                foreach (ButtonInfo[] category in Buttons.buttons)
                 {
-                    case "Enabled":
-                        enabledMods = new List<ButtonInfo>() { GetIndex("Exit Enabled") };
-                        enabledMods.AddRange(Buttons.buttons.SelectMany(buttonlist => buttonlist).Where(v => v.enabled));
-                        if (enabledMods.Count == 1)
-                            enabledMods.Add(new ButtonInfo { buttonText = "you have no enabled mods", label = true });
-                        renderButtons = enabledMods.ToArray();
-                        break;
-                    case "Favorites":
-                        foreach (var favoriteMod in favorites.Where(favoriteMod => GetIndex(favoriteMod) == null).ToList())
-                            favorites.Remove(favoriteMod);
-                        renderButtons = StringsToInfos(favorites.ToArray());
-                        break;
-                    default:
-                        renderButtons = Buttons.buttons[currentCategoryIndex];
-                        break;
+                    foreach (ButtonInfo button in category)
+                    {
+                        if (button == null)
+                            continue;
+                        if (button.label)
+                            continue;
+                        string buttonName = (button.buttonText ?? "").Replace(" ", "").ToLower();
+                        if (buttonName.Contains(search))
+                        {
+                            searchResults.Add(button);
+                        }
+                    }
                 }
-                renderButtons = renderButtons.Skip(pageNumber * (buttonsPerPage - buttonIndexOffset)).Take(buttonsPerPage - buttonIndexOffset).ToArray();
-                for (int i = 0; i < renderButtons.Length; i++)
-                    AddButton((i + buttonIndexOffset) * 0.1f + (0.1f / 10), i, renderButtons[i]);
+                renderButtons = searchResults.OrderBy(x => x.buttonText).ToArray();
             }
+            else
+            {
+                if (CurrentPrompt != null)
+                    ShowPrompt();
+                else
+                {
+                    switch (CurrentCategoryName)
+                    {
+                        case "Enabled":
+                            enabledMods = new List<ButtonInfo>() { GetIndex("Exit Enabled") };
+                            enabledMods.AddRange(Buttons.buttons.SelectMany(buttonlist => buttonlist).Where(v => v.enabled));
+                            if (enabledMods.Count == 1)
+                                enabledMods.Add(new ButtonInfo { buttonText = "you have no enabled mods", label = true });
+                            renderButtons = enabledMods.ToArray();
+                            break;
+                        case "Favorites":
+                            foreach (var favoriteMod in favorites.Where(favoriteMod => GetIndex(favoriteMod) == null).ToList())
+                                favorites.Remove(favoriteMod);
+                            renderButtons = StringsToInfos(favorites.ToArray());
+                            break;
+                        default:
+                            renderButtons = Buttons.buttons[currentCategoryIndex];
+                            break;
+                    }
+                    renderButtons = renderButtons.Skip(pageNumber * (buttonsPerPage - buttonIndexOffset)).Take(buttonsPerPage - buttonIndexOffset).ToArray();
+                }
+            }
+            for (int i = 0; i < renderButtons.Length; i++)
+                AddButton((i + buttonIndexOffset) * 0.1f + (0.1f / 10), i, renderButtons[i]);
             RecenterMenu(rightHanded, false);
         }
 
@@ -1175,6 +1216,7 @@ namespace Arrakis.Menu
         public static GameObject menuBackground;
         public static GameObject reference;
         public static GameObject canvasObject;
+        public static Text title;
 
         public static List<ButtonInfo> enabledMods = new List<ButtonInfo>() { };
         public static readonly List<string> favorites = new List<string> { "Exit Favorites" };
@@ -1189,6 +1231,170 @@ namespace Arrakis.Menu
 
         public static string currentRoomName = "";
         public static string reconnectingRoomName = "";
+
+        public static void Search()
+        {
+            searching = !searching;
+            pageNumber = 0;
+            keyboardInput = "";
+        }
+        public static bool searching = false;
+        public static string keyboardInput = "";
+        public static List<UnityEngine.InputSystem.Key> lastPressedKeys = new List<UnityEngine.InputSystem.Key>();
+        public static readonly Dictionary<UnityEngine.InputSystem.Key, (float, float)> keyPressedTimes = new Dictionary<UnityEngine.InputSystem.Key, (float, float)>();
+        public static readonly UnityEngine.InputSystem.Key[] detectedKeys =
+        {
+            UnityEngine.InputSystem.Key.A,
+            UnityEngine.InputSystem.Key.B,
+            UnityEngine.InputSystem.Key.C,
+            UnityEngine.InputSystem.Key.D,
+            UnityEngine.InputSystem.Key.E,
+            UnityEngine.InputSystem.Key.F,
+            UnityEngine.InputSystem.Key.G,
+            UnityEngine.InputSystem.Key.H,
+            UnityEngine.InputSystem.Key.I,
+            UnityEngine.InputSystem.Key.J,
+            UnityEngine.InputSystem.Key.K,
+            UnityEngine.InputSystem.Key.L,
+            UnityEngine.InputSystem.Key.M,
+            UnityEngine.InputSystem.Key.N,
+            UnityEngine.InputSystem.Key.O,
+            UnityEngine.InputSystem.Key.P,
+            UnityEngine.InputSystem.Key.Q,
+            UnityEngine.InputSystem.Key.R,
+            UnityEngine.InputSystem.Key.S,
+            UnityEngine.InputSystem.Key.T,
+            UnityEngine.InputSystem.Key.U,
+            UnityEngine.InputSystem.Key.V,
+            UnityEngine.InputSystem.Key.W,
+            UnityEngine.InputSystem.Key.X,
+            UnityEngine.InputSystem.Key.Y,
+            UnityEngine.InputSystem.Key.Z,
+
+            UnityEngine.InputSystem.Key.Digit0,
+            UnityEngine.InputSystem.Key.Digit1,
+            UnityEngine.InputSystem.Key.Digit2,
+            UnityEngine.InputSystem.Key.Digit3,
+            UnityEngine.InputSystem.Key.Digit4,
+            UnityEngine.InputSystem.Key.Digit5,
+            UnityEngine.InputSystem.Key.Digit6,
+            UnityEngine.InputSystem.Key.Digit7,
+            UnityEngine.InputSystem.Key.Digit8,
+            UnityEngine.InputSystem.Key.Digit9,
+
+            UnityEngine.InputSystem.Key.Space,
+            UnityEngine.InputSystem.Key.Backspace,
+            UnityEngine.InputSystem.Key.Enter,
+            UnityEngine.InputSystem.Key.Escape
+        };
+        public static string[] allowedKeys = new string[]
+        {
+            "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l",
+            "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x",
+            "y", "z"
+        };
+        private static void UpdateKeyboard()
+        {
+            if (!searching)
+            {
+                lastPressedKeys.Clear();
+                keyPressedTimes.Clear();
+                return;
+            }
+            List<UnityEngine.InputSystem.Key> keysPressed = new List<UnityEngine.InputSystem.Key>();
+            foreach (var key in detectedKeys)
+            {
+                if (!UnityEngine.InputSystem.Keyboard.current[key].isPressed)
+                {
+                    keyPressedTimes.Remove(key);
+                    continue;
+                }
+                if (keyPressedTimes.TryGetValue(key, out var delay))
+                {
+                    float newDelay = Mathf.Max(delay.Item2 * 0.75f, 0.05f);
+                    if (Time.time > delay.Item1)
+                    {
+                        keyPressedTimes[key] =
+                            (Time.time + newDelay, newDelay);
+                    }
+                    else
+                    {
+                        keysPressed.Add(key);
+                        continue;
+                    }
+                }
+                else
+                {
+                    keyPressedTimes[key] = (Time.time + 0.5f, 0.5f);
+                }
+                keysPressed.Add(key);
+                if (lastPressedKeys.Contains(key))
+                    continue;
+                switch (key)
+                {
+                    case UnityEngine.InputSystem.Key.Backspace:
+                        if (!string.IsNullOrEmpty(keyboardInput))
+                        {
+                            keyboardInput = keyboardInput.Substring(0, keyboardInput.Length - 1);
+                        }
+                        break;
+                    case UnityEngine.InputSystem.Key.Escape:
+                        searching = false;
+                        keyboardInput = "";
+                        ReloadMenu();
+                        break;
+                    case UnityEngine.InputSystem.Key.Enter:
+                        HandleSearch();
+                        break;
+                    case UnityEngine.InputSystem.Key.Space:
+                        keyboardInput += " ";
+                        break;
+                    default:
+                        string keyName = key.ToString();
+                        if (keyName.Length == 1 && allowedKeys.Contains(keyName.ToLower()))
+                        {
+                            bool shift = UnityEngine.InputSystem.Keyboard.current.leftShiftKey.isPressed || UnityEngine.InputSystem.Keyboard.current.rightShiftKey.isPressed;
+                            keyboardInput += shift ? keyName.ToUpper() : keyName.ToLower();
+                        }
+                        else if (keyName.StartsWith("Digit"))
+                        {
+                            keyboardInput += keyName.Replace("Digit", "");
+                        }
+                        break;
+                }
+                pageNumber = 0;
+                ReloadMenu();
+            }
+            lastPressedKeys = keysPressed;
+        }
+        private static void HandleSearch()
+        {
+            if (!searching)
+                return;
+            if (string.IsNullOrWhiteSpace(keyboardInput))
+                return;
+            string search = keyboardInput.Replace(" ", "").ToLower();
+            List<ButtonInfo> results = new List<ButtonInfo>();
+            foreach (ButtonInfo[] category in Buttons.buttons)
+            {
+                foreach (ButtonInfo button in category)
+                {
+                    if (button == null)
+                        continue;
+                    if (button.label)
+                        continue;
+                    string buttonName = (button.buttonText ?? "").Replace(" ", "").ToLower();
+                    if (buttonName.Contains(search))
+                    {
+                        results.Add(button);
+                    }
+                }
+            }
+            if (results.Count == 0)
+                return;
+            results = results.OrderBy(x => x.buttonText).ToList();
+            Toggle(results[0].buttonText);
+        }
 
         public static float lastsavesprefstime;
         public static float saveRoomDelay;
@@ -1482,7 +1688,7 @@ namespace Arrakis.Menu
             buttonObject.transform.localPosition = new Vector3(0.44f, -0.450f, -0.58f);
             if (showsearchbutton)
                 buttonObject.transform.localPosition += new Vector3(0f, 0.16f, 0f);
-            buttonObject.AddComponent<ButtonCollider>().relatedText = "Keyboard";
+            buttonObject.AddComponent<ButtonCollider>().relatedText = "Search";
             ColorChanger colorChanger = buttonObject.AddComponent<ColorChanger>();
             colorChanger.colors = buttonColors[0];
 
