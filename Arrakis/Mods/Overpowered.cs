@@ -67,7 +67,7 @@ namespace Arrakis.Mods
                         }
                         else
                         {
-                            NotificationManager.SendNotification("<color=yellow>[ARRAKIS]</color> You are not guardian this mod wont work.");
+                            NotificationManager.SendNotification("<color=grey>[<color=yellow>ARRAKIS</color><color=grey>]</color> You are not guardian this mod wont work.");
                         }
                     }
                 }
@@ -92,7 +92,7 @@ namespace Arrakis.Mods
                     }
                     else
                     {
-                        NotificationManager.SendNotification("<color=yellow>[ARRAKIS]</color> You are not guardian this mod wont work.");
+                        NotificationManager.SendNotification("<color=grey>[<color=yellow>ARRAKIS</color><color=grey>]</color> You are not guardian this mod wont work.");
                     }
                 }
 
@@ -136,7 +136,7 @@ namespace Arrakis.Mods
             }
             else
             {
-                NotificationManager.SendNotification("<color=yellow>[ARRAKIS]</color> You are not guardian this mod wont work.");
+                NotificationManager.SendNotification("<color=grey>[<color=yellow>ARRAKIS</color><color=grey>]</color> You are not guardian this mod wont work.");
             }
         }
 
@@ -157,7 +157,7 @@ namespace Arrakis.Mods
             }
             else
             {
-                NotificationManager.SendNotification("<color=yellow>[ARRAKIS]</color> You are not guardian this mod wont work.");
+                NotificationManager.SendNotification("<color=grey>[<color=yellow>ARRAKIS</color><color=grey>]</color> You are not guardian this mod wont work.");
             }
         }
 
@@ -181,7 +181,7 @@ namespace Arrakis.Mods
                         }
                         else
                         {
-                            NotificationManager.SendNotification("<color=yellow>[ARRAKIS]</color> You are not guardian this mod wont work.");
+                            NotificationManager.SendNotification("<color=grey>[<color=yellow>ARRAKIS</color><color=grey>]</color> You are not guardian this mod wont work.");
                         }
                     }
                 }
@@ -204,7 +204,7 @@ namespace Arrakis.Mods
             }
             else
             {
-                NotificationManager.SendNotification("<color=yellow>[ARRAKIS]</color> You are not guardian this mod wont work.");
+                NotificationManager.SendNotification("<color=grey>[<color=yellow>ARRAKIS</color><color=grey>]</color> You are not guardian this mod wont work.");
             }
         }
 
@@ -408,7 +408,7 @@ namespace Arrakis.Mods
             }
             else
             {
-                NotificationManager.SendNotification("<color=red>[ERROR]</color> You are not in city.");
+                NotificationManager.SendNotification("<color=grey>[</color><color=red>ERROR</color><color=grey>]</color> You are not in city.");
                 GetIndex("City Barrel Kick Gun").enabled = false;
             }
         }
