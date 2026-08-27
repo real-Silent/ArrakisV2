@@ -325,6 +325,8 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Spectate Gun", method =() => Visual.SpectateGun(), toolTip = "Spectates who ever you shoot.", isTogglable = true },
                 new ButtonInfo { buttonText = "Hand Trails", enableMethod =() => Visual.EnableHandTrails(), method =() => Visual.HandTrails(), disableMethod =() => Visual.DestroyHandTrails(), toolTip = "Puts trails on your hands.", isTogglable = true },
                 new ButtonInfo { buttonText = "Player Info Hud", enableMethod =() => Visual.PlayerInfo(), disableMethod =() => Visual.CleanupPlayerInfo(), toolTip = "Displays info on your hud.", isTogglable = true },
+                new ButtonInfo { buttonText = "Bug ESP", method =() => Visual.EntityESP(ThrowableBug.BugName.DougTheBug), disableMethod =() => Visual.DisableEntityESP(ThrowableBug.BugName.DougTheBug), toolTip = "Puts esp on the bug.", isTogglable = true },
+                new ButtonInfo { buttonText = "Bat ESP", method =() => Visual.EntityESP(ThrowableBug.BugName.MattTheBat), disableMethod =() => Visual.DisableEntityESP(ThrowableBug.BugName.MattTheBat), toolTip = "Puts esp on the bat.", isTogglable = true },
             },
 
             new ButtonInfo[] { // Advantage

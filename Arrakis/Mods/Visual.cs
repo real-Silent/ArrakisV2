@@ -727,5 +727,53 @@ namespace Arrakis.Mods
                 hudInstance = null;
             }
         }
+
+        public static void EntityESP(ThrowableBug.BugName bugType)
+        {
+            ThrowableBug[] bugs = GetThrowableBugs();
+            if (bugs == null)
+                return;
+            foreach (ThrowableBug entity in bugs)
+            {
+                if (entity == null || entity.bugName != bugType)
+                    continue;
+                SkinnedMeshRenderer rend = entity.GetComponentInChildren<SkinnedMeshRenderer>();
+                if (rend == null)
+                    continue;
+                rend.material.shader = Shader.Find("GUI/Text Shader");
+                rend.material.color = new Color(0.6f, 0.6f, 0f, 0.6f);
+            }
+        }
+
+        public static void DisableEntityESP(ThrowableBug.BugName bugType)
+        {
+            ThrowableBug[] bugs = GetThrowableBugs();
+            if (bugs == null)
+                return;
+            foreach (ThrowableBug entity in bugs)
+            {
+                if (entity == null || entity.bugName != bugType)
+                    continue;
+                SkinnedMeshRenderer rend = entity.GetComponentInChildren<SkinnedMeshRenderer>();
+                if (rend == null)
+                    continue;
+                rend.material.shader = Shader.Find("GorillaTag/UberShader");
+            }
+        }
+
+        private static List<ThrowableBug> cachedBugs = new List<ThrowableBug>();
+        private static bool done = false;
+        private static ThrowableBug[] GetThrowableBugs()
+        {
+            if (done)
+                return cachedBugs.ToArray();
+            done = true;
+            foreach (ThrowableBug entity in GameObject.FindObjectsByType<ThrowableBug>(FindObjectsSortMode.None))
+            {
+                if (entity != null && !cachedBugs.Contains(entity))
+                    cachedBugs.Add(entity);
+            }
+            return cachedBugs.ToArray();
+        }
     }
 }
