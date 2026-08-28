@@ -28,6 +28,7 @@ using System.Linq;
 using System.Text;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 using UnityEngine.UI;
 using static Arrakis.Menu.Main;
 using static Arrakis.Settings;
@@ -166,11 +167,14 @@ namespace Arrakis.Mods
 
 
         private static Dictionary<VRRig, List<LineRenderer>> boneEspPool = new Dictionary<VRRig, List<LineRenderer>>();
+        private static Dictionary<VRRig, List<LineRenderer>> selfBoneEspPool = new Dictionary<VRRig, List<LineRenderer>>();
         private static readonly int[] bones = {
             4, 3, 5, 4, 19, 18, 20, 19, 3, 18, 21, 20, 22, 21, 25, 21, 29, 21, 31, 29, 27, 25, 24, 22, 6, 5, 7, 6, 10, 6, 14, 6, 16, 14, 12, 10, 9, 7
         };
         public static void BoneESP()
         {
+            if (!NetworkSystem.Instance.InRoom)
+                return;
             List<VRRig> remove = new List<VRRig>();
             foreach (var bone in boneEspPool.Where(x => !VRRigCache.ActiveRigs.Contains(x.Key)))
             {
@@ -226,6 +230,50 @@ namespace Arrakis.Mods
             foreach (var line in boneEspPool.SelectMany(bones => bones.Value))
                 Object.Destroy(line);
             boneEspPool.Clear();
+        }
+
+        public static void SelfBoneESP()
+        {
+            if (!selfBoneEspPool.TryGetValue(GorillaTagger.Instance.offlineVRRig, out List<LineRenderer> lines))
+            {
+                lines = new List<LineRenderer>();
+                LineRenderer head = GorillaTagger.Instance.offlineVRRig.head.rigTarget.AddComponent<LineRenderer>();
+                head.material.shader = Shader.Find("GUI/Text Shader");
+                lines.Add(head);
+                for (int i = 0; i < 19; i++)
+                {
+                    LineRenderer line = GorillaTagger.Instance.offlineVRRig.mainSkin.bones[bones[i * 2]].gameObject.AddComponent<LineRenderer>();
+                    line.material.shader = Shader.Find("GUI/Text Shader");
+                    lines.Add(line);
+                }
+                selfBoneEspPool.Add(GorillaTagger.Instance.offlineVRRig, lines);
+            }
+            LineRenderer linee = lines[0];
+            Color boneColor = followmenutheme ? backgroundColor.GetCurrentColor() : GorillaTagger.Instance.offlineVRRig.playerColor;
+            boneColor.a = 0.7f;
+            linee.startWidth = 0.02f;
+            linee.endWidth = 0.02f;
+            linee.startColor = boneColor;
+            linee.endColor = boneColor;
+            linee.SetPosition(0, GorillaTagger.Instance.offlineVRRig.headMesh.transform.position);
+            linee.SetPosition(1, GorillaTagger.Instance.offlineVRRig.headMesh.transform.position);
+            for (int i = 0; i < 19; i++)
+            {
+                linee = lines[i + 1];
+                linee.startWidth = 0.02f;
+                linee.endWidth = 0.02f;
+                linee.startColor = boneColor;
+                linee.endColor = boneColor;
+                linee.material.shader = Shader.Find("GUI/Text Shader");
+                linee.SetPosition(0, GorillaTagger.Instance.offlineVRRig.mainSkin.bones[bones[i * 2]].position);
+                linee.SetPosition(1, GorillaTagger.Instance.offlineVRRig.mainSkin.bones[bones[i * 2 + 1]].position);
+            }
+        }
+        public static void DisableSelfBoneESP()
+        {
+            foreach (var line in selfBoneEspPool.SelectMany(bones => bones.Value))
+                Object.Destroy(line);
+            selfBoneEspPool.Clear();
         }
 
 
