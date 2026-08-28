@@ -1108,6 +1108,7 @@ namespace Arrakis.Menu
         public static float gunLineWidth = 0.025f; // ill add a setting for this later -sleepy
         public static bool swapgunhand = false;
         public static bool gunTargetESP = false;
+        public static bool gunPointerTrail = false;
 
         public static bool GetGunInput(bool isShooting) =>
             GetGunHand(swapgunhand, isShooting);
@@ -1140,6 +1141,23 @@ namespace Arrakis.Menu
             GunPointer.transform.localScale = Vector3.one * gunPointerSize;
             GunPointer.transform.position = endPos;
             GunPointer.GetComponent<Renderer>().enabled = gunpointer;
+
+            if (gunPointerTrail)
+            {
+                try
+                {
+                    TrailRenderer trail = GunPointer.GetOrAddComponent<TrailRenderer>();
+                    trail.startColor = backgroundColor.GetColor(0);
+                    trail.endColor = backgroundColor.GetColor(1);
+                    trail.startWidth = 0.075f;
+                    trail.endWidth = 0f;
+                    trail.minVertexDistance = 0.05f;
+                    trail.material.shader = Shader.Find("Sprites/Default");
+                    trail.time = 0.8f;
+                }
+                catch { }
+            }
+
             Renderer pointerRenderer = GunPointer.GetComponent<Renderer>();
             if (pointerRenderer.material.shader.name != "GUI/Text Shader")
                 pointerRenderer.material.shader = Shader.Find("GUI/Text Shader");
