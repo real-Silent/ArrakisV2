@@ -18,9 +18,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-using System;
-using System.Collections.Generic;
-using System.Reflection;
 using Arrakis.Classes;
 using Arrakis.Menu;
 using Arrakis.Notifications;
@@ -28,6 +25,11 @@ using Arrakis.Patches.Patchers;
 using ExitGames.Client.Photon;
 using GorillaNetworking;
 using Photon.Pun;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
 using UnityEngine;
 using static Arrakis.Menu.Main;
 
@@ -151,9 +153,51 @@ namespace Arrakis.Mods
                 GameObject.Destroy(KIDManager.Instance);
             }
         }
+
+        public static void AntiModerator()
+        {
+            if (NetworkSystem.Instance.InRoom)
+            {
+                foreach (VRRig rig in VRRigCache.ActiveRigs)
+                {
+                    if (rig != null && rig != VRRig.LocalRig)
+                    {
+                        if (rig._playerOwnedCosmetics.Concat().Contains("LBAAK.") || rig._playerOwnedCosmetics.Concat().Contains("LMAPY.") || rig._playerOwnedCosmetics.Concat().Contains("LBAAD."))
+                        {
+                            NotificationManager.SendNotification($"<color=yellow>[ANTIREPORT]</color> {rig.Creator.NickName} has one of the sticks or admin badge there id has been saved to a file.");
+                            Color pc = rig.playerColor;
+                            string content = $"RoomName: {PhotonNetwork.CurrentRoom.Name}\nNickName: {rig.Creator.NickName}\nUserID: {rig.Creator.UserId}\nColor: {string.Format("R: {0}, G: {1}, B: {2}", pc.r * 9, pc.g * 9, pc.b * 9)}";
+                            File.WriteAllText($"{PluginInfo.BaseDirectory}/Antis/Staff/{rig.Creator.NickName}.txt", content);
+                            NetworkSystem.Instance.ReturnToSinglePlayer();
+                        }
+                    }
+                }
+            }
+        }
+
+        public static void AntiContentCreator()
+        {
+            if (NetworkSystem.Instance.InRoom)
+            {
+                foreach (VRRig rig in VRRigCache.ActiveRigs)
+                {
+                    if (rig != null && rig != VRRig.LocalRig)
+                    {
+                        if (rig._playerOwnedCosmetics.Concat().Contains("LBADE.") || rig._playerOwnedCosmetics.Concat().Contains("LBAGS.") || rig._playerOwnedCosmetics.Concat().Contains("LBANI."))
+                        {
+                            NotificationManager.SendNotification($"<color=yellow>[ANTIREPORT]</color> {rig.Creator.NickName} has the moderatorstick there id has been saved to a file.");
+                            Color pc = rig.playerColor;
+                            string content = $"RoomName: {PhotonNetwork.CurrentRoom.Name}\nNickName: {rig.Creator.NickName}\nUserID: {rig.Creator.UserId}\nColor: {string.Format("R: {0}, G: {1}, B: {2}", pc.r * 9, pc.g * 9, pc.b * 9)}";
+                            File.WriteAllText($"{PluginInfo.BaseDirectory}/Antis/ContentCreators/{rig.Creator.NickName}.txt", content);
+                            NetworkSystem.Instance.ReturnToSinglePlayer();
+                        }
+                    }
+                }
+            }
+        }
+
         private static float lastRpcClear = 0f;
         private static float rpcClearInterval = 5f;
-
         public static void AntiCrash() // nerd shit no clue if it works but blehhh :33 -sleepy
         {
             try
