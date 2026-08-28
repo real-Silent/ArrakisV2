@@ -18,17 +18,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Arrakis.Classes;
+using Arrakis.Classes.Mods;
 using Arrakis.Extensions;
 using Arrakis.Menu;
 using GorillaExtensions;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using Arrakis.Classes.Mods;
 using static Arrakis.Menu.Main;
 using static Arrakis.Settings;
 
@@ -135,7 +135,7 @@ namespace Arrakis.Mods
                     if (!tracersPool.TryGetValue(rig, out GameObject holder))
                     {
                         holder = new GameObject();
-                        holder.transform.parent = rig.transform; // stupid fix -nova
+                        holder.transform.parent = rig.transform;
                         LineRenderer line = holder.AddComponent<LineRenderer>();
                         line.useWorldSpace = true;
                         line.material = new Material(Shader.Find("GUI/Text Shader"));
@@ -145,7 +145,8 @@ namespace Arrakis.Mods
                         tracersPool[rig] = holder;
                     }
                     LineRenderer lr = holder.GetComponent<LineRenderer>();
-                    Color color = followmenutheme ? backgroundColor.GetCurrentColor() : rig.IsTagged() ? new Color(0.6f, 0f, 0f, 0.6f) : new Color(0.46f, 0.6f, 0.6f, 0.6f);
+                    Color color = followmenutheme ? backgroundColor.GetCurrentColor() : rig.IsTagged() ? new Color(0.6f, 0f, 0f) : rig.playerColor;
+                    color.a = 0.7f;
                     lr.startColor = color;
                     lr.endColor = color;
                     lr.SetPosition(0, GorillaTagger.Instance.rightHandTransform.position);
@@ -162,6 +163,71 @@ namespace Arrakis.Mods
             }
             tracersPool.Clear();
         }
+
+
+        private static Dictionary<VRRig, List<LineRenderer>> boneEspPool = new Dictionary<VRRig, List<LineRenderer>>();
+        private static readonly int[] bones = {
+            4, 3, 5, 4, 19, 18, 20, 19, 3, 18, 21, 20, 22, 21, 25, 21, 29, 21, 31, 29, 27, 25, 24, 22, 6, 5, 7, 6, 10, 6, 14, 6, 16, 14, 12, 10, 9, 7
+        };
+        public static void BoneESP()
+        {
+            List<VRRig> remove = new List<VRRig>();
+            foreach (var bone in boneEspPool.Where(x => !VRRigCache.ActiveRigs.Contains(x.Key)))
+            {
+                remove.Add(bone.Key);
+                foreach (LineRenderer line in bone.Value)
+                    GameObject.Destroy(line);
+            }
+            foreach (VRRig rig in remove)
+                boneEspPool.Remove(rig);
+            foreach (VRRig rig in VRRigCache.ActiveRigs)
+            {
+                if (rig != null && rig != VRRig.LocalRig)
+                {
+                    if (!boneEspPool.TryGetValue(rig, out List<LineRenderer> lines))
+                    {
+                        lines = new List<LineRenderer>();
+                        LineRenderer head = rig.head.rigTarget.AddComponent<LineRenderer>();
+                        head.material.shader = Shader.Find("GUI/Text Shader");
+                        lines.Add(head);
+                        for (int i = 0; i < 19; i++)
+                        {
+                            LineRenderer line = rig.mainSkin.bones[bones[i * 2]].gameObject.AddComponent<LineRenderer>();
+                            line.material.shader = Shader.Find("GUI/Text Shader");
+                            lines.Add(line);
+                        }
+                        boneEspPool.Add(rig, lines);
+                    }
+                    LineRenderer linee = lines[0];
+                    Color boneColor = followmenutheme ? backgroundColor.GetCurrentColor() : rig.IsTagged() ? new Color(0.6f, 0f, 0f) : rig.playerColor;
+                    boneColor.a = 0.7f;
+                    linee.startWidth = 0.02f;
+                    linee.endWidth = 0.02f;
+                    linee.startColor = boneColor;
+                    linee.endColor = boneColor;
+                    linee.SetPosition(0, rig.head.rigTarget.transform.position + new Vector3(0f, 0.16f, 0f));
+                    linee.SetPosition(1, rig.head.rigTarget.transform.position - new Vector3(0f, 0.4f, 0f));
+                    for (int i = 0; i < 19; i++)
+                    {
+                        linee = lines[i + 1];
+                        linee.startWidth = 0.02f;
+                        linee.endWidth = 0.02f;
+                        linee.startColor = boneColor;
+                        linee.endColor = boneColor;
+                        linee.material.shader = Shader.Find("GUI/Text Shader");
+                        linee.SetPosition(0, rig.mainSkin.bones[bones[i * 2]].position);
+                        linee.SetPosition(1, rig.mainSkin.bones[bones[i * 2 + 1]].position);
+                    }
+                }
+            }
+        }
+        public static void DisableBoneESP()
+        {
+            foreach (var line in boneEspPool.SelectMany(bones => bones.Value))
+                Object.Destroy(line);
+            boneEspPool.Clear();
+        }
+
 
         private static readonly Dictionary<VRRig, GameObject> boxEspPool = new Dictionary<VRRig, GameObject>();
         private static GameObject CreateObject(Transform parent, PrimitiveType type, Vector3 scale, Color color, Shader shader)
