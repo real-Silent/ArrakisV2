@@ -898,5 +898,14 @@ namespace Arrakis.Mods
             }
             return cachedBugs.ToArray();
         }
+
+        public static void ChamRig(VRRig rig, bool enable, Color color)
+        {
+            if (rig != null)
+            {
+                rig.mainSkin.material.shader = enable ? Shader.Find("GUI/Text Shader") : Shader.Find("GorillaTag/UberShader");
+                rig.mainSkin.material.color = enable ? color : rig.playerColor;
+            }
+        }
     }
 }

@@ -342,6 +342,25 @@ namespace Arrakis.Menu
                 }
             }
             catch { }
+
+            try
+            {
+                if (lockTarget != null)
+                {
+                    if (gunTargetESP)
+                    {
+                        if (GetGunInput(true))
+                            Visual.ChamRig(lockTarget, true, new Color(0.4f, 0f, 0f, 0.6f));
+                        else
+                            Visual.ChamRig(lockTarget, false, lockTarget.playerColor);
+                    }
+                    else
+                    {
+                        Visual.ChamRig(lockTarget, false, lockTarget.playerColor);
+                    }
+                }
+            }
+            catch { }
         }
 
         private static IEnumerator OpenMenu()
@@ -1088,6 +1107,7 @@ namespace Arrakis.Menu
         public static float gunPointerSize = 0.15f; // ill add a setting for this later -sleepy
         public static float gunLineWidth = 0.025f; // ill add a setting for this later -sleepy
         public static bool swapgunhand = false;
+        public static bool gunTargetESP = false;
 
         public static bool GetGunInput(bool isShooting) =>
             GetGunHand(swapgunhand, isShooting);
