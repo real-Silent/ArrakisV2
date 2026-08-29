@@ -344,7 +344,36 @@ namespace Arrakis.Mods
             boxEspPool.Clear();
         }
 
-
+        public static void HollowBoxESP()
+        {
+            foreach (VRRig rig in VRRigCache.ActiveRigs)
+            {
+                if (rig == null || rig == GorillaTagger.Instance.offlineVRRig)
+				{
+				    continue;	
+				}
+                GameObject box = new GameObject("HollowBoxESP");
+                TextMesh text = box.AddComponent<TextMesh>();
+                text.alignment = TextAlignment.Center;
+                text.anchor = TextAnchor.MiddleCenter;
+                text.text = "□";
+                text.fontSize = 300;
+                text.characterSize = 0.05f;
+                Color color;
+                if (playerIsInfected(rig))
+                    color = Color.red;
+                else
+                    color = rig.mainSkin.material.color;
+                text.color = color;
+                box.transform.position = rig.transform.position;
+                if (Camera.main != null)
+                {
+                    box.transform.LookAt(box.transform.position + Camera.main.transform.rotation * Vector3.forward, Camera.main.transform.rotation * Vector3.up);
+                }
+                UnityEngine.Object.Destroy(box, Time.deltaTime);
+            }
+        }
+		
         private static Dictionary<VRRig, TextMeshPro> nameTagPool = new Dictionary<VRRig, TextMeshPro>();
         public static void NameTags()
         {
