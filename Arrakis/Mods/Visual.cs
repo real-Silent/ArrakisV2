@@ -344,35 +344,63 @@ namespace Arrakis.Mods
             boxEspPool.Clear();
         }
 
+        private static Dictionary<VRRig, GameObject> hollowBoxPool = new Dictionary<VRRig, GameObject>();
         public static void HollowBoxESP()
         {
+            if (!NetworkSystem.Instance.InRoom)
+                return;
             foreach (VRRig rig in VRRigCache.ActiveRigs)
             {
-                if (rig == null || rig == GorillaTagger.Instance.offlineVRRig)
-				{
-				    continue;	
-				}
-                GameObject box = new GameObject("HollowBoxESP");
-                TextMesh text = box.AddComponent<TextMesh>();
-                text.alignment = TextAlignment.Center;
-                text.anchor = TextAnchor.MiddleCenter;
-                text.text = "□";
-                text.fontSize = 300;
-                text.characterSize = 0.05f;
-                Color color;
-                if (playerIsInfected(rig))
-                    color = Color.red;
-                else
-                    color = rig.mainSkin.material.color;
-                text.color = color;
-                box.transform.position = rig.transform.position;
-                if (Camera.main != null)
+                List<VRRig> remove = null;
+                foreach (var pair in hollowBoxPool)
                 {
-                    box.transform.LookAt(box.transform.position + Camera.main.transform.rotation * Vector3.forward, Camera.main.transform.rotation * Vector3.up);
+                    if (pair.Key == null || !VRRigCache.ActiveRigs.Contains(pair.Key))
+                    {
+                        remove ??= new List<VRRig>();
+                        remove.Add(pair.Key);
+                        if (pair.Value != null)
+                            Object.Destroy(pair.Value);
+                    }
                 }
-                UnityEngine.Object.Destroy(box, Time.deltaTime);
+                if (remove != null)
+                {
+                    foreach (var vrrig in remove)
+                        hollowBoxPool.Remove(vrrig);
+                }
+                if (rig != null && rig != VRRig.LocalRig)
+                {
+                    if (!hollowBoxPool.TryGetValue(rig, out GameObject box))
+                    {
+                        box = new GameObject("HollowBoxESP");
+                        TextMesh text = box.AddComponent<TextMesh>();
+                        text.alignment = TextAlignment.Center;
+                        text.anchor = TextAnchor.MiddleCenter;
+                        text.text = "□";
+                        text.fontSize = 300;
+                        text.characterSize = 0.05f;
+                        hollowBoxPool[rig] = box;
+                    }
+                    Color color = followmenutheme ? backgroundColor.GetCurrentColor() : rig.IsTagged() ? Color.red : rig.playerColor;
+                    color.a = 0.7f;
+                    box.GetComponent<TextMesh>().color = color;
+                    box.transform.position = rig.transform.position;
+                    if (Camera.main != null)
+                    {
+                        box.transform.LookAt(box.transform.position + Camera.main.transform.rotation * Vector3.forward, Camera.main.transform.rotation * Vector3.up);
+                    }
+                }
             }
         }
+        public static void DisableHollowBoxESP()
+        {
+            foreach (var obj in hollowBoxPool.Values)
+            {
+                if (obj != null)
+                    Object.Destroy(obj);
+            }
+            hollowBoxPool.Clear();
+        }
+
 		
         private static Dictionary<VRRig, TextMeshPro> nameTagPool = new Dictionary<VRRig, TextMeshPro>();
         public static void NameTags()

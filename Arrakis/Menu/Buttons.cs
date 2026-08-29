@@ -314,7 +314,7 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Chams V2", method =() => Visual.Chams(1), disableMethod =() => Visual.DisableChams(), isTogglable = true, toolTip = "Lets you see everyone through only objects and walls." },
                 new ButtonInfo { buttonText = "Tracers", method =() => Visual.Tracers(), disableMethod =() => Visual.DisableTracers(), isTogglable = true, toolTip = "Points lines at everyone." },
                 new ButtonInfo { buttonText = "Box ESP", method =() => Visual.BoxESP(), disableMethod =() => Visual.DisableBoxESP(), isTogglable = true, toolTip = "Gives people boxes on them." },
-                new ButtonInfo { buttonText = "Hollow Box ESP", method =() => Visual.HollowBoxESP(), isTogglable = true, toolTip = "Gives people hollow boxes on them."},
+                new ButtonInfo { buttonText = "Hollow Box ESP", method =() => Visual.HollowBoxESP(), disableMethod =() => Visual.DisableHollowBoxESP(), isTogglable = true, toolTip = "Gives people hollow boxes on them."},
                 new ButtonInfo { buttonText = "Bone ESP", method =() => Visual.BoneESP(), disableMethod =() => Visual.DisableBoneESP(), isTogglable = true, toolTip = "Gives people bones on there body." },
                 new ButtonInfo { buttonText = "Self Bone ESP", method =() => Visual.SelfBoneESP(), disableMethod =() => Visual.DisableSelfBoneESP(), isTogglable = true, toolTip = "Gives you bones on there body." },
                 new ButtonInfo { buttonText = "Name Tags", method =() => Visual.NameTags(), disableMethod =() => Visual.DisableNameTags(), isTogglable = true, toolTip = "Gives everyone a nametag that shows there name." },
