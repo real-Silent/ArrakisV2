@@ -145,6 +145,7 @@ namespace Arrakis.Mods
 
         private static GameObject hitboxleft;
         private static GameObject hitboxright;
+        public static float hitboxScale = 0.3f;
         public static void Hitboxes()
         {
             if (hitboxleft == null)
@@ -153,7 +154,7 @@ namespace Arrakis.Mods
                 hitboxleft.transform.parent = GorillaTagger.Instance.leftHandTransform;
                 hitboxleft.transform.position = GorillaTagger.Instance.leftHandTransform.position;
                 hitboxleft.transform.rotation = GorillaTagger.Instance.leftHandTransform.rotation;
-                hitboxleft.transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
+                hitboxleft.transform.localScale = new Vector3(hitboxScale, hitboxScale, hitboxScale);
                 GameObject.Destroy(hitboxleft.GetComponent<SphereCollider>());
                 hitboxleft.GetComponent<Renderer>().material.shader = Shader.Find("GUI/Text Shader");
                 hitboxleft.GetComponent<Renderer>().material.color = new Color(0.5f, 0f, 0f, 0.5f);
@@ -164,7 +165,7 @@ namespace Arrakis.Mods
                 hitboxright.transform.parent = GorillaTagger.Instance.rightHandTransform;
                 hitboxright.transform.position = GorillaTagger.Instance.rightHandTransform.position;
                 hitboxright.transform.rotation = GorillaTagger.Instance.rightHandTransform.rotation;
-                hitboxright.transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
+                hitboxright.transform.localScale = new Vector3(hitboxScale, hitboxScale, hitboxScale);
                 GameObject.Destroy(hitboxright.GetComponent<SphereCollider>());
                 hitboxright.GetComponent<Renderer>().material.shader = Shader.Find("GUI/Text Shader");
             }
