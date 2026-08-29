@@ -204,7 +204,7 @@ namespace Arrakis.Mods
                     }
                     LineRenderer linee = lines[0];
                     Color boneColor = followmenutheme ? backgroundColor.GetCurrentColor() : rig.IsTagged() ? new Color(0.6f, 0f, 0f) : rig.playerColor;
-                    boneColor.a = 0.7f;
+                    boneColor.a = 0.9f;
                     linee.startWidth = 0.02f;
                     linee.endWidth = 0.02f;
                     linee.startColor = boneColor;
@@ -325,7 +325,7 @@ namespace Arrakis.Mods
                     boxEspPool[rig] = box;
                 }
                 Color color = followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor;
-                color.a = 0.3f;
+                color.a = 0.4f;
                 box.GetComponent<Renderer>().material.color = color;
                 float distance = Vector3.Distance(Camera.main.transform.position, rig.transform.position);
                 float scale = Mathf.Clamp(distance * 0.05f, 0.25f, 3f);
