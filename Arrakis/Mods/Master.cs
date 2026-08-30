@@ -335,6 +335,34 @@ namespace Arrakis.Mods
                 gunLocked = false;
             }
         }
+        public static void BlockFreezeGun()
+        {
+            if (GetGunInput(false))
+            {
+                var GunData = RenderGun();
+                GameObject NewPointer = GunData.NewPointer;
+                RaycastHit Ray = GunData.Ray;
+                if (lockTarget != null && gunLocked)
+                {
+                    for (int i = 0; i < 3; i++)
+                        SpawnBlock(-566818631, lockTarget.transform.position + RandomVector3(0.4f), RandomQuaternion());
+                }
+                if (GetGunInput(true))
+                {
+                    VRRig rig = Ray.collider.GetComponentInParent<VRRig>();
+                    if (rig != null && rig != VRRig.LocalRig)
+                    {
+                        lockTarget = rig;
+                        gunLocked = true;
+                    }
+                }
+            }
+            else
+            {
+                lockTarget = null;
+                gunLocked = false;
+            }
+        }
         public static void ChangeLavaState(InfectionLavaController.RisingLavaState state)
         {
             if (!PhotonNetwork.LocalPlayer.IsMasterClient) 
