@@ -496,7 +496,6 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Spawn Block Gun", method =() => Master.SpawnBlockGun(), isTogglable = true, toolTip = "Spawns a random block where ever you shoot." },
                 new ButtonInfo { buttonText = "Block Crash All", method =() => Master.BlockCrashAll(), isTogglable = true, toolTip = "Crashes everyone with blocks." },
                 new ButtonInfo { buttonText = "Block Sphere", method =() => Master.BlockSphere(), isTogglable = false, toolTip = "Makes a sphere with blocks." },
-                new ButtonInfo { buttonText = "Block Trap Gun", method =() => Master.BlockTrapGun(), isTogglable = true, toolTip = "Traps who ever you shoot with blocks." },
                 new ButtonInfo { buttonText = "Block Freeze Gun", method =() => Master.BlockFreezeGun(), isTogglable = true, toolTip = "Freezes who ever you shoot with blocks." },
                 new ButtonInfo { buttonText = "VIM Kick All", method =() => Master.VIMKickAll(), isTogglable = false, toolTip = "Kicks everybody if you are master client, the room is private and you own vim." },
                 new ButtonInfo { buttonText = "Rise Lava", method =() => Master.ChangeLavaState(InfectionLavaController.RisingLavaState.Rising), isTogglable = false, toolTip = "Rises the lava." },
