@@ -18,13 +18,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using Arrakis.Managers;
 using Arrakis.Notifications;
 using GorillaTagScripts;
 using Photon.Pun;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
+using Photon.Realtime;
 using UnityEngine;
 using UnityEngine.XR;
 using static Arrakis.Menu.Main;
@@ -275,24 +276,108 @@ namespace Arrakis.Mods
             int index = random.Next(blockIds.Count);
             return blockIds[index];
         }
-        public static void SpawnBlock(int id, Vector3 position, Quaternion rotation, RpcTarget target = RpcTarget.All)
+        private static BuilderTable GetBuilderTable()
         {
-            if (PhotonNetwork.InRoom && PhotonNetwork.IsMasterClient)
-            {
-                BuilderTable table = GameObject.Find("Environment Objects/MonkeBlocksRoomPersistent/BuilderTable").GetComponent<BuilderTable>();
-                GameObject.Find("Environment Objects/MonkeBlocksRoomPersistent/BuilderNetworking").GetComponent<BuilderTableNetworking>().photonView
-                .RPC("PieceCreatedByShelfRPC", target, new object[] { id, table.CreatePieceId(), BitPackUtils.PackWorldPosForNetwork(position), 
-                    BitPackUtils.PackQuaternionForNetwork(rotation), 0, (byte)4, 1, PhotonNetwork.LocalPlayer });
-            }
+            BuilderTable.TryGetBuilderTableForZone(VRRig.LocalRig.zoneEntity.currentZone, out BuilderTable table);
+            return table;
         }
-        public static void DestroyBlock(int id, Vector3 position, Quaternion rotation, bool PlaySfx)
+        public static BuilderTable BuilderTable => GetBuilderTable();
+        public static float blockDebounce = 0.1f;
+        private static float blockDelay;
+        public static int pieceId = -1;
+        public static void SpawnBlock(int pieceType, Vector3 position, Quaternion rotation, int materialType, object target = null, bool overrideFreeze = false, bool forceGravity = false, Vector3? velocity = null, Vector3? angVelocity = null)
         {
-            if (PhotonNetwork.InRoom && PhotonNetwork.IsMasterClient)
+            BuilderTable table = BuilderTable;
+            BuilderTableNetworking network = table.builderNetworking;
+
+            if (Time.time <= blockDelay)
+                return;
+
+            if (NetworkSystem.Instance.IsMasterClient)
             {
-                BuilderTableNetworking network = GameObject.Find("Environment Objects/MonkeBlocksRoomPersistent/BuilderNetworking").GetComponent<BuilderTableNetworking>();
-                network.photonView.RPC("PieceDestroyedRPC", RpcTarget.All, 
-                new object[] { id, BitPackUtils.PackWorldPosForNetwork(position), BitPackUtils.PackQuaternionForNetwork(rotation), PlaySfx, (short)1 });
+                blockDelay = Time.time + 0.02f;
+                int id = table.CreatePieceId();
+                object[] createArgs =
+                {
+                    pieceType,
+                    id,
+                    BitPackUtils.PackWorldPosForNetwork(position),
+                    BitPackUtils.PackQuaternionForNetwork(rotation),
+                    materialType,
+                    (byte)4,
+                    1,
+                    PhotonNetwork.LocalPlayer
+                };
+                if (target is RpcTarget rpcCreate)
+                    network.photonView.RPC("PieceCreatedByShelfRPC", rpcCreate, createArgs);
+                else if (target is Player playerCreate)
+                    network.photonView.RPC("PieceCreatedByShelfRPC", playerCreate, createArgs);
+                else
+                    network.photonView.RPC("PieceCreatedByShelfRPC", RpcTarget.All, createArgs);
+
+                if (!overrideFreeze || forceGravity)
+                {
+                    object[] grabArgs =
+                    {
+                        network.CreateLocalCommandId(),
+                        id,
+                        true,
+                        BitPackUtils.PackHandPosRotForNetwork(Vector3.zero, Quaternion.identity),
+                        PhotonNetwork.LocalPlayer
+                    };
+                    if (target is RpcTarget rpcGrab)
+                        network.photonView.RPC("PieceGrabbedRPC", rpcGrab, grabArgs);
+                    else if (target is Player playerGrab)
+                        network.photonView.RPC("PieceGrabbedRPC", playerGrab, grabArgs);
+                    else
+                        network.photonView.RPC("PieceGrabbedRPC", RpcTarget.All, grabArgs);
+
+                    object[] dropArgs =
+                    {
+                        network.CreateLocalCommandId(),
+                        id,
+                        position,
+                        rotation,
+                        velocity ?? Vector3.zero,
+                        angVelocity ?? Vector3.zero,
+                        PhotonNetwork.LocalPlayer
+                    };
+                    if (target is RpcTarget rpcDrop)
+                        network.photonView.RPC("PieceDroppedRPC", rpcDrop, dropArgs);
+                    else if (target is Player playerDrop)
+                        network.photonView.RPC("PieceDroppedRPC", playerDrop, dropArgs);
+                    else
+                        network.photonView.RPC("PieceDroppedRPC", RpcTarget.All, dropArgs);
+                }
+                return;
             }
+            blockDelay = Time.time + blockDebounce;
+            Vector3 handPos = VRRig.LocalRig.leftHandTransform.position;
+            BuilderPiece piece = Resources.FindObjectsOfTypeAll<BuilderPiece>()
+                .Where(p => p.gameObject.activeInHierarchy)
+                .Where(p => p.pieceType == pieceType)
+                .Where(p => !p.isBuiltIntoTable)
+                .Where(p => p.CanPlayerGrabPiece(PhotonNetwork.LocalPlayer.ActorNumber, p.transform.position))
+                .Where(p => Vector3.Distance(p.transform.position, handPos) < 2.5f)
+                .OrderBy(p => Vector3.Distance(p.transform.position, handPos))
+                .FirstOrDefault();
+            if (piece == null)
+            {
+                piece = Resources.FindObjectsOfTypeAll<BuilderPiece>()
+                    .Where(p => p.gameObject.activeInHierarchy)
+                    .Where(p => !p.isBuiltIntoTable)
+                    .Where(p => p.CanPlayerGrabPiece(PhotonNetwork.LocalPlayer.ActorNumber, p.transform.position))
+                    .Where(p => Vector3.Distance(p.transform.position, handPos) < 2.5f)
+                    .OrderBy(p => Vector3.Distance(p.transform.position, handPos))
+                    .FirstOrDefault();
+            }
+            if (piece == null)
+                return;
+            if (Vector3.Distance(handPos, position) > 2.5f)
+                position = handPos + (position - handPos).normalized * 2.5f;
+            pieceId = piece.pieceId;
+            network.RequestGrabPiece(piece, true, Vector3.zero, Quaternion.identity);
+            network.RequestDropPiece(piece, position, rotation, velocity ?? Vector3.zero, angVelocity ?? Vector3.zero);
         }
         public static void SpawnBlockGun()
         {
@@ -303,36 +388,8 @@ namespace Arrakis.Mods
                 RaycastHit Ray = GunData.Ray;
                 if (GetGunInput(true))
                 {
-                    SpawnBlock(GetRandomId(), NewPointer.gameObject.transform.position, RandomQuaternion());
+                    SpawnBlock(GetRandomId(), NewPointer.gameObject.transform.position, RandomQuaternion(), 0, RpcTarget.All);
                 }
-            }
-        }
-        public static void BlockTrapGun()
-        {
-            if (GetGunInput(false))
-            {
-                var GunData = RenderGun();
-                GameObject NewPointer = GunData.NewPointer;
-                RaycastHit Ray = GunData.Ray;
-                if (lockTarget != null && gunLocked)
-                {
-                    for (int i = 0; i < 12; i++)
-                        SpawnBlock(-1447051713, lockTarget.transform.position, RandomQuaternion());
-                }
-                if (GetGunInput(true))
-                {
-                    VRRig rig = Ray.collider.GetComponentInParent<VRRig>();
-                    if (rig != null && rig != VRRig.LocalRig)
-                    {
-                        lockTarget = rig;
-                        gunLocked = true;
-                    }
-                }
-            }
-            else
-            {
-                lockTarget = null;
-                gunLocked = false;
             }
         }
         public static void BlockFreezeGun()
@@ -345,7 +402,7 @@ namespace Arrakis.Mods
                 if (lockTarget != null && gunLocked)
                 {
                     for (int i = 0; i < 3; i++)
-                        SpawnBlock(-566818631, lockTarget.transform.position + RandomVector3(0.4f), RandomQuaternion());
+                        SpawnBlock(-566818631, lockTarget.transform.position + RandomVector3(0.4f), RandomQuaternion(), 0, RpcTarget.All);
                 }
                 if (GetGunInput(true))
                 {
@@ -365,10 +422,10 @@ namespace Arrakis.Mods
         }
         public static void ChangeLavaState(InfectionLavaController.RisingLavaState state)
         {
-            if (!PhotonNetwork.LocalPlayer.IsMasterClient) 
-            { 
+            if (!PhotonNetwork.LocalPlayer.IsMasterClient)
+            {
                 NotificationManager.SendNotification("<color=grey>[</color><color=cyan>ARRAKIS</color><color=grey>]</color> You are not master client this mod will not work."); 
-                return; 
+                return;
             }
             var lava = InfectionLavaController.ActiveControllers.FirstOrDefault();
             if (lava == null)
@@ -377,17 +434,14 @@ namespace Arrakis.Mods
             lava.JumpToState(state);
             lava.reliableState.stateStartTime = startTime;
         }
-        public static BuilderPiece piece = null;
         public static void BlockCrashAll()
         {
-            for (int i = 0; i < 2; i++)
+            if (!PhotonNetwork.IsMasterClient)
             {
-                SpawnBlock(-1447051713, VRRig.LocalRig.transform.position, Quaternion.identity, RpcTarget.Others);
-                if (piece == null)
-                    piece = GameObject.FindObjectOfType<BuilderPiece>();
-                if (piece.pieceType == -1447051713 || piece.pieceId == -1447051713)
-                    piece.gameObject.SetActive(false);
+                Toggle("Block Crash All");
+                return;
             }
+            SpawnBlock(1934114066, new Vector3(-127.6248f, 16.99441f, -217.2094f), Quaternion.identity, 0, RpcTarget.Others, false, true);
         }
         public static void BlockSphere(float radius = 2f, int density = 40)
         {
@@ -399,112 +453,9 @@ namespace Arrakis.Mods
                 float theta = 2 * Mathf.PI * i / ((1 + Mathf.Sqrt(5)) / 2);
                 float phi = Mathf.Acos(1 - 2 * (i + 0.5f) / (density * 2));
                 Vector3 pos = center + new Vector3(radius * Mathf.Sin(phi) * Mathf.Cos(theta), radius * Mathf.Sin(phi) * Mathf.Sin(theta), radius * Mathf.Cos(phi));
-                SpawnBlock(GetRandomId(), pos, Quaternion.identity);
+                SpawnBlock(GetRandomId(), pos, Quaternion.identity, 0, RpcTarget.All);
             }
 
-        }
-        public static GhostReactorManager _GRM;
-        public static void GetGRM()
-        {
-            if (_GRM == null)
-            {
-                _GRM = GameObject.FindAnyObjectByType<GhostReactorManager>();
-            }
-        }
-        /*
-            -298662477  | orb
-            931983585   | id badge    
-            -20887423   | flow
-            373410214   | create
-            -1724683316 | barrel
-            -398809473  | large orb?
-            -175001459  | GhostReactorToolClub
-            -298662477  | GhostReactorCollectibleCoreFlowerVariant
-            1115277044  | GhostReactorToolLantern
-            1989693521  | GhostReactorToolCollector
-            1165678479  | GhostReactorToolRevive
-            -1495476618 | GhostReactorToolShieldGun
-            -531028875  | GhostReactorToolDirectionalShield
-            166197108   | GhostReactorCollectibleCore
-            -2120233750 | GhostReactorToolHockeyStick
-            -1949194188 | GhostReactorBreakableCrateTool
-            418765863   | GhostReactorCollectibleSentientCore
-            -697215200  | GhostReactorHazardTower
-            1978670241  | GhostReactorHazardTowerProjectile
-            -1086813702 | GhostReactorWallLight01
-            -830469733  | GhostReactorToolClubSuper
-            -1235906457 | GhostReactorToolDockWrist
-            225241881   | GhostReactorToolFlash
-            400631847   | GhostReactorToolFlashSuper
-            252997812   | GhostReactorToolSmallBackpack
-            -502169320  | GhostReactorToolStatusWatch
-            -687044547  | GRLanternFlare
-            -1229767062 | GRUBatonDamage1
-            270266995   | GRUBatonDamage2
-            1907002827  | GRUBatonDamage3
-            -426726616  | GRUCollectorBonus1
-            769995104   | GRUCollectorBonus2
-            -1686893135 | GRUCollectorBonus3
-            1735390800  | GRUDirectionalShieldSize1
-            -922807515  | GRUDirectionalShieldSize2
-            -1503477586 | GRUDirectionalShieldSize3
-            220032407   | GRUFlashDamage1
-            -1183128012 | GRUFlashDamage2
-            1203104201  | GRUFlashDamage3
-            -1314917544 | GRULanternIntensity1
-            -228409232  | GRULanternIntensity2
-            1477289365  | GRULanternIntensity3
-            -311546458  | GRUPowerEff1
-            337645388   | GRUPowerEff2
-            -1709004991 | GRUPowerEff3
-            -1339298990 | GRUShieldGunStrength1
-            672910098   | GRUShieldGunStrength2
-            -1517122485 | GRUShieldGunStrength3
-            -735557236 | Door
-        */
-        public static void DoorTrapGun()
-        {
-            if (GetGunInput(false))
-            {
-                var GunData = RenderGun();
-                GameObject NewPointer = GunData.NewPointer;
-                RaycastHit Ray = GunData.Ray;
-                if (lockTarget != null && gunLocked)
-                {
-                    for (int i = 0; i < 4; i++)
-                        SpawnThingGhostReact(-735557236, lockTarget.transform.position, RandomQuaternion());
-                }
-                if (GetGunInput(true))
-                {
-                    VRRig rig = Ray.collider.GetComponentInParent<VRRig>();
-                    if (rig != null && rig != VRRig.LocalRig)
-                    {
-                        lockTarget = rig;
-                        gunLocked = true;
-                    }
-                }
-            }
-            else
-            {
-                lockTarget = null;
-                gunLocked = false;
-            }
-        }
-        public static void SpawnThingGhostReact(int hash, Vector3 position, Quaternion rotation, long[] createData = null)
-        {
-            GetGRM();
-            bool inGhostReactor = ZoneManagement.instance.IsZoneActive(GTZone.ghostReactor) || ZoneManagement.instance.IsZoneActive(GTZone.ghostReactorDrill) 
-            || ZoneManagement.instance.IsZoneActive(GTZone.ghostReactorTunnel);
-            if (!inGhostReactor)
-                return;
-            if (!InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Right, !XRSettings.isDeviceActive))
-                return;
-            MethodInfo createNetId = typeof(GameEntityManager).GetMethod("CreateNetId", BindingFlags.Instance | BindingFlags.NonPublic);
-            int netId = (int)createNetId.Invoke( _GRM.gameEntityManager,  new object[] { 1 });
-            createData ??= new long[] { 0L };
-            _GRM.gameEntityManager.photonView.RPC("CreateItemRPC", RpcTarget.AllBuffered, new int[] { netId }, new int[] { hash }, 
-            new long[] { BitPackUtils.PackWorldPosForNetwork(position) }, new int[] { BitPackUtils.PackQuaternionForNetwork(rotation) }, createData, new int[] { 0 });
-            Safety.RPCProc();
         }
         public static void VIMKickAll()
         {
