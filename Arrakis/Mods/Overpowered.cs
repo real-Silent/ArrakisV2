@@ -557,10 +557,10 @@ namespace Arrakis.Mods
         public static float LagDelay = 0f;
         public static void LagAll()
         {
-            if (PhotonNetwork.InRoom && Time.time >= LagDelay)
+            if (PhotonNetwork.InRoom && Time.time > LagDelay)
             {
-                LagDelay = Time.time + 9f;
-                for (int i = 0; i < 2000; i++)
+                LagDelay = Time.time + 4.2f;
+                for (int i = 0; i < 1000; i++)
                 {
                     PhotonNetwork.NetworkingClient.OpRaiseEvent(3, new object[0], new RaiseEventOptions
                     {
