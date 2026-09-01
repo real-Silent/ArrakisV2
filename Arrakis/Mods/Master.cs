@@ -476,7 +476,15 @@ namespace Arrakis.Mods
             }
             NetworkSystem.Instance.PlayerListOthers.ForEach(p => RoomControls.KickPlayer(p.ActorNumber));
         }
-
+        public static void DestroyLighting()
+        {
+            if (!PhotonNetwork.LocalPlayer.IsMasterClient)
+            {
+                NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> You are not master this mod will not work.");
+                return;
+            }
+            PhotonNetwork.Destroy(BetterDayNightManager.instance.photonView);
+        }
         // Lucy mods so we can release when october i know its early but yea -nova
         //public static HalloweenGhostChaser Lucy
         //{

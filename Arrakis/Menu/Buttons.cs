@@ -503,6 +503,7 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Drain Lava", method =() => Master.ChangeLavaState(InfectionLavaController.RisingLavaState.Draining), isTogglable = false, toolTip = "Drain the lava." },
                 new ButtonInfo { buttonText = "Empty Lava", method =() => Master.ChangeLavaState(InfectionLavaController.RisingLavaState.Drained), isTogglable = false, toolTip = "Removes the lava." },
                 new ButtonInfo { buttonText = "Erupt Lava", method =() => Master.ChangeLavaState(InfectionLavaController.RisingLavaState.Erupting), isTogglable = false, toolTip = "Erupts the lava." },
+                new ButtonInfo { buttonText = "Destroy Lighting", method =() => Master.DestroyLighting(), isTogglable = false, toolTip = "Destroys the lighting." },
             },
 
             new ButtonInfo[] { // Experimental
