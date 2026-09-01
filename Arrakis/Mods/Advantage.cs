@@ -21,6 +21,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Arrakis.Extensions;
+using Arrakis.Managers;
 using Arrakis.Notifications;
 using ExitGames.Client.Photon;
 using GorillaGameModes;
@@ -29,6 +30,7 @@ using HarmonyLib;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
+using UnityEngine.XR;
 using static Arrakis.Menu.Main;
 
 namespace Arrakis.Mods
@@ -269,6 +271,21 @@ namespace Arrakis.Mods
                     GameMode.ReportTag(player);
                 }
             }
+        }
+        public static void Blink()
+        {
+            if (InputManager.GetInput(InputManager.InputType.Trigger, InputManager.Hand.Left, !XRSettings.isDeviceActive))
+            {
+                Arrakis.Patches.Patchers.EventPatches.Override = () => false;
+                Arrakis.Patches.Patchers.PlrSerializePatch.stopSerialization = true;
+            }
+           else
+            StopBlinking();
+        }
+        public static void StopBlinking()
+        {
+            Arrakis.Patches.Patchers.EventPatches.Override = null;
+            Arrakis.Patches.Patchers.PlrSerializePatch.stopSerialization = false;
         }
     }
 }

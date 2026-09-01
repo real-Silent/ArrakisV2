@@ -481,6 +481,7 @@ namespace Arrakis.Mods
             if (!PhotonNetwork.LocalPlayer.IsMasterClient)
             {
                 NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> You are not master this mod will not work.");
+                Toggle("Destroy Lighting");
                 return;
             }
             PhotonNetwork.Destroy(BetterDayNightManager.instance.photonView);

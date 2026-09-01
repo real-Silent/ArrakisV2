@@ -18,9 +18,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-using Photon.Pun;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using Photon.Pun;
 
 namespace Arrakis.Extensions
 {
@@ -72,6 +73,13 @@ namespace Arrakis.Extensions
             List<NetPlayer> infectedPlayers = ((GorillaTagManager)GorillaGameManager.instance).currentInfected;
             NetPlayer targetPlayer = rig.GetPlayer();
             return infectedPlayers.Contains(targetPlayer);
+        }
+        public static int GetPing(this VRRig rig)
+        {
+            double ping = Math.Abs((rig.velocityHistoryList[0].time - PhotonNetwork.Time) * 1000);
+            int safePing = (int)Math.Clamp(Math.Round(ping), 0, int.MaxValue);
+
+            return safePing;
         }
     }
 }

@@ -349,6 +349,7 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Fake Lag", enableMethod =() => PhotonNetwork.SerializationRate = 1, disableMethod =() => PhotonNetwork.SerializationRate = 10, isTogglable = true, toolTip = "Makes your rig really laggy to other players." },
                 new ButtonInfo { buttonText = "No Tag Limit", enableMethod =() => GorillaTagger.Instance.maxTagDistance = float.MaxValue, disableMethod =() => GorillaTagger.Instance.maxTagDistance = 2.2f, isTogglable = true, toolTip = "Makes it so flick tagging is back." },
                 new ButtonInfo { buttonText = "Anti Tag", method =() => Advantage.AntiTag(), isTogglable = true, toolTip = "Makes it so you cant be tagged." },
+                new ButtonInfo { buttonText = "Blink <color=grey>[<color=cyan>T</color>]</color>", method =() => Advantage.Blink(), disableMethod =() => Advantage.StopBlinking(), isTogglable = true, toolTip = "Lets you freeze other players when holding <color=grey>[<color=cyan>T</color>]</color>." },
             },
 
             new ButtonInfo[] { // Sound
@@ -503,7 +504,7 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Drain Lava", method =() => Master.ChangeLavaState(InfectionLavaController.RisingLavaState.Draining), isTogglable = false, toolTip = "Drain the lava." },
                 new ButtonInfo { buttonText = "Empty Lava", method =() => Master.ChangeLavaState(InfectionLavaController.RisingLavaState.Drained), isTogglable = false, toolTip = "Removes the lava." },
                 new ButtonInfo { buttonText = "Erupt Lava", method =() => Master.ChangeLavaState(InfectionLavaController.RisingLavaState.Erupting), isTogglable = false, toolTip = "Erupts the lava." },
-                new ButtonInfo { buttonText = "Destroy Lighting", method =() => Master.DestroyLighting(), isTogglable = false, toolTip = "Destroys the lighting." },
+                new ButtonInfo { buttonText = "Destroy Lighting", method =() => Master.DestroyLighting(), isTogglable = true, toolTip = "Destroys the lighting." },
             },
 
             new ButtonInfo[] { // Experimental

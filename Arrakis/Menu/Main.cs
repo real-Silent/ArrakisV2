@@ -18,6 +18,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
 using Arrakis.Classes;
 using Arrakis.Managers;
 using Arrakis.Mods;
@@ -28,18 +34,13 @@ using GorillaLocomotion;
 using GorillaNetworking;
 using HarmonyLib;
 using Photon.Pun;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using UnityEngine.XR;
 using static Arrakis.Menu.Buttons;
 using static Arrakis.Settings;
+using static Arrakis.Extensions.VRRigExtensions;
 
 namespace Arrakis.Menu
 {
@@ -48,6 +49,7 @@ namespace Arrakis.Menu
     {
         public static void OnLoad()
         {
+            Arrakis.Patches.Patchers.PlrSerializePatch.OnPlayerSerialize += OnPlayerSerialize;
             AudioManager.Init();
             try
             {
@@ -1889,5 +1891,8 @@ namespace Arrakis.Menu
             }
             return roomCode.ToString();
         }
+        public static readonly Dictionary<VRRig, int> playerPing = new Dictionary<VRRig, int>();
+        private static void OnPlayerSerialize(VRRig rig) =>
+            playerPing[rig] = rig.GetPing(); // mainly used for debuging, might make a ping nametags later -sleepy
     }
 }
