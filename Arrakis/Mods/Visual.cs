@@ -18,14 +18,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using Arrakis.Classes;
 using Arrakis.Classes.Mods;
 using Arrakis.Extensions;
 using Arrakis.Menu;
 using GorillaExtensions;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
@@ -964,5 +964,10 @@ namespace Arrakis.Mods
                 rig.mainSkin.material.color = enable ? color : rig.playerColor;
             }
         }
-    }
+        public static void EnableFog() =>
+            GorillaTag.Rendering.ZoneShaderSettings.activeInstance.SetGroundFogValue(new Color(0.9569f, 0.6941f, 0.502f, 0.1216f), 40f, 10f, 40f); // pulled from halloween upd lel
+ 
+        public static void DisableFog() =>
+            GorillaTag.Rendering.ZoneShaderSettings.activeInstance.SetGroundFogValue(Color.clear, 0f, 0f, 0f);
+        }
 }

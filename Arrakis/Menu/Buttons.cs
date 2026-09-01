@@ -335,6 +335,7 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Player Info Hud", enableMethod =() => Visual.PlayerInfo(), disableMethod =() => Visual.CleanupPlayerInfo(), toolTip = "Displays info on your hud.", isTogglable = true },
                 new ButtonInfo { buttonText = "Bug ESP", method =() => Visual.EntityESP(ThrowableBug.BugName.DougTheBug), disableMethod =() => Visual.DisableEntityESP(ThrowableBug.BugName.DougTheBug), toolTip = "Puts esp on the bug.", isTogglable = true },
                 new ButtonInfo { buttonText = "Bat ESP", method =() => Visual.EntityESP(ThrowableBug.BugName.MattTheBat), disableMethod =() => Visual.DisableEntityESP(ThrowableBug.BugName.MattTheBat), toolTip = "Puts esp on the bat.", isTogglable = true },
+                new ButtonInfo { buttonText = "Halloween Fog", enableMethod =() => Visual.EnableFog(), disableMethod =() => Visual.DisableFog(), toolTip = "Enables the halloween fog.", isTogglable = true },
             },
 
             new ButtonInfo[] { // Advantage
