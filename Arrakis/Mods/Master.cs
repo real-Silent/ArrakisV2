@@ -21,6 +21,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Arrakis.Extensions;
 using Arrakis.Managers;
 using Arrakis.Notifications;
 using GorillaTagScripts;
@@ -352,7 +353,7 @@ namespace Arrakis.Mods
                 return;
             }
             blockDelay = Time.time + blockDebounce;
-            Vector3 handPos = VRRig.LocalRig.leftHandTransform.position;
+            Vector3 handPos = ServerLeftHandPos;
             BuilderPiece piece = Resources.FindObjectsOfTypeAll<BuilderPiece>()
                 .Where(p => p.gameObject.activeInHierarchy)
                 .Where(p => p.pieceType == pieceType)
@@ -401,8 +402,9 @@ namespace Arrakis.Mods
                 RaycastHit Ray = GunData.Ray;
                 if (lockTarget != null && gunLocked)
                 {
-                    for (int i = 0; i < 3; i++)
-                        SpawnBlock(-566818631, lockTarget.transform.position + RandomVector3(0.4f), RandomQuaternion(), 0, RpcTarget.All);
+                    SpawnBlock(-566818631, lockTarget.transform.position + RandomVector3(0.4f), RandomQuaternion(), 0, lockTarget.Creator.GetPlayerRef());
+                    SpawnBlock(-566818631, lockTarget.transform.position + RandomVector3(0.4f), RandomQuaternion(), 0, lockTarget.Creator.GetPlayerRef());
+                    SpawnBlock(-566818631, lockTarget.transform.position + RandomVector3(0.4f), RandomQuaternion(), 0, lockTarget.Creator.GetPlayerRef());
                 }
                 if (GetGunInput(true))
                 {

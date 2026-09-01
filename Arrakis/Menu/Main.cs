@@ -38,9 +38,9 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using UnityEngine.XR;
+using static Arrakis.Extensions.VRRigExtensions;
 using static Arrakis.Menu.Buttons;
 using static Arrakis.Settings;
-using static Arrakis.Extensions.VRRigExtensions;
 
 namespace Arrakis.Menu
 {
@@ -49,6 +49,7 @@ namespace Arrakis.Menu
     {
         public static void OnLoad()
         {
+            Arrakis.Patches.Patchers.EventPatches.OnSerialize += OnSerialize;
             Arrakis.Patches.Patchers.PlrSerializePatch.OnPlayerSerialize += OnPlayerSerialize;
             AudioManager.Init();
             try
@@ -363,6 +364,10 @@ namespace Arrakis.Menu
                 }
             }
             catch { }
+
+            ServerPos = ServerPos == Vector3.zero ? ServerSyncPos : Vector3.Lerp(ServerPos, VRRig.LocalRig.SanitizeVector3(ServerSyncPos), VRRig.LocalRig.lerpValueBody * 0.66f);
+            ServerLeftHandPos = ServerLeftHandPos == Vector3.zero ? ServerSyncLeftHandPos : Vector3.Lerp(ServerLeftHandPos, VRRig.LocalRig.SanitizeVector3(ServerSyncLeftHandPos), VRRig.LocalRig.lerpValueBody);
+            ServerRightHandPos = ServerRightHandPos == Vector3.zero ? ServerSyncRightHandPos : Vector3.Lerp(ServerRightHandPos, VRRig.LocalRig.SanitizeVector3(ServerSyncRightHandPos), VRRig.LocalRig.lerpValueBody);
         }
 
         private static IEnumerator OpenMenu()
@@ -1894,5 +1899,17 @@ namespace Arrakis.Menu
         public static readonly Dictionary<VRRig, int> playerPing = new Dictionary<VRRig, int>();
         private static void OnPlayerSerialize(VRRig rig) =>
             playerPing[rig] = rig.GetPing(); // mainly used for debuging, might make a ping nametags later -sleepy
+        public static Vector3 ServerSyncPos;
+        public static Vector3 ServerSyncLeftHandPos;
+        public static Vector3 ServerSyncRightHandPos;
+        public static Vector3 ServerPos;
+        public static Vector3 ServerLeftHandPos;
+        public static Vector3 ServerRightHandPos;
+        private static void OnSerialize()
+        {
+            ServerSyncPos = VRRig.LocalRig?.transform.position ?? ServerSyncPos;
+            ServerSyncLeftHandPos = VRRig.LocalRig?.leftHand?.rigTarget?.transform.position ?? ServerSyncLeftHandPos;
+            ServerSyncRightHandPos = VRRig.LocalRig?.rightHand?.rigTarget?.transform.position ?? ServerSyncRightHandPos;
+        }
     }
 }
