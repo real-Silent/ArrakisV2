@@ -20,12 +20,14 @@
 
 using System.Collections.Generic;
 using Arrakis.Classes;
+using Arrakis.Extensions;
 using Arrakis.Managers.CustomMaps;
 using ExitGames.Client.Photon;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
 using static Arrakis.Managers.CustomMaps.Manager;
+using static Arrakis.Menu.Main;
 
 namespace Arrakis.Mods.CustomMaps
 {
@@ -34,7 +36,8 @@ namespace Arrakis.Mods.CustomMaps
         public override long MapID => 5135423;
         public override ButtonInfo[] Buttons => new[]
         {
-            new ButtonInfo { buttonText = "Chimp Combat Crash All", method = ChimpCombatCrashAll, isTogglable = false, toolTip = "Crashes everyone in the chimp combat if they have the map loaded." },
+            new ButtonInfo { buttonText = "Chimp Combat Crash All", method = ChimpCombatCrashAll, isTogglable = true, toolTip = "Crashes everyone in the chimp combat if they have the map loaded." },
+            new ButtonInfo { buttonText = "Chimp Combat Crash Gun", method = ChimpCombatCrashGun, isTogglable = true, toolTip = "Crashes everyone in the chimp combat if they have the map loaded." },
         };
         public static float crashDelay;
         public static void CrashPlayer(int ActorNumber)
@@ -56,6 +59,33 @@ namespace Arrakis.Mods.CustomMaps
         {
             foreach (NetPlayer player in NetworkSystem.Instance.PlayerListOthers)
                 CrashPlayer(player.ActorNumber);
+        }
+        public static void ChimpCombatCrashGun()
+        {
+            if (GetGunInput(false))
+            {
+                var GunData = RenderGun();
+                GameObject NewPointer = GunData.NewPointer;
+                RaycastHit Ray = GunData.Ray;
+                if (lockTarget != null && gunLocked)
+                {
+                    CrashPlayer(lockTarget.Creator.ActorNumber);
+                }
+                if (GetGunInput(true))
+                {
+                    VRRig rig = Ray.collider.GetComponentInParent<VRRig>();
+                    if (rig != null && rig != VRRig.LocalRig)
+                    {
+                        lockTarget = rig;
+                        gunLocked = true;
+                    }
+                }
+            }
+            else
+            {
+                lockTarget = null;
+                gunLocked = false;
+            }
         }
     }
 }
