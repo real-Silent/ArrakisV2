@@ -26,6 +26,7 @@ using System.Linq;
 using System.Text;
 using Arrakis.Classes;
 using Arrakis.Managers;
+using Arrakis.Managers.CustomMaps;
 using Arrakis.Mods;
 using Arrakis.Notifications;
 using BepInEx;
@@ -51,6 +52,7 @@ namespace Arrakis.Menu
         {
             Arrakis.Patches.Patchers.EventPatches.OnSerialize += OnSerialize;
             Arrakis.Patches.Patchers.PlrSerializePatch.OnPlayerSerialize += OnPlayerSerialize;
+            SceneMapLoader.Init();
             AudioManager.Init();
             try
             {

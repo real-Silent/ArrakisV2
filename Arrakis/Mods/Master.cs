@@ -25,6 +25,7 @@ using Arrakis.Extensions;
 using Arrakis.Managers;
 using Arrakis.Notifications;
 using GorillaTagScripts;
+using GorillaTagScripts.VirtualStumpCustomMaps;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
@@ -478,6 +479,7 @@ namespace Arrakis.Mods
             }
             NetworkSystem.Instance.PlayerListOthers.ForEach(p => RoomControls.KickPlayer(p.ActorNumber));
         }
+        public static float lightingDelay = 0f;
         public static void DestroyLighting()
         {
             if (!PhotonNetwork.LocalPlayer.IsMasterClient)
@@ -486,7 +488,66 @@ namespace Arrakis.Mods
                 Toggle("Destroy Lighting");
                 return;
             }
-            PhotonNetwork.Destroy(BetterDayNightManager.instance.photonView);
+            if (Time.time > lightingDelay)
+            {
+                PhotonNetwork.Destroy(BetterDayNightManager.instance.photonView);
+                lightingDelay = Time.time + 0.2f;
+            }
+        }
+        public static void BecomeController()
+        {
+            if (PhotonNetwork.IsMasterClient)
+                CustomMapsTerminal.instance.mapTerminalNetworkObject.SendRPC("SetTerminalControlStatus_RPC", true, true, PhotonNetwork.LocalPlayer.ActorNumber);
+            else
+            {
+                NotificationManager.SendNotification("<color=grey>[</color><color=red>ERROR</color><color=grey>]</color> You are not master this mod will not work.");
+                return;
+            }
+
+            CustomMapsTerminal.instance.mapTerminalNetworkObject.photonView.OwnerActorNr = PhotonNetwork.LocalPlayer.ActorNumber;
+        }
+        private static long? mapid;
+        private static float setMapDelay;
+        public static void VirtualStumpKickAll()
+        {
+            if (!NetworkSystem.Instance.InRoom)
+            {
+                mapid = null;
+                return;
+            }
+            if (!PhotonNetwork.IsMasterClient)
+            {
+                NotificationManager.SendNotification("<color=grey>[</color><color=red>ERROR</color><color=grey>]</color> You are not master this mod will not work.");
+                Toggle("Virtual Stump Kick All");
+                return;
+            }
+            if (mapid == null && Time.time > setMapDelay)
+            {
+                setMapDelay = Time.time + 1f;
+
+                if (CustomMapsTerminal.GetDriverID() != PhotonNetwork.LocalPlayer.ActorNumber)
+                {
+                    BecomeController();
+                    return;
+                }
+                if (CustomMapManager.IsRemotePlayerInVirtualStump(NetworkSystem.Instance.LocalPlayer.UserId))
+                {
+                    mapid =  Arrakis.Managers.CustomMaps.Manager.currentMapId == 4977315 ? 5024157 : 4977315;
+                    CustomMapsTerminal.instance.mapTerminalNetworkObject.photonView.RPC("UpdateScreen_RPC", RpcTarget.Others, new object[]
+                    {
+                        6,
+                        mapid,
+                        CustomMapsTerminal.GetDriverID()
+                    });
+                }
+                else
+                    NotificationManager.SendNotification("<color=grey>[</color><color=red>ERROR</color><color=grey>]</color> Please enter the Virtual Stump.");
+            }
+
+            CustomMapsTerminal.instance.mapTerminalNetworkObject.photonView.RPC("SetRoomMap_RPC", RpcTarget.Others, mapid.Value);
+
+            NotificationManager.SendNotification("<color=grey>[</color><color=green>SUCCESS</color><color=grey>]</color> Successfully kicked others.");
+            Toggle("Virtual Stump Kick All");
         }
         // Lucy mods so we can release when october i know its early but yea -nova
         //public static HalloweenGhostChaser Lucy

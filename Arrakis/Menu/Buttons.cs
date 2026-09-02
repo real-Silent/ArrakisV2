@@ -59,6 +59,7 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Soundboard", method =() => Soundboard.StartSoundboard(), isTogglable = false, toolTip = "Opens the soundboard page for the menu." },
                 new ButtonInfo { buttonText = "Projectiles", method =() => CurrentCategoryName = "Projectiles", isTogglable = false, toolTip = "Opens the projectiles page for the menu." },
                 new ButtonInfo { buttonText = "Overpowered", method =() => CurrentCategoryName = "Overpowered", isTogglable = false, toolTip = "Opens the overpowered page for the menu." },
+                new ButtonInfo { buttonText = "Custom Maps", method =() => CurrentCategoryName = "Custom Maps", isTogglable = false, toolTip = "Opens the custom maps page for the menu." },
                 new ButtonInfo { buttonText = "Master", method =() => CurrentCategoryName = "Master", isTogglable = false, toolTip = "Opens the master page for the menu." },
                 new ButtonInfo { buttonText = "Experimental", method =() => CurrentCategoryName = "Experimental", isTogglable = false, toolTip = "Opens the experimental page for the menu." },
             },
@@ -472,6 +473,9 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Force Grab All", method =() => Overpowered.ForceGrabAll(), disableMethod =() => VRRig.LocalRig.enabled = true, isTogglable = true, toolTip = "Attempts to grab who ever you shoot." },
                 new ButtonInfo { buttonText = "Lag All", method =() => Overpowered.LagAll(), isTogglable = true, toolTip = "Lags everyone." },
            },
+            new ButtonInfo[] { // Custom Maps
+                new ButtonInfo { buttonText = "Exit Custom Maps", method =() => CurrentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },
+            },
 
             new ButtonInfo[] { // Master
                 new ButtonInfo { buttonText = "Exit Master", method =() => CurrentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },
@@ -506,6 +510,7 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Empty Lava", method =() => Master.ChangeLavaState(InfectionLavaController.RisingLavaState.Drained), isTogglable = false, toolTip = "Removes the lava." },
                 new ButtonInfo { buttonText = "Erupt Lava", method =() => Master.ChangeLavaState(InfectionLavaController.RisingLavaState.Erupting), isTogglable = false, toolTip = "Erupts the lava." },
                 new ButtonInfo { buttonText = "Destroy Lighting", method =() => Master.DestroyLighting(), isTogglable = true, toolTip = "Destroys the lighting." },
+                new ButtonInfo { buttonText = "Virtual Stump Kick All", method =() => Master.VirtualStumpKickAll(), isTogglable = true, toolTip = "Destroys the lighting." },
             },
 
             new ButtonInfo[] { // Experimental
@@ -584,6 +589,7 @@ namespace Arrakis.Menu
             "Fun",
             "Projectiles",
             "Overpowered",
+            "Custom Maps",
             "Master",
             "Experimental",
             "Beta",
