@@ -491,7 +491,7 @@ namespace Arrakis.Mods
             if (Time.time > lightingDelay)
             {
                 PhotonNetwork.Destroy(BetterDayNightManager.instance.photonView);
-                lightingDelay = Time.time + 0.2f;
+                lightingDelay = Time.time + 0.4f;
             }
         }
         public static void BecomeController()
