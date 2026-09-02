@@ -92,6 +92,7 @@ namespace Arrakis.Managers.CustomMaps
         public static void FillRegistry()
         {
             RegisterMap(5135423, "Guns"); // Chimp Combat
+            RegisterMap(5107228, "monke-magic-halloween-alt"); // Monke Magic
         }
     }
     public static class Manager
