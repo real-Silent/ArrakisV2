@@ -43,9 +43,13 @@ namespace Arrakis.Managers.CustomMaps
     {
         public static void Init()
         {
-            SceneMapRegistry.FillRegistry();
-            SceneManager.activeSceneChanged += OnSceneChanged;
-            CheckSceneForMap(SceneManager.GetActiveScene().name);
+            try
+            {
+                SceneMapRegistry.FillRegistry();
+                SceneManager.activeSceneChanged += OnSceneChanged;
+                CheckSceneForMap(SceneManager.GetActiveScene().name);
+            }
+            catch{}
         }
 
         public static void OnSceneChanged(Scene oldScene, Scene newScene)
