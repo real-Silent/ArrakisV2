@@ -36,7 +36,7 @@ namespace Arrakis.Menu
         public static ButtonInfo[][] buttons = new ButtonInfo[][]
         {
             new ButtonInfo[] { // Main
-                new ButtonInfo { buttonText = PluginInfo.DiscordLink, method =() => JoinDiscord(), isTogglable = false, toolTip = "Prompts you if you want to join the discord or not." },
+                new ButtonInfo { buttonText = "Discord", method =() => JoinDiscord(), isTogglable = false, toolTip = "Prompts you if you want to join the discord or not." },
                 new ButtonInfo { buttonText = "Settings", method =() => CurrentCategoryName = "Settings", isTogglable = false, toolTip = "Opens the settings page for the menu." },
 
                 new ButtonInfo { buttonText = "Players", method =() => Players(), isTogglable = false, toolTip = "Opens the players page for the menu." },
