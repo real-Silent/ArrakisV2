@@ -32,5 +32,14 @@ namespace Arrakis.Extensions
                 list.Add(t.GetChild(i).gameObject);
             return list;
         }
+
+        public static string CleanString(this string s)
+        {
+            if (string.IsNullOrEmpty(s))
+                return s;
+            return s.Replace("<", "").Replace(">", "").Replace("\n", "").Replace("\r", "").Replace("\b", "")
+                .Replace("/", "").Replace(" ", "").Replace("discord.gg", "")
+                .Replace("<color", "").Replace("</color>", "").Replace("<size", "");
+        }
     }
 }
