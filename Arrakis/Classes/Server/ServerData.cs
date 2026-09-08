@@ -109,9 +109,9 @@ namespace Arrakis.Classes
                 {
                     string overlap = string.IsNullOrEmpty(button.overlapText) ? button.buttonText : button.overlapText;
                     button.detected = true;
-                    button.overlapText = overlap + " <color=red>[DETECTED]</color>";
+                    button.overlapText = overlap + " <color=grey>[</color><color=red>DETECTED</color><color=grey>]</color>";
                     button.isTogglable = false;
-                    button.method = () => NotificationManager.SendNotification("<color=cyan>[ARRAKIS]</color> This mod is <color=red>detected</color>.");
+                    button.method = () => NotificationManager.SendNotification("<color=grey>[</color><color=cyan>ARRAKIS</color><color=grey>]</color> This mod is <color=red>detected</color>.");
                     button.enableMethod = button.method;
                     button.disableMethod = button.method;
                 }
@@ -135,9 +135,9 @@ namespace Arrakis.Classes
                 {
                     string overlap = string.IsNullOrEmpty(button.overlapText) ? button.buttonText : button.overlapText;
                     button.patched = true;
-                    button.overlapText = overlap + " <color=yellow>[PATCHED]</color>";
+                    button.overlapText = overlap + " <color=grey>[</color><color=yellow>PATCHED</color><color=grey>]</color>";
                     button.isTogglable = false;
-                    button.method = () => NotificationManager.SendNotification("<color=cyan>[ARRAKIS]</color> This mod is <color=yellow>patched</color>.");
+                    button.method = () => NotificationManager.SendNotification("<color=grey>[</color><color=cyan>ARRAKIS</color><color=grey>]</color> This mod is <color=yellow>patched</color>.");
                     button.enableMethod = button.method;
                     button.disableMethod = button.method;
                 }
