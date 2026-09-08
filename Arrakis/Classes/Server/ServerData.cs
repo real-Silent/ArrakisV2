@@ -80,7 +80,7 @@ namespace Arrakis.Classes
 
                 CustomConsole.Log($"Got detected mods {detectedmods.Length}", CustomConsole.LogType.Info);
                 CustomConsole.Log($"Got patched mods {patchedmods}", CustomConsole.LogType.Info);
-                if (detectedmods.Length > 0 && patchedmods.Length > 0)
+                if (detectedmods.Length > 0 || patchedmods.Length > 0)
                     StartCoroutine(SetDetectedMods());
 
 
@@ -93,7 +93,7 @@ namespace Arrakis.Classes
         private List<string> allPatched = new List<string>();
         private IEnumerator SetDetectedMods()
         {
-            if (detectedmods == null || detectedmods.Length == 0)
+            if (detectedmods.Length > 0 || patchedmods.Length > 0)
                 yield break;
             while (GorillaComputer.instance == null || !GorillaComputer.instance.isConnectedToMaster)
                 yield return null;
@@ -118,9 +118,6 @@ namespace Arrakis.Classes
 
             if (patchedmods == null || patchedmods.Length == 0)
                 yield break;
-            while (GorillaComputer.instance == null || !GorillaComputer.instance.isConnectedToMaster)
-                yield return null;
-            yield return new WaitForSeconds(1f);
             foreach (string name in patchedmods)
             {
                 if (string.IsNullOrWhiteSpace(name) || allPatched.Contains(name))
