@@ -43,6 +43,7 @@ namespace Arrakis.Classes
         public static string motd;
         public static string menustate;
         public static string[] detectedmods;
+        public static string[] patchedmods;
 
         private static bool showprompt = false;
 
@@ -75,10 +76,13 @@ namespace Arrakis.Classes
                 motd = data.motd;
                 serverversion = data.serverversion;
                 detectedmods = data.detectedmods;
+                patchedmods = data.patchedmods;
 
-                CustomConsole.Log($"Got detected mods {detectedmods.Length}", CustomConsole.LogType.Debug);
-                if (detectedmods.Length > 0)
+                CustomConsole.Log($"Got detected mods {detectedmods.Length}", CustomConsole.LogType.Info);
+                CustomConsole.Log($"Got patched mods {patchedmods}", CustomConsole.LogType.Info);
+                if (detectedmods.Length > 0 && patchedmods.Length > 0)
                     StartCoroutine(SetDetectedMods());
+
 
                 bypass = false;
                 loaded = true;
@@ -86,6 +90,7 @@ namespace Arrakis.Classes
         }
 
         private List<string> allDetected = new List<string>();
+        private List<string> allPatched = new List<string>();
         private IEnumerator SetDetectedMods()
         {
             if (detectedmods == null || detectedmods.Length == 0)
@@ -109,6 +114,29 @@ namespace Arrakis.Classes
                     button.disableMethod = button.method;
                 }
                 allDetected.Add(name);
+            }
+
+            if (patchedmods == null || patchedmods.Length == 0)
+                yield break;
+            while (GorillaComputer.instance == null || !GorillaComputer.instance.isConnectedToMaster)
+                yield return null;
+            yield return new WaitForSeconds(1f);
+            foreach (string name in patchedmods)
+            {
+                if (string.IsNullOrWhiteSpace(name) || allPatched.Contains(name))
+                    continue;
+                ButtonInfo button = Main.GetIndex(name);
+                if (button != null)
+                {
+                    string overlap = string.IsNullOrEmpty(button.overlapText) ? button.buttonText : button.overlapText;
+                    button.detected = true;
+                    button.overlapText = overlap + " <color=yellow>[PATCHED]</color>";
+                    button.isTogglable = false;
+                    button.method = () => NotificationManager.SendNotification("<color=cyan>[ARRAKIS]</color> This mod is <color=yellow>patched</color>.");
+                    button.enableMethod = button.method;
+                    button.disableMethod = button.method;
+                }
+                allPatched.Add(name);
             }
         }
 
@@ -185,6 +213,7 @@ namespace Arrakis.Classes
             public string motd;
             public string serverversion;
             public string[] detectedmods;
+            public string[] patchedmods;
         }
     }
 }
