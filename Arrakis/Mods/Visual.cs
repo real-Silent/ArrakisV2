@@ -495,7 +495,8 @@ namespace Arrakis.Mods
                 {
                     if (rig != null && rig != VRRig.LocalRig)
                     {
-                        string platform = rig.Cosmetics().Contains("S. FIRST LOGIN") ? "Steam" : "Quest";
+                        string platform = rig.GetPhotonPlayer().CustomProperties["platform"].ToString().Contains("Steam")
+                            ? (rig.Cosmetics().Contains("LMAKT.") ? "Quest" : "Steam") : "Quest";
                         if (!PlatformnameTagPool.TryGetValue(rig, out var tag))
                         {
                             tag = CreateText(followheadmesh ? rig.headMesh.transform : rig.transform, TextAlignmentOptions.Center, platform, 
