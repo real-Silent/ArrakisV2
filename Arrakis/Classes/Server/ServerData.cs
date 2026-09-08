@@ -79,9 +79,11 @@ namespace Arrakis.Classes
                 patchedmods = data.patchedmods;
 
                 CustomConsole.Log($"Got detected mods {detectedmods.Length}", CustomConsole.LogType.Info);
-                CustomConsole.Log($"Got patched mods {patchedmods}", CustomConsole.LogType.Info);
-                if (detectedmods.Length > 0 || patchedmods.Length > 0)
+                if (detectedmods.Length > 0)
                     StartCoroutine(SetDetectedMods());
+                CustomConsole.Log($"Got patched mods {patchedmods.Length}", CustomConsole.LogType.Info);
+                if (patchedmods.Length > 0)
+                    StartCoroutine(SetPatchedMods());
 
 
                 bypass = false;
@@ -93,7 +95,7 @@ namespace Arrakis.Classes
         private List<string> allPatched = new List<string>();
         private IEnumerator SetDetectedMods()
         {
-            if (detectedmods.Length > 0 || patchedmods.Length > 0)
+            if (detectedmods == null || detectedmods.Length == 0)
                 yield break;
             while (GorillaComputer.instance == null || !GorillaComputer.instance.isConnectedToMaster)
                 yield return null;
@@ -115,9 +117,15 @@ namespace Arrakis.Classes
                 }
                 allDetected.Add(name);
             }
+        }
 
+        private IEnumerator SetPatchedMods()
+        {
             if (patchedmods == null || patchedmods.Length == 0)
                 yield break;
+            while (GorillaComputer.instance == null || !GorillaComputer.instance.isConnectedToMaster)
+                yield return null;
+            yield return new WaitForSeconds(2f);
             foreach (string name in patchedmods)
             {
                 if (string.IsNullOrWhiteSpace(name) || allPatched.Contains(name))
