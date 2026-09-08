@@ -886,6 +886,10 @@ namespace Arrakis.Menu
                 {
                     NotificationManager.SendNotification($"This mod is <color=red>detected</color> and has been disabled.");
                 }
+                if (button.patched)
+                {
+                    NotificationManager.SendNotification($"This mod is <color=yellow>detected</color> and has been disabled.");
+                }
             }
 
             int lastPage = ((buttons[currentCategoryIndex].Length + buttonsPerPage - 1) / buttonsPerPage) - 1;

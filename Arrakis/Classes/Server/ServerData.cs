@@ -129,7 +129,7 @@ namespace Arrakis.Classes
                 if (button != null)
                 {
                     string overlap = string.IsNullOrEmpty(button.overlapText) ? button.buttonText : button.overlapText;
-                    button.detected = true;
+                    button.patched = true;
                     button.overlapText = overlap + " <color=yellow>[PATCHED]</color>";
                     button.isTogglable = false;
                     button.method = () => NotificationManager.SendNotification("<color=cyan>[ARRAKIS]</color> This mod is <color=yellow>patched</color>.");
