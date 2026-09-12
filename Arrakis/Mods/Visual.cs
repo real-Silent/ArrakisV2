@@ -762,7 +762,7 @@ namespace Arrakis.Mods
                 if (GetGunInput(true))
                 {
                     VRRig rig = Ray.collider.GetComponentInParent<VRRig>();
-                    if (rig != null && rig != VRRig.LocalRig)
+                    if (!rig.IsLocal())
                     {
                         lockTarget = rig;
                         gunLocked = true;
