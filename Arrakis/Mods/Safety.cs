@@ -29,8 +29,10 @@ using Photon.Pun;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using UnityEngine;
+using UnityEngine.UIElements;
 using static Arrakis.Menu.Main;
 
 namespace Arrakis.Mods
@@ -41,23 +43,28 @@ namespace Arrakis.Mods
         {
             if (NetworkSystem.Instance.InRoom)
             {
-                foreach (GorillaPlayerScoreboardLine line in GorillaScoreboardTotalUpdater.allScoreboardLines)
+                HandleAntiReport(() =>
                 {
-                    if (line.linePlayer == NetworkSystem.Instance.LocalPlayer)
+                    NetworkSystem.Instance.ReturnToSinglePlayer();
+                });
+            }
+        }
+
+        public static void HandleAntiReport(Action method)
+        {
+            foreach (GorillaPlayerScoreboardLine line in GorillaScoreboardTotalUpdater.allScoreboardLines.Where(line => line.linePlayer == NetworkSystem.Instance.LocalPlayer))
+            {
+                Transform reportButton = line.reportButton.transform;
+                foreach (VRRig rig in VRRigCache.ActiveRigs.Where(rig => rig != null && rig != VRRig.LocalRig))
+                {
+                    float disR = Vector3.Distance(reportButton.position, rig.rightHandTransform.position);
+                    float disL = Vector3.Distance(reportButton.position, rig.leftHandTransform.position);
+                    if (disR < 0.55f || disL < 0.55f)
                     {
-                        Transform reportButton = line.reportButton.transform;
-                        foreach (VRRig rig in VRRigCache.ActiveRigs)
+                        if (method != null)
                         {
-                            if (rig.IsLocal())
-                            {
-                                float disR = Vector3.Distance(reportButton.position, rig.rightHandTransform.position);
-                                float disL = Vector3.Distance(reportButton.position, rig.leftHandTransform.position);
-                                if (disR < 0.55f || disL < 0.55f)
-                                {
-                                    NotificationManager.SendNotification($"<color=yellow>[ANTIREPORT]</color> {rig.Creator.NickName} Attempted to report you.");
-                                    NetworkSystem.Instance.ReturnToSinglePlayer();
-                                }
-                            }
+                            NotificationManager.SendNotification($"<color=yellow>[ANTIREPORT]</color> {rig.Creator.NickName} Attempted to report you.");
+                            method.Invoke();
                         }
                     }
                 }
