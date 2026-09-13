@@ -32,7 +32,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using UnityEngine;
-using UnityEngine.UIElements;
 using static Arrakis.Menu.Main;
 
 namespace Arrakis.Mods
@@ -46,6 +45,31 @@ namespace Arrakis.Mods
                 HandleAntiReport(() =>
                 {
                     NetworkSystem.Instance.ReturnToSinglePlayer();
+                });
+            }
+        }
+
+        public static void AntiRepportReconnect()
+        {
+            if (NetworkSystem.Instance.InRoom)
+            {
+                HandleAntiReport(() =>
+                {
+                    string roomname = PhotonNetwork.CurrentRoom.Name;
+                    NetworkSystem.Instance.ReturnToSinglePlayer();
+                    PhotonNetworkController.Instance.AttemptToJoinSpecificRoom(roomname, JoinType.Solo);
+                });
+            }
+        }
+
+        public static void AntiReportJoinRandom()
+        {
+            if (NetworkSystem.Instance.InRoom)
+            {
+                HandleAntiReport(() =>
+                {
+                    NetworkSystem.Instance.ReturnToSinglePlayer();
+                    PhotonNetworkController.Instance.AttemptToJoinPublicRoom(PhotonNetworkController.Instance.currentJoinTrigger);
                 });
             }
         }

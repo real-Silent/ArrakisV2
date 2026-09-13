@@ -234,6 +234,8 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Exit Safety", method =() => CurrentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },
 
                 new ButtonInfo { buttonText = "Anti Report <color=grey>[<color=cyan>Disconnect</color>]</color>", method =() => Safety.AntiReportDisconnect(), isTogglable = true, toolTip = "Disconnects you from the lobby when someone tries to report you." },
+                new ButtonInfo { buttonText = "Anti Report <color=grey>[<color=cyan>Reconnect</color>]</color>", method =() => Safety.AntiRepportReconnect(), isTogglable = true, toolTip = "Reconnects you to the current lobby when someone tries to report you." },
+                new ButtonInfo { buttonText = "Anti Report <color=grey>[<color=cyan>Join Random</color>]</color>", method =() => Safety.AntiReportJoinRandom(), isTogglable = true, toolTip = "Attempts to make you join a random room when someone tries to report you." },
                 new ButtonInfo { buttonText = "Flush RPC's", method =() => Safety.RPCProc(), isTogglable = false, toolTip = "Flushes all your rpc calls." },
                 new ButtonInfo { buttonText = "No Finger Movement", method =() => Safety.NoFingerMovement(), isTogglable = true, toolTip = "Disables your finger movement." },
                 new ButtonInfo { buttonText = "Panic", method =() => Safety.Panic(), isTogglable = false, toolTip = "Disables every mod on the menu." },
