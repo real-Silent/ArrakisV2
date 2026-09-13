@@ -24,6 +24,7 @@ using Arrakis.Classes.Menu;
 using Arrakis.Managers;
 using Arrakis.Menu;
 using Arrakis.Notifications;
+using Arrakis.Patches;
 using BepInEx;
 using UnityEngine;
 
@@ -47,6 +48,7 @@ namespace Arrakis
             holder.AddComponent<BoardManager>();
             holder.AddComponent<NotificationManager>();
             holder.AddComponent<CRunner>();
+            holder.AddComponent<LogEvent>();
             holder.AddComponent<CosmeticsFinder>();
             holder.AddComponent<PcGui>();
             holder.AddComponent<ServerData>();

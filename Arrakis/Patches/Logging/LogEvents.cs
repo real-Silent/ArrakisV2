@@ -18,40 +18,62 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-using Arrakis.Classes.Menu;
 using ExitGames.Client.Photon;
-using HarmonyLib;
 using Photon.Pun;
-using Photon.Realtime;
-using System.Linq;
+using UnityEngine;
 
 namespace Arrakis.Patches
 {
-    [HarmonyPatch(typeof(PhotonNetwork), "RaiseEvent")]
-    public class LogEvent
+    public class LogEvent : MonoBehaviour
     {
-        public static void Prefix(byte eventCode, object eventContent, RaiseEventOptions raiseEventOptions, SendOptions sendOptions)
+        public void Awake()
         {
-            if (!Settings.logphotonevents)
-                return;
-            string raiseEventOptionsText = raiseEventOptions == null ? "Null": $"Receivers={raiseEventOptions.Receivers}, " 
-            + $"Caching={raiseEventOptions.CachingOption}, " + $"InterestGroup={raiseEventOptions.InterestGroup}, "
-            + $"SequenceChannel={raiseEventOptions.SequenceChannel}";
+            PhotonNetwork.NetworkingClient.EventReceived += OnEvent;
+        }
 
-            string sendOptionsText = $"Reliability={sendOptions.Reliability}, " + $"DeliveryMode={sendOptions.DeliveryMode}, " + $"Encrypt={sendOptions.Encrypt}";
-
-            string data;
-
-            if (eventContent == null)
-                data = "Null";
-            else if (eventContent is object[] array)
-                data = $"[{string.Join(", ", array.Select(x => x?.ToString() ?? "null"))}]";
-            else if (eventContent is ExitGames.Client.Photon.Hashtable table)
-                data = "{ " + string.Join(", ", table.Cast<System.Collections.DictionaryEntry>().Select(x => $"{x.Key}={x.Value}")) + " }";
-            else
-                data = eventContent.ToString();
-            if (eventCode != Admin.adminbyte)
-                CustomConsole.Log($"EventCode: {eventCode}, Data: {data}, RaiseEventOptions: {raiseEventOptionsText}, SendOptions: {sendOptionsText}", CustomConsole.LogType.Info);   
+        public void OnEvent(EventData data)
+        {
+            string playerName = "[UNKNOWN]";
+            Photon.Realtime.Player plr = PhotonNetwork.CurrentRoom.GetPlayer(data.Sender, false);
+            if (plr != null)
+            {
+                playerName = plr.NickName;
+            }
+            if (data.Code != 201 && data.Code != 205 && data.Code != 206 && data.Code != 208)
+            {
+                try
+                {
+                    if (data.Code != 200)
+                    {
+                        object[] array = (object[])((Hashtable)data.CustomData)[(byte)4];
+                        string thing = "";
+                        foreach (object element in array)
+                        {
+                            try
+                            {
+                                thing += element.ToString() + ", ";
+                            }
+                            catch { thing += "[Could not find value]" + ", "; }
+                        }
+                        CustomConsole.Log($"Event by {playerName} sent {data.Code.ToString()} // {thing}", CustomConsole.LogType.Info);
+                    }
+                    else
+                    {
+                        object[] array = (object[])((Hashtable)data.CustomData)[(byte)4];
+                        string thing = "";
+                        foreach (object element in array)
+                        {
+                            try
+                            {
+                                thing += element.ToString() + ", ";
+                            }
+                            catch { thing += "[Could not find value]" + ", "; }
+                        }
+                        CustomConsole.Log($"RPC by {playerName} sent {PhotonNetwork.PhotonServerSettings.RpcList[int.Parse(((Hashtable)data.CustomData)[(byte)5].ToString())]} // {thing}", CustomConsole.LogType.Info);
+                    }
+                }
+                catch { }
+            }
         }
     }
 }

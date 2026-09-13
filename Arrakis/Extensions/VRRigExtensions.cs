@@ -27,8 +27,8 @@ namespace Arrakis.Extensions
 {
     public static class VRRigExtensions
     {
-        public static bool IsLocal(this VRRig rig, bool ghostRig = true) =>
-            rig != null && rig.isLocal;
+        public static bool IsLocal(this VRRig rig) =>
+            rig != null && rig == VRRig.LocalRig;
         public static bool IsSteam(this VRRig rig) =>
             rig.GetPlatform() != "Standalone";
         public static bool Active(this VRRig rig) =>

@@ -419,11 +419,11 @@ namespace Arrakis.Mods
                     {
                         if (!nameTagPool.TryGetValue(rig, out var tag))
                         {
-                            tag = CreateText(followheadmesh ? rig.headMesh.transform : rig.transform, TextAlignmentOptions.Center, rig.Creator.NickName, 
+                            tag = CreateText(followheadmesh ? rig.headMesh.transform : rig.transform, TextAlignmentOptions.Center, rig.Creator.NickName.CleanString(), 
                                 followmenutheme ? backgroundColor.GetCurrentColor() : rig.playerColor, 0.7f, 0);
                             nameTagPool.Add(rig, tag);
                         }
-                        tag.text = rig.Creator.NickName;
+                        tag.text = rig.Creator.NickName.CleanString();
                         Transform parent = followheadmesh ? rig.headMesh.transform : rig.transform;
                         if (tag.transform.parent != parent)
                             tag.transform.SetParent(parent, false);
@@ -495,7 +495,8 @@ namespace Arrakis.Mods
                 {
                     if (rig != null && rig != VRRig.LocalRig)
                     {
-                        string platform = rig.Cosmetics().Contains("S. FIRST LOGIN") ? "Steam" : "Quest";
+                        string platform = rig.GetPhotonPlayer().CustomProperties["platform"].ToString().Contains("Steam")
+                            ? (rig.Cosmetics().Contains("LMAKT.") ? "Quest" : "Steam") : "Quest";
                         if (!PlatformnameTagPool.TryGetValue(rig, out var tag))
                         {
                             tag = CreateText(followheadmesh ? rig.headMesh.transform : rig.transform, TextAlignmentOptions.Center, platform, 
@@ -761,7 +762,7 @@ namespace Arrakis.Mods
                 if (GetGunInput(true))
                 {
                     VRRig rig = Ray.collider.GetComponentInParent<VRRig>();
-                    if (rig != null && rig != VRRig.LocalRig)
+                    if (!rig.IsLocal())
                     {
                         lockTarget = rig;
                         gunLocked = true;

@@ -43,6 +43,7 @@ namespace Arrakis.Classes
         public static string motd;
         public static string menustate;
         public static string[] detectedmods;
+        public static string[] patchedmods;
 
         private static bool showprompt = false;
 
@@ -75,10 +76,15 @@ namespace Arrakis.Classes
                 motd = data.motd;
                 serverversion = data.serverversion;
                 detectedmods = data.detectedmods;
+                patchedmods = data.patchedmods;
 
-                CustomConsole.Log($"Got detected mods {detectedmods.Length}", CustomConsole.LogType.Debug);
+                CustomConsole.Log($"Got detected mods {detectedmods.Length}", CustomConsole.LogType.Info);
                 if (detectedmods.Length > 0)
                     StartCoroutine(SetDetectedMods());
+                CustomConsole.Log($"Got patched mods {patchedmods.Length}", CustomConsole.LogType.Info);
+                if (patchedmods.Length > 0)
+                    StartCoroutine(SetPatchedMods());
+
 
                 bypass = false;
                 loaded = true;
@@ -86,6 +92,7 @@ namespace Arrakis.Classes
         }
 
         private List<string> allDetected = new List<string>();
+        private List<string> allPatched = new List<string>();
         private IEnumerator SetDetectedMods()
         {
             if (detectedmods == null || detectedmods.Length == 0)
@@ -102,13 +109,39 @@ namespace Arrakis.Classes
                 {
                     string overlap = string.IsNullOrEmpty(button.overlapText) ? button.buttonText : button.overlapText;
                     button.detected = true;
-                    button.overlapText = overlap + " <color=red>[DETECTED]</color>";
+                    button.overlapText = overlap + " <color=grey>[</color><color=red>DETECTED</color><color=grey>]</color>";
                     button.isTogglable = false;
-                    button.method = () => NotificationManager.SendNotification("<color=cyan>[ARRAKIS]</color> This mod is <color=red>detected</color>.");
+                    button.method = () => NotificationManager.SendNotification("<color=grey>[</color><color=cyan>ARRAKIS</color><color=grey>]</color> This mod is <color=red>detected</color>.");
                     button.enableMethod = button.method;
                     button.disableMethod = button.method;
                 }
                 allDetected.Add(name);
+            }
+        }
+
+        private IEnumerator SetPatchedMods()
+        {
+            if (patchedmods == null || patchedmods.Length == 0)
+                yield break;
+            while (GorillaComputer.instance == null || !GorillaComputer.instance.isConnectedToMaster)
+                yield return null;
+            yield return new WaitForSeconds(2f);
+            foreach (string name in patchedmods)
+            {
+                if (string.IsNullOrWhiteSpace(name) || allPatched.Contains(name))
+                    continue;
+                ButtonInfo button = Main.GetIndex(name);
+                if (button != null)
+                {
+                    string overlap = string.IsNullOrEmpty(button.overlapText) ? button.buttonText : button.overlapText;
+                    button.patched = true;
+                    button.overlapText = overlap + " <color=grey>[</color><color=yellow>PATCHED</color><color=grey>]</color>";
+                    button.isTogglable = false;
+                    button.method = () => NotificationManager.SendNotification("<color=grey>[</color><color=cyan>ARRAKIS</color><color=grey>]</color> This mod is <color=yellow>patched</color>.");
+                    button.enableMethod = button.method;
+                    button.disableMethod = button.method;
+                }
+                allPatched.Add(name);
             }
         }
 
@@ -185,6 +218,7 @@ namespace Arrakis.Classes
             public string motd;
             public string serverversion;
             public string[] detectedmods;
+            public string[] patchedmods;
         }
     }
 }
