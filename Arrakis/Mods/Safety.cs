@@ -83,7 +83,10 @@ namespace Arrakis.Mods
         private static void HandleAntiReportRadius(float radius)
         {
             if (disableAntiReportVisualizer)
+            {
+                DestroyARSphere();
                 return;
+            }
 
             Vector3 position = GorillaScoreboardTotalUpdater.allScoreboardLines.Where(x => x.linePlayer == NetworkSystem.Instance.LocalPlayer).Select(x => x.reportButton.transform.position)
             .FirstOrDefault();

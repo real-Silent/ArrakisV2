@@ -160,7 +160,7 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Exit Safety Settings", method =() => CurrentCategoryName = "Settings", isTogglable = false, toolTip = "Returns you back to the settings menu." },
 
                 new ButtonInfo { buttonText = "Change Anti Report Range", overlapText = "Change Anti Report Range <color=grey>[<color=cyan>Massive</color>]</color>", method =() => ChangeAntiReportRange(), isTogglable = false, toolTip = "Changes the range of the anti reports.", ShowInArraylist = false },
-                new ButtonInfo { buttonText = "Disable Anti Report Visualizer", enableMethod =() => disableAntiReportVisualizer = true, disableMethod =() => disableAntiReportVisualizer = false, isTogglable = false, toolTip = "Changes the range of the anti reports.", ShowInArraylist = false },
+                new ButtonInfo { buttonText = "Disable Anti Report Visualizer", enableMethod =() => disableAntiReportVisualizer = true, disableMethod =() => disableAntiReportVisualizer = false, isTogglable = true, toolTip = "Changes the range of the anti reports.", ShowInArraylist = false },
             },
 
             new ButtonInfo[] { // Plugin Settings
