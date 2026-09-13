@@ -20,16 +20,13 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using Arrakis.Extensions;
-using Arrakis.Managers;
 using Arrakis.Notifications;
 using GorillaTagScripts;
 using GorillaTagScripts.VirtualStumpCustomMaps;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
-using UnityEngine.XR;
 using static Arrakis.Menu.Main;
 
 namespace Arrakis.Mods
@@ -119,7 +116,7 @@ namespace Arrakis.Mods
                     if (PhotonNetwork.LocalPlayer.IsMasterClient)
                     {
                         VRRig rig = Ray.collider.GetComponentInParent<VRRig>();
-                        if (rig != null && rig != VRRig.LocalRig)
+                        if (rig.IsLocal())
                         {
                             foreach (TappableGuardianIdol t in GetAllTappables())
                             {
@@ -184,7 +181,8 @@ namespace Arrakis.Mods
                     if (PhotonNetwork.LocalPlayer.IsMasterClient)
                     {
                         PhotonView photonView = Ray.collider.GetComponentInParent<PhotonView>();
-                        PhotonNetwork.Destroy(photonView);
+                        if (photonView != null)
+                            PhotonNetwork.Destroy(photonView);
                     }
                     else
                     {
@@ -206,7 +204,7 @@ namespace Arrakis.Mods
                     if (PhotonNetwork.LocalPlayer.IsMasterClient)
                     {
                         VRRig rig = Ray.collider.GetComponentInParent<VRRig>();
-                        if (rig != null && rig != VRRig.LocalRig)
+                        if (rig.IsLocal())
                         {
                             foreach (GorillaGuardianZoneManager zone in GuardianZMan())
                             {
@@ -235,7 +233,7 @@ namespace Arrakis.Mods
                     if (PhotonNetwork.LocalPlayer.IsMasterClient)
                     {
                         VRRig rig = Ray.collider.GetComponentInParent<VRRig>();
-                        if (rig != null && rig != VRRig.LocalRig)
+                        if (rig.IsLocal())
                         {
                             foreach (GorillaTagManager tag in GameObject.FindObjectsByType<GorillaTagManager>(FindObjectsSortMode.None))
                             {
@@ -410,7 +408,7 @@ namespace Arrakis.Mods
                 if (GetGunInput(true))
                 {
                     VRRig rig = Ray.collider.GetComponentInParent<VRRig>();
-                    if (rig != null && rig != VRRig.LocalRig)
+                    if (rig.IsLocal())
                     {
                         lockTarget = rig;
                         gunLocked = true;

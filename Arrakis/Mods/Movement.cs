@@ -18,6 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+using Arrakis.Extensions;
 using Arrakis.Managers;
 using Arrakis.Patches.Patchers;
 using GorillaExtensions;
@@ -476,7 +477,7 @@ namespace Arrakis.Mods
                 if (GetGunInput(true))
                 {
                     VRRig rig = Ray.collider.GetComponentInParent<VRRig>();
-                    if (rig != null && rig != VRRig.LocalRig)
+                    if (rig.IsLocal())
                     {
                         lockTarget = rig;
                         gunLocked = true;
@@ -506,7 +507,7 @@ namespace Arrakis.Mods
                 if (GetGunInput(true))
                 {
                     VRRig rig = Ray.collider.GetComponentInParent<VRRig>();
-                    if (rig != null && rig != VRRig.LocalRig)
+                    if (rig.IsLocal())
                     {
                         lockTarget = rig;
                         gunLocked = true;
@@ -537,7 +538,7 @@ namespace Arrakis.Mods
                 if (GetGunInput(true))
                 {
                     VRRig rig = Ray.collider.GetComponentInParent<VRRig>();
-                    if (rig != null && rig != VRRig.LocalRig)
+                    if (rig.IsLocal())
                     {
                         VRRig.LocalRig.enabled = false;
                         lockTarget = rig;
@@ -639,7 +640,7 @@ namespace Arrakis.Mods
         {
             if ((!GTPlayer.Instance.IsHandTouching(true) && LastTouchL) && InputManager.GetInput(InputManager.InputType.Joystick, InputManager.Hand.Left, !XRSettings.isDeviceActive) || (!GTPlayer.Instance.IsHandTouching(false) && LastTouchR) && InputManager.GetInput(InputManager.InputType.Joystick, InputManager.Hand.Right, !XRSettings.isDeviceActive))
             {
-                Vector3 velocity = GTPlayer.Instance.GetComponent<Rigidbody>().velocity;
+                Vector3 velocity = GTPlayer.Instance.GetComponent<Rigidbody>().linearVelocity;
                 GTPlayer.Instance.transform.position += new Vector3(velocity.x * 0.08f, 0f, velocity.z * 0.08f);
             }
             LastTouchL = GTPlayer.Instance.IsHandTouching(true);

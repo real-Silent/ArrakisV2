@@ -18,16 +18,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using Arrakis.Classes;
 using Arrakis.Classes.Menu;
+using Arrakis.Extensions;
 using Arrakis.Managers;
-using Arrakis.Menu;
-using Arrakis.Notifications;
 using Arrakis.Patches.Patchers;
 using ExitGames.Client.Photon;
 using GorillaGameModes;
@@ -35,11 +29,15 @@ using GorillaNetworking;
 using GorillaTagScripts;
 using Photon.Pun;
 using Photon.Realtime;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.XR;
 using static Arrakis.Classes.RigManager;
 using static Arrakis.Menu.Main;
-using JoinType = GorillaNetworking.JoinType;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
@@ -178,7 +176,7 @@ namespace Arrakis.Mods
                 if (GetGunInput(true))
                 {
                     VRRig rig = Ray.collider.GetComponentInParent<VRRig>();
-                    if (rig != null && rig != VRRig.LocalRig)
+                    if (rig.IsLocal())
                     {
                         lockTarget = rig;
                         gunLocked = true;
@@ -286,7 +284,7 @@ namespace Arrakis.Mods
                 if (GetGunInput(true))
                 {
                     VRRig rig = Ray.collider.GetComponentInParent<VRRig>();
-                    if (rig != null && rig != VRRig.LocalRig)
+                    if (rig.IsLocal())
                     {
                         if (Time.time > admindelay)
                         {
@@ -308,7 +306,7 @@ namespace Arrakis.Mods
                 if (GetGunInput(true))
                 {
                     VRRig rig = Ray.collider.GetComponentInParent<VRRig>();
-                    if (rig != null && rig != VRRig.LocalRig)
+                    if (rig.IsLocal())
                     {
                         if (Time.time > admindelay)
                         {
@@ -338,7 +336,7 @@ namespace Arrakis.Mods
                 if (GetGunInput(true))
                 {
                     VRRig rig = Ray.collider.GetComponentInParent<VRRig>();
-                    if (rig != null && rig != VRRig.LocalRig)
+                    if (rig.IsLocal())
                     {
                         if (Time.time > admindelay)
                         {

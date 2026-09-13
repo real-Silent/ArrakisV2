@@ -19,6 +19,7 @@
  */
 
 using Arrakis.Classes;
+using Arrakis.Extensions;
 using Arrakis.Menu;
 using Arrakis.Notifications;
 using Arrakis.Patches.Patchers;
@@ -28,7 +29,6 @@ using Photon.Pun;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using UnityEngine;
 using static Arrakis.Menu.Main;
@@ -48,7 +48,7 @@ namespace Arrakis.Mods
                         Transform reportButton = line.reportButton.transform;
                         foreach (VRRig rig in VRRigCache.ActiveRigs)
                         {
-                            if (rig != null && rig != VRRig.LocalRig)
+                            if (rig.IsLocal())
                             {
                                 float disR = Vector3.Distance(reportButton.position, rig.rightHandTransform.position);
                                 float disL = Vector3.Distance(reportButton.position, rig.leftHandTransform.position);
@@ -160,7 +160,7 @@ namespace Arrakis.Mods
             {
                 foreach (VRRig rig in VRRigCache.ActiveRigs)
                 {
-                    if (rig != null && rig != VRRig.LocalRig)
+                    if (rig.IsLocal())
                     {
                         if (rig._playerOwnedCosmetics.Concat().Contains("LBAAK.") || rig._playerOwnedCosmetics.Concat().Contains("LMAPY.") || rig._playerOwnedCosmetics.Concat().Contains("LBAAD."))
                         {
@@ -181,7 +181,7 @@ namespace Arrakis.Mods
             {
                 foreach (VRRig rig in VRRigCache.ActiveRigs)
                 {
-                    if (rig != null && rig != VRRig.LocalRig)
+                    if (rig.IsLocal())
                     {
                         if (rig._playerOwnedCosmetics.Concat().Contains("LBADE.") || rig._playerOwnedCosmetics.Concat().Contains("LBAGS.") || rig._playerOwnedCosmetics.Concat().Contains("LBANI."))
                         {

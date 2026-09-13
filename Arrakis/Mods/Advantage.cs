@@ -225,7 +225,6 @@ namespace Arrakis.Mods
                         {
                             if (player.IsMasterClient)
                                 continue;
-
                             Targets.Add(player.ActorNumber);
                         }
                         Experimental.SendSerialize(GorillaTagger.Instance.myVRRig.GetView, new RaiseEventOptions { TargetActors = Targets.ToArray() });
@@ -238,7 +237,7 @@ namespace Arrakis.Mods
                 {
                     foreach (VRRig rig in VRRigCache.ActiveRigs)
                     {
-                        if (rig.IsTagged() && !VRRig.LocalRig.IsTagged())
+                        if (rig.IsLocal() && rig.IsTagged() && !VRRig.LocalRig.IsTagged())
                         {
                             if (Vector3.Distance(VRRig.LocalRig.transform.position, rig.transform.position) < 3f)
                             {
@@ -258,13 +257,13 @@ namespace Arrakis.Mods
             VRRig[] target = VRRigCache.ActiveRigs.Where(x => x != null && x.Creator == player).ToArray();
             foreach (var rig in target)
             {
-                if (!VRRig.LocalRig.IsTagged())
+                if (rig.IsLocal() && !VRRig.LocalRig.IsTagged())
                 {
                     NotificationManager.SendNotification("<color=grey>[</color><color=cyan>ARRAKIS</color><color=grey>]</color> You are not tagged.");
                     VRRig.LocalRig.enabled = true;
                     return;
                 }
-                if (VRRig.LocalRig.IsTagged() && !rig.IsTagged())
+                if (rig.IsLocal() && VRRig.LocalRig.IsTagged() && !rig.IsTagged())
                 {
                     VRRig.LocalRig.enabled = false;
                     VRRig.LocalRig.transform.position = rig.transform.position;
@@ -276,16 +275,16 @@ namespace Arrakis.Mods
         {
             if (InputManager.GetInput(InputManager.InputType.Trigger, InputManager.Hand.Left, !XRSettings.isDeviceActive))
             {
-                Arrakis.Patches.Patchers.EventPatches.Override = () => false;
-                Arrakis.Patches.Patchers.PlrSerializePatch.stopSerialization = true;
+                Patches.Patchers.EventPatches.Override = () => false;
+                Patches.Patchers.PlrSerializePatch.stopSerialization = true;
             }
            else
             StopBlinking();
         }
         public static void StopBlinking()
         {
-            Arrakis.Patches.Patchers.EventPatches.Override = null;
-            Arrakis.Patches.Patchers.PlrSerializePatch.stopSerialization = false;
+            Patches.Patchers.EventPatches.Override = null;
+            Patches.Patchers.PlrSerializePatch.stopSerialization = false;
         }
     }
 }

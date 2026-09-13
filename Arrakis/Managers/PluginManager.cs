@@ -1,5 +1,5 @@
 ﻿/*
- * Arrakis | Managers/Plugins.cs
+ * Arrakis | Managers/PluginManager.cs
  *
  * Copyright (C) 2026 Arrakis
  * https://github.com/real-Silent/ArrakisV2
@@ -28,7 +28,7 @@ using System.Reflection;
 
 namespace Arrakis.Managers
 {
-    public class Plugins
+    public class PluginManager
     {
         public class Plugin
         {

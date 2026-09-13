@@ -56,7 +56,7 @@ namespace Arrakis.Menu
             AudioManager.Init();
             try
             {
-                Plugins.LoadPlugins();
+                PluginManager.LoadPlugins();
             }
             catch { }
         }
@@ -272,7 +272,7 @@ namespace Arrakis.Menu
 
             shouldBePC = !XRSettings.isDeviceActive;
 
-            Plugins.ExecuteUpdate();
+            PluginManager.ExecuteUpdate();
 
             try
             {

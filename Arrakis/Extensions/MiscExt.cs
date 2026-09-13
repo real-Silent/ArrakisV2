@@ -36,7 +36,7 @@ namespace Arrakis.Extensions
         public static string CleanString(this string s)
         {
             if (string.IsNullOrEmpty(s))
-                return s;
+                return "s is somehow empty";
             return s.Replace("<", "").Replace(">", "").Replace("\n", "").Replace("\r", "").Replace("\b", "")
                 .Replace("/", "").Replace(" ", "").Replace("discord.gg", "")
                 .Replace("<color", "").Replace("</color>", "").Replace("<size", "");

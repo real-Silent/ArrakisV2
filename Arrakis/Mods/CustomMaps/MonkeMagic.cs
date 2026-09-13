@@ -18,14 +18,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-using System.Collections.Generic;
 using Arrakis.Classes;
 using Arrakis.Managers.CustomMaps;
 using ExitGames.Client.Photon;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
-using static Arrakis.Managers.CustomMaps.Manager;
 using static Arrakis.Menu.Main;
 
 namespace Arrakis.Mods.CustomMaps

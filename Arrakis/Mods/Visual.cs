@@ -28,7 +28,6 @@ using Arrakis.Menu;
 using GorillaExtensions;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Animations.Rigging;
 using UnityEngine.UI;
 using static Arrakis.Menu.Main;
 using static Arrakis.Settings;
@@ -66,7 +65,7 @@ namespace Arrakis.Mods
             {
                 foreach (VRRig rig in VRRigCache.ActiveRigs)
                 {
-                    if (rig != null && rig != VRRig.LocalRig)
+                    if (rig.IsLocal())
                     {
                         switch (type)
                         {
@@ -99,7 +98,7 @@ namespace Arrakis.Mods
             {
                 foreach (VRRig rig in VRRigCache.ActiveRigs)
                 {
-                    if (rig != null && rig != VRRig.LocalRig)
+                    if (rig.IsLocal())
                     {
                         rig.mainSkin.material.shader = Shader.Find("GorillaTag/UberShader");
                         rig.mainSkin.material.color = rig.playerColor;
@@ -115,7 +114,7 @@ namespace Arrakis.Mods
                 return;
             foreach (VRRig rig in VRRigCache.ActiveRigs)
             {
-                if (rig != null && rig != VRRig.LocalRig)
+                if (rig.IsLocal())
                 {
                     List<VRRig> remove = null;
                     foreach (var pair in tracersPool)
@@ -186,7 +185,7 @@ namespace Arrakis.Mods
                 boneEspPool.Remove(rig);
             foreach (VRRig rig in VRRigCache.ActiveRigs)
             {
-                if (rig != null && rig != VRRig.LocalRig)
+                if (rig.IsLocal())
                 {
                     if (!boneEspPool.TryGetValue(rig, out List<LineRenderer> lines))
                     {
