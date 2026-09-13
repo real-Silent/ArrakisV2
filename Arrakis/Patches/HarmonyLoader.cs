@@ -1,5 +1,5 @@
 ﻿/*
- * Arrakis | HarmonyLoader.cs
+ * Arrakis | Patches/HarmonyLoader.cs
  *
  * Copyright (C) 2026 Arrakis
  * https://github.com/real-Silent/ArrakisV2
@@ -19,6 +19,7 @@
  */
 
 using HarmonyLib;
+using System;
 using System.Reflection;
 
 namespace Arrakis
@@ -27,6 +28,7 @@ namespace Arrakis
     {
         private static Harmony harmony = null;
         private static bool patched = false;
+
         public static void ApplyPatches()
         {
             if (patched)
@@ -34,13 +36,28 @@ namespace Arrakis
             patched = true;
             CustomConsole.Log("Applying patches");
             harmony = new Harmony(PluginInfo.GUID);
-            harmony.PatchAll(Assembly.GetExecutingAssembly());
-            CustomConsole.Log("Patched");
+            int success = 0;
+            int failed = 0;
+            foreach (Type type in Assembly.GetExecutingAssembly().GetTypes())
+            {
+                try
+                {
+                    var methods = harmony.GetPatchedMethods();
+                    harmony.CreateClassProcessor(type).Patch();
+                    success++;
+                }
+                catch (Exception ex)
+                {
+                    failed++;
+                    CustomConsole.Log($"[PATCH FAILED] {type.FullName} — {ex.GetType().Name}: {ex.Message}");
+                }
+            }
+            CustomConsole.Log($"Patched — {success} succeeded, {failed} failed");
         }
 
         public static void RemovePatches()
         {
-            if (!patched) 
+            if (!patched)
                 return;
             patched = false;
             CustomConsole.Log("Removing patches");
