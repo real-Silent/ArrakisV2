@@ -22,26 +22,22 @@ using HarmonyLib;
 
 namespace Arrakis.Patches
 {
-    [HarmonyPatch(typeof(VRRig), "OnDisable")]
-    internal class DisableRig
+    [HarmonyPatch(typeof(VRRig), nameof(VRRig.OnDisable))]
+    public class OnDisable
     {
-        public static bool Prefix(VRRig __instance)
-        {
-            return !(__instance == VRRig.LocalRig);
-        }
+        public static bool Prefix(VRRig __instance) =>
+            !__instance.isLocal;
     }
 
-    [HarmonyPatch(typeof(VRRigJobManager), "DeregisterVRRig")]
-    public static class DisableRigBypass
+    [HarmonyPatch(typeof(VRRig), nameof(VRRig.Awake))]
+    public class Awake
     {
-        public static bool Prefix(VRRigJobManager __instance, VRRig rig)
-        {
-            return !(__instance == VRRig.LocalRig);
-        }
+        public static bool Prefix(VRRig __instance) =>
+            __instance.gameObject.name != "Local Gorilla Player(Clone)";
     }
 
-    [HarmonyPatch(typeof(VRRig), "PostTick")]
-    public class RigPatch3
+    [HarmonyPatch(typeof(VRRig), nameof(VRRig.PostTick))]
+    public class PostTick
     {
         public static bool Prefix(VRRig __instance) =>
             !__instance.isLocal || __instance.enabled;
