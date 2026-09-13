@@ -216,7 +216,7 @@ namespace Arrakis
         public static float AntiReportRange = 0.55f;
         public static void ChangeAntiReportRange()
         {
-            AntiReportIndexRange = (AntiReportIndexRange + 1) % 5;
+            AntiReportIndexRange = (AntiReportIndexRange + 1) % 4;
             switch (AntiReportIndexRange)
             {
                 case 0:
