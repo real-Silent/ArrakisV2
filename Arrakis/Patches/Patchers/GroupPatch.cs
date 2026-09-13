@@ -22,7 +22,7 @@ using HarmonyLib;
 
 namespace Arrakis.Patches.Patchers
 {
-    [HarmonyPatch(typeof(RoomSystem), nameof(RoomSystem.SearchForNearby))] // i think working? -sleepy
+    [HarmonyPatch(typeof(RoomSystem), nameof(RoomSystem.SearchForNearby))]
     public class GroupPatch
     {
         public static bool enabled;

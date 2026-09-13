@@ -23,7 +23,7 @@ using System.Threading.Tasks;
 
 namespace Arrakis.Patches
 {
-    public class TOSPatches // Credits to seralyth for these
+    public class TOSPatches
     {
         public static bool enabled;
 
