@@ -72,6 +72,7 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Visual Settings", method =() => CurrentCategoryName = "Visual Settings", isTogglable = false, toolTip = "Opens the visual settings for the menu." },
                 new ButtonInfo { buttonText = "Projectile Settings", method =() => CurrentCategoryName = "Projectile Settings", isTogglable = false, toolTip = "Opens the projectile settings for the menu." },
                 new ButtonInfo { buttonText = "Gunlib Settings", method =() => CurrentCategoryName = "Gunlib Settings", isTogglable = false, toolTip = "Opens the gunlib settings for the menu." },
+                new ButtonInfo { buttonText = "Safety Settings", method =() => CurrentCategoryName = "Safety Settings", isTogglable = false, toolTip = "Opens the safety settings for the menu." },
                 new ButtonInfo { buttonText = "Plugin Settings", method =() => CurrentCategoryName = "Plugin Settings", isTogglable = false, toolTip = "Opens the plugin settings for the menu." },
             },
 
@@ -95,7 +96,6 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Disable Click Vibrations", method =() => disablevibrations = true, disableMethod =() => disablevibrations = false, isTogglable = true, toolTip = "Disables the contorller vibrations you get when you press a button.", ShowInArraylist = false },
                 new ButtonInfo { buttonText = "Disable Cosmetic Finder", method =() => cosmeticfinder = false, disableMethod =() => cosmeticfinder = true, isTogglable = true, toolTip = "Disables the cosmetic finder gui.", ShowInArraylist = false },
                 new ButtonInfo { buttonText = "Change Dig Size", overlapText = "Change Dig Size <color=grey>[<color=cyan>Normal</color>]</color>", method =() => ChangeDigSize(), isTogglable = false, toolTip = "Changes the dig size for the VIM dig mod.", ShowInArraylist = false },
-                new ButtonInfo { buttonText = "Change Anti Report Range", overlapText = "Change Anti Report Range <color=grey>[<color=cyan>Massive</color>]</color>", method =() => ChangeAntiReportRange(), isTogglable = false, toolTip = "Changes the range of the anti reports.", ShowInArraylist = false },
                 new ButtonInfo { buttonText = "Float Menu", enableMethod =() => FloatMenu = true, disableMethod =() => FloatMenu = false, toolTip = "Makes the menu float infront of you.", ShowInArraylist = false },
                 new ButtonInfo { buttonText = "Arraylist", method =() => Visual.Arraylist(), disableMethod =() => Visual.DisableArraylist(), toolTip = "Gives you a arraylist showing every mod you have enabled.", ShowInArraylist = false },
                 new ButtonInfo { buttonText = "Flip Arraylist", enableMethod =() => fliparraylist = true, disableMethod =() => fliparraylist = false, toolTip = "Flips the array list.", ShowInArraylist = false },
@@ -154,6 +154,13 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Swap Gun Hand", enableMethod =() => swapgunhand = true, disableMethod =() => swapgunhand = false, isTogglable = true, toolTip = "Swap what hand the gun is on.", ShowInArraylist = false },
                 new ButtonInfo { buttonText = "Gun Target ESP", enableMethod =() => gunTargetESP = true, disableMethod =() => gunTargetESP = false, isTogglable = true, toolTip = "Makes who you shoot have a esp on them.", ShowInArraylist = false },
                 new ButtonInfo { buttonText = "Gun Pointer Trail", enableMethod =() => gunPointerTrail = true, disableMethod =() => gunPointerTrail = false, isTogglable = true, toolTip = "Gives the gun pointer a trail.", ShowInArraylist = false },
+            },
+
+            new ButtonInfo[] { // Safety Settings
+                new ButtonInfo { buttonText = "Exit Safety Settings", method =() => CurrentCategoryName = "Settings", isTogglable = false, toolTip = "Returns you back to the settings menu." },
+
+                new ButtonInfo { buttonText = "Change Anti Report Range", overlapText = "Change Anti Report Range <color=grey>[<color=cyan>Massive</color>]</color>", method =() => ChangeAntiReportRange(), isTogglable = false, toolTip = "Changes the range of the anti reports.", ShowInArraylist = false },
+                new ButtonInfo { buttonText = "Disable Anti Report Visualizer", enableMethod =() => disableAntiReportVisualizer = true, disableMethod =() => disableAntiReportVisualizer = false, isTogglable = false, toolTip = "Changes the range of the anti reports.", ShowInArraylist = false },
             },
 
             new ButtonInfo[] { // Plugin Settings
@@ -565,6 +572,7 @@ namespace Arrakis.Menu
             "Visual Settings",
             "Projectile Settings",
             "Gunlib Settings",
+            "Safety Settings",
             "Plugin Settings",
             "Enabled",
             "Favorites",

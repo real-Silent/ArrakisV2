@@ -107,6 +107,8 @@ namespace Arrakis
         public static bool disablevibrations;
         public static bool disablebuttonsounds;
 
+        public static bool disableAntiReportVisualizer;
+
         public static void JoinDiscord()
         {
             Prompt("Join Arrakis Discord", () =>

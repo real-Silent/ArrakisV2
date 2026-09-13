@@ -82,15 +82,17 @@ namespace Arrakis.Mods
 
         private static void HandleAntiReportRadius(float radius)
         {
+            if (disableAntiReportVisualizer)
+                return;
+
             Vector3 position = GorillaScoreboardTotalUpdater.allScoreboardLines.Where(x => x.linePlayer == NetworkSystem.Instance.LocalPlayer).Select(x => x.reportButton.transform.position)
             .FirstOrDefault();
             if (_radiusSphere == null)
             {
                 _radiusSphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
                 GameObject.Destroy(_radiusSphere.GetComponent<SphereCollider>());
-                _radiusSphere.transform.localScale = new Vector3(radius, radius, radius);
-                _radiusSphere.GetComponent<Renderer>().material.color = Settings.backgroundColor.GetCurrentColor();
             }
+            _radiusSphere.GetComponent<Renderer>().material.color = Settings.backgroundColor.GetCurrentColor();
             _radiusSphere.transform.localScale = new Vector3(radius, radius, radius);
             _radiusSphere.transform.position = position;
         }
