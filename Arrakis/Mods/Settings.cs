@@ -210,6 +210,32 @@ namespace Arrakis
             }
         }
 
+        private static int AntiReportIndexRange = 0;
+        public static float AntiReportRange = 0.55f;
+        public static void ChangeAntiReportRange()
+        {
+            AntiReportRange = (AntiReportRange + 1) % 5;
+            switch (AntiReportIndexRange)
+            {
+                case 0:
+                    AntiReportRange = 0.55f;
+                    GetIndex("Change Anti Report Range").overlapText = "Change Anti Report Range <color=grey>[<color=cyan>Default</color>]</color>";
+                    break;
+                case 1:
+                    AntiReportRange = 0.25f;
+                    GetIndex("Change Anti Report Range").overlapText = "Change Anti Report Range <color=grey>[<color=cyan>Small</color>]</color>";
+                    break;
+                case 2:
+                    AntiReportRange = 1f;
+                    GetIndex("Change Anti Report Range").overlapText = "Change Anti Report Range <color=grey>[<color=cyan>Big</color>]</color>";
+                    break;
+                case 3:
+                    AntiReportRange = 5f;
+                    GetIndex("Change Anti Report Range").overlapText = "Change Anti Report Range <color=grey>[<color=cyan>Massive</color>]</color>";
+                    break;
+            }
+        }
+
         public static void FreezePlayerInMenu()
         {
             if (menu != null)
@@ -483,6 +509,7 @@ namespace Arrakis
             public int currentDigSize { get; set; }
             public int currentprojectilecolor { get; set; }
             public int GunLineindex { get; set; }
+            public int AntiReportIndexRange { get; set; }
             public List<string> enabledMods { get; set; } = new List<string>();
             public List<string> favorites { get; set; } = new List<string>();
             public List<string> quickactions { get; set; } = new List<string>();
@@ -503,6 +530,7 @@ namespace Arrakis
                 currentDigSize = currentDigSize,
                 currentprojectilecolor = currentprojectilecolor,
                 GunLineindex = GunLineindex,
+                AntiReportIndexRange = AntiReportIndexRange,
                 enabledMods = Buttons.buttons.SelectMany(x => x).Where(x => x.enabled).Select(x => x.buttonText).ToList(),
                 favorites = favorites,
                 quickactions = quickactions
@@ -547,6 +575,9 @@ namespace Arrakis
 
                 GunLineindex = settings.GunLineindex - 1;
                 ChangeGunline();
+
+                AntiReportIndexRange = settings.AntiReportIndexRange - 1;
+                ChangeAntiReportRange();
 
                 HashSet<string> enabled = settings.enabledMods.ToHashSet();
                 foreach (ButtonInfo button in Buttons.buttons.SelectMany(x => x))

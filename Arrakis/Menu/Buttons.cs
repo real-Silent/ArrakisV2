@@ -95,6 +95,7 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Disable Click Vibrations", method =() => disablevibrations = true, disableMethod =() => disablevibrations = false, isTogglable = true, toolTip = "Disables the contorller vibrations you get when you press a button.", ShowInArraylist = false },
                 new ButtonInfo { buttonText = "Disable Cosmetic Finder", method =() => cosmeticfinder = false, disableMethod =() => cosmeticfinder = true, isTogglable = true, toolTip = "Disables the cosmetic finder gui.", ShowInArraylist = false },
                 new ButtonInfo { buttonText = "Change Dig Size", method =() => ChangeDigSize(), isTogglable = false, toolTip = "Changes the dig size for the VIM dig mod.", ShowInArraylist = false },
+                new ButtonInfo { buttonText = "Change Anti Report Range", method =() => ChangeAntiReportRange(), isTogglable = false, toolTip = "Changes the range of the anti reports.", ShowInArraylist = false },
                 new ButtonInfo { buttonText = "Float Menu", enableMethod =() => FloatMenu = true, disableMethod =() => FloatMenu = false, toolTip = "Makes the menu float infront of you.", ShowInArraylist = false },
                 new ButtonInfo { buttonText = "Arraylist", method =() => Visual.Arraylist(), disableMethod =() => Visual.DisableArraylist(), toolTip = "Gives you a arraylist showing every mod you have enabled.", ShowInArraylist = false },
                 new ButtonInfo { buttonText = "Flip Arraylist", enableMethod =() => fliparraylist = true, disableMethod =() => fliparraylist = false, toolTip = "Flips the array list.", ShowInArraylist = false },
@@ -233,9 +234,9 @@ namespace Arrakis.Menu
             new ButtonInfo[] { // Safety
                 new ButtonInfo { buttonText = "Exit Safety", method =() => CurrentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },
 
-                new ButtonInfo { buttonText = "Anti Report <color=grey>[<color=cyan>Disconnect</color>]</color>", method =() => Safety.AntiReportDisconnect(), isTogglable = true, toolTip = "Disconnects you from the lobby when someone tries to report you." },
-                new ButtonInfo { buttonText = "Anti Report <color=grey>[<color=cyan>Reconnect</color>]</color>", method =() => Safety.AntiRepportReconnect(), isTogglable = true, toolTip = "Reconnects you to the current lobby when someone tries to report you." },
-                new ButtonInfo { buttonText = "Anti Report <color=grey>[<color=cyan>Join Random</color>]</color>", method =() => Safety.AntiReportJoinRandom(), isTogglable = true, toolTip = "Attempts to make you join a random room when someone tries to report you." },
+                new ButtonInfo { buttonText = "Anti Report <color=grey>[<color=cyan>Disconnect</color>]</color>", method =() => Safety.AntiReportDisconnect(), disableMethod =() => Safety.DestroyARSphere(), isTogglable = true, toolTip = "Disconnects you from the lobby when someone tries to report you." },
+                new ButtonInfo { buttonText = "Anti Report <color=grey>[<color=cyan>Reconnect</color>]</color>", method =() => Safety.AntiReportReconnect(), disableMethod =() => Safety.DestroyARSphere(), isTogglable = true, toolTip = "Reconnects you to the current lobby when someone tries to report you." },
+                new ButtonInfo { buttonText = "Anti Report <color=grey>[<color=cyan>Join Random</color>]</color>", method =() => Safety.AntiReportJoinRandom(), disableMethod =() => Safety.DestroyARSphere(), isTogglable = true, toolTip = "Attempts to make you join a random room when someone tries to report you." },
                 new ButtonInfo { buttonText = "Flush RPC's", method =() => Safety.RPCProc(), isTogglable = false, toolTip = "Flushes all your rpc calls." },
                 new ButtonInfo { buttonText = "No Finger Movement", method =() => Safety.NoFingerMovement(), isTogglable = true, toolTip = "Disables your finger movement." },
                 new ButtonInfo { buttonText = "Panic", method =() => Safety.Panic(), isTogglable = false, toolTip = "Disables every mod on the menu." },

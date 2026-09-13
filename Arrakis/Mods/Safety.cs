@@ -33,15 +33,19 @@ using System.Linq;
 using System.Reflection;
 using UnityEngine;
 using static Arrakis.Menu.Main;
+using static Arrakis.Settings;
 
 namespace Arrakis.Mods
 {
     public class Safety
     {
+        private static GameObject _radiusSphere;
+
         public static void AntiReportDisconnect()
         {
             if (NetworkSystem.Instance.InRoom)
             {
+                HandleAntiReportRadius(AntiReportRange);
                 HandleAntiReport(() =>
                 {
                     NetworkSystem.Instance.ReturnToSinglePlayer();
@@ -49,10 +53,11 @@ namespace Arrakis.Mods
             }
         }
 
-        public static void AntiRepportReconnect()
+        public static void AntiReportReconnect()
         {
             if (NetworkSystem.Instance.InRoom)
             {
+                HandleAntiReportRadius(AntiReportRange);
                 HandleAntiReport(() =>
                 {
                     string roomname = PhotonNetwork.CurrentRoom.Name;
@@ -66,6 +71,7 @@ namespace Arrakis.Mods
         {
             if (NetworkSystem.Instance.InRoom)
             {
+                HandleAntiReportRadius(AntiReportRange);
                 HandleAntiReport(() =>
                 {
                     NetworkSystem.Instance.ReturnToSinglePlayer();
@@ -74,22 +80,46 @@ namespace Arrakis.Mods
             }
         }
 
-        public static void HandleAntiReport(Action method)
+        private static void HandleAntiReportRadius(float radius)
         {
+            Vector3 position = GorillaScoreboardTotalUpdater.allScoreboardLines.Where(x => x.linePlayer == NetworkSystem.Instance.LocalPlayer).Select(x => x.reportButton.transform.position)
+            .FirstOrDefault();
+            if (_radiusSphere == null)
+            {
+                _radiusSphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                GameObject.Destroy(_radiusSphere.GetComponent<SphereCollider>());
+                _radiusSphere.transform.localScale = new Vector3(radius, radius, radius);
+                _radiusSphere.GetComponent<Renderer>().material.color = Settings.backgroundColor.GetCurrentColor();
+            }
+            _radiusSphere.transform.position = position;
+        }
+
+        public static void DestroyARSphere()
+        {
+            if (_radiusSphere != null)
+            {
+                GameObject.Destroy(_radiusSphere);
+                _radiusSphere = null;
+            }
+        }
+
+        private static void HandleAntiReport(Action method)
+        {
+            if (method == null) return;
             foreach (GorillaPlayerScoreboardLine line in GorillaScoreboardTotalUpdater.allScoreboardLines.Where(line => line.linePlayer == NetworkSystem.Instance.LocalPlayer))
             {
                 Transform reportButton = line.reportButton.transform;
+                bool triggered = false;
                 foreach (VRRig rig in VRRigCache.ActiveRigs.Where(rig => rig != null && rig != VRRig.LocalRig))
                 {
+                    if (triggered) break;
                     float disR = Vector3.Distance(reportButton.position, rig.rightHandTransform.position);
                     float disL = Vector3.Distance(reportButton.position, rig.leftHandTransform.position);
-                    if (disR < 0.55f || disL < 0.55f)
+                    if (disR < AntiReportRange || disL < AntiReportRange)
                     {
-                        if (method != null)
-                        {
-                            NotificationManager.SendNotification($"<color=yellow>[ANTIREPORT]</color> {rig.Creator.NickName} Attempted to report you.");
-                            method.Invoke();
-                        }
+                        triggered = true;
+                        NotificationManager.SendNotification($"<color=yellow>[ANTIREPORT]</color> {rig.Creator.NickName} Attempted to report you.");
+                        method.Invoke();
                     }
                 }
             }
