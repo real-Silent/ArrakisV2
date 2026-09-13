@@ -91,6 +91,7 @@ namespace Arrakis.Mods
                 _radiusSphere.transform.localScale = new Vector3(radius, radius, radius);
                 _radiusSphere.GetComponent<Renderer>().material.color = Settings.backgroundColor.GetCurrentColor();
             }
+            _radiusSphere.transform.localScale = new Vector3(radius, radius, radius);
             _radiusSphere.transform.position = position;
         }
 
