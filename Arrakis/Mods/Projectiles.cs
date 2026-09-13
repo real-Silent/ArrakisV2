@@ -93,6 +93,13 @@ namespace Arrakis.Mods
             else
                 cachedThrow.SetSnowballActiveLocal(false);
         }
+        public static void FireworkGun()
+        {
+            if (InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Right, !XRSettings.isDeviceActive))
+                SpawnProjectile("Fireworks", GorillaTagger.Instance.rightHandTransform.position, -GorillaTagger.Instance.rightHandTransform.up * 50f, Settings.projectileColor);
+            else
+                cachedThrow.SetSnowballActiveLocal(false);
+        }
 
 
         private static SnowballThrowable cachedThrow = null;

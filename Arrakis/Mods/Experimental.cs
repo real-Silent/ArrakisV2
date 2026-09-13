@@ -60,16 +60,6 @@ namespace Arrakis.Mods
                 }
             }
         }
-        public static void KickAllInParty()
-        {
-            if (FriendshipGroupDetection.Instance.IsInParty)
-            {
-                PhotonNetworkController.Instance.AttemptToJoinSpecificRoom(Main.GenerateRandomString(6), JoinType.ForceJoinWithParty);
-                NotificationManager.SendNotification("<color=grey>[</color><color=purple>PARTY</color><color=grey>]</color> Kicking party members, please be patient..");
-            }
-            else
-                NotificationManager.SendNotification("<color=grey>[</color><color=red>ERROR</color><color=grey>]</color> You are not in a party.");
-        }
         private static bool antiKickEvents;
         public static bool AntiKickEvents // kinda works? -sleepy
         {

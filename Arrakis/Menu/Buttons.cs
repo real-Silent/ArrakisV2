@@ -440,6 +440,7 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Science Candy Gun <color=grey>[<color=cyan>G</color>]</color>", method =() => Projectiles.CandyGun(), isTogglable = true, toolTip = "Lets you shoot a projectile when holding <color=grey>[<color=cyan>G</color>]</color>." },
                 new ButtonInfo { buttonText = "Fish Food Gun <color=grey>[<color=cyan>G</color>]</color>", method =() => Projectiles.FishFoodGun(), isTogglable = true, toolTip = "Lets you shoot a projectile when holding <color=grey>[<color=cyan>G</color>]</color>." },
                 new ButtonInfo { buttonText = "Hot Dog Gun <color=grey>[<color=cyan>G</color>]</color>", method =() => Projectiles.HotdogGun(), isTogglable = true, toolTip = "Lets you shoot a projectile when holding <color=grey>[<color=cyan>G</color>]</color>." },
+                new ButtonInfo { buttonText = "Firework Gun <color=grey>[<color=cyan>G</color>]</color>", method =() => Projectiles.FireworkGun(), isTogglable = true, toolTip = "Lets you shoot a projectile when holding <color=grey>[<color=cyan>G</color>]</color>." },
             },
 
             new ButtonInfo[] { // Overpowered
@@ -453,43 +454,21 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Guardian Bring All", method =() => Overpowered.GuardianBringAll(), isTogglable = false, toolTip = "Brings everyones if you are guardian." },
                 new ButtonInfo { buttonText = "Guardian Wall Gun", method =() => Overpowered.GuardianWallGun(), isTogglable = true, toolTip = "Brings who you shoot to the wall where races start ig." },
                 new ButtonInfo { buttonText = "Guardian Wall All", method =() => Overpowered.GuardianWallAll(), isTogglable = true, toolTip = "Brings people to the wall where races start ig." },
-                new ButtonInfo { buttonText = "Barrel Fling Gun", method =() => Overpowered.BarrelFlingGun(), isTogglable = true, toolTip = "Flings who ever you shoot if you own the barrel." },
-                new ButtonInfo { buttonText = "Barrel Bring Gun", method =() => Overpowered.BarrelBringGun(), isTogglable = true, toolTip = "Brings who ever you shoot if you own the barrel." },
-                new ButtonInfo { buttonText = "City Barrel Kick Gun", method =() => Overpowered.CityBarrelKickGun(), isTogglable = true, toolTip = "Kicks who ever you shoot if you own the barrel and they are in city." },
-                new ButtonInfo { buttonText = "Barrel Punch Mod", method =() => Overpowered.BarrelPunchMod(), isTogglable = true, toolTip = "Lets you punch people if you own the barrel." },
-                new ButtonInfo { buttonText = "Barrel Crash Mod", method =() => Overpowered.BarrelCrashGun(), isTogglable = true, toolTip = "Crashes who ever you shoot if you own the barrel." },
                 new ButtonInfo { buttonText = "Lock Room", method =() => Overpowered.SetRoomStatus(false), isTogglable = false, toolTip = "Locks the current room making it so no one else can join." },
                 new ButtonInfo { buttonText = "Unlock Room", method =() => Overpowered.SetRoomStatus(true), isTogglable = false, toolTip = "Unlocks the current room making it so people can join." },
                 new ButtonInfo { buttonText = "Rope Fling Gun", method =() => Overpowered.RopeFlingGun(), isTogglable = true, toolTip = "Flings the rope you shoot." },
                 new ButtonInfo { buttonText = "Freeze Rope Gun", method =() => Overpowered.FreezeRopeGun(), isTogglable = true, toolTip = "Freezes the rope you shoot." },
-                new ButtonInfo { buttonText = "Deafen All", method =() => Overpowered.DeafenAll(), isTogglable = true, toolTip = "Deafens everyone in the current lobby." },
-                new ButtonInfo { buttonText = "Deafen Gun", method =() => Overpowered.DeafenGun(), isTogglable = true, toolTip = "Deafens who you shoot." },
                 new ButtonInfo { buttonText = "Stump Kick All <color=grey>[<color=cyan>Private</color>]</color>", method =() => Overpowered.StumpKickAll(), isTogglable = false, toolTip = "Kicks everyone in stump to a public lobby." },
                 new ButtonInfo { buttonText = "Destroy Cache All", method =() => Overpowered.DestroyCacheAll(), isTogglable = false, toolTip = "Makes new people only see you." },
-                new ButtonInfo { buttonText = "Fling On Grab", method =() => Overpowered.FlingOnGrab(), isTogglable = true, toolTip = "Flings who ever you hold with handlink." },
-                new ButtonInfo { buttonText = "Old Fling On Grab", method =() => Overpowered.OldFlingOnGrab(), isTogglable = true, toolTip = "Flings who ever you hold with handlink." },
-                new ButtonInfo { buttonText = "Crash On Grab", method =() => Overpowered.CrashOnGrab(), isTogglable = true, toolTip = "Crashes who ever you hold with handlink." },
-                new ButtonInfo { buttonText = "Force Grab Gun", method =() => Overpowered.ForceGrabGun(), disableMethod =() => VRRig.LocalRig.enabled = true, isTogglable = true, toolTip = "Attempts to grab who ever you shoot." },
-                new ButtonInfo { buttonText = "Force Grab All", method =() => Overpowered.ForceGrabAll(), disableMethod =() => VRRig.LocalRig.enabled = true, isTogglable = true, toolTip = "Attempts to grab who ever you shoot." },
                 new ButtonInfo { buttonText = "Lag All", method =() => Overpowered.LagAll(), isTogglable = true, toolTip = "Lags everyone." },
-           },
+            },
             new ButtonInfo[] { // Custom Maps
                 new ButtonInfo { buttonText = "Exit Custom Maps", method =() => CurrentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },
             },
 
             new ButtonInfo[] { // Master
                 new ButtonInfo { buttonText = "Exit Master", method =() => CurrentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },
-                /*
-                new ButtonInfo { buttonText = "Spawn Blue Lucy", method =() => Master.SpawnBlueLucy(), isTogglable = false, toolTip = "Spawns the blue ghost Lucy in forest." },
-                new ButtonInfo { buttonText = "Spawn Red Lucy", method =() => Master.SpawnRedLucy(), isTogglable = false, toolTip = "Spawns the red ghost Lucy in forest." },
-                new ButtonInfo { buttonText = "Depawn Red Lucy", method =() => Master.DespawnLucy(), isTogglable = false, toolTip = "Despawns the red ghost Lucy in forest." },
-                new ButtonInfo { buttonText = "Fast Lucy", method =() => Master.FastLucy(), isTogglable = false, toolTip = "Makes the ghost Lucy become really fast." },
-                new ButtonInfo { buttonText = "Slow Lucy", method =() => Master.SlowLucy(), isTogglable = false, toolTip = "Makes the ghost Lucy become really slow." },
-                new ButtonInfo { buttonText = "Spaz Lucy", method =() => Master.SpazLucy(), isTogglable = true, toolTip = "Makes the ghost Lucy spaz out." },
-                new ButtonInfo { buttonText = "Spaz Lucy Target", method =() => Master.SpazLucyTarget(), isTogglable = true, toolTip = "Makes the ghost Lucy spaz the target." },
-                new ButtonInfo { buttonText = "Move Lucy Gun", method =() => Master.MoveLucyGun(), isTogglable = true, toolTip = "Makes the ghost Lucy go to your gun pointer." },
-                new ButtonInfo { buttonText = "Grab Lucy", method =() => Master.GrabLucy(), isTogglable = true, toolTip = "Makes the ghost Lucy go to your hand when holding your grips." },
-                */
+                
                 new ButtonInfo { buttonText = "Untag All", method =() => Master.UntagAll(), isTogglable = false, toolTip = "Untags everyone in the current lobby." },
                 new ButtonInfo { buttonText = "Untag Self", method =() => Master.UntagSelf(), isTogglable = false, toolTip = "Untags your self." },
                 new ButtonInfo { buttonText = "Untag Gun", method =() => Master.UntagGun(), isTogglable = true, toolTip = "Untags the person you shoot." },
@@ -511,6 +490,17 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Erupt Lava", method =() => Master.ChangeLavaState(InfectionLavaController.RisingLavaState.Erupting), isTogglable = false, toolTip = "Erupts the lava." },
                 new ButtonInfo { buttonText = "Destroy Lighting", method =() => Master.DestroyLighting(), isTogglable = true, toolTip = "Destroys the lighting." },
                 new ButtonInfo { buttonText = "Virtual Stump Kick All", method =() => Master.VirtualStumpKickAll(), isTogglable = true, toolTip = "Destroys the lighting." },
+                /*
+                new ButtonInfo { buttonText = "Spawn Blue Lucy", method =() => Master.SpawnBlueLucy(), isTogglable = false, toolTip = "Spawns the blue ghost Lucy in forest." },
+                new ButtonInfo { buttonText = "Spawn Red Lucy", method =() => Master.SpawnRedLucy(), isTogglable = false, toolTip = "Spawns the red ghost Lucy in forest." },
+                new ButtonInfo { buttonText = "Depawn Red Lucy", method =() => Master.DespawnLucy(), isTogglable = false, toolTip = "Despawns the red ghost Lucy in forest." },
+                new ButtonInfo { buttonText = "Fast Lucy", method =() => Master.FastLucy(), isTogglable = false, toolTip = "Makes the ghost Lucy become really fast." },
+                new ButtonInfo { buttonText = "Slow Lucy", method =() => Master.SlowLucy(), isTogglable = false, toolTip = "Makes the ghost Lucy become really slow." },
+                new ButtonInfo { buttonText = "Spaz Lucy", method =() => Master.SpazLucy(), isTogglable = true, toolTip = "Makes the ghost Lucy spaz out." },
+                new ButtonInfo { buttonText = "Spaz Lucy Target", method =() => Master.SpazLucyTarget(), isTogglable = true, toolTip = "Makes the ghost Lucy spaz the target." },
+                new ButtonInfo { buttonText = "Move Lucy Gun", method =() => Master.MoveLucyGun(), isTogglable = true, toolTip = "Makes the ghost Lucy go to your gun pointer." },
+                new ButtonInfo { buttonText = "Grab Lucy", method =() => Master.GrabLucy(), isTogglable = true, toolTip = "Makes the ghost Lucy go to your hand when holding your grips." },
+                */
             },
 
             new ButtonInfo[] { // Experimental
@@ -518,7 +508,6 @@ namespace Arrakis.Menu
 
                 new ButtonInfo { buttonText = "Get All Tryon Cosmetics", method =() => Experimental.GetTryonCosmetics(), isTogglable = false, toolTip = "Gets all the try on cosmetics and logs in the console." },
                 new ButtonInfo { buttonText = "Get RPC Data", method =() => Experimental.GetRPCData(), isTogglable = false, toolTip = "Gets the rpc data and logs to a file." },
-                new ButtonInfo { buttonText = "Kick All In Party", method =() => Experimental.KickAllInParty(), isTogglable = false, toolTip = "Kicks everyone in your party." },
                 new ButtonInfo { buttonText = "Leave Party", method =() => FriendshipGroupDetection.Instance.LeaveParty(), isTogglable = false, toolTip = "Leaves the party you are in." },
                 new ButtonInfo { buttonText = "Party Lag Gun", method =() => Experimental.PartyLagGun(), disableMethod =() => EventPatches.Override = null, isTogglable = true, toolTip = "Lets you lag who ever you shoot if they are in your party." },
                 new ButtonInfo { buttonText = "Party Lag All", method =() => Experimental.PartyLagAll(), isTogglable = true, toolTip = "Lags everyone if they are in your party." },

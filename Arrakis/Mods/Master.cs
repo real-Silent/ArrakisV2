@@ -479,7 +479,6 @@ namespace Arrakis.Mods
             }
             NetworkSystem.Instance.PlayerListOthers.ForEach(p => RoomControls.KickPlayer(p.ActorNumber));
         }
-        public static float lightingDelay = 0f;
         public static void DestroyLighting()
         {
             if (!PhotonNetwork.LocalPlayer.IsMasterClient)
@@ -488,13 +487,11 @@ namespace Arrakis.Mods
                 Toggle("Destroy Lighting");
                 return;
             }
-            if (Time.time > lightingDelay)
-            {
-                PhotonNetwork.Destroy(BetterDayNightManager.instance.photonView);
-                lightingDelay = Time.time + 0.4f;
-            }
+            PhotonNetwork.Destroy(BetterDayNightManager.instance.photonView); // putting in a for loop breaks -sleepy
+            PhotonNetwork.Destroy(BetterDayNightManager.instance.photonView); // putting in a for loop breaks -sleepy
+            PhotonNetwork.Destroy(BetterDayNightManager.instance.photonView); // putting in a for loop breaks -sleepy
         }
-        public static void BecomeController()
+        public static void BecomeController() // might be patched, or ss to others -sleepy
         {
             if (PhotonNetwork.IsMasterClient)
                 CustomMapsTerminal.instance.mapTerminalNetworkObject.SendRPC("SetTerminalControlStatus_RPC", true, true, PhotonNetwork.LocalPlayer.ActorNumber);
@@ -549,12 +546,11 @@ namespace Arrakis.Mods
             NotificationManager.SendNotification("<color=grey>[</color><color=green>SUCCESS</color><color=grey>]</color> Successfully kicked others.");
             Toggle("Virtual Stump Kick All");
         }
-        // Lucy mods so we can release when october i know its early but yea -nova
         //public static HalloweenGhostChaser Lucy
         //{
         //    get
-        //    {
-        //        return GameObject.Find("idk lucys 2026 halloween path yet since its not even october").GetComponent<HalloweenGhostChaser>();
+        //    {   // yup a note in a note, but im gessing this -sleepy
+        //        return GameObject.Find("Environment Objects/05Maze_PersistentObjects/2026_Halloween1_PersistentObjects/Halloween Ghosts/Lucy/Halloween Ghost/FloatingChaseSkeleton").GetComponent<HalloweenGhostChaser>();
         //    }
         //}
         //

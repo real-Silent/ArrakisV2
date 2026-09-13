@@ -18,6 +18,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Threading.Tasks;
 using Arrakis.Managers;
 using Arrakis.Notifications;
 using GorillaLocomotion;
@@ -25,12 +31,6 @@ using GorillaNetworking;
 using GorillaTagScripts;
 using Liv.Lck.GorillaTag;
 using Photon.Pun;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.XR;
 using Voxels;
@@ -264,6 +264,8 @@ namespace Arrakis.Mods
         public static void SpawnHoverboard()
         {
             FreeHoverboardManager.instance.SendDropBoardRPC(GorillaTagger.Instance.rightHandTransform.transform.position, Quaternion.identity, Vector3.zero, Vector3.zero, VRRig.LocalRig.playerColor);
+            GTPlayer.Instance.isHoverAllowed = true;
+            GTPlayer.Instance.SetHoverActive(true);
             Safety.RPCProc();
         }
         public static void SpawnHoverboardSpam()
