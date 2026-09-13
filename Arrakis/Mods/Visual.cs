@@ -969,5 +969,5 @@ namespace Arrakis.Mods
  
         public static void DisableFog() =>
             GorillaTag.Rendering.ZoneShaderSettings.activeInstance.SetGroundFogValue(Color.clear, 0f, 0f, 0f);
-        }
+    }
 }
