@@ -33,46 +33,52 @@ namespace Arrakis.Patches
 
         public void OnEvent(EventData data)
         {
-            string playerName = "[UNKNOWN]";
-            Photon.Realtime.Player plr = PhotonNetwork.CurrentRoom.GetPlayer(data.Sender, false);
-            if (plr != null)
+            if (PhotonNetwork.InRoom)
             {
-                playerName = plr.NickName;
-            }
-            if (data.Code != 201 && data.Code != 205 && data.Code != 206 && data.Code != 208)
-            {
-                try
+                if (Settings.logphotonevents)
+                    return;
+
+                string playerName = "[UNKNOWN]";
+                Photon.Realtime.Player plr = PhotonNetwork.CurrentRoom.GetPlayer(data.Sender, false);
+                if (plr != null)
                 {
-                    if (data.Code != 200)
-                    {
-                        object[] array = (object[])((Hashtable)data.CustomData)[(byte)4];
-                        string thing = "";
-                        foreach (object element in array)
-                        {
-                            try
-                            {
-                                thing += element.ToString() + ", ";
-                            }
-                            catch { thing += "[Could not find value]" + ", "; }
-                        }
-                        CustomConsole.Log($"Event by {playerName} sent {data.Code.ToString()} // {thing}", CustomConsole.LogType.Info);
-                    }
-                    else
-                    {
-                        object[] array = (object[])((Hashtable)data.CustomData)[(byte)4];
-                        string thing = "";
-                        foreach (object element in array)
-                        {
-                            try
-                            {
-                                thing += element.ToString() + ", ";
-                            }
-                            catch { thing += "[Could not find value]" + ", "; }
-                        }
-                        CustomConsole.Log($"RPC by {playerName} sent {PhotonNetwork.PhotonServerSettings.RpcList[int.Parse(((Hashtable)data.CustomData)[(byte)5].ToString())]} // {thing}", CustomConsole.LogType.Info);
-                    }
+                    playerName = plr.NickName;
                 }
-                catch { }
+                if (data.Code != 201 && data.Code != 205 && data.Code != 206 && data.Code != 208)
+                {
+                    try
+                    {
+                        if (data.Code != 200)
+                        {
+                            object[] array = (object[])((Hashtable)data.CustomData)[(byte)4];
+                            string thing = "";
+                            foreach (object element in array)
+                            {
+                                try
+                                {
+                                    thing += element.ToString() + ", ";
+                                }
+                                catch { thing += "[Could not find value]" + ", "; }
+                            }
+                            CustomConsole.Log($"Event by {playerName} sent {data.Code.ToString()} // {thing}", CustomConsole.LogType.Info);
+                        }
+                        else
+                        {
+                            object[] array = (object[])((Hashtable)data.CustomData)[(byte)4];
+                            string thing = "";
+                            foreach (object element in array)
+                            {
+                                try
+                                {
+                                    thing += element.ToString() + ", ";
+                                }
+                                catch { thing += "[Could not find value]" + ", "; }
+                            }
+                            CustomConsole.Log($"RPC by {playerName} sent {PhotonNetwork.PhotonServerSettings.RpcList[int.Parse(((Hashtable)data.CustomData)[(byte)5].ToString())]} // {thing}", CustomConsole.LogType.Info);
+                        }
+                    }
+                    catch { }
+                }
             }
         }
     }
