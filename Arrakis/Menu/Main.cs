@@ -506,7 +506,7 @@ namespace Arrakis.Menu
                             title.text = File.ReadAllText($"{PluginInfo.BaseDirectory}/CustomTitle.txt") + (disablepagenumber ? "" : " <color=grey>[</color><color=white>" + (pageNumber + 1).ToString() + "</color><color=grey>]</color>");
                     }
                     else
-                        title.text = (RareChance ? "Femboy Lover Menu UwU" : PluginInfo.Name) + (disablepagenumber ? "" : " <color=grey>[</color><color=white>" + (pageNumber + 1).ToString() + "</color><color=grey>]</color>");
+                        title.text = (RareChance ? "Awwakis uwu 🥺✨" : PluginInfo.Name) + (disablepagenumber ? "" : " <color=grey>[</color><color=white>" + (pageNumber + 1).ToString() + "</color><color=grey>]</color>");
                 }
                 else
                     title.text = "";
