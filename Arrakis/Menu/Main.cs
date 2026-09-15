@@ -1163,6 +1163,7 @@ namespace Arrakis.Menu
                 {
                     try
                     {
+                        NotificationManager.SendNotification("<color=grey>[</color><color=cyan>INCREMENT</color><color=grey>]</color> " + target.toolTip, NotificationDelay);
                         target.enableMethod.Invoke();
                     }
                     catch { }
@@ -1174,6 +1175,7 @@ namespace Arrakis.Menu
                 {
                     try
                     {
+                        NotificationManager.SendNotification("<color=grey>[</color><color=red>DECREMENT</color><color=grey>]</color> " + target.toolTip, NotificationDelay);
                         target.disableMethod.Invoke();
                     }
                     catch { }
