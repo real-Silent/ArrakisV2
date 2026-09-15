@@ -354,6 +354,7 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Exit Advantage", method =() => CurrentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },
 
                 new ButtonInfo { buttonText = "Tag All", method =() => Advantage.TagAll(), disableMethod =() => Movement.FixRig(), isTogglable = true, toolTip = "Tags everyone in the current lobby." },
+                new ButtonInfo { buttonText = "Tag Aura", method =() => Advantage.TagAura(), isTogglable = true, toolTip = "Tags the closest person." },
                 new ButtonInfo { buttonText = "Tag Self", method =() => Advantage.TagSelf(), disableMethod =() => Movement.FixRig(), isTogglable = true, toolTip = "Tags your self if your not tagged." },
                 new ButtonInfo { buttonText = "Tag Gun", method =() => Advantage.TagGun(), disableMethod =() => Movement.FixRig(), isTogglable = true, toolTip = "Tags the person you shoot." },
                 new ButtonInfo { buttonText = "Flick Tag Gun", method =() => Advantage.FlickTagGun(), isTogglable = true, toolTip = "Lets you flick tag with a gun." },

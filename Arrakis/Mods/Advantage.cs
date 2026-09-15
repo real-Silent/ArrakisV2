@@ -74,6 +74,30 @@ namespace Arrakis.Mods
             }
         }
 
+        public static float TagAuraRange = 0.8f;
+        public static void TagAura()
+        {
+            if (NetworkSystem.Instance.InRoom)
+            {
+                foreach (VRRig rig in VRRigCache.ActiveRigs)
+                {
+                    if (!rig.IsLocal())
+                    {
+                        if (rig.IsTagged() || !VRRig.LocalRig.IsTagged())
+                            continue;
+                        if (VRRig.LocalRig.IsTagged() && !rig.IsTagged())
+                        {
+                            float distance = Vector3.Distance(VRRig.LocalRig.transform.position, rig.transform.position);
+                            if (distance <= TagAuraRange)
+                            {
+                                GameMode.ReportTag(rig.Creator);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         public static void TagSelf()
         {
             if (PhotonNetwork.LocalPlayer.IsMasterClient)
