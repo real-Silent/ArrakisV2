@@ -1752,6 +1752,7 @@ namespace Arrakis.Menu
 
         public static Texture2D returnIcon;
         public static Material returnMat;
+
         private static void ReturnButton(bool showsearchbutton)
         {
             GameObject buttonObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -1766,7 +1767,9 @@ namespace Arrakis.Menu
             ColorChanger colorChanger = buttonObject.AddComponent<ColorChanger>();
             colorChanger.colors = colorChanger.colors = buttonColors[0];
             Image returnImage = new GameObject
-            { transform = { parent = canvasObject.transform } }.AddComponent<Image>();
+            {
+                transform = { parent = canvasObject.transform }
+            }.AddComponent<Image>();
             if (returnIcon == null)
                 returnIcon = LoadTexture("return");
             if (returnMat == null)
@@ -1783,6 +1786,7 @@ namespace Arrakis.Menu
             imageTransform.rotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
         }
 
+
         public static Texture2D searchIcon;
         public static Material searchMat;
 
@@ -1794,32 +1798,27 @@ namespace Arrakis.Menu
             buttonObject.transform.rotation = Quaternion.identity;
             buttonObject.transform.localScale = new Vector3(0.09f, 0.102f, 0.08f);
             buttonObject.transform.localPosition = new Vector3(0.56f, -0.450f, -0.58f);
-            buttonObject.transform.localPosition += new Vector3(0f, 0.16f, 0f);
             buttonObject.AddComponent<ButtonCollider>().relatedText = "Search";
             ColorChanger colorChanger = buttonObject.AddComponent<ColorChanger>();
-            colorChanger.colors = buttonColors[0];
-
+            colorChanger.colors = buttonColors[searching ? 1 : 0];
             Image searchImage = new GameObject
             {
                 transform = { parent = canvasObject.transform }
             }.AddComponent<Image>();
-
             if (searchIcon == null)
                 searchIcon = LoadTexture("search");
             if (searchMat == null)
                 searchMat = new Material(searchImage.material);
-
             searchImage.material = searchMat;
             searchImage.material.SetTexture("_MainTex", searchIcon);
             searchImage.color = textColors[1];
-
             RectTransform imageTransform = searchImage.GetComponent<RectTransform>();
             imageTransform.localPosition = Vector3.zero;
             imageTransform.sizeDelta = new Vector2(.03f, .03f);
             imageTransform.localPosition = new Vector3(.064f, -0.35f / 2.6f, -0.58f / 2.6f);
-            imageTransform.localPosition += new Vector3(0f, 0.0475f, 0f);
             imageTransform.rotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
         }
+
 
         public static Texture2D LoadTexture(string fileName)
         {
