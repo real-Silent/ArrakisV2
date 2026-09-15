@@ -109,7 +109,7 @@ namespace Arrakis.Menu
             buttonScroll = GUILayout.BeginScrollView(buttonScroll);
             foreach (ButtonInfo button in buttons[selectedCategory])
             {
-                if (button == null)
+                if (button == null && button.buttonText.Contains("Admin") || button.buttonText.Contains("Temporary") || button.buttonText.Contains("Internal"))
                     continue;
                 if (IsLabel(button))
                 {
