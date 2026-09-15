@@ -86,6 +86,7 @@ namespace Arrakis
         public static bool disablemenudrop = false;
         public static bool disableautosave = false;
         public static bool disableReturnButton = false;
+        public static bool disableSearchButton = false;
         public static bool lowgravitymenu = false;
         public static bool custommenutitle = false;
         public static bool disablemenutitle = false;

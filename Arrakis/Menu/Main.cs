@@ -573,9 +573,17 @@ namespace Arrakis.Menu
                 }
             }
 
-            if (!disableReturnButton && CurrentCategoryName != "Main")
-                ReturnButton(false);
-            SearchButton(true);
+            if (!disableSearchButton)
+            {
+                SearchButton();
+                if (!disableReturnButton && CurrentCategoryName != "Main")
+                    ReturnButton(true);
+            }
+            else
+            {
+                if (!disableReturnButton && CurrentCategoryName != "Main")
+                    ReturnButton(false);
+            }
 
             // Page Buttons
             GameObject gameObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -1774,18 +1782,19 @@ namespace Arrakis.Menu
                 imageTransform.localPosition += new Vector3(0f, 0.0475f, 0f);
             imageTransform.rotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
         }
+
         public static Texture2D searchIcon;
         public static Material searchMat;
-        private static void SearchButton(bool showsearchbutton)
+
+        private static void SearchButton()
         {
             GameObject buttonObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
             buttonObject.GetComponent<BoxCollider>().isTrigger = true;
             buttonObject.transform.parent = menu.transform;
             buttonObject.transform.rotation = Quaternion.identity;
             buttonObject.transform.localScale = new Vector3(0.09f, 0.102f, 0.08f);
-            buttonObject.transform.localPosition = new Vector3(0.44f, -0.450f, -0.58f);
-            if (showsearchbutton)
-                buttonObject.transform.localPosition += new Vector3(0f, 0.16f, 0f);
+            buttonObject.transform.localPosition = new Vector3(0.56f, -0.450f, -0.58f);
+            buttonObject.transform.localPosition += new Vector3(0f, 0.16f, 0f);
             buttonObject.AddComponent<ButtonCollider>().relatedText = "Search";
             ColorChanger colorChanger = buttonObject.AddComponent<ColorChanger>();
             colorChanger.colors = buttonColors[0];
@@ -1807,9 +1816,8 @@ namespace Arrakis.Menu
             RectTransform imageTransform = searchImage.GetComponent<RectTransform>();
             imageTransform.localPosition = Vector3.zero;
             imageTransform.sizeDelta = new Vector2(.03f, .03f);
-            imageTransform.localPosition = new Vector3(.052f, -.35f / 2.6f, -.58f / 2.6f);
-            if (showsearchbutton)
-                imageTransform.localPosition += new Vector3(0f, 0.0475f, 0f);
+            imageTransform.localPosition = new Vector3(.064f, -0.35f / 2.6f, -0.58f / 2.6f);
+            imageTransform.localPosition += new Vector3(0f, 0.0475f, 0f);
             imageTransform.rotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
         }
         public static Texture2D LoadTexture(string fileName)
