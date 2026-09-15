@@ -166,9 +166,18 @@ namespace Arrakis
 
         public static float buttonclickvolume = 0.4f;
         private static int buttonclickvolumeindex = 0;
-        public static void ChangeButtonClickVolume()
+        public static void ChangeButtonClickVolume(bool increment = true)
         {
-            buttonclickvolumeindex = (buttonclickvolumeindex + 1) % 10;
+            const int value = 10;
+            if (increment)
+            {
+                buttonclickvolumeindex = (buttonclickvolumeindex + 1) % value;
+            }
+            else
+            {
+                buttonclickvolumeindex = (buttonclickvolumeindex - 1 + value) % value;
+            }
+
             switch (buttonclickvolumeindex)
             {
                 case 0: buttonclickvolume = 0.1f; break;
@@ -185,9 +194,18 @@ namespace Arrakis
             GetIndex("Change Click Volume").overlapText = $"Change Click Volume <color=grey>[<color=cyan>{buttonclickvolume}f</color>]</color>";
         }
         private static int GunLineindex = 0;
-        public static void ChangeGunline()
+        public static void ChangeGunline(bool increment = true)
         {
-            GunLineindex = (GunLineindex + 1) % 5;
+            const int value = 5;
+            if (increment)
+            {
+                GunLineindex = (GunLineindex + 1) % value;
+            }
+            else
+            {
+                GunLineindex = (GunLineindex - 1 + value) % value;
+            }
+
             switch (GunLineindex)
             {
                 case 0: 
@@ -215,9 +233,18 @@ namespace Arrakis
 
         private static int AntiReportIndexRange = 0;
         public static float AntiReportRange = 0.55f;
-        public static void ChangeAntiReportRange()
+        public static void ChangeAntiReportRange(bool increment = true)
         {
-            AntiReportIndexRange = (AntiReportIndexRange + 1) % 4;
+            const int value = 4;
+            if (increment)
+            {
+                AntiReportIndexRange = (AntiReportIndexRange + 1) % value;
+            }
+            else
+            {
+                AntiReportIndexRange = (AntiReportIndexRange - 1 + value) % value;
+            }
+
             switch (AntiReportIndexRange)
             {
                 case 0:
@@ -254,9 +281,18 @@ namespace Arrakis
 
         public static int currentTheme = 0;
 
-        public static void ChangeMenuTheme()
+        public static void ChangeMenuTheme(bool increment = true)
         {
-            currentTheme = (currentTheme + 1) % 15;
+            const int value = 15;
+            if (increment)
+            {
+                currentTheme = (currentTheme + 1) % value;
+            }
+            else
+            {
+                currentTheme = (currentTheme - 1 + value) % value;
+            }
+
             switch (currentTheme)
             {
                 case 0: // Default
@@ -384,9 +420,18 @@ namespace Arrakis
 
         private static int fontstyle = 0;
         public static FontStyle currentStyle = FontStyle.Italic;
-        public static void ChangeFontStyle()
+        public static void ChangeFontStyle(bool increment = true)
         {
-            fontstyle = (fontstyle + 1) % 4;
+            const int value = 4;
+            if (increment)
+            {
+                fontstyle = (fontstyle + 1) % value;
+            }
+            else
+            {
+                fontstyle = (fontstyle - 1 + value) % value;
+            }
+
             switch (fontstyle)
             {
                 case 0:
@@ -421,9 +466,17 @@ namespace Arrakis
             "Times New Roman"
         };
         public static Font currentFont = Resources.GetBuiltinResource<Font>("Arial.ttf");
-        public static void ChangeFont()
+        public static void ChangeFont(bool increment = true)
         {
-            fonttype = (fonttype + 1) % fontNames.Length;
+            if (increment)
+            {
+                fonttype = (fonttype + 1) % fontNames.Length;
+            }
+            else
+            {
+                fonttype = (fonttype - 1 + fontNames.Length) % fontNames.Length;
+            }
+
             switch (fonttype)
             {
                 case 0:
@@ -459,9 +512,18 @@ namespace Arrakis
         public static bool allowbigsnowballcolor = false;
         private static int currentprojectilecolor = 0;
         public static Color projectileColor = Color.white;
-        public static void ChangeProjectilesColor()
+        public static void ChangeProjectilesColor(bool increment = true)
         {
-            currentprojectilecolor = (currentprojectilecolor + 1) % 5;
+            const int value = 5;
+            if (increment)
+            {
+                currentprojectilecolor = (currentprojectilecolor + 1) % value;
+            }
+            else
+            {
+                currentprojectilecolor = (currentprojectilecolor - 1 + value) % value;
+            }
+
             switch (currentprojectilecolor)
             {
                 case 0: projectileColor = Color.white; break;
@@ -479,22 +541,37 @@ namespace Arrakis
         public static float wasdflyspeed = 10f;
         public static float flyspeed = 10f;
         public static int currentFlySpeed = 0;
-        public static void ChangeFlySpeed()
+        public static void ChangeFlySpeed(bool increment = true)
         {
             string[] speeds = { "Normal", "Very Slow", "Slow", "Fast", "Very Fast" };
             float[] values = { 10f, 2f, 5f, 20f, 40f };
-            currentFlySpeed = (currentFlySpeed + 1) % speeds.Length;
+            if (increment)
+            {
+                currentFlySpeed = (currentFlySpeed + 1) % speeds.Length;
+            }
+            else
+            {
+                currentFlySpeed = (currentFlySpeed - 1 + speeds.Length) % speeds.Length;
+            }
+
             flyspeed = values[currentFlySpeed];
             GetIndex("Change Fly Speed").overlapText = $"Change Fly Speed <color=grey>[<color=cyan>{speeds[currentFlySpeed]}</color>]</color>";
         }
 
         public static float digsize = 3f;
         private static int currentDigSize = 0;
-        public static void ChangeDigSize()
+        public static void ChangeDigSize(bool increment = true)
         {
             string[] sizes = { "Normal", "Very Small", "Small", "Large", "Very Large" };
             float[] values = { 3f, 0.3f, 1f, 10f, 50f };
-            currentDigSize = (currentDigSize + 1) % sizes.Length;
+            if (increment)
+            {
+                currentDigSize = (currentDigSize + 1) % sizes.Length;
+            }
+            else
+            {
+                currentDigSize = (currentDigSize - 1 + sizes.Length) % sizes.Length;
+            }
             digsize = values[currentDigSize];
             GetIndex("Change Dig Size").overlapText = $"Change Dig Size <color=grey>[<color=cyan>{sizes[currentDigSize]}</color>]</color>";
         }

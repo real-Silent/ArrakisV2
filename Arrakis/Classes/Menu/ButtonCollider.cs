@@ -29,7 +29,9 @@ namespace Arrakis.Classes
 	{
 		public string relatedText;
 		public static float buttonCooldown = 0f;
-		public void OnTriggerEnter(Collider collider)
+        public bool incremental;
+        public bool positive;
+        public void OnTriggerEnter(Collider collider)
 		{
 			if (Time.time > buttonCooldown && Check(collider))
 			{
@@ -38,7 +40,10 @@ namespace Arrakis.Classes
 					AudioManager.Vibration(rightHanded, GorillaTagger.Instance.tagHapticStrength / 2f, GorillaTagger.Instance.tagHapticDuration / 2f);
 				if (!disablebuttonsounds)
 					AudioManager.PlayButtonSound(rightHanded, buttonclickvolume);
-                Toggle(relatedText);
+                if (incremental)
+                    ToggleIncremental(relatedText, positive);
+                else
+                    Toggle(relatedText);
             }
 		}
 

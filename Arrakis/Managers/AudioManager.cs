@@ -127,12 +127,19 @@ namespace Arrakis.Managers
                     source.PlayOneShot(currentAudio, volume);
             }
         }
-        public static void ChangeClickSound()
+        public static void ChangeClickSound(bool increment = true)
         {
             int totalSlots = ButtonSounds.Length + SoundNames.Length + 1; // +1 for Cbutton.wav
-            clicksound++;
-            if (clicksound >= totalSlots)
-                clicksound = 0;
+
+            if (increment)
+            {
+                clicksound = (clicksound + 1) % totalSlots;
+            }
+            else
+            {
+                clicksound = (clicksound - 1 + totalSlots) % totalSlots;
+            }
+
             if (clicksound < ButtonSounds.Length)
             {
                 buttonsound = ButtonSounds[clicksound];
@@ -149,6 +156,7 @@ namespace Arrakis.Managers
             {
                 currentAudio = LoadSoundFromFile(CustomButtonPath, "Cbutton");
             }
+
             UpdateClickSoundText();
         }
         public static void PlayRigAudio(int index, bool lefthand, float volume)

@@ -729,6 +729,9 @@ namespace Arrakis.Menu
                     decrement.transform.localPosition = new Vector3(0.56f, 0.399f, 0.28f - offset);
                     ButtonCollider decrementCollider = decrement.AddComponent<ButtonCollider>();
                     decrementCollider.relatedText = "Decrement_" + method.buttonText;
+                    decrementCollider.incremental = true;
+                    decrementCollider.positive = false;
+
                     ColorChanger decrementColor = decrement.AddComponent<ColorChanger>();
                     decrementColor.colors = buttonColors[0];
 
@@ -741,6 +744,8 @@ namespace Arrakis.Menu
                     increment.transform.localPosition = new Vector3(0.56f, -0.399f, 0.28f - offset);
                     ButtonCollider incrementCollider = increment.AddComponent<ButtonCollider>();
                     incrementCollider.relatedText = "Increment_" + method.buttonText;
+                    incrementCollider.incremental = true;
+                    incrementCollider.positive = true;
 
                     ColorChanger incrementColor = increment.AddComponent<ColorChanger>();
                     incrementColor.colors = buttonColors[0];
