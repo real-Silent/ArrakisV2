@@ -35,11 +35,21 @@ namespace Arrakis.Notifications
         public static Text NotifiText;
         private bool HasInit;
         public static float notificationDecayTime = 1f;
-        private static List<Notification> activeNotifications = new List<Notification>();
+        private static readonly List<Notification> activeNotifications = new List<Notification>();
+        private GUIStyle pcNotificationStyle;
 
-        public void Start()
+        private void Start()
         {
             instance = this;
+            pcNotificationStyle = new GUIStyle(GUI.skin.label)
+            {
+                fontSize = 22,
+                fontStyle = Settings.currentStyle,
+                alignment = TextAnchor.MiddleRight,
+                richText = true,
+                wordWrap = true
+            };
+            pcNotificationStyle.normal.textColor = Color.white;
         }
 
         private void Init()
@@ -60,7 +70,7 @@ namespace Arrakis.Notifications
             rect.localPosition = new Vector3(0f, 0f, 1.6f);
             HUDObj.transform.localScale = Vector3.one;
             rect.rotation = Quaternion.Euler(0f, -270f, 0f);
-            NotifiText = CreateText("Notifications", new Vector2(450f, 210f), TextAnchor.LowerLeft, new Vector3(-1f, -1f, -0.5f), 25); // 30
+            NotifiText = CreateText("Notifications", new Vector2(450f, 210f), TextAnchor.LowerLeft, new Vector3(-1f, -1f, -0.5f), 25);
         }
 
         private Text CreateText(string name, Vector2 size, TextAnchor anchor, Vector3 pos, int fontSize)
@@ -81,7 +91,7 @@ namespace Arrakis.Notifications
             return txt;
         }
 
-        public void FixedUpdate()
+        private void FixedUpdate()
         {
             try
             {
@@ -90,45 +100,78 @@ namespace Arrakis.Notifications
                     Init();
                     HasInit = true;
                 }
-                if (!HasInit) return;
+                if (!HasInit)
+                    return;
                 HUDObj.GetComponent<CanvasScaler>().dynamicPixelsPerUnit = 2f;
                 HUDObj2.transform.position = MainCamera.transform.position;
                 HUDObj2.transform.rotation = MainCamera.transform.rotation;
+
                 float time = Time.time;
                 activeNotifications.RemoveAll(n => time >= n.Delay);
-                NotifiText.text = string.Concat(activeNotifications.Select(n => n.Text));
-                NotifiText.alignment = Settings.flipnotifications ? TextAnchor.LowerRight : TextAnchor.LowerLeft;
-                NotifiText.rectTransform.localPosition = Settings.flipnotifications ? new Vector3(-1f, -1f, 0.5f) : new Vector3(-1f, -1f, -0.5f);
-                try
+                if (NotifiText != null)
                 {
-                    NotifiText.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
-                    NotifiText.fontStyle = Settings.currentStyle;
+                    NotifiText.text = string.Concat(activeNotifications.Select(n => n.Text));
+                    NotifiText.alignment = Settings.flipnotifications ? TextAnchor.LowerRight : TextAnchor.LowerLeft;
+                    NotifiText.rectTransform.localPosition = Settings.flipnotifications ? new Vector3(-1f, -1f, 0.5f) : new Vector3(-1f, -1f, -0.5f);
+                    try
+                    {
+                        NotifiText.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
+                        NotifiText.fontStyle = Settings.currentStyle;
+                    }
+                    catch { }
                 }
-                catch { }
             }
-            catch { }
+            catch
+            {
+            }
+        }
+
+        private void OnGUI()
+        {
+            if (Settings.disableNotifications)
+                return;
+            if (activeNotifications.Count == 0)
+                return;
+            if (pcNotificationStyle == null)
+            {
+                pcNotificationStyle = new GUIStyle(GUI.skin.label)
+                {
+                    fontSize = 22,
+                    alignment = TextAnchor.MiddleRight,
+                    richText = true,
+                    wordWrap = true
+                };
+            }
+            pcNotificationStyle.fontStyle = Settings.currentStyle;
+            string text = string.Concat(activeNotifications.Select(n => n.Text));
+            float width = 500f;
+            float height = 200f;
+            float rightMargin = 25f;
+            float bottomMargin = 25f;
+            float x = Screen.width - width - rightMargin;
+            float y = Screen.height - height - bottomMargin;
+            GUI.Label(new Rect(x, y, width, height), text,pcNotificationStyle);
         }
 
         public static void SendNotification(string text, float duration = -1f)
         {
-            if (!Settings.disableNotifications)
+            if (Settings.disableNotifications)
+                return;
+            if (duration < 0)
+                duration = notificationDecayTime;
+            if (!text.EndsWith("\n"))
+                text += "\n";
+            activeNotifications.Add(new Notification
             {
-                if (NotifiText == null) return;
-                if (duration < 0)
-                    duration = notificationDecayTime;
-                if (!text.EndsWith("\n"))
-                    text += "\n";
-                activeNotifications.Add(new Notification
-                {
-                    Text = text,
-                    Delay = Time.time + duration
-                });
-            }
+                Text = text,
+                Delay = Time.time + duration
+            });
         }
 
         public static void ClearAllNotifications()
         {
             activeNotifications.Clear();
+
             if (NotifiText != null)
                 NotifiText.text = "";
         }
