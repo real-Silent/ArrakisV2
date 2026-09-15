@@ -1378,8 +1378,7 @@ namespace Arrakis.Menu
                     float newDelay = Mathf.Max(delay.Item2 * 0.75f, 0.05f);
                     if (Time.time > delay.Item1)
                     {
-                        keyPressedTimes[key] =
-                            (Time.time + newDelay, newDelay);
+                        keyPressedTimes[key] = (Time.time + newDelay, newDelay);
                     }
                     else
                     {
@@ -1394,13 +1393,44 @@ namespace Arrakis.Menu
                 keysPressed.Add(key);
                 if (lastPressedKeys.Contains(key))
                     continue;
+
+                bool ctrl = UnityEngine.InputSystem.Keyboard.current.leftCtrlKey.isPressed || UnityEngine.InputSystem.Keyboard.current.rightCtrlKey.isPressed;
+                if (ctrl)
+                {
+                    switch (key)
+                    {
+                        case UnityEngine.InputSystem.Key.A:
+                            keyboardInput = "";
+                            pageNumber = 0;
+                            ReloadMenu();
+                            break;
+                        case UnityEngine.InputSystem.Key.C:
+                            GUIUtility.systemCopyBuffer = keyboardInput;
+                            break;
+                        case UnityEngine.InputSystem.Key.V:
+                            string clipboard = GUIUtility.systemCopyBuffer ?? "";
+                            foreach (char c in clipboard)
+                            {
+                                string cs = c.ToString();
+                                if (allowedKeys.Contains(cs.ToLower()))
+                                    keyboardInput += cs;
+                                else if (c >= '0' && c <= '9')
+                                    keyboardInput += cs;
+                                else if (c == ' ')
+                                    keyboardInput += cs;
+                            }
+                            pageNumber = 0;
+                            ReloadMenu();
+                            break;
+                    }
+                    continue;
+                }
+
                 switch (key)
                 {
                     case UnityEngine.InputSystem.Key.Backspace:
                         if (!string.IsNullOrEmpty(keyboardInput))
-                        {
                             keyboardInput = keyboardInput.Substring(0, keyboardInput.Length - 1);
-                        }
                         break;
                     case UnityEngine.InputSystem.Key.Escape:
                         searching = false;
@@ -1431,6 +1461,7 @@ namespace Arrakis.Menu
             }
             lastPressedKeys = keysPressed;
         }
+
         private static void HandleSearch()
         {
             if (!searching)
