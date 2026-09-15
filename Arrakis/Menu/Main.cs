@@ -81,7 +81,7 @@ namespace Arrakis.Menu
             try
             {
                 bool toOpen = (!rightHanded && ControllerInputPoller.instance.leftControllerSecondaryButton) || (rightHanded && ControllerInputPoller.instance.rightControllerSecondaryButton);
-                bool keyboardOpen = UnityInput.Current.GetKey(keyboardButton) || searching;
+                bool keyboardOpen = UnityInput.Current.GetKey(keyboardButton) || searching; // searching holds it open
 
                 if (menu == null)
                 {
@@ -576,7 +576,7 @@ namespace Arrakis.Menu
 
             if (!disableReturnButton && CurrentCategoryName != "Main")
                 ReturnButton(false);
-            //SearchButton(true);
+            SearchButton(true);
 
             // Page Buttons
             GameObject gameObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -712,7 +712,7 @@ namespace Arrakis.Menu
             if (!method.label)
             {
                 GameObject gameObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                if (!UnityInput.Current.GetKey(keyboardButton))
+                if (!UnityInput.Current.GetKey(keyboardButton) && !searching)
                     gameObject.layer = 2;
 
                 Destroy(gameObject.GetComponent<Rigidbody>());
@@ -1288,7 +1288,20 @@ namespace Arrakis.Menu
             searching = !searching;
             pageNumber = 0;
             keyboardInput = "";
+
+            if (searching)
+            {
+                lastPressedKeys = detectedKeys.Where(k => UnityEngine.InputSystem.Keyboard.current[k].isPressed).ToList();
+            }
+            else
+            {
+                lastPressedKeys.Clear();
+                keyPressedTimes.Clear();
+            }
+
+            ReloadMenu();
         }
+
         public static bool searching = false;
         public static string keyboardInput = "";
         public static List<UnityEngine.InputSystem.Key> lastPressedKeys = new List<UnityEngine.InputSystem.Key>();

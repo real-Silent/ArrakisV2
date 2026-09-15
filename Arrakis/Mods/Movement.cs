@@ -113,6 +113,9 @@ namespace Arrakis.Mods
         private static Vector3 pos = Vector3.zero;
         public static void WasdFly()
         {
+            if (searching)
+                return;
+
             bool w, a, s, d, space, control, shift;
             w = Keyboard.current.wKey.isPressed;
             a = Keyboard.current.aKey.isPressed;
