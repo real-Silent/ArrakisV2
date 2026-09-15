@@ -166,6 +166,32 @@ namespace Arrakis
         public static float gradientSpeed = 0.5f;
         public static bool FloatMenu = false;
 
+        private static int NotiDelayIndex = 0;
+        private static string[] NotiDelayNames = new string[]
+        {
+            "Default", "Slow", "Very Slow", "Fast"
+        };
+        public static void ChangeNotificationDelay(bool increment = true)
+        {
+            if (increment)
+            {
+                NotiDelayIndex = (NotiDelayIndex + 1) % NotiDelayNames.Length;
+            }
+            else
+            {
+                NotiDelayIndex = (NotiDelayIndex - 1 + NotiDelayNames.Length) % NotiDelayNames.Length;
+            }
+
+            switch (NotiDelayIndex)
+            {
+                case 0: NotificationDelay = 1f; break; // Default
+                case 1: NotificationDelay = 5f; break; // Slow
+                case 2: NotificationDelay = 10f; break; // Very Slow
+                case 3: NotificationDelay = 0.4f; break; // Fast
+            }
+            GetIndex("Change Notification Delay").overlapText = $"Change Notification Delay <color=grey>[<color=cyan>{NotiDelayNames[NotiDelayIndex]}</color>]</color>";
+        }
+
         public static float buttonclickvolume = 0.4f;
         private static int buttonclickvolumeindex = 0;
         public static void ChangeButtonClickVolume(bool increment = true)

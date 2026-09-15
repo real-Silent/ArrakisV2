@@ -1029,11 +1029,11 @@ namespace Arrakis.Menu
             {
                 if (button.detected)
                 {
-                    NotificationManager.SendNotification($"This mod is <color=red>detected</color> and has been disabled.");
+                    NotificationManager.SendNotification($"This mod is <color=red>detected</color> and has been disabled.", NotificationDelay);
                 }
                 if (button.patched)
                 {
-                    NotificationManager.SendNotification($"This mod is <color=yellow>detected</color> and has been disabled.");
+                    NotificationManager.SendNotification($"This mod is <color=yellow>detected</color> and has been disabled.", NotificationDelay);
                 }
             }
 
@@ -1064,13 +1064,13 @@ namespace Arrakis.Menu
                     {
                         favorites.Remove(buttonText);
                         VRRig.LocalRig.PlayHandTapLocal(35, rightHanded, 0.6f);
-                        NotificationManager.SendNotification("<color=grey>[</color><color=cyan>FAVORITES</color><color=grey>]</color> Removed from favorites.");
+                        NotificationManager.SendNotification("<color=grey>[</color><color=cyan>FAVORITES</color><color=grey>]</color> Removed from favorites.", NotificationDelay);
                     }
                     else
                     {
                         favorites.Add(buttonText);
                         VRRig.LocalRig.PlayHandTapLocal(35, rightHanded, 0.6f);
-                        NotificationManager.SendNotification("<color=grey>[</color><color=cyan>FAVORITES</color><color=grey>]</color> Added to favorites.");
+                        NotificationManager.SendNotification("<color=grey>[</color><color=cyan>FAVORITES</color><color=grey>]</color> Added to favorites.", NotificationDelay);
                     }
                     ReloadMenu();
                     return;
@@ -1084,13 +1084,13 @@ namespace Arrakis.Menu
                 {
                     quickactions.Add(actionButton);
                     VRRig.LocalRig.PlayHandTapLocal(50, rightHanded, 0.4f);
-                    NotificationManager.SendNotification("<color=grey>[</color><color=cyan>QUICK ACTIONS</color><color=grey>]</color> Added quick action button.");
+                    NotificationManager.SendNotification("<color=grey>[</color><color=cyan>QUICK ACTIONS</color><color=grey>]</color> Added quick action button.", NotificationDelay);
                 }
                 else
                 {
                     quickactions.Remove(actionButton);
                     VRRig.LocalRig.PlayHandTapLocal(48, rightHanded, 0.4f);
-                    NotificationManager.SendNotification("<color=grey>[</color><color=cyan>QUICK ACTIONS</color><color=grey>]</color> Removed quick action button.");
+                    NotificationManager.SendNotification("<color=grey>[</color><color=cyan>QUICK ACTIONS</color><color=grey>]</color> Removed quick action button.", NotificationDelay);
                 }
                 ReloadMenu();
                 return;
@@ -1120,20 +1120,20 @@ namespace Arrakis.Menu
                             target.enabled = !target.enabled;
                             if (target.enabled)
                             {
-                                NotificationManager.SendNotification("<color=grey>[</color><color=cyan>ENABLE</color><color=grey>]</color> " + target.toolTip);
+                                NotificationManager.SendNotification("<color=grey>[</color><color=cyan>ENABLE</color><color=grey>]</color> " + target.toolTip, NotificationDelay);
                                 if (target.enableMethod != null)
                                     try { target.enableMethod.Invoke(); } catch { }
                             }
                             else
                             {
-                                NotificationManager.SendNotification("<color=grey>[</color><color=red>DISABLE</color><color=grey>]</color> " + target.toolTip);
+                                NotificationManager.SendNotification("<color=grey>[</color><color=red>DISABLE</color><color=grey>]</color> " + target.toolTip, NotificationDelay);
                                 if (target.disableMethod != null)
                                     try { target.disableMethod.Invoke(); } catch { }
                             }
                         }
                         else
                         {
-                            NotificationManager.SendNotification("<color=grey>[</color><color=cyan>ENABLE</color><color=grey>]</color> " + target.toolTip);
+                            NotificationManager.SendNotification("<color=grey>[</color><color=cyan>ENABLE</color><color=grey>]</color> " + target.toolTip, NotificationDelay);
                             if (target.method != null)
                                 try { target.method.Invoke(); } catch { }
                         }
@@ -1461,6 +1461,8 @@ namespace Arrakis.Menu
 
         private static GameObject GunPointer;
         private static LineRenderer GunLine;
+
+        public static float NotificationDelay = 1f;
 
         public static string currentRoomName = "";
         public static string reconnectingRoomName = "";
