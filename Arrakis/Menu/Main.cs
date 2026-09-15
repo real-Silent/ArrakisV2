@@ -510,6 +510,13 @@ namespace Arrakis.Menu
                 else
                     title.text = "";
             }
+
+            if (lowercasetext)
+                title.text = title.text.ToUpper();
+
+            if (uppercasetext)
+                title.text = title.text.ToUpper();
+
             title.fontSize = 1;
             title.color = textColors[0];
             title.supportRichText = true;
@@ -535,6 +542,13 @@ namespace Arrakis.Menu
                 }.AddComponent<Text>();
                 fpsObject.font = currentFont;
                 fpsObject.text = "FPS: " + Mathf.Ceil(1f / Time.unscaledDeltaTime).ToString();
+
+                if (lowercasetext)
+                    fpsObject.text = fpsObject.text.ToUpper();
+
+                if (uppercasetext)
+                    fpsObject.text = fpsObject.text.ToUpper();
+
                 fpsObject.color = textColors[0];
                 fpsObject.fontSize = 1;
                 fpsObject.supportRichText = true;
@@ -658,6 +672,12 @@ namespace Arrakis.Menu
             component.localPosition = new Vector3(0.064f, -0.195f, 0f);
             component.rotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
 
+            if (lowercasetext)
+                text.text = text.text.ToUpper();
+
+            if (uppercasetext)
+                text.text = text.text.ToUpper();
+
             // Button Creation
             int buttonIndexOffset = 0;
             ButtonInfo[] renderButtons = new ButtonInfo[] { };
@@ -772,6 +792,12 @@ namespace Arrakis.Menu
                     valueTransform.localPosition = new Vector3(0.064f, 0f, 0.111f - offset / 2.6f);
                     valueTransform.rotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
 
+                    if (lowercasetext)
+                        valueText.text = valueText.text.ToUpper();
+
+                    if (uppercasetext)
+                        valueText.text = valueText.text.ToUpper();
+
                     Text decrementText = new GameObject
                     {
                         transform =
@@ -794,6 +820,12 @@ namespace Arrakis.Menu
                     new Vector3(0.064f, 0.12f, 0.111f - offset / 2.6f);
                     decrementTransform.rotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
 
+                    if (lowercasetext)
+                        decrementText.text = decrementText.text.ToUpper();
+
+                    if (uppercasetext)
+                        decrementText.text = decrementText.text.ToUpper();
+
                     Text incrementText = new GameObject
                     {
                         transform =
@@ -814,6 +846,13 @@ namespace Arrakis.Menu
                     incrementTransform.sizeDelta = new Vector2(0.1f, 0.03f);
                     incrementTransform.localPosition = new Vector3(0.064f, -0.12f, 0.111f - offset / 2.6f);
                     incrementTransform.rotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
+
+                    if (lowercasetext)
+                        incrementText.text = incrementText.text.ToUpper();
+
+                    if (uppercasetext)
+                        incrementText.text = incrementText.text.ToUpper();
+
                     return;
                 }
 
@@ -852,6 +891,12 @@ namespace Arrakis.Menu
             component.sizeDelta = new Vector2(0.2f, 0.03f);
             component.localPosition = new Vector3(0.064f, 0f, 0.111f - offset / 2.6f);
             component.rotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
+
+            if (lowercasetext)
+                text.text = text.text.ToUpper();
+
+            if (uppercasetext)
+                text.text = text.text.ToUpper();
         }
 
         public static void RecreateMenu()
