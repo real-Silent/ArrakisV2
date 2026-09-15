@@ -81,7 +81,7 @@ namespace Arrakis.Menu
             try
             {
                 bool toOpen = (!rightHanded && ControllerInputPoller.instance.leftControllerSecondaryButton) || (rightHanded && ControllerInputPoller.instance.rightControllerSecondaryButton);
-                bool keyboardOpen = UnityInput.Current.GetKey(keyboardButton) || searching; // searching holds it open
+                bool keyboardOpen = UnityInput.Current.GetKey(keyboardButton) || searching;
 
                 if (menu == null)
                 {
