@@ -51,6 +51,16 @@ namespace Arrakis.Mods
             });
         }
 
+        public static void ChangeName(string newname)
+        {
+            PhotonNetwork.LocalPlayer.NickName = newname;
+            GorillaComputer.instance.savedName = newname;
+            GorillaComputer.instance.currentName = newname;
+            GorillaTagger.Instance.offlineVRRig.SetNameTagText(newname);
+            PlayerPrefs.SetString("playerName", newname);
+            PlayerPrefs.Save();
+        }
+
         public static void Disconnect() =>
             NetworkSystem.Instance.ReturnToSinglePlayer();
 
