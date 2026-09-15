@@ -236,7 +236,7 @@ namespace Arrakis.Mods
         }
         public static void AntiTag()
         {
-            if (!PhotonNetwork.IsMasterClient)
+            if (PhotonNetwork.LocalPlayer.IsMasterClient)
             {
                 foreach (GorillaTagManager tag in GameObject.FindObjectsByType<GorillaTagManager>(FindObjectsSortMode.None))
                 {
@@ -257,20 +257,17 @@ namespace Arrakis.Mods
             }
             else
             {
-                if (VRRig.LocalRig.IsTagged() && !VRRig.LocalRig.IsTagged())
+                foreach (VRRig rig in VRRigCache.ActiveRigs)
                 {
-                    foreach (VRRig rig in VRRigCache.ActiveRigs)
+                    if (!rig.IsLocal() && rig.IsTagged() && !VRRig.LocalRig.IsTagged())
                     {
-                        if (rig.IsLocal() && rig.IsTagged() && !VRRig.LocalRig.IsTagged())
+                        if (Vector3.Distance(VRRig.LocalRig.transform.position, rig.transform.position) < 3f)
                         {
-                            if (Vector3.Distance(VRRig.LocalRig.transform.position, rig.transform.position) < 3f)
-                            {
-                                VRRig.LocalRig.enabled = false;
-                                VRRig.LocalRig.transform.position = new Vector3(999f, 999f, 999f);
-                            }
-                            else
-                                VRRig.LocalRig.enabled = true;
+                            VRRig.LocalRig.enabled = false;
+                            VRRig.LocalRig.transform.position = new Vector3(999f, 999f, 999f);
                         }
+                        else
+                            VRRig.LocalRig.enabled = true;
                     }
                 }
             }
