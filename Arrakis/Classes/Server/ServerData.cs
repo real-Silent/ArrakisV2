@@ -171,25 +171,7 @@ namespace Arrakis.Classes
 
                     if (!bypass)
                     {
-                        if (PluginInfo.BetaBuild)
-                        {
-                            if (!showprompt)
-                            {
-                                showprompt = true;
-                                NotificationManager.SendNotification($"<color=grey>[</color><color=cyan>BETA</color><color=grey>]</color> You are using a beta build of the menu some mods may be buggy the actual version is {serverversion}.", 7f);
-                                List<ButtonInfo> buttons = Buttons.buttons[GetCategory("Main")].ToList();
-                                buttons.Add(new ButtonInfo { buttonText = "<color=red>B</color><color=green>e</color><color=cyan>t</color><color=yellow>a</color>", method = () => CurrentCategoryName = "Beta", isTogglable = false, toolTip = "Opens the beta mods." });
-                                Buttons.buttons[GetCategory("Main")] = buttons.ToArray();
-
-                                List<ButtonInfo> betaButtons = Buttons.buttons[GetCategory("Beta")].ToList();
-                                betaButtons.AddRange(new ButtonInfo[]
-                                {
-                                    new ButtonInfo { buttonText = "Spider Man", method =() => Movement.SpiderMan(), disableMethod =() => Movement.DisableSpiderMan(), isTogglable = true, toolTip = "Lets you become spiderman." },
-                                });
-                                Buttons.buttons[GetCategory("Beta")] = betaButtons.ToArray();
-                            }
-                        }
-                        else if (Version.Parse(PluginInfo.Version) < Version.Parse(serverversion))
+                        if (Version.Parse(PluginInfo.Version) < Version.Parse(serverversion))
                         {
                             if (!showprompt)
                             {
