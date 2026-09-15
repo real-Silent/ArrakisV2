@@ -1909,6 +1909,7 @@ namespace Arrakis.Menu
         public static readonly Dictionary<VRRig, int> playerPing = new Dictionary<VRRig, int>();
         private static void OnPlayerSerialize(VRRig rig) =>
             playerPing[rig] = rig.GetPing(); // mainly used for debuging, might make a ping nametags later -sleepy
+
         public static Vector3 ServerSyncPos;
         public static Vector3 ServerSyncLeftHandPos;
         public static Vector3 ServerSyncRightHandPos;
