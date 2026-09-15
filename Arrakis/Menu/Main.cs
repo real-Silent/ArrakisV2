@@ -486,8 +486,7 @@ namespace Arrakis.Menu
             {
                 if (string.IsNullOrEmpty(keyboardInput))
                 {
-                    int dots = Mathf.FloorToInt(Time.time * 2f) % 4;
-                    title.text = "Search" + new string('.', dots);
+                    title.text = "Search";
                 }
                 else
                 {
