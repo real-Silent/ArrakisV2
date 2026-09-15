@@ -512,7 +512,7 @@ namespace Arrakis.Menu
             }
 
             if (lowercasetext)
-                title.text = title.text.ToUpper();
+                title.text = title.text.ToLower();
 
             if (uppercasetext)
                 title.text = title.text.ToUpper();
@@ -544,7 +544,7 @@ namespace Arrakis.Menu
                 fpsObject.text = "FPS: " + Mathf.Ceil(1f / Time.unscaledDeltaTime).ToString();
 
                 if (lowercasetext)
-                    fpsObject.text = fpsObject.text.ToUpper();
+                    fpsObject.text = fpsObject.text.ToLower();
 
                 if (uppercasetext)
                     fpsObject.text = fpsObject.text.ToUpper();
@@ -673,7 +673,7 @@ namespace Arrakis.Menu
             component.rotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
 
             if (lowercasetext)
-                text.text = text.text.ToUpper();
+                text.text = text.text.ToLower();
 
             if (uppercasetext)
                 text.text = text.text.ToUpper();
@@ -793,7 +793,7 @@ namespace Arrakis.Menu
                     valueTransform.rotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
 
                     if (lowercasetext)
-                        valueText.text = valueText.text.ToUpper();
+                        valueText.text = valueText.text.ToLower();
 
                     if (uppercasetext)
                         valueText.text = valueText.text.ToUpper();
@@ -821,7 +821,7 @@ namespace Arrakis.Menu
                     decrementTransform.rotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
 
                     if (lowercasetext)
-                        decrementText.text = decrementText.text.ToUpper();
+                        decrementText.text = decrementText.text.ToLower();
 
                     if (uppercasetext)
                         decrementText.text = decrementText.text.ToUpper();
@@ -848,7 +848,7 @@ namespace Arrakis.Menu
                     incrementTransform.rotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
 
                     if (lowercasetext)
-                        incrementText.text = incrementText.text.ToUpper();
+                        incrementText.text = incrementText.text.ToLower();
 
                     if (uppercasetext)
                         incrementText.text = incrementText.text.ToUpper();
@@ -893,7 +893,7 @@ namespace Arrakis.Menu
             component.rotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
 
             if (lowercasetext)
-                text.text = text.text.ToUpper();
+                text.text = text.text.ToLower();
 
             if (uppercasetext)
                 text.text = text.text.ToUpper();
