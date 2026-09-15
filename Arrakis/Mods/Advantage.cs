@@ -299,8 +299,8 @@ namespace Arrakis.Mods
                 Patches.Patchers.EventPatches.Override = () => false;
                 Patches.Patchers.PlrSerializePatch.stopSerialization = true;
             }
-           else
-            StopBlinking();
+            else
+                StopBlinking();
         }
         public static void StopBlinking()
         {
