@@ -478,7 +478,7 @@ namespace Arrakis
 
         public static float wasdflyspeed = 10f;
         public static float flyspeed = 10f;
-        private static int currentFlySpeed = 0;
+        public static int currentFlySpeed = 0;
         public static void ChangeFlySpeed()
         {
             string[] speeds = { "Normal", "Very Slow", "Slow", "Fast", "Very Fast" };

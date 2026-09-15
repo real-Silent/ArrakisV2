@@ -718,10 +718,103 @@ namespace Arrakis.Menu
         {
             if (!method.label)
             {
+                if (method.isIncremental)
+                {
+                    GameObject decrement = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                    Destroy(decrement.GetComponent<Rigidbody>());
+                    decrement.GetComponent<BoxCollider>().isTrigger = true;
+                    decrement.transform.parent = menu.transform;
+                    decrement.transform.rotation = Quaternion.identity;
+                    decrement.transform.localScale = new Vector3(0.09f, 0.102f, 0.08f);
+                    decrement.transform.localPosition = new Vector3(0.56f, 0.399f, 0.28f - offset);
+                    ButtonCollider decrementCollider = decrement.AddComponent<ButtonCollider>();
+                    decrementCollider.relatedText = "Decrement_" + method.buttonText;
+                    ColorChanger decrementColor = decrement.AddComponent<ColorChanger>();
+                    decrementColor.colors = buttonColors[0];
+
+                    GameObject increment = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                    Destroy(increment.GetComponent<Rigidbody>());
+                    increment.GetComponent<BoxCollider>().isTrigger = true;
+                    increment.transform.parent = menu.transform;
+                    increment.transform.rotation = Quaternion.identity;
+                    increment.transform.localScale = new Vector3(0.09f, 0.102f, 0.08f);
+                    increment.transform.localPosition = new Vector3(0.56f, -0.399f, 0.28f - offset);
+                    ButtonCollider incrementCollider = increment.AddComponent<ButtonCollider>();
+                    incrementCollider.relatedText = "Increment_" + method.buttonText;
+
+                    ColorChanger incrementColor = increment.AddComponent<ColorChanger>();
+                    incrementColor.colors = buttonColors[0];
+
+                    Text valueText = new GameObject
+                    {
+                        transform =
+                        {
+                            parent = canvasObject.transform
+                        }
+                    }.AddComponent<Text>();
+                    valueText.font = currentFont;
+                    valueText.text = method.overlapText ?? method.buttonText;
+                    valueText.supportRichText = true;
+                    valueText.fontSize = 1;
+                    valueText.color = textColors[0];
+                    valueText.alignment = TextAnchor.MiddleCenter;
+                    valueText.fontStyle = currentStyle;
+                    valueText.resizeTextForBestFit = true;
+                    valueText.resizeTextMinSize = 0;
+                    RectTransform valueTransform = valueText.GetComponent<RectTransform>();
+                    valueTransform.localPosition = Vector3.zero;
+                    valueTransform.sizeDelta = new Vector2(0.2f, 0.03f);
+                    valueTransform.localPosition = new Vector3(0.064f, 0f, 0.111f - offset / 2.6f);
+                    valueTransform.rotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
+
+                    Text decrementText = new GameObject
+                    {
+                        transform =
+                        {
+                            parent = canvasObject.transform
+                        }
+                    }.AddComponent<Text>();
+                    decrementText.font = currentFont;
+                    decrementText.text = "<";
+                    decrementText.fontSize = 1;
+                    decrementText.color = textColors[0];
+                    decrementText.alignment = TextAnchor.MiddleCenter;
+                    decrementText.fontStyle = currentStyle;
+                    decrementText.resizeTextForBestFit = true;
+                    decrementText.resizeTextMinSize = 0;
+                    RectTransform decrementTransform = decrementText.GetComponent<RectTransform>();
+                    decrementTransform.localPosition = Vector3.zero;
+                    decrementTransform.sizeDelta = new Vector2(0.1f, 0.03f);
+                    decrementTransform.localPosition =
+                    new Vector3(0.064f, 0.12f, 0.111f - offset / 2.6f);
+                    decrementTransform.rotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
+
+                    Text incrementText = new GameObject
+                    {
+                        transform =
+                        {
+                            parent = canvasObject.transform
+                        }
+                    }.AddComponent<Text>();
+                    incrementText.font = currentFont;
+                    incrementText.text = ">";
+                    incrementText.fontSize = 1;
+                    incrementText.color = textColors[0];
+                    incrementText.alignment = TextAnchor.MiddleCenter;
+                    incrementText.fontStyle = currentStyle;
+                    incrementText.resizeTextForBestFit = true;
+                    incrementText.resizeTextMinSize = 0;
+                    RectTransform incrementTransform = incrementText.GetComponent<RectTransform>();
+                    incrementTransform.localPosition = Vector3.zero;
+                    incrementTransform.sizeDelta = new Vector2(0.1f, 0.03f);
+                    incrementTransform.localPosition = new Vector3(0.064f, -0.12f, 0.111f - offset / 2.6f);
+                    incrementTransform.rotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
+                    return;
+                }
+
                 GameObject gameObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 if (!UnityInput.Current.GetKey(keyboardButton) && !searching)
                     gameObject.layer = 2;
-
                 Destroy(gameObject.GetComponent<Rigidbody>());
                 gameObject.GetComponent<BoxCollider>().isTrigger = true;
                 gameObject.transform.parent = menu.transform;
@@ -729,7 +822,6 @@ namespace Arrakis.Menu
                 gameObject.transform.localScale = new Vector3(0.09f, 0.9f, 0.08f);
                 gameObject.transform.localPosition = new Vector3(0.56f, 0f, 0.28f - offset);
                 gameObject.AddComponent<ButtonCollider>().relatedText = method.buttonText;
-
                 ColorChanger colorChanger = gameObject.AddComponent<ColorChanger>();
                 colorChanger.colors = method.enabled ? buttonColors[1] : buttonColors[0];
             }
@@ -742,11 +834,7 @@ namespace Arrakis.Menu
                 }
             }.AddComponent<Text>();
             text.font = currentFont;
-            text.text = method.buttonText;
-
-            if (method.overlapText != null)
-                text.text = method.overlapText;
-
+            text.text = method.overlapText ?? method.buttonText;
             text.supportRichText = true;
             text.fontSize = 1;
             text.color = method.enabled ? textColors[1] : textColors[0];
@@ -756,8 +844,8 @@ namespace Arrakis.Menu
             text.resizeTextMinSize = 0;
             RectTransform component = text.GetComponent<RectTransform>();
             component.localPosition = Vector3.zero;
-            component.sizeDelta = new Vector2(.2f, .03f);
-            component.localPosition = new Vector3(.064f, 0, .111f - offset / 2.6f);
+            component.sizeDelta = new Vector2(0.2f, 0.03f);
+            component.localPosition = new Vector3(0.064f, 0f, 0.111f - offset / 2.6f);
             component.rotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
         }
 
@@ -1002,6 +1090,43 @@ namespace Arrakis.Menu
                     }
                     else
                         CustomConsole.Log(buttonText + " does not exist", CustomConsole.LogType.Warning);
+                }
+            }
+            ReloadMenu();
+        }
+
+        public static void ToggleIncremental(string buttonText, bool increment)
+        {
+            string realButtonName = buttonText;
+            if (buttonText.StartsWith("Increment_"))
+                realButtonName = buttonText.Substring("Increment_".Length);
+            if (buttonText.StartsWith("Decrement_"))
+                realButtonName = buttonText.Substring("Decrement_".Length);
+            ButtonInfo target = GetIndex(realButtonName);
+            if (target == null)
+                return;
+            if (target.label)
+                return;
+            if (increment)
+            {
+                if (target.enableMethod != null)
+                {
+                    try
+                    {
+                        target.enableMethod.Invoke();
+                    }
+                    catch { }
+                }
+            }
+            else
+            {
+                if (target.disableMethod != null)
+                {
+                    try
+                    {
+                        target.disableMethod.Invoke();
+                    }
+                    catch { }
                 }
             }
             ReloadMenu();

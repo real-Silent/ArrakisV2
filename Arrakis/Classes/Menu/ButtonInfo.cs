@@ -36,5 +36,6 @@ namespace Arrakis.Classes
         public bool ShowInArraylist = true;
         public bool detected = false;
         public bool patched = false;
+        public bool isIncremental = false;
     }
 }
