@@ -1820,6 +1820,7 @@ namespace Arrakis.Menu
             imageTransform.localPosition += new Vector3(0f, 0.0475f, 0f);
             imageTransform.rotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
         }
+
         public static Texture2D LoadTexture(string fileName)
         {
             using (Stream stream = typeof(Plugin).Assembly.GetManifestResourceStream($"Arrakis.Resources.Images.{fileName}.png"))
@@ -1832,6 +1833,7 @@ namespace Arrakis.Menu
                 return texture;
             }
         }
+
         public static void LoadRooms()
         {
             string currentRoom = PhotonNetwork.InRoom ? PhotonNetwork.CurrentRoom.Name : null;
@@ -1851,6 +1853,7 @@ namespace Arrakis.Menu
             }
             Buttons.buttons[GetCategory("Rooms")] = buttons.ToArray();
         }
+
         public static void OpenRoom(string room)
         {
             string[] fileContents = File.ReadAllLines(room);
@@ -1869,7 +1872,6 @@ namespace Arrakis.Menu
             CurrentCategoryName = "Rooms";
             pageNumber = 0;
         }
-
         public static int AddCategory(string categoryName)
         {
             List<ButtonInfo[]> buttonInfoList = buttons.ToList();
