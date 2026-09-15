@@ -50,8 +50,8 @@ namespace Arrakis.Menu
     {
         public static void OnLoad()
         {
-            Arrakis.Patches.Patchers.EventPatches.OnSerialize += OnSerialize;
-            Arrakis.Patches.Patchers.PlrSerializePatch.OnPlayerSerialize += OnPlayerSerialize;
+            Patches.Patchers.EventPatches.OnSerialize += OnSerialize;
+            Patches.Patchers.PlrSerializePatch.OnPlayerSerialize += OnPlayerSerialize;
             SceneMapLoader.Init();
             AudioManager.Init();
             try
