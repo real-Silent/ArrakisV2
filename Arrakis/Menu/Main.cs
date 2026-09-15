@@ -505,8 +505,8 @@ namespace Arrakis.Menu
                         else
                             title.text = File.ReadAllText($"{PluginInfo.BaseDirectory}/CustomTitle.txt") + (disablepagenumber ? "" : " <color=grey>[</color><color=white>" + (pageNumber + 1).ToString() + "</color><color=grey>]</color>");
                     }
-                    else
-                        title.text = (RareChance ? "Awwakis uwu 🥺✨" : PluginInfo.Name) + (disablepagenumber ? "" : " <color=grey>[</color><color=white>" + (pageNumber + 1).ToString() + "</color><color=grey>]</color>");
+                    else // sussy - ccmv2 movement
+                        title.text = ((Sussy ? "Sussy" : RareChance ? "Awwakis uwu 🥺✨" : PluginInfo.Name) + (disablepagenumber ? "" : " <color=grey>[</color><color=white>" + (pageNumber + 1).ToString() + "</color><color=grey>]</color>"));
                 }
                 else
                     title.text = "";
@@ -1547,10 +1547,14 @@ namespace Arrakis.Menu
             }
             return allHoldables.ToArray();
         }
+
+        private static readonly System.Random random = new System.Random();
+
         public static bool RareChance = false;
-        private static System.Random random = new System.Random();
+        public static bool Sussy = false;
         public static bool OneIn(int odds) =>
             random.Next(odds) == 0;
+
         public static string GetCurrentMapName()
         {
             var mapChecks = new (GameObject obj, string name, string path)[]

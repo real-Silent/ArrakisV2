@@ -64,7 +64,12 @@ namespace Arrakis
 
             Patches.CosmeticPatch.enabled = true;
             if (Main.OneIn(500))
-                Main.RareChance = true;
+            {
+                if (Main.OneIn(2))
+                    Main.Sussy = true;
+                else
+                    Main.RareChance = true;
+            }
         }
 
         private void OnDisable() =>
