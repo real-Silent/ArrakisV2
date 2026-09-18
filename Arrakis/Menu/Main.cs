@@ -187,6 +187,18 @@ namespace Arrakis.Menu
                 {
                     PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { Experimental.prop, true } });
                 }
+
+                if (PhotonNetwork.InRoom)
+                {
+                    foreach (Photon.Realtime.Player plr in PhotonNetwork.PlayerList)
+                    {
+                        if (plr.CustomProperties.ContainsKey(Experimental.prop))
+                        {
+                            RigManager.GetVRRigFromPlayer(plr).playerText1.text = "[ARRAKIS] " + plr.NickName;
+                            RigManager.GetVRRigFromPlayer(plr).playerText1.color = Color.blue;
+                        }
+                    }
+                }
             }
             catch (Exception e)
             {
