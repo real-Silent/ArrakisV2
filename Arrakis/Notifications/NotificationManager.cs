@@ -41,15 +41,6 @@ namespace Arrakis.Notifications
         private void Start()
         {
             instance = this;
-            pcNotificationStyle = new GUIStyle(GUI.skin.label)
-            {
-                fontSize = 22,
-                fontStyle = Settings.currentStyle,
-                alignment = TextAnchor.MiddleRight,
-                richText = true,
-                wordWrap = true
-            };
-            pcNotificationStyle.normal.textColor = Color.white;
         }
 
         private void Init()
