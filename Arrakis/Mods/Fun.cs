@@ -18,6 +18,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Threading.Tasks;
 using Arrakis.Extensions;
 using Arrakis.Managers;
 using Arrakis.Notifications;
@@ -26,12 +32,6 @@ using GorillaNetworking;
 using GorillaTagScripts;
 using Liv.Lck.GorillaTag;
 using Photon.Pun;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.XR;
 using Voxels;
@@ -648,80 +648,67 @@ namespace Arrakis.Mods
                 }
             }
         }
-
-        private static List<SocialCoconutCamera> coconutCameras = new List<SocialCoconutCamera>();
-        private static SocialCoconutCamera coconutCamera;
         private static float cameraDelay = 0f;
 
-        private static void FindCoconutCamera() // coconut :3 -sleepy | better -nova
-        {
-            coconutCameras.RemoveAll(x => x == null);
-            foreach (SocialCoconutCamera cam in GameObject.FindObjectsByType<SocialCoconutCamera>(FindObjectsSortMode.None))
-            {
-                if (!coconutCameras.Contains(cam))
-                    coconutCameras.Add(cam);
-            }
-            coconutCamera = coconutCameras.FirstOrDefault();
-        }
         public static void GrabCamera()
         {
-            FindCoconutCamera();
-            if (coconutCamera == null) return;
-
             if (InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Right, !XRSettings.isDeviceActive))
             {
-                coconutCamera.SetVisualsActive(true);
-                coconutCamera.SetRecordingState(true);
-                coconutCamera.transform.position = GorillaTagger.Instance.rightHandTransform.position;
-                coconutCamera.transform.rotation = GorillaTagger.Instance.rightHandTransform.rotation;
-                coconutCamera.transform.SetParent(GorillaTagger.Instance.rightHandTransform);
+                LckSocialCamera camera = LckSocialCameraManager.Instance._networkedCococam;
+                camera.visible = true;
+                camera.recording = true;
+                camera.m_CameraVisuals.SetNetworkedVisualsActive(true);
+                camera.m_CameraVisuals.SetRecordingState(true);
+                camera.transform.position = GorillaTagger.Instance.rightHandTransform.position;
+                camera.transform.rotation = GorillaTagger.Instance.rightHandTransform.rotation;
             }
             if (InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Left, !XRSettings.isDeviceActive))
             {
-                coconutCamera.SetVisualsActive(true);
-                coconutCamera.SetRecordingState(true);
-                coconutCamera.transform.position = GorillaTagger.Instance.leftHandTransform.position;
-                coconutCamera.transform.rotation = GorillaTagger.Instance.leftHandTransform.rotation;
-                coconutCamera.transform.SetParent(GorillaTagger.Instance.leftHandTransform);
+                LckSocialCamera camera = LckSocialCameraManager.Instance._networkedCococam;
+                camera.visible = true;
+                camera.recording = true;
+                camera.m_CameraVisuals.SetNetworkedVisualsActive(true);
+                camera.m_CameraVisuals.SetRecordingState(true);
+                camera.transform.position = GorillaTagger.Instance.leftHandTransform.position;
+                camera.transform.rotation = GorillaTagger.Instance.leftHandTransform.rotation;
             }
         }
         public static void OrbitCamera()
         {
-            FindCoconutCamera();
-            if (coconutCamera == null) 
-                return;
-            coconutCamera.SetVisualsActive(true);
-            coconutCamera.SetRecordingState(true);
             float angle = Time.time * 10f;
-            Vector3 orbitPos = GTPlayer.Instance.transform.position +
+            Vector3 orbitPos = GorillaTagger.Instance.headCollider.transform.position +
                 new Vector3(Mathf.Cos(angle) * 2f, 1f, Mathf.Sin(angle) * 2f);
-            coconutCamera.transform.position = orbitPos;
-            coconutCamera.transform.LookAt(GTPlayer.Instance.transform.position);
+            LckSocialCamera camera = LckSocialCameraManager.Instance._networkedCococam;
+            camera.visible = true;
+            camera.recording = true;
+            camera.m_CameraVisuals.SetNetworkedVisualsActive(true);
+            camera.m_CameraVisuals.SetRecordingState(true);
+            camera.transform.position = orbitPos;
+            camera.transform.LookAt(GTPlayer.Instance.transform.position);
         }
         public static void DestroyCamera()
         {
-            FindCoconutCamera();
-            if (coconutCamera == null) 
-                return;
-            coconutCamera.SetVisualsActive(false);
-            coconutCamera.SetRecordingState(false);
-            coconutCamera.transform.position = new Vector3(999f, 999f, 999f);
-            coconutCamera.transform.SetParent(null);
+            LckSocialCamera camera = LckSocialCameraManager.Instance._networkedCococam;
+            camera.visible = false;
+            camera.recording = false;
+            camera.m_CameraVisuals.SetNetworkedVisualsActive(false);
+            camera.m_CameraVisuals.SetRecordingState(false);
+            camera.transform.position = new Vector3(999f, 999f, 999f);
+            camera.transform.SetParent(null);
         }
         public static void FlashCameraRecording()
         {
-            FindCoconutCamera();
-            if (coconutCamera == null) 
-                return;
+            LckSocialCamera camera = LckSocialCameraManager.Instance._networkedCococam;
+
             if (Time.time > cameraDelay)
             {
                 cameraDelay = Time.time + 0.5f;
                 var isRecordingField = typeof(SocialCoconutCamera).GetField("_isActive", BindingFlags.NonPublic | BindingFlags.Instance);
                 if (isRecordingField != null)
                 {
-                    bool current = (bool)isRecordingField.GetValue(coconutCamera);
-                    coconutCamera.SetRecordingState(!current);
-                    coconutCamera.SetVisualsActive(true);
+                    bool current = (bool)isRecordingField.GetValue(camera);
+                    camera.recording = !current;
+                    camera.visible = true;
                 }
             }
         }
