@@ -234,7 +234,7 @@ namespace Arrakis.Mods
                 {
                     if (!tp)
                     {
-                        GTPlayer.Instance.transform.position = NewPointer.transform.position;
+                        GTPlayer.Instance.TeleportTo(NewPointer.transform.position, Quaternion.identity, true);
                         tp = true;
                     }
                 }
