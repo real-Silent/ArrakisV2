@@ -278,6 +278,8 @@ namespace Arrakis.Menu
                 {
                     if (!disableroomnotifications)
                         NotificationManager.SendNotification($"<color=grey>[</color><color=cyan>ARRAKIS</color><color=grey>]</color> Left room {currentRoomName}");
+                    if (clearNotificationsOnDisconnect)
+                        NotificationManager.ClearAllNotifications();
                     currentRoomName = "";
                 }
             }
