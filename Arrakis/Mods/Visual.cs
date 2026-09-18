@@ -65,7 +65,7 @@ namespace Arrakis.Mods
             {
                 foreach (VRRig rig in VRRigCache.ActiveRigs)
                 {
-                    if (rig.IsLocal())
+                    if (!rig.IsLocal())
                     {
                         switch (type)
                         {
@@ -98,7 +98,7 @@ namespace Arrakis.Mods
             {
                 foreach (VRRig rig in VRRigCache.ActiveRigs)
                 {
-                    if (rig.IsLocal())
+                    if (!rig.IsLocal())
                     {
                         rig.mainSkin.material.shader = Shader.Find("GorillaTag/UberShader");
                         rig.mainSkin.material.color = rig.playerColor;
@@ -114,7 +114,7 @@ namespace Arrakis.Mods
                 return;
             foreach (VRRig rig in VRRigCache.ActiveRigs)
             {
-                if (rig.IsLocal())
+                if (!rig.IsLocal())
                 {
                     List<VRRig> remove = null;
                     foreach (var pair in tracersPool)
@@ -185,7 +185,7 @@ namespace Arrakis.Mods
                 boneEspPool.Remove(rig);
             foreach (VRRig rig in VRRigCache.ActiveRigs)
             {
-                if (rig.IsLocal())
+                if (!rig.IsLocal())
                 {
                     if (!boneEspPool.TryGetValue(rig, out List<LineRenderer> lines))
                     {
@@ -280,7 +280,6 @@ namespace Arrakis.Mods
         private static GameObject CreateObject(Transform parent, PrimitiveType type, Vector3 scale, Color color, Shader shader)
         {
             GameObject obj = GameObject.CreatePrimitive(type);
-
             obj.transform.SetParent(parent, false);
             obj.transform.localPosition = Vector3.zero;
             obj.transform.localRotation = Quaternion.identity;
@@ -366,7 +365,7 @@ namespace Arrakis.Mods
                     foreach (var vrrig in remove)
                         hollowBoxPool.Remove(vrrig);
                 }
-                if (rig != null && rig != VRRig.LocalRig)
+                if (!rig.IsLocal())
                 {
                     if (!hollowBoxPool.TryGetValue(rig, out GameObject box))
                     {
@@ -414,7 +413,7 @@ namespace Arrakis.Mods
                 }
                 foreach (VRRig rig in VRRigCache.ActiveRigs)
                 {
-                    if (rig != null && rig != VRRig.LocalRig)
+                    if (!rig.IsLocal())
                     {
                         if (!nameTagPool.TryGetValue(rig, out var tag))
                         {
@@ -454,7 +453,7 @@ namespace Arrakis.Mods
                 }
                 foreach (VRRig rig in VRRigCache.ActiveRigs)
                 {
-                    if (rig != null && rig != VRRig.LocalRig)
+                    if (!rig.IsLocal())
                     {
                         if (!IDnameTagPool.TryGetValue(rig, out var tag))
                         {
@@ -492,7 +491,7 @@ namespace Arrakis.Mods
                 }
                 foreach (VRRig rig in VRRigCache.ActiveRigs)
                 {
-                    if (rig != null && rig != VRRig.LocalRig)
+                    if (!rig.IsLocal())
                     {
                         string platform = rig.GetPhotonPlayer().CustomProperties["platform"].ToString().Contains("Steam")
                             ? (rig.Cosmetics().Contains("LMAKT.") ? "Quest" : "Steam") : "Quest";
@@ -531,7 +530,7 @@ namespace Arrakis.Mods
                 }
                 foreach (VRRig rig in VRRigCache.ActiveRigs)
                 {
-                    if (rig != null && rig != VRRig.LocalRig)
+                    if (!rig.IsLocal())
                     {
                         if (!FpsnametagPool.TryGetValue(rig, out var tag))
                         {
@@ -585,7 +584,7 @@ namespace Arrakis.Mods
                 }
                 foreach (VRRig rig in VRRigCache.ActiveRigs)
                 {
-                    if (rig != null && rig != VRRig.LocalRig)
+                    if (!rig.IsLocal())
                     {
                         if (!TaggednametagPool.TryGetValue(rig, out var tag))
                         {
