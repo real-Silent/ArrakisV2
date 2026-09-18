@@ -74,8 +74,7 @@ namespace Arrakis.Mods
             }
         }
 
-        public static float TagAuraRange = 0.8f;
-        public static void ChangeTagAuraDistance() { } // Do this when my head not hurt -nova
+        public static float TagAuraRange = 1.2f;
         public static void TagAura()
         {
             if (NetworkSystem.Instance.InRoom)
@@ -89,7 +88,7 @@ namespace Arrakis.Mods
                         if (VRRig.LocalRig.IsTagged() && !rig.IsTagged())
                         {
                             float distance = Vector3.Distance(VRRig.LocalRig.transform.position, rig.transform.position);
-                            if (distance <= TagAuraRange)
+                            if (distance < TagAuraRange)
                             {
                                 GameMode.ReportTag(rig.Creator);
                             }

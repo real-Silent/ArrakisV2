@@ -70,6 +70,7 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Menu Settings", method =() => CurrentCategoryName = "Menu Settings", isTogglable = false, toolTip = "Opens the settings for the menu." },
                 new ButtonInfo { buttonText = "Movement Settings", method =() => CurrentCategoryName = "Movement Settings", isTogglable = false, toolTip = "Opens the movement settings for the menu." },
                 new ButtonInfo { buttonText = "Visual Settings", method =() => CurrentCategoryName = "Visual Settings", isTogglable = false, toolTip = "Opens the visual settings for the menu." },
+                new ButtonInfo { buttonText = "Advantage Settings", method =() => CurrentCategoryName = "Advantage Settings", isTogglable = false, toolTip = "Opens the advantage settings for the menu." },
                 new ButtonInfo { buttonText = "Projectile Settings", method =() => CurrentCategoryName = "Projectile Settings", isTogglable = false, toolTip = "Opens the projectile settings for the menu." },
                 new ButtonInfo { buttonText = "Gunlib Settings", method =() => CurrentCategoryName = "Gunlib Settings", isTogglable = false, toolTip = "Opens the gunlib settings for the menu." },
                 new ButtonInfo { buttonText = "Safety Settings", method =() => CurrentCategoryName = "Safety Settings", isTogglable = false, toolTip = "Opens the safety settings for the menu." },
@@ -142,6 +143,12 @@ namespace Arrakis.Menu
 
                 new ButtonInfo { buttonText = "NameTags Follow Head", enableMethod =() => followheadmesh = true, disableMethod =() => followheadmesh = false, isTogglable = true, toolTip = "Makes the nametags follow the players head instead of there body.", ShowInArraylist = false },
                 new ButtonInfo { buttonText = "Follow Menu Theme", enableMethod =() => followmenutheme = true, disableMethod =() => followmenutheme = false, isTogglable = true, toolTip = "Makes every visual mod follow the menu theme.", ShowInArraylist = false },
+            },
+
+            new ButtonInfo[] { // Advantage Settings
+                new ButtonInfo { buttonText = "Exit Advantage Settings", method =() => CurrentCategoryName = "Settings", isTogglable = false, toolTip = "Returns to the main settings page for the menu." },
+
+                new ButtonInfo { buttonText = "Change Tag Aura Range", overlapText = "Change Tag Aura Range <color=grey>[<color=cyan>Default</color>]</color>", enableMethod =() => ChangeTagAuraDistance(), method =() => ChangeTagAuraDistance(), disableMethod =() => ChangeTagAuraDistance(false), isIncremental = true,  isTogglable = false, toolTip = "Changes the tag aura range.", ShowInArraylist = false },
             },
 
             new ButtonInfo[] { // Projectile Settings
@@ -580,10 +587,12 @@ namespace Arrakis.Menu
             "Menu Settings",
             "Movement Settings",
             "Visual Settings",
+            "Advantage Settings",
             "Projectile Settings",
             "Gunlib Settings",
             "Safety Settings",
             "Plugin Settings",
+
             "Enabled",
             "Favorites",
             "Rooms",

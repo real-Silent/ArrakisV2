@@ -563,6 +563,27 @@ namespace Arrakis
             }
         }
 
+        private static int TagAuraDistanceIndex = 0;
+        public static void ChangeTagAuraDistance(bool increment = true)
+        {
+            string[] ranges = new string[] { "Default", "Close", "Far" };
+            if (increment)
+            {
+                TagAuraDistanceIndex = (TagAuraDistanceIndex + 1) % ranges.Length;
+            }
+            else
+            {
+                TagAuraDistanceIndex = (TagAuraDistanceIndex - 1 + ranges.Length) % ranges.Length;
+            }
+
+            switch (TagAuraDistanceIndex)
+            {
+                case 0: Advantage.TagAuraRange = 1.2f; break; // Default
+                case 1: Advantage.TagAuraRange = 0.7f; break; // Close
+                case 2: Advantage.TagAuraRange = 3f; break; // Far
+            }
+            GetIndex("Change Tag Aura Range").overlapText = $"Change Tag Aura Range <color=grey>[<color=cyan>{ranges[TagAuraDistanceIndex]}</color>]</color>";
+        }
 
         // Movement Settings
         public static bool stickyplats = false;
