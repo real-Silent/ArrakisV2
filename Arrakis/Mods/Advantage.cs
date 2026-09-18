@@ -75,6 +75,7 @@ namespace Arrakis.Mods
         }
 
         public static float TagAuraRange = 0.8f;
+        public static void ChangeTagAuraDistance() { } // Do this when my head not hurt -nova
         public static void TagAura()
         {
             if (NetworkSystem.Instance.InRoom)
