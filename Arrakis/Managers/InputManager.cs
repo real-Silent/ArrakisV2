@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Arrakis | Managers/InputManager.cs
  *
  * Copyright (C) 2026 Arrakis
@@ -24,6 +24,11 @@ using UnityEngine.InputSystem;
 using UnityEngine.XR;
 using Valve.VR;
 using CommonUsages = UnityEngine.XR.CommonUsages;
+
+// TODO: Make GetInput better by chevking pc in main
+// or use current pc check 
+// making it so you omly need to do input type and hand
+// - nova
 
 namespace Arrakis.Managers
 {
