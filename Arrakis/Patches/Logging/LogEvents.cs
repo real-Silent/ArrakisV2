@@ -35,7 +35,7 @@ namespace Arrakis.Patches
         {
             if (PhotonNetwork.InRoom)
             {
-                if (Settings.logphotonevents)
+                if (!Settings.logphotonevents)
                     return;
 
                 string playerName = "[UNKNOWN]";
