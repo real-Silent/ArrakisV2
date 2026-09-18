@@ -643,7 +643,6 @@ namespace Arrakis
                 favorites = favorites,
                 quickactions = quickactions
             };
-            settings.enabledMods = Buttons.buttons.SelectMany(x => x).Where(x => x.enabled).Select(x => x.buttonText).ToList();
             File.WriteAllText(Path.Combine(PluginInfo.BaseDirectory, "SavedSettings.json"), JsonConvert.SerializeObject(settings, Formatting.Indented));
         }
 
