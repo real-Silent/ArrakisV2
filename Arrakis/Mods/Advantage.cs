@@ -18,8 +18,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-using System.Collections.Generic;
-using System.Linq;
 using Arrakis.Extensions;
 using Arrakis.Managers;
 using Arrakis.Notifications;
@@ -29,6 +27,8 @@ using GorillaLocomotion;
 using HarmonyLib;
 using Photon.Pun;
 using Photon.Realtime;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.XR;
 using static Arrakis.Menu.Main;
@@ -276,22 +276,23 @@ namespace Arrakis.Mods
 
         public static void TagPlayer(NetPlayer player)
         {
-            VRRig[] target = VRRigCache.ActiveRigs.Where(x => x != null && x.Creator == player).ToArray();
-            foreach (var rig in target)
+            if (player == null || VRRig.LocalRig == null)
+                return;
+            if (!VRRig.LocalRig.IsTagged())
             {
-                if (rig.IsLocal() && !VRRig.LocalRig.IsTagged())
-                {
-                    NotificationManager.SendNotification("<color=grey>[</color><color=cyan>ARRAKIS</color><color=grey>]</color> You are not tagged.");
-                    VRRig.LocalRig.enabled = true;
-                    return;
-                }
-                if (rig.IsLocal() && VRRig.LocalRig.IsTagged() && !rig.IsTagged())
-                {
-                    VRRig.LocalRig.enabled = false;
-                    VRRig.LocalRig.transform.position = rig.transform.position;
-                    GameMode.ReportTag(player);
-                }
+                NotificationManager.SendNotification("<color=grey>[</color><color=cyan>ARRAKIS</color><color=grey>]</color> You are not tagged.");
+                VRRig.LocalRig.enabled = true;
+                return;
             }
+            VRRig rig = VRRigCache.ActiveRigs.FirstOrDefault(x => x != null && x.Creator == player);
+            if (rig == null || rig == VRRig.LocalRig)
+                return;
+            if (rig.IsTagged())
+                return;
+            VRRig.LocalRig.enabled = false;
+            VRRig.LocalRig.transform.position = rig.transform.position;
+            GameMode.ReportTag(player);
+            VRRig.LocalRig.enabled = true;
         }
         public static void Blink()
         {
