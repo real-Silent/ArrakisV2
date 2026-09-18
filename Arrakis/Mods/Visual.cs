@@ -966,8 +966,131 @@ namespace Arrakis.Mods
         }
         public static void EnableFog() =>
             GorillaTag.Rendering.ZoneShaderSettings.activeInstance.SetGroundFogValue(new Color(0.9569f, 0.6941f, 0.502f, 0.1216f), 40f, 10f, 40f); // pulled from halloween upd lel
- 
+
         public static void DisableFog() =>
             GorillaTag.Rendering.ZoneShaderSettings.activeInstance.SetGroundFogValue(Color.clear, 0f, 0f, 0f);
+        private static Dictionary<VRRig, GameObject> ringPool = new Dictionary<VRRig, GameObject>();
+        private static Dictionary<VRRig, GameObject> haloPool = new Dictionary<VRRig, GameObject>();
+        private static Dictionary<VRRig, GameObject> orbitPool = new Dictionary<VRRig, GameObject>();
+        public static void Ring()
+        {
+            if (!NetworkSystem.Instance.InRoom)
+                return;
+            foreach (VRRig rig in VRRigCache.ActiveRigs)
+            {
+                if (rig == null || rig.IsLocal())
+                    continue;
+                if (!ringPool.TryGetValue(rig, out GameObject obj))
+                {
+                    obj = new GameObject("Arrakis_Ring");
+                    obj.transform.SetParent(rig.transform, false);
+                    obj.transform.localPosition = new Vector3(0f, -0.35f, 0f);
+
+                    LineRenderer line = obj.AddComponent<LineRenderer>();
+                    line.useWorldSpace = false;
+                    line.loop = true;
+                    line.positionCount = 48;
+                    line.startWidth = 0.012f;
+                    line.endWidth = 0.012f;
+                    line.material = new Material(Shader.Find("GUI/Text Shader"));
+                    float radius = 0.38f; // might add a setting for this later idfk -sleepy
+                    for (int i = 0; i < 48; i++)
+                    {
+                        float angle = i * Mathf.PI * 2f / 48f;
+                        line.SetPosition(i, new Vector3(Mathf.Cos(angle) * radius,
+                            0f,
+                            Mathf.Sin(angle) * radius
+                        ));
+                    }
+                    ringPool[rig] = obj;
+                }
+                Color color = followmenutheme
+                    ? backgroundColor.GetCurrentColor()
+                    : rig.IsTagged() ? new Color(0.6f, 0f, 0f) : rig.playerColor;
+                color.a = 0.7f;
+                LineRenderer renderer = obj.GetComponent<LineRenderer>();
+                renderer.startColor = color;
+                renderer.endColor = color;
+            }
+            List<VRRig> remove = null;
+            foreach (var pair in ringPool)
+            {
+                if (pair.Key == null || !VRRigCache.ActiveRigs.Contains(pair.Key))
+                {
+                    remove ??= new List<VRRig>();
+                    remove.Add(pair.Key);
+
+                    if (pair.Value != null)
+                        Object.Destroy(pair.Value);
+                }
+            }
+            if (remove != null)
+            {
+                foreach (VRRig rig in remove)
+                    ringPool.Remove(rig);
+            }
+        }
+        public static void DisableRing()
+        {
+            foreach (GameObject obj in ringPool.Values)
+            {
+                if (obj != null)
+                    Object.Destroy(obj);
+            }
+            ringPool.Clear();
+        }
+        public static void Halo()
+        {
+            if (!NetworkSystem.Instance.InRoom)
+                return;
+            foreach (VRRig rig in VRRigCache.ActiveRigs)
+            {
+                if (rig == null || rig.IsLocal())
+                    continue;
+                if (!haloPool.TryGetValue(rig, out GameObject obj))
+                {
+                    obj = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+                    obj.name = "Arrakis_Halo";
+                    obj.transform.SetParent(rig.transform, false);
+                    obj.transform.localPosition = new Vector3(0f, 0.25f, 0f);
+                    obj.transform.localScale = new Vector3(0.85f, 0.003f, 0.85f);
+                    Object.Destroy(obj.GetComponent<Collider>());
+                    Renderer renderer = obj.GetComponent<Renderer>();
+                    renderer.material = new Material(Shader.Find("GUI/Text Shader"));
+                    haloPool[rig] = obj;
+                }
+                Color color = followmenutheme
+                    ? backgroundColor.GetCurrentColor()
+                    : rig.IsTagged() ? new Color(0.6f, 0f, 0f) : rig.playerColor;
+                color.a = 0.18f;
+                Renderer halo = obj.GetComponent<Renderer>();
+                halo.material.color = color;
+            }
+            List<VRRig> remove = null;
+            foreach (var pair in haloPool)
+            {
+                if (pair.Key == null || !VRRigCache.ActiveRigs.Contains(pair.Key))
+                {
+                    remove ??= new List<VRRig>();
+                    remove.Add(pair.Key);
+                    if (pair.Value != null)
+                        Object.Destroy(pair.Value);
+                }
+            }
+            if (remove != null)
+            {
+                foreach (VRRig rig in remove)
+                    haloPool.Remove(rig);
+            }
+        }
+        public static void DisableHalo()
+        {
+            foreach (GameObject obj in haloPool.Values)
+            {
+                if (obj != null)
+                    Object.Destroy(obj);
+            }
+            haloPool.Clear();
+        }
     }
 }
