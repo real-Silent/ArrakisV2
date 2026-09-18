@@ -210,7 +210,7 @@ namespace Arrakis.Mods
         public static void NoClip()
         {
             foreach (MeshCollider collider in GameObject.FindObjectsByType<MeshCollider>(FindObjectsSortMode.None))
-                collider.enabled = !ControllerInputPoller.instance.rightControllerTriggerButton;
+                collider.enabled = !InputManager.GetInput(InputManager.InputType.Trigger, InputManager.Hand.Right, !XRSettings.isDeviceActive);
         }
 
         public static void NoTagFreeze(bool notagfreeze) =>
