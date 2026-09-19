@@ -36,6 +36,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -57,6 +58,9 @@ namespace Arrakis.Menu
             MenuNetwork.Initialize();
             SceneMapLoader.Init();
             AudioManager.Init();
+
+            CreateStumpText();
+
             try
             {
                 PluginManager.LoadPlugins();
@@ -416,6 +420,16 @@ namespace Arrakis.Menu
                     {
                         Visual.ChamRig(lockTarget, false, lockTarget.playerColor);
                     }
+                }
+            }
+            catch { }
+
+            try
+            {
+                if (stumpText != null)
+                {
+                    stumpText.transform.LookAt(Camera.main.transform);
+                    stumpText.transform.Rotate(0, 180f, 0);
                 }
             }
             catch { }
@@ -2210,6 +2224,18 @@ namespace Arrakis.Menu
             ServerSyncPos = VRRig.LocalRig?.transform.position ?? ServerSyncPos;
             ServerSyncLeftHandPos = VRRig.LocalRig?.leftHand?.rigTarget?.transform.position ?? ServerSyncLeftHandPos;
             ServerSyncRightHandPos = VRRig.LocalRig?.rightHand?.rigTarget?.transform.position ?? ServerSyncRightHandPos;
+        }
+
+        private static TextMeshPro stumpText;
+        public static void CreateStumpText()
+        {
+            stumpText = new GameObject().AddComponent<TextMeshPro>();
+            stumpText.transform.position = new Vector3(-66.1859f, 12f, -82.471f);
+            stumpText.transform.rotation = Quaternion.identity;
+            stumpText.richText = true;
+            stumpText.alignment = TextAlignmentOptions.Center;
+            stumpText.fontSize = 2;
+            stumpText.text = $"<color=yellow>[ARRAKIS]</color>\nThank you for using arrakis\nyou are using version {PluginInfo.Version}";
         }
     }
 }
