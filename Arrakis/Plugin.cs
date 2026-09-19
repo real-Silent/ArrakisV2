@@ -42,6 +42,8 @@ namespace Arrakis
         }
         public void OnPlayerSpawned()
         {
+            SubscriptionKIDPatch.Apply(); // Keeping this here because it fixes my cosmetics -nova
+
             Settings.LoadSettings();
 
             holder = new GameObject("Arrakis");
