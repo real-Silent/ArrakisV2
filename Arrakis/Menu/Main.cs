@@ -18,16 +18,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
 using Arrakis.Classes;
 using Arrakis.Managers;
 using Arrakis.Managers.CustomMaps;
 using Arrakis.Mods;
+using Arrakis.Networking;
 using Arrakis.Notifications;
 using BepInEx;
 using GorillaExtensions;
@@ -35,6 +30,12 @@ using GorillaLocomotion;
 using GorillaNetworking;
 using HarmonyLib;
 using Photon.Pun;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -52,6 +53,8 @@ namespace Arrakis.Menu
         {
             Patches.Patchers.EventPatches.OnSerialize += OnSerialize;
             Patches.Patchers.PlrSerializePatch.OnPlayerSerialize += OnPlayerSerialize;
+
+            MenuNetwork.Initialize();
             SceneMapLoader.Init();
             AudioManager.Init();
             try
@@ -90,6 +93,7 @@ namespace Arrakis.Menu
                         if (menusounds)
                             AudioManager.MenuSound("menuopen");
                         CreateMenu();
+                        MenuNetwork.SetMenuOpen(true);
                         if (menuanimation)
                         {
                             CRunner.instance.StartCoroutine(OpenMenu());
@@ -108,6 +112,8 @@ namespace Arrakis.Menu
                         GameObject.Find("Shoulder Camera").transform.Find("CM vcam1").gameObject.SetActive(true);
 
                         Rigidbody comp = menu.GetOrAddComponent<Rigidbody>();
+
+                        MenuNetwork.SetMenuOpen(false);
 
                         if (menusounds)
                             AudioManager.MenuSound("menuclose");
@@ -188,6 +194,22 @@ namespace Arrakis.Menu
                     PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { Experimental.prop, true } });
                 }
 
+                var currentColor = backgroundColor.GetCurrentColor();
+                if (!PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("NMenuColor", out object storedColor) || !Equals(storedColor, currentColor))
+                {
+                    PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable
+                    {
+                        { "NMenuColor", new float[]
+                            {
+                                currentColor.r,
+                                currentColor.g,
+                                currentColor.b,
+                                currentColor.a
+                            }
+                        }
+                    });
+                }
+
                 if (PhotonNetwork.InRoom)
                 {
                     foreach (Photon.Realtime.Player plr in PhotonNetwork.PlayerList)
@@ -195,7 +217,18 @@ namespace Arrakis.Menu
                         if (plr.CustomProperties.ContainsKey(Experimental.prop))
                         {
                             RigManager.GetVRRigFromPlayer(plr).playerText1.text = "[ARRAKIS] " + plr.NickName;
-                            RigManager.GetVRRigFromPlayer(plr).playerText1.color = Color.blue;
+                            if (plr.CustomProperties.TryGetValue("NMenuColor", out object colorObj))
+                            {
+                                if (colorObj is float[] rgba && rgba.Length >= 4)
+                                {
+                                    RigManager.GetVRRigFromPlayer(plr).playerText1.color = new Color(
+                                        rgba[0],
+                                        rgba[1],
+                                        rgba[2],
+                                        rgba[3]
+                                    );
+                                }
+                            }
                         }
                     }
                 }
@@ -260,6 +293,12 @@ namespace Arrakis.Menu
             {
                 CustomConsole.Log(string.Format("{0} // Error with executing mods at {1}: {2}", PluginInfo.Name, exc.StackTrace, exc.Message), CustomConsole.LogType.Error);
             }
+
+            try
+            {
+                MenuNetwork.Update();
+            }
+            catch { }
 
             if (NetworkSystem.Instance.InRoom)
             {
@@ -995,6 +1034,11 @@ namespace Arrakis.Menu
                             reference.transform.position = new Vector3(999f, -999f, -999f);
                     }
                 }
+            }
+
+            if (menu != null)
+            {
+                MenuNetwork.SendTransform(menu.transform.position, menu.transform.rotation);
             }
         }
         public static GameObject leftReference;

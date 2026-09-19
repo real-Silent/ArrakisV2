@@ -112,6 +112,7 @@ namespace Arrakis
         public static bool disablebuttonsounds;
 
         public static bool disableAntiReportVisualizer;
+        public static bool disableNetworkedMenu;
 
         public static void JoinDiscord()
         {
