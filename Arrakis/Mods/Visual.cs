@@ -1091,5 +1091,205 @@ namespace Arrakis.Mods
             }
             haloPool.Clear();
         }
+
+
+        private static readonly Dictionary<VRRig, GameObject> wireframeEspPool = new Dictionary<VRRig, GameObject>();
+        private static readonly Dictionary<VRRig, Color> originalRigColors = new Dictionary<VRRig, Color>();
+        public static void WireframeESP()
+        {
+            if (!NetworkSystem.Instance.InRoom) return;
+            List<VRRig> remove = null;
+            foreach (var pair in wireframeEspPool)
+            {
+                if (pair.Key == null || !VRRigCache.ActiveRigs.Contains(pair.Key))
+                {
+                    remove ??= new List<VRRig>();
+                    remove.Add(pair.Key);
+                    if (pair.Value != null) Object.Destroy(pair.Value);
+                }
+            }
+            if (remove != null)
+            {
+                foreach (var rig in remove)
+                {
+                    if (originalRigColors.TryGetValue(rig, out Color c) && rig != null)
+                    {
+                        rig.mainSkin.material.shader = Shader.Find("GorillaTag/UberShader");
+                        rig.mainSkin.material.color = c;
+                    }
+                    wireframeEspPool.Remove(rig);
+                    originalRigColors.Remove(rig);
+                }
+            }
+            foreach (VRRig rig in VRRigCache.ActiveRigs)
+            {
+                if (rig == null || rig.IsLocal()) continue;
+                if (!wireframeEspPool.TryGetValue(rig, out GameObject obj))
+                {
+                    obj = new GameObject("Arrakis_WireframeESP");
+                    Object.DontDestroyOnLoad(obj);
+                    WireframeRenderer wr = obj.AddComponent<WireframeRenderer>();
+                    wr.targetRig = rig;
+                    wr.wireColor = followmenutheme ? backgroundColor.GetCurrentColor() : rig.IsTagged() ? new Color(0.6f, 0f, 0f, 0.85f) : rig.playerColor;
+                    originalRigColors[rig] = rig.mainSkin.material.color;
+                    rig.mainSkin.material.shader = Shader.Find("GUI/Text Shader");
+                    rig.mainSkin.material.color = new Color(0f, 0f, 0f, 0f);
+
+                    wireframeEspPool[rig] = obj;
+                }
+                WireframeRenderer renderer = obj.GetComponent<WireframeRenderer>();
+                if (renderer != null)
+                {
+                    Color c = followmenutheme ? backgroundColor.GetCurrentColor() : rig.IsTagged() ? new Color(0.6f, 0f, 0f, 0.85f) : rig.playerColor;
+                    renderer.wireColor = c;
+                }
+            }
+        }
+        public static void DisableWireframeESP()
+        {
+            foreach (var pair in wireframeEspPool)
+            {
+                if (pair.Key != null && originalRigColors.TryGetValue(pair.Key, out Color c))
+                {
+                    pair.Key.mainSkin.material.shader = Shader.Find("GorillaTag/UberShader");
+                    pair.Key.mainSkin.material.color = c;
+                }
+                if (pair.Value != null) Object.Destroy(pair.Value);
+            }
+            wireframeEspPool.Clear();
+            originalRigColors.Clear();
+        }
+
+        private static GameObject selfWireframeCam = null;
+        private static WireframeRenderer selfWireframeRenderer = null;
+        private static Color originalSkinColor;
+        private static bool skinHidden = false;
+        public static void EnableSelfWireframeMesh()
+        {
+            VRRig rig = GorillaTagger.Instance.offlineVRRig;
+            if (rig == null) return;
+            if (selfWireframeCam == null)
+            {
+                selfWireframeCam = new GameObject("Arrakis_WireframeCam");
+                Object.DontDestroyOnLoad(selfWireframeCam);
+                selfWireframeRenderer = selfWireframeCam.AddComponent<WireframeRenderer>();
+                selfWireframeRenderer.targetRig = rig;
+                selfWireframeRenderer.wireColor = backgroundColor.GetCurrentColor();
+                originalSkinColor = rig.mainSkin.material.color;
+                rig.mainSkin.material.shader = Shader.Find("GUI/Text Shader");
+                rig.mainSkin.material.color = new Color(0f, 0f, 0f, 0f);
+                skinHidden = true;
+            }
+        }
+        public static void DisableSelfWireframeMesh()
+        {
+            if (selfWireframeCam != null)
+            {
+                VRRig rig = GorillaTagger.Instance.offlineVRRig;
+                if (rig != null && skinHidden)
+                {
+                    rig.mainSkin.material.shader = Shader.Find("GorillaTag/UberShader");
+                    rig.mainSkin.material.color = originalSkinColor;
+                    skinHidden = false;
+                }
+                Object.Destroy(selfWireframeCam);
+                selfWireframeCam = null;
+                selfWireframeRenderer = null;
+            }
+        }
+        public static void UpdateSelfWireframeColor()
+        {
+            if (selfWireframeRenderer == null) return;
+            selfWireframeRenderer.wireColor = backgroundColor.GetCurrentColor();
+        }
+    }
+
+    public class WireframeRenderer : MonoBehaviour
+    {
+        public VRRig targetRig;
+        public Color wireColor = Color.cyan;
+        private Material wireMat;
+        private struct MeshEdgeCache
+        {
+            public Mesh bakedMesh;
+            public (int, int)[] edges;
+        }
+        private SkinnedMeshRenderer skin;
+        private Mesh baked;
+        private (int, int)[] edgeCache;
+        private bool edgesDirty = true;
+        private void Awake()
+        {
+            wireMat = new Material(Shader.Find("GUI/Text Shader"));
+            wireMat.SetInt("_ZTest", 8);
+            wireMat.renderQueue = 4000;
+            baked = new Mesh();
+            baked.MarkDynamic();
+        }
+        private void OnDestroy()
+        {
+            if (baked != null) Destroy(baked);
+            if (wireMat != null) Destroy(wireMat);
+        }
+        private void LateUpdate()
+        {
+            if (targetRig == null) return;
+            if (skin == null)
+            {
+                skin = targetRig.mainSkin;
+                edgesDirty = true;
+            }
+            skin.BakeMesh(baked);
+            if (edgesDirty)
+            {
+                edgeCache = BuildEdges(baked);
+                edgesDirty = false;
+            }
+        }
+        private void OnRenderObject()
+        {
+            if (baked == null || edgeCache == null || wireMat == null) return;
+            if (targetRig == null) return;
+            Transform root = skin.transform;
+            Vector3[] verts = baked.vertices;
+            Color c = wireColor;
+            c.a = 0.85f;
+            wireMat.color = c;
+            wireMat.SetPass(0);
+            GL.PushMatrix();
+            GL.MultMatrix(root.localToWorldMatrix);
+            GL.Begin(GL.LINES);
+            GL.Color(c);
+            foreach (var (a, b) in edgeCache)
+            {
+                if (a >= verts.Length || b >= verts.Length) continue;
+                GL.Vertex(verts[a]);
+                GL.Vertex(verts[b]);
+            }
+            GL.End();
+            GL.PopMatrix();
+        }
+        private static (int, int)[] BuildEdges(Mesh mesh)
+        {
+            int[] tris = mesh.triangles;
+            var edgeSet = new HashSet<long>();
+            var result = new List<(int, int)>();
+            for (int i = 0; i < tris.Length; i += 3)
+            {
+                int a = tris[i], b = tris[i + 1], c = tris[i + 2];
+                TryAddEdge(edgeSet, result, a, b);
+                TryAddEdge(edgeSet, result, b, c);
+                TryAddEdge(edgeSet, result, c, a);
+            }
+            return result.ToArray();
+        }
+        private static void TryAddEdge(HashSet<long> set, List<(int, int)> result, int a, int b)
+        {
+            int lo = a < b ? a : b;
+            int hi = a < b ? b : a;
+            long key = ((long)lo << 32) | (uint)hi;
+            if (set.Add(key))
+                result.Add((lo, hi));
+        }
     }
 }
