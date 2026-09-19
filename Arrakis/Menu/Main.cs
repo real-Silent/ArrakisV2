@@ -494,7 +494,8 @@ namespace Arrakis.Menu
             List<ButtonInfo> buttons = Buttons.buttons[GetCategory("Main")].ToList();
             buttons.Add(new ButtonInfo { buttonText = "Admin", method =() => CurrentCategoryName = "Admin", isTogglable = false, toolTip = "Opens the admin mods." });
             Buttons.buttons[GetCategory("Main")] = buttons.ToArray();
-            NotificationManager.SendNotification($"<color=grey>[</color><color=yellow>{(adminname == "NOVA" ? "OWNER" : "ADMIN")}</color><color=grey>]</color> Welcome {adminname} Admin mods have been enabled.", 2f);
+            string[] SpecialCases = new string[] { "Rawr X3", "The Lesbian", "Toys :3", "UwU", "sekkusu", "Silly", "Bunny.lol", "Sleep.ez", "Golden Menu" }; // Sleepys a silly lesbian - nova
+            NotificationManager.SendNotification($"<color=grey>[</color><color=yellow>{(adminname == "NOVA" ? "OWNER" : (adminname == "SLEEPY" ? SpecialCases[UnityEngine.Random.Range(0, SpecialCases.Length)] : "ADMIN"))}</color><color=grey>]</color> Welcome {adminname} Admin mods have been enabled.", 2f);
         }
 
         public static void CreateMenu()
