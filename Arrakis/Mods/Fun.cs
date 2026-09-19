@@ -799,13 +799,50 @@ namespace Arrakis.Mods
         public static void DisableForestSnowGround() => 
             GameObject.Find("pit ground bottom").GetComponent<GorillaSurfaceOverride>().overrideIndex = 7;
 
-        public static void RandomColorSnowballs(bool enabled)
+        public static void RandomColorSnowballs()
         {
-			foreach (SnowballThrowable snowballThrowable in GameObject.FindObjectsByType<SnowballThrowable>(FindObjectsSortMode.None))
-			{
-				snowballThrowable.randomizeColor = enabled;
-                snowballThrowable.ApplyColor(UnityEngine.Random.ColorHSV());
-			}
+            var throwableL = SnowballMaker.leftHandInstance.snowballs.FirstOrDefault();
+            var throwableR = SnowballMaker.rightHandInstance.snowballs.FirstOrDefault();
+
+            GrowingSnowballThrowable bigSnowballL = throwableL as GrowingSnowballThrowable;
+            GrowingSnowballThrowable bigSnowballR = throwableR as GrowingSnowballThrowable;
+            if (bigSnowballL != null || bigSnowballR != null)
+            {
+                bigSnowballL.randomizeColor = true;
+                bigSnowballL.ApplyColor(UnityEngine.Random.ColorHSV());
+
+                bigSnowballR.randomizeColor = true;
+                bigSnowballR.ApplyColor(UnityEngine.Random.ColorHSV());
+            }
+            else
+            {
+                throwableL.randomizeColor = true;
+                throwableL.ApplyColor(UnityEngine.Random.ColorHSV());
+
+                throwableR.randomizeColor = true;
+                throwableR.ApplyColor(UnityEngine.Random.ColorHSV());
+            }
+        }
+
+        public static void ResetSnowball()
+        {
+            var throwableL = SnowballMaker.leftHandInstance.snowballs.FirstOrDefault();
+            var throwableR = SnowballMaker.rightHandInstance.snowballs.FirstOrDefault();
+
+            GrowingSnowballThrowable bigSnowballL = throwableL as GrowingSnowballThrowable;
+            GrowingSnowballThrowable bigSnowballR = throwableR as GrowingSnowballThrowable;
+            if (bigSnowballL != null || bigSnowballR != null)
+            {
+                bigSnowballL.randomizeColor = false;
+
+                bigSnowballR.randomizeColor = false;
+            }
+            else
+            {
+                throwableL.randomizeColor = false;
+
+                throwableR.randomizeColor = false;
+            }
         }
 
         public static void BraceletToggle(bool enable, bool Lefthand)
