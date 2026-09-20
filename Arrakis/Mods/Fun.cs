@@ -892,6 +892,7 @@ namespace Arrakis.Mods
         public static string name;
         public static void AnimatedName()
         {
+            if (string.IsNullOrEmpty(name)) name = PhotonNetwork.LocalPlayer.NickName;
             if (!NetworkSystem.Instance.InRoom)
             {
                 GorillaComputer.instance.currentName = name;
@@ -902,7 +903,6 @@ namespace Arrakis.Mods
                 PhotonNetwork.LocalPlayer.NickName = name;
                 return;
             }
-            if (string.IsNullOrEmpty(name)) name = PhotonNetwork.LocalPlayer.NickName;
             int length = Mathf.Clamp((int)Mathf.PingPong(Time.time / 0.25f, name.Length) + 1, 1, name.Length);
             GorillaComputer.instance.currentName = name[..length];
             GorillaComputer.instance.SetLocalNameTagText(GorillaComputer.instance.currentName);
