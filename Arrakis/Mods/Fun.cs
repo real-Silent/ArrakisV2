@@ -163,7 +163,7 @@ namespace Arrakis.Mods
         {
             if (Time.time > _lastUpdateTime )
             {
-                _lastUpdateTime = Time.time + 0.07f;
+                _lastUpdateTime = Time.time + 0.06f;
                 Vector3 origin = VRRig.LocalRig.transform.position;
                 SpawnWater(PointOnHelix(origin, _angleDegrees), VRRig.LocalRig.transform.rotation, 5, 100f, true, false);
                 SpawnWater(PointOnHelix(origin, _angleDegrees + 180f), VRRig.LocalRig.transform.rotation, 5, 100f, true, false);
