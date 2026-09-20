@@ -18,6 +18,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+using System.Collections.Generic;
+using System.Linq;
 using Arrakis.Extensions;
 using Arrakis.Managers;
 using Arrakis.Notifications;
@@ -27,8 +29,6 @@ using GorillaLocomotion;
 using HarmonyLib;
 using Photon.Pun;
 using Photon.Realtime;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.XR;
 using static Arrakis.Menu.Main;
@@ -299,6 +299,10 @@ namespace Arrakis.Mods
             {
                 Patches.Patchers.EventPatches.Override = () => false;
                 Patches.Patchers.PlrSerializePatch.stopSerialization = true;
+                if (!GetIndex("No Tag Limit").enabled)
+                {
+                    GorillaTagger.Instance.maxTagDistance = float.MaxValue;
+                }
             }
             else
                 StopBlinking();
@@ -307,6 +311,10 @@ namespace Arrakis.Mods
         {
             Patches.Patchers.EventPatches.Override = null;
             Patches.Patchers.PlrSerializePatch.stopSerialization = false;
+            if (!GetIndex("No Tag Limit").enabled)
+            {
+                GorillaTagger.Instance.maxTagDistance = 2.2f;
+            }
         }
     }
 }

@@ -18,6 +18,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using Arrakis.Classes;
 using Arrakis.Extensions;
 using Arrakis.Notifications;
@@ -27,9 +30,6 @@ using GorillaLocomotion.Gameplay;
 using GorillaNetworking;
 using Photon.Pun;
 using Photon.Realtime;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using static Arrakis.Classes.RigManager;
 using static Arrakis.Menu.Main;
@@ -227,7 +227,53 @@ namespace Arrakis.Mods
                 }
             }
         }
-
+        public static void GuardianBreakMovementGun()
+        {
+            if (GetGunInput(false))
+            {
+                var GunData = RenderGun();
+                GameObject NewPointer = GunData.NewPointer;
+                RaycastHit Ray = GunData.Ray;
+                if (GetGunInput(true))
+                {
+                    VRRig rig = Ray.collider.GetComponentInParent<VRRig>();
+                    if (rig.IsLocal())
+                    {
+                        GorillaGuardianManager guard = (GorillaGuardianManager)GorillaGameManager.instance;
+                        if (guard.IsPlayerGuardian(NetworkSystem.Instance.LocalPlayer))
+                        {
+                            float theonefloatidkwhattonameit = UnityEngine.Random.Range(-1f, 1f);
+                            GetNetworkViewFromVRRig(rig).SendRPC("GrabbedByPlayer", rig.Creator, true, false, false);
+                            GetNetworkViewFromVRRig(rig).SendRPC("DroppedByPlayer", rig.Creator, new Vector3(theonefloatidkwhattonameit, theonefloatidkwhattonameit, theonefloatidkwhattonameit));
+                        }
+                        else
+                        {
+                            NotificationManager.SendNotification("<color=grey>[<color=yellow>ARRAKIS</color><color=grey>]</color> You are not guardian this mod wont work.");
+                        }
+                    }
+                }
+            }
+        }
+        public static void GuardianBreakMovementAll()
+        {
+            GorillaGuardianManager guard = (GorillaGuardianManager)GorillaGameManager.instance;
+            if (guard.IsPlayerGuardian(NetworkSystem.Instance.LocalPlayer))
+            {
+                foreach (VRRig rig in VRRigCache.ActiveRigs)
+                {
+                    if (rig.IsLocal())
+                    {
+                        float theonefloatidkwhattonameit = UnityEngine.Random.Range(-1f, 1f);
+                        GetNetworkViewFromVRRig(rig).SendRPC("GrabbedByPlayer", rig.Creator, true, false, false);
+                        GetNetworkViewFromVRRig(rig).SendRPC("DroppedByPlayer", rig.Creator, new Vector3(theonefloatidkwhattonameit, theonefloatidkwhattonameit, theonefloatidkwhattonameit));
+                    }
+                }
+            }
+            else
+            {
+                NotificationManager.SendNotification("<color=grey>[<color=yellow>ARRAKIS</color><color=grey>]</color> You are not guardian this mod wont work.");
+            }
+        }
         public static void AlwaysGuardian()
         {
             foreach (TappableGuardianIdol idol in GetAllTappables())
@@ -264,7 +310,7 @@ namespace Arrakis.Mods
                 }
             }
         }
-        public static void SetRoomStatus(bool status)
+        public static void SetRoomStatus(bool status) // this might've gotten patched it dosnt seem to work. -sleepy
         {
             var roomProperties = new Hashtable();
             roomProperties[GamePropertyKey.IsOpen] = status;
