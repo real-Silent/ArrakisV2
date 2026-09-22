@@ -671,6 +671,8 @@ namespace Arrakis
 
         public static void LoadSettings()
         {
+            NotificationManager.ClearAllNotifications();
+
             string path = Path.Combine(PluginInfo.BaseDirectory, "SavedSettings.json");
             if (!File.Exists(path))
                 return;
