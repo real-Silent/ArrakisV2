@@ -382,6 +382,7 @@ namespace Arrakis.Mods
         static bool LeftClose2;
         static bool DoOnce2;
         static float maxD2;
+        public static float WallWalkPower = 8.8f;
         public static void WallWalk()
         {
             if (InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Right, !XRSettings.isDeviceActive))
@@ -409,7 +410,7 @@ namespace Arrakis.Mods
                 }
                 if (dist2 < maxD2)
                 {
-                    vel2 = normal2 * (8.8f * Time.deltaTime);
+                    vel2 = normal2 * (WallWalkPower * Time.deltaTime);
                     GorillaTagger.Instance.bodyCollider.attachedRigidbody.linearVelocity -= vel2;
                 }
                 else

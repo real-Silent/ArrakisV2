@@ -586,6 +586,23 @@ namespace Arrakis
             GetIndex("Change Tag Aura Range").overlapText = $"Change Tag Aura Range <color=grey>[<color=cyan>{ranges[TagAuraDistanceIndex]}</color>]</color>";
         }
 
+        private static int WallWalkAmountIndex = 0;
+        public static void ChangeWallWalkAmount(bool increment = true)
+        {
+            float[] powers = new float[] { 8.8f, 9.8f, 10.8f, 11.8f, 6.8f, 7.8f };
+            if (increment)
+            {
+                WallWalkAmountIndex = (WallWalkAmountIndex + 1) % powers.Length;
+            }
+            else
+            {
+                WallWalkAmountIndex = (WallWalkAmountIndex - 1 + powers.Length) % powers.Length;
+            }
+
+            Movement.WallWalkPower = powers[WallWalkAmountIndex];
+            GetIndex("Change Wall Walk Power").overlapText = $"Change Wall Walk Power <color=grey>[<color=cyan>{powers[WallWalkAmountIndex]}f</color>]</color>";
+        }
+
         // Movement Settings
         public static bool stickyplats = false;
 

@@ -137,6 +137,7 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Exit Movement Settings", method =() => CurrentCategoryName = "Settings", isTogglable = false, toolTip = "Returns to the main settings page for the menu." },
 
                 new ButtonInfo { buttonText = "Change Fly Speed", overlapText = "Change Fly Speed <color=grey>[<color=cyan>Default</color>]</color>", enableMethod =() => ChangeFlySpeed(), method =() => ChangeFlySpeed(), disableMethod =() => ChangeFlySpeed(false), isIncremental = true,  isTogglable = false, toolTip = "Changes the fly speed.", ShowInArraylist = false },
+                new ButtonInfo { buttonText = "Change Wall Walk Power", overlapText = "Change Wall Walk Power <color=grey>[<color=cyan>8.8f</color>]</color>", enableMethod =() => ChangeWallWalkAmount(), method =() => ChangeWallWalkAmount(), disableMethod =() => ChangeWallWalkAmount(false), isIncremental = true,  isTogglable = false, toolTip = "Changes the wall walk power.", ShowInArraylist = false },
                 new ButtonInfo { buttonText = "Sticky Platforms", method =() => stickyplats = true, disableMethod =() => stickyplats = false, isTogglable = true, toolTip = "Makes the platforms sticky.", ShowInArraylist = false },
             },
 
