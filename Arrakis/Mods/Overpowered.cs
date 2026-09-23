@@ -24,6 +24,7 @@ using System.Linq;
 using Arrakis.Classes;
 using Arrakis.Extensions;
 using Arrakis.Notifications;
+using Arrakis.Patches.Patchers;
 using ExitGames.Client.Photon;
 using GorillaExtensions;
 using GorillaLocomotion.Gameplay;
@@ -404,6 +405,44 @@ namespace Arrakis.Mods
             foreach (Player p in PhotonNetwork.PlayerListOthers)
             {
                 PhotonNetwork.OpRemoveCompleteCacheOfPlayer(p.ActorNumber);
+            }
+        }
+        public static void SchizophrenicGun() // from my plugin bcz i said i would -sleepy
+        {
+            if (GetGunInput(false))
+            {
+                var GunData = RenderGun();
+                GameObject NewPointer = GunData.NewPointer;
+                RaycastHit Ray = GunData.Ray;
+                if (lockTarget != null && gunLocked)
+                {
+                    EventPatches.Override = () =>
+                    {
+                        NetPlayer target = lockTarget.creator;
+                        Experimental.MultiSerialize(true, new[] { VRRig.LocalRig.netView.GetView });
+                        Vector3 posArchive = VRRig.LocalRig.transform.position;
+                        Experimental.SendSerialize(VRRig.LocalRig.netView.GetView, new RaiseEventOptions { TargetActors = new[] { target.ActorNumber } });
+                        VRRig.LocalRig.transform.position = new Vector3(Random.Range(-99999f, 99999f), 99999f, Random.Range(-99999f, 99999f));
+                        Experimental.SendSerialize(VRRig.LocalRig.netView.GetView, new RaiseEventOptions { TargetActors = PhotonNetwork.PlayerList.Where(plr => plr.ActorNumber != target.ActorNumber).Select(plr => plr.ActorNumber).ToArray() });
+                        Safety.RPCProc();
+                        VRRig.LocalRig.transform.position = posArchive;
+                        return false;
+                    };
+                }
+                if (GetGunInput(true))
+                {
+                    VRRig rig = Ray.collider.GetComponentInParent<VRRig>();
+                    if (rig.IsLocal())
+                    {
+                        lockTarget = rig;
+                        gunLocked = true;
+                    }
+                }
+            }
+            else
+            {
+                lockTarget = null;
+                gunLocked = false;
             }
         }
     }

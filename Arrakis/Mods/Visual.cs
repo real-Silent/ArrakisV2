@@ -1258,6 +1258,8 @@ namespace Arrakis.Mods
             }
             breakcujmpool.Clear();
         }
+        public static void fullBright(bool fullBright) =>
+            GameLightingManager.instance.SetCustomDynamicLightingEnabled(fullBright);
     }
 
     public class WireframeRenderer : MonoBehaviour

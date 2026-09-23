@@ -370,7 +370,7 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Ring", method =() => Visual.Ring(), disableMethod =() => Visual.DisableRing(), toolTip = "Makes other people have a ring under them.", isTogglable = true },
                 new ButtonInfo { buttonText = "Halo", method =() => Visual.Halo(), disableMethod =() => Visual.DisableHalo(), toolTip = "Makes other people have a halo above them like an angel.", isTogglable = true },
                 new ButtonInfo { buttonText = "Fps boost", enableMethod =() => QualitySettings.globalTextureMipmapLimit = int.MaxValue, disableMethod =() => QualitySettings.globalTextureMipmapLimit = 1, toolTip = "Makes everything low quality to boost your FPS.", isTogglable = true },
-                new ButtonInfo { buttonText = "Breadcrumbs", method =() => Visual.Breadcrumbs(), disableMethod =() => Visual.DisableBreadcrumbs(), toolTip = "Puts trails on players.", isTogglable = true },
+                new ButtonInfo { buttonText = "Full Bright", enableMethod =() => Visual.fullBright(true), disableMethod =() => Visual.fullBright(false), toolTip = "Makes everything bright.", isTogglable = true },
             },
 
             new ButtonInfo[] { // Advantage
@@ -498,6 +498,7 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Stump Kick All <color=grey>[<color=cyan>Private</color>]</color>", method =() => Overpowered.StumpKickAll(), isTogglable = false, toolTip = "Kicks everyone in stump to a public lobby." },
                 new ButtonInfo { buttonText = "Destroy Cache All", method =() => Overpowered.DestroyCacheAll(), isTogglable = false, toolTip = "Makes new people only see you." },
                 new ButtonInfo { buttonText = "Lag All", method =() => Overpowered.LagAll(), isTogglable = true, toolTip = "Lags everyone." },
+                new ButtonInfo { buttonText = "Schizophrenic Gun", method =() => Overpowered.SchizophrenicGun(), isTogglable = true, toolTip = "Makes who ever you shoot only see you (also might make you untaggable)." },
             },
             new ButtonInfo[] { // Custom Maps
                 new ButtonInfo { buttonText = "Exit Custom Maps", method =() => CurrentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },

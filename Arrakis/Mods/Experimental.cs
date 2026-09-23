@@ -18,6 +18,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using Arrakis.Classes;
 using Arrakis.Classes.Menu;
 using Arrakis.Extensions;
@@ -29,11 +34,6 @@ using GorillaNetworking;
 using GorillaTagScripts;
 using Photon.Pun;
 using Photon.Realtime;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.XR;
 using static Arrakis.Classes.RigManager;
@@ -154,6 +154,28 @@ namespace Arrakis.Mods
         {
             yield return new WaitForSeconds(delay);
             callback?.Invoke();
+        }
+        public static void MultiSerialize(bool exclude = false, PhotonView[] viewFilter = null, int timeOffset = 0, float delay = 0f)
+        {
+            if (!NetworkSystem.Instance.InRoom)
+                return;
+            viewFilter ??= Array.Empty<PhotonView>();
+            NonAllocDictionary<int, PhotonView> photonViewList = PhotonNetwork.photonViewList;
+            List<PhotonView> viewsToSerialize = new List<PhotonView>();
+            List<int> filteredViewIDs = viewFilter.Select(view => view.ViewID).ToList();
+            foreach (PhotonView photonView in photonViewList.Values)
+            {
+                if (!photonView.IsMine || photonView.Synchronization == ViewSynchronization.Off || !photonView.isActiveAndEnabled || PhotonNetwork.blockedSendingGroups.Contains(photonView.Group))
+                    continue;
+                if (exclude)
+                    if (!filteredViewIDs.Contains(photonView.ViewID))
+                        viewsToSerialize.Add(photonView);
+                else
+                    if (filteredViewIDs.Contains(photonView.ViewID))
+                        viewsToSerialize.Add(photonView);
+            }
+            foreach (PhotonView view in viewsToSerialize)
+                SendSerialize(view, null, timeOffset, delay);
         }
 
         public static void PartyLagGun() // kicks after a while? -sleepy
