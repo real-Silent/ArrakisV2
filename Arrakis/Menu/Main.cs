@@ -560,7 +560,7 @@ namespace Arrakis.Menu
                         else
                             title.text = File.ReadAllText($"{PluginInfo.BaseDirectory}/CustomTitle.txt") + (disablepagenumber ? "" : " <color=grey>[</color><color=white>" + (pageNumber + 1).ToString() + "</color><color=grey>]</color>");
                     }
-                    else // sussy - ccmv2 movement
+                    else // sussy - ccmv2 moment | why did i spell movement 😭 - nova
                         title.text = ((Sussy ? "Sussy" : RareChance ? "Awwakis uwu 🥺✨" : PluginInfo.Name) + (disablepagenumber ? "" : " <color=grey>[</color><color=white>" + (pageNumber + 1).ToString() + "</color><color=grey>]</color>"));
                 }
                 else
