@@ -203,14 +203,7 @@ namespace Arrakis.Menu
                 {
                     PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable
                     {
-                        { "NMenuColor", new float[]
-                            {
-                                currentColor.r,
-                                currentColor.g,
-                                currentColor.b,
-                                currentColor.a
-                            }
-                        }
+                        { "NMenuColor", new float[] { currentColor.r, currentColor.g, currentColor.b, currentColor.a } }
                     });
                 }
 
@@ -225,12 +218,7 @@ namespace Arrakis.Menu
                             {
                                 if (colorObj is float[] rgba && rgba.Length >= 4)
                                 {
-                                    RigManager.GetVRRigFromPlayer(plr).playerText1.color = new Color(
-                                        rgba[0],
-                                        rgba[1],
-                                        rgba[2],
-                                        rgba[3]
-                                    );
+                                    RigManager.GetVRRigFromPlayer(plr).playerText1.color = new Color(rgba[0], rgba[1], rgba[2], rgba[3]);
                                 }
                             }
                         }
