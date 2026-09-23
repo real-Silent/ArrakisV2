@@ -143,7 +143,7 @@ namespace Arrakis.Mods
         public static void CLearNotis() =>
             NotificationManager.ClearAllNotifications();
 
-        public static void BuyBarrel()
+        /*public static void BuyBarrel() // noted out incase barrel mods comeback (i dont think they will) -sleepy
         {
             int barrelPrice = CosmeticsController.instance.GetItemFromDict("LMAPE.").cost;
             int currentRocks = CosmeticsController.instance.currencyBalance;
@@ -158,7 +158,7 @@ namespace Arrakis.Mods
             {
                 PromptSingle($"You currently only have {currentRocks} shiny rocks you need {barrelPrice - currentRocks} more the barrel costs {barrelPrice}.");
             }
-        }
+        }*/
 
         public static async void CreatePublicLobby(string roomName)
         {
