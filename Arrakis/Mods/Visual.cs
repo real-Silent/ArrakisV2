@@ -970,7 +970,6 @@ namespace Arrakis.Mods
             GorillaTag.Rendering.ZoneShaderSettings.activeInstance.SetGroundFogValue(Color.clear, 0f, 0f, 0f);
         private static Dictionary<VRRig, GameObject> ringPool = new Dictionary<VRRig, GameObject>();
         private static Dictionary<VRRig, GameObject> haloPool = new Dictionary<VRRig, GameObject>();
-        private static Dictionary<VRRig, GameObject> orbitPool = new Dictionary<VRRig, GameObject>();
         public static void Ring()
         {
             if (!NetworkSystem.Instance.InRoom)
@@ -1201,6 +1200,63 @@ namespace Arrakis.Mods
         {
             if (selfWireframeRenderer == null) return;
             selfWireframeRenderer.wireColor = backgroundColor.GetCurrentColor();
+        }
+        private static Dictionary<VRRig, TrailRenderer> breakcujmpool = new Dictionary<VRRig, TrailRenderer>();
+        public static void Breadcrumbs()
+        {
+            if (!NetworkSystem.Instance.InRoom)
+                return;
+            foreach (VRRig rig in VRRigCache.ActiveRigs)
+            {
+                if (rig == null || rig.IsLocal())
+                    continue;
+                if (!breakcujmpool.TryGetValue(rig, out TrailRenderer trail))
+                {
+                    trail = rig.head.rigTarget.gameObject.GetOrAddComponent<TrailRenderer>();
+                    trail.minVertexDistance = 0.05f;
+                    trail.numCapVertices = 10;
+                    trail.numCornerVertices = 5;
+                    trail.startWidth = 0.0055f;
+                    trail.endWidth = 0.0055f;
+                    trail.time = 3f;
+                    trail.name = "Arrakis_Breadcrumb";
+                    Object.Destroy(trail.GetComponent<Collider>());
+                    Renderer renderer = trail.GetComponent<Renderer>();
+                    renderer.material = new Material(Shader.Find("GUI/Text Shader"));
+                    breakcujmpool[rig] = trail;
+                }
+                Color color = followmenutheme
+                    ? backgroundColor.GetCurrentColor()
+                    : rig.IsTagged() ? new Color(0.6f, 0f, 0f) : rig.playerColor;
+                color.a = 0.18f;
+                Renderer halo = trail.GetComponent<Renderer>();
+                halo.material.color = color;
+            }
+            List<VRRig> remove = null;
+            foreach (var pair in breakcujmpool)
+            {
+                if (pair.Key == null || !VRRigCache.ActiveRigs.Contains(pair.Key))
+                {
+                    remove ??= new List<VRRig>();
+                    remove.Add(pair.Key);
+                    if (pair.Value != null)
+                        Object.Destroy(pair.Value);
+                }
+            }
+            if (remove != null)
+            {
+                foreach (VRRig rig in remove)
+                    breakcujmpool.Remove(rig);
+            }
+        }
+        public static void DisableBreadcrumbs()
+        {
+            foreach (TrailRenderer obj in breakcujmpool.Values)
+            {
+                if (obj != null)
+                    Object.Destroy(obj);
+            }
+            breakcujmpool.Clear();
         }
     }
 

@@ -26,6 +26,7 @@ using Arrakis.Patches;
 using Arrakis.Patches.Patchers;
 using GorillaTagScripts;
 using Photon.Pun;
+using UnityEngine;
 using static Arrakis.Menu.Main;
 using static Arrakis.Settings;
 
@@ -212,6 +213,8 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Change Gamemode <color=grey>[<color=cyan>Ambush</color>]</color>", method =() => Important.ChangeGamemode("AMBUSH"), isTogglable = false, toolTip = "Changes your current gamemode." },
                 new ButtonInfo { buttonText = "Change Gamemode <color=grey>[<color=cyan>FreezeTag</color>]</color>", method =() => Important.ChangeGamemode("FREEZETAG"), isTogglable = false, toolTip = "Changes your current gamemode." },
                 new ButtonInfo { buttonText = "Change Gamemode <color=grey>[<color=cyan>Custom</color>]</color>", method =() => Important.ChangeGamemode("CUSTOM"), isTogglable = false, toolTip = "Changes your current gamemode." },
+                new ButtonInfo { buttonText = "Disable Map Triggers", enableMethod =() => GameObject.Find("Environment Objects/TriggerZones_Prefab/ZoneTransitions_Prefab").SetActive(false), disableMethod =() => GameObject.Find("Environment Objects/TriggerZones_Prefab/ZoneTransitions_Prefab").SetActive(true), toolTip = "Disables the map triggers so you can goto maps without loading them."},
+                new ButtonInfo { buttonText = "Disable Network Triggers", enableMethod =() => NetworkTriggerPatch.enabled = true, disableMethod =() => NetworkTriggerPatch.enabled = false, toolTip = "Disables the network triggers so you can change maps without leaving/joining a room."},
             },
 
             new ButtonInfo[] { // Important
@@ -366,6 +369,8 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Halloween Fog", enableMethod =() => Visual.EnableFog(), disableMethod =() => Visual.DisableFog(), toolTip = "Enables the halloween fog.", isTogglable = true },
                 new ButtonInfo { buttonText = "Ring", method =() => Visual.Ring(), disableMethod =() => Visual.DisableRing(), toolTip = "Makes other people have a ring under them.", isTogglable = true },
                 new ButtonInfo { buttonText = "Halo", method =() => Visual.Halo(), disableMethod =() => Visual.DisableHalo(), toolTip = "Makes other people have a halo above them like an angel.", isTogglable = true },
+                new ButtonInfo { buttonText = "Fps boost", enableMethod =() => QualitySettings.globalTextureMipmapLimit = int.MaxValue, disableMethod =() => QualitySettings.globalTextureMipmapLimit = 1, toolTip = "Makes everything low quality to boost your FPS.", isTogglable = true },
+                new ButtonInfo { buttonText = "Breadcrumbs", method =() => Visual.Breadcrumbs(), disableMethod =() => Visual.DisableBreadcrumbs(), toolTip = "Puts trails on players.", isTogglable = true },
             },
 
             new ButtonInfo[] { // Advantage
