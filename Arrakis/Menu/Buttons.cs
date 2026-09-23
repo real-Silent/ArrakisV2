@@ -554,6 +554,8 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Zelda Sword", enableMethod =() => AssetBundleLoader.LoadBundle("zeldasword", VRRig.LocalRig.rightHandTransform.position, VRRig.LocalRig.rightHandTransform.rotation, "zeldasword"), method =() => AssetBundleLoader.MoveObject("zeldasword", VRRig.LocalRig.rightHandTransform.position, VRRig.LocalRig.rightHandTransform.rotation), disableMethod =() => AssetBundleLoader.DeleteBundle("zeldasword"), isTogglable = true, toolTip = "Spawns a client sided zeldas word." },
                 new ButtonInfo { buttonText = "Spam Pride Cube", method =() => Experimental.SpamPrideCube(), isTogglable = true, toolTip = "Spams client sided cubes." },
                 new ButtonInfo { buttonText = "Switch To Tcp", enableMethod =() => Experimental.SwitchToTcp(), disableMethod =() => Experimental.SwitchToUdp(), isTogglable = true, toolTip = "Swaps the networking to tcp, this breaks somethings." },
+
+                new ButtonInfo { buttonText = "Portal Gun", method =() => PortalManager.SpawnPortal(), isTogglable = true, toolTip = "Portal ghun." },
             },
 
             new ButtonInfo[] { // Beta
