@@ -794,8 +794,8 @@ namespace Arrakis.Mods
             lastLeftPosition = leftHand != null ? leftHand.position : Vector3.zero;
             lastRightPosition = rightHand != null ? rightHand.position : Vector3.zero;
         }
-        private static Shader _espShader; // c# is fucking retarded -sleepy
-        public static Shader EspShader // c# is fucking retarded -sleepy
+        private static Shader _espShader;
+        public static Shader EspShader
         {
             get
             {
@@ -806,18 +806,16 @@ namespace Arrakis.Mods
                     {
                         _espShader = Shader.Find("Sprites/Default");
                     }
-
                     if (_espShader == null)
                     {
                         _espShader = Cached;
                     }
                 }
-
                 return _espShader;
             }
         }
-        public static Shader Cached { get; private set; } // c# is fucking retarded -sleepy
-        public static Material CreateTransparentMaterial(Color color) // c# is fucking retarded -sleepy
+        public static Shader Cached { get; private set; }
+        public static Material CreateTransparentMaterial(Color color)
         {
             Material material = new Material(EspShader)
             {
@@ -828,6 +826,10 @@ namespace Arrakis.Mods
             material.renderQueue = 4000;
             return material;
         }
+
+        public static Color trailColor1 = Color.white; // Add setting for this later -nova
+        public static Color trailColor2 = Color.orange; // Add setting for this later -nova
+        public static Color trailColor3 = new Color(1f, 0.3f, 0f); // Add setting for this later -nova
         private static TrailRenderer CreateHandTrail(Transform parent)
         {
             GameObject trailObject = new GameObject("Arrakis_HandTrail");
@@ -842,9 +844,9 @@ namespace Arrakis.Mods
             {
                 colorKeys = new[]
                 {
-                    new GradientColorKey(Color.white, 0f),
-                    new GradientColorKey(new Color(1f, 0.5f, 0f), 0.5f),
-                    new GradientColorKey(new Color(1f, 0.3f, 0f), 1f)
+                    new GradientColorKey(trailColor1, 0f),
+                    new GradientColorKey(trailColor2, 0.5f),
+                    new GradientColorKey(trailColor3, 1f)
                 },
                 alphaKeys = new[]
                 {
