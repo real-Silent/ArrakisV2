@@ -28,79 +28,71 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.XR;
+using static Arrakis.Menu.Main;
 
 namespace Arrakis.Mods
 {
     public class Projectiles
     {
-        public static void SnowballGun()
+        public static int ProjectileIndex = 0;
+        public static string[] ProjectilesNames = new string[]
         {
-            if (InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Right, !XRSettings.isDeviceActive))
-                SpawnProjectile("SnowballRightAnchor", GorillaTagger.Instance.rightHandTransform.position, -GorillaTagger.Instance.rightHandTransform.up * 50f, Settings.projectileColor);
-            else
-                cachedThrow.SetSnowballActiveLocal(false);
-        }
-
-        public static void GrowingSnowballGun()
+            "SnowballRightAnchor", "GrowingSnowballRightAnchor", "WaterBalloonRightAnchor", "LavaRockAnchor",
+            "BucketGiftFunctionalAnchor_Right", "ScienceCandyRightAnchor", "FishFoodRightAnchor", "HotDogRightAnchor",
+            "Fireworks"
+        };
+        private static string CurrentProjectile = "SnowballRightAnchor";
+        public static void ChangeProjectile(bool increment = true)
         {
-            if (InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Right, !XRSettings.isDeviceActive))
-                SpawnProjectile("GrowingSnowballRightAnchor", GorillaTagger.Instance.rightHandTransform.position, -GorillaTagger.Instance.rightHandTransform.up * 50f, Settings.allowbigsnowballcolor ? Settings.projectileColor : Color.white, 5);
+            if (increment)
+            {
+                ProjectileIndex = (ProjectileIndex + 1) % ProjectilesNames.Length;
+            }
             else
             {
-                cachedThrow.SetSnowballActiveLocal(false);
-                cachedGThrow.SetSnowballActiveLocal(false);
+                ProjectileIndex = (ProjectileIndex - 1 + ProjectilesNames.Length) % ProjectilesNames.Length;
             }
+
+            CurrentProjectile = ProjectilesNames[ProjectileIndex];
+            GetIndex("Change Projectile").overlapText = $"Change Projectile <color=grey>[<color=cyan>{ProjectilesNames[ProjectileIndex]}</color>]</color>";
         }
-        public static void WaterBalloonGun()
+
+        public static void ProjectileSpammer()
         {
             if (InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Right, !XRSettings.isDeviceActive))
-                SpawnProjectile("WaterBalloonRightAnchor", GorillaTagger.Instance.rightHandTransform.position, -GorillaTagger.Instance.rightHandTransform.up * 50f, Settings.projectileColor);
-            else
-                cachedThrow.SetSnowballActiveLocal(false);
-        }
-        public static void LavaRockGun()
-        {
-            if (InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Right, !XRSettings.isDeviceActive))
-                SpawnProjectile("LavaRockAnchor", GorillaTagger.Instance.rightHandTransform.position, -GorillaTagger.Instance.rightHandTransform.up * 50f, Settings.projectileColor);
-            else
-                cachedThrow.SetSnowballActiveLocal(false);
-        }
-        public static void BucketGiftGun()
-        {
-            if (InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Right, !XRSettings.isDeviceActive))
-                SpawnProjectile("BucketGiftFunctionalAnchor_Right", GorillaTagger.Instance.rightHandTransform.position, -GorillaTagger.Instance.rightHandTransform.up * 50f, Settings.projectileColor);
-            else
-                cachedThrow.SetSnowballActiveLocal(false);
-        }
-        public static void CandyGun()
-        {
-            if (InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Right, !XRSettings.isDeviceActive))
-                SpawnProjectile("ScienceCandyRightAnchor", GorillaTagger.Instance.rightHandTransform.position, -GorillaTagger.Instance.rightHandTransform.up * 50f, Settings.projectileColor);
-            else
-                cachedThrow.SetSnowballActiveLocal(false);
-        }
-        public static void FishFoodGun()
-        {
-            if (InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Right, !XRSettings.isDeviceActive))
-                SpawnProjectile("FishFoodRightAnchor", GorillaTagger.Instance.rightHandTransform.position, -GorillaTagger.Instance.rightHandTransform.up * 50f, Settings.projectileColor);
-            else
-                cachedThrow.SetSnowballActiveLocal(false);
-        }
-        public static void HotdogGun()
-        {
-            if (InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Right, !XRSettings.isDeviceActive))
-                SpawnProjectile("HotDogRightAnchor", GorillaTagger.Instance.rightHandTransform.position, -GorillaTagger.Instance.rightHandTransform.up * 50f, Settings.projectileColor);
-            else
-                cachedThrow.SetSnowballActiveLocal(false);
-        }
-        public static void FireworkGun()
-        {
-            if (InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Right, !XRSettings.isDeviceActive))
-                SpawnProjectile("Fireworks", GorillaTagger.Instance.rightHandTransform.position, -GorillaTagger.Instance.rightHandTransform.up * 50f, Settings.projectileColor);
+                SpawnProjectile(CurrentProjectile, GorillaTagger.Instance.rightHandTransform.position, Vector3.zero, Settings.projectileColor);
             else
                 cachedThrow.SetSnowballActiveLocal(false);
         }
 
+        public static void ProjectileLauncher()
+        {
+            if (InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Right, !XRSettings.isDeviceActive))
+                SpawnProjectile(CurrentProjectile, GorillaTagger.Instance.rightHandTransform.position, -GorillaTagger.Instance.rightHandTransform.up * 50f, Settings.projectileColor);
+            else
+                cachedThrow.SetSnowballActiveLocal(false);
+        }
+
+        public static void ProjectileGun()
+        {
+            if (GetGunInput(false))
+            {
+                var GunData = RenderGun();
+                GameObject NewPointer = GunData.NewPointer;
+                RaycastHit Ray = GunData.Ray;
+                if (GetGunInput(true))
+                {
+                    VRRig.LocalRig.enabled = false;
+                    VRRig.LocalRig.transform.position = NewPointer.transform.position;
+                    SpawnProjectile(CurrentProjectile, NewPointer.transform.position + new Vector3(0f, 0.6f, 0f), Vector3.zero, Settings.projectileColor);
+                }
+                else
+                {
+                    VRRig.LocalRig.enabled = true;
+                    cachedThrow.SetSnowballActiveLocal(false);
+                }
+            }
+        }
 
         private static SnowballThrowable cachedThrow = null;
         private static GrowingSnowballThrowable cachedGThrow = null;

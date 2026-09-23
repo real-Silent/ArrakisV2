@@ -159,6 +159,7 @@ namespace Arrakis.Menu
 
                 new ButtonInfo { buttonText = "Change Projectile Color", enableMethod =() => ChangeProjectilesColor(), method =() => ChangeProjectilesColor(), disableMethod =() => ChangeProjectilesColor(false), isIncremental = true, isTogglable = false, toolTip = "Changes the color of the projectiles." },
                 new ButtonInfo { buttonText = "Allow Colored Big Snowballs", enableMethod =() => allowbigsnowballcolor = true, disableMethod =() => allowbigsnowballcolor = false, isTogglable = true, toolTip = "Allows the growing snowballs to have a color." },
+                new ButtonInfo { buttonText = "Change Projectile", overlapText = "Change Projectile <color=grey>[<color=cyan>Snowball</color>]</color>", isIncremental = true, enableMethod =() => Projectiles.ChangeProjectile(), method =() => Projectiles.ChangeProjectile(), disableMethod =() => Projectiles.ChangeProjectile(false), isTogglable = false, toolTip = "Changes the cxurrent projectile you use." },
             },
             new ButtonInfo[] { // Gunlib Settings
                 new ButtonInfo { buttonText = "Exit Gunlib Settings", method =() => CurrentCategoryName = "Settings", isTogglable = false, toolTip = "Returns to the main settings page for the menu." },
@@ -469,15 +470,9 @@ namespace Arrakis.Menu
             new ButtonInfo[] { // Projectiles
                 new ButtonInfo { buttonText = "Exit Projectiles", method =() => CurrentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },
 
-                new ButtonInfo { buttonText = "Snowball Gun <color=grey>[<color=cyan>G</color>]</color>", method =() => Projectiles.SnowballGun(), isTogglable = true, toolTip = "Lets you shoot a projectile when holding <color=grey>[<color=cyan>G</color>]</color>." },
-                new ButtonInfo { buttonText = "Growing Snowball Gun <color=grey>[<color=cyan>G</color>]</color>", method =() => Projectiles.GrowingSnowballGun(), isTogglable = true, toolTip = "Lets you shoot a projectile when holding <color=grey>[<color=cyan>G</color>]</color>." },
-                new ButtonInfo { buttonText = "Water Balloon Gun <color=grey>[<color=cyan>G</color>]</color>", method =() => Projectiles.WaterBalloonGun(), isTogglable = true, toolTip = "Lets you shoot a projectile when holding <color=grey>[<color=cyan>G</color>]</color>." },
-                new ButtonInfo { buttonText = "Lava Rock Gun <color=grey>[<color=cyan>G</color>]</color>", method =() => Projectiles.LavaRockGun(), isTogglable = true, toolTip = "Lets you shoot a projectile when holding <color=grey>[<color=cyan>G</color>]</color>." },
-                new ButtonInfo { buttonText = "Bucket Gift Gun <color=grey>[<color=cyan>G</color>]</color>", method =() => Projectiles.BucketGiftGun(), isTogglable = true, toolTip = "Lets you shoot a projectile when holding <color=grey>[<color=cyan>G</color>]</color>." },
-                new ButtonInfo { buttonText = "Science Candy Gun <color=grey>[<color=cyan>G</color>]</color>", method =() => Projectiles.CandyGun(), isTogglable = true, toolTip = "Lets you shoot a projectile when holding <color=grey>[<color=cyan>G</color>]</color>." },
-                new ButtonInfo { buttonText = "Fish Food Gun <color=grey>[<color=cyan>G</color>]</color>", method =() => Projectiles.FishFoodGun(), isTogglable = true, toolTip = "Lets you shoot a projectile when holding <color=grey>[<color=cyan>G</color>]</color>." },
-                new ButtonInfo { buttonText = "Hot Dog Gun <color=grey>[<color=cyan>G</color>]</color>", method =() => Projectiles.HotdogGun(), isTogglable = true, toolTip = "Lets you shoot a projectile when holding <color=grey>[<color=cyan>G</color>]</color>." },
-                new ButtonInfo { buttonText = "Firework Gun <color=grey>[<color=cyan>G</color>]</color>", method =() => Projectiles.FireworkGun(), isTogglable = true, toolTip = "Lets you shoot a projectile when holding <color=grey>[<color=cyan>G</color>]</color>." },
+                new ButtonInfo { buttonText = "Projectile Spammer <color=grey>[<color=cyan>G</color>]</color>", method =() => Projectiles.ProjectileSpammer(), isTogglable = true, toolTip = "Spams a projectile whne holding <color=grey>[<color=cyan>G</color>]</color>." },
+                new ButtonInfo { buttonText = "Projectile Launcher <color=grey>[<color=cyan>G</color>]</color>", method =() => Projectiles.ProjectileLauncher(), isTogglable = true, toolTip = "Lets you launch a projectile when holding <color=grey>[<color=cyan>G</color>]</color>." },
+                new ButtonInfo { buttonText = "Projectile Gun <color=grey>[<color=cyan>G</color>]</color>", method =() => Projectiles.ProjectileGun(), isTogglable = true, toolTip = "Lets you launch a projectile when holding <color=grey>[<color=cyan>G</color>]</color>." },
             },
 
             new ButtonInfo[] { // Overpowered
