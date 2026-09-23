@@ -982,8 +982,6 @@ namespace Arrakis.Mods
                 {
                     obj = new GameObject("Arrakis_Ring");
                     obj.transform.SetParent(rig.transform, false);
-                    obj.transform.localPosition = new Vector3(0f, -0.35f, 0f);
-
                     LineRenderer line = obj.AddComponent<LineRenderer>();
                     line.useWorldSpace = false;
                     line.loop = true;
@@ -991,22 +989,29 @@ namespace Arrakis.Mods
                     line.startWidth = 0.012f;
                     line.endWidth = 0.012f;
                     line.material = new Material(Shader.Find("GUI/Text Shader"));
-                    float radius = 0.38f; // might add a setting for this later idfk -sleepy
-                    for (int i = 0; i < 48; i++)
-                    {
-                        float angle = i * Mathf.PI * 2f / 48f;
-                        line.SetPosition(i, new Vector3(Mathf.Cos(angle) * radius,
-                            0f,
-                            Mathf.Sin(angle) * radius
-                        ));
-                    }
                     ringPool[rig] = obj;
                 }
-                Color color = followmenutheme
-                    ? backgroundColor.GetCurrentColor()
-                    : rig.IsTagged() ? new Color(0.6f, 0f, 0f) : rig.playerColor;
-                color.a = 0.7f;
+
+                float time = Time.time;
+                float rotationSpeed = 70f;
+                float rotation = time * rotationSpeed;
+                float pulse = Mathf.Sin(time * 3.5f) * 0.035f;
+                float radius = 0.38f + pulse;
+                float bob = Mathf.Sin(time * 2.5f) * 0.025f;
+                obj.transform.localPosition = new Vector3(0f, -0.35f + bob, 0f);
+                obj.transform.localRotation = Quaternion.Euler(0f, rotation, 0f);
                 LineRenderer renderer = obj.GetComponent<LineRenderer>();
+                renderer.startWidth = 0.012f + Mathf.Sin(time * 4f) * 0.002f;
+                renderer.endWidth = renderer.startWidth;
+                for (int i = 0; i < 48; i++)
+                {
+                    float angle = i * Mathf.PI * 2f / 48f;
+                    renderer.SetPosition(i, new Vector3(Mathf.Cos(angle) * radius, 0f, Mathf.Sin(angle) * radius));
+                }
+                Color color = followmenutheme
+                    ? backgroundColor.GetCurrentColor() : rig.IsTagged()
+                    ? new Color(0.6f, 0f, 0f) : rig.playerColor;
+                color.a = 0.7f;
                 renderer.startColor = color;
                 renderer.endColor = color;
             }
@@ -1015,11 +1020,11 @@ namespace Arrakis.Mods
             {
                 if (pair.Key == null || !VRRigCache.ActiveRigs.Contains(pair.Key))
                 {
-                    remove ??= new List<VRRig>();
+                    if (remove == null)
+                        remove = new List<VRRig>();
                     remove.Add(pair.Key);
-
                     if (pair.Value != null)
-                        Object.Destroy(pair.Value);
+                        UnityEngine.Object.Destroy(pair.Value);
                 }
             }
             if (remove != null)
