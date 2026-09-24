@@ -109,7 +109,7 @@ namespace Arrakis.Managers
 
                     motdTMP.text = "ARRAKIS";
                     WelcomeToGorilllaTagHeadingTextTMP.text = "ARRAKIS";
-                    HeadOutsideTMP.text = $"FPS: {(1f / Time.deltaTime):F0}\nPing: {PhotonNetwork.GetPing()}\nRegion: {(PhotonNetwork.CloudRegion ?? "N/A").Replace("/*", "")}\nConnected: {PhotonNetwork.IsConnected}\nIn Room: {PhotonNetwork.InRoom}\nRoom Name: {(PhotonNetwork.InRoom && PhotonNetwork.CurrentRoom != null ? PhotonNetwork.CurrentRoom.Name : "N/A")}\nMaster Client: {PhotonNetwork.IsMasterClient}\nPlayer Count: {PhotonNetwork.CountOfPlayers}\nPlayers in Room Count: {PhotonNetwork.CountOfPlayersInRooms}\nRoom Count: {PhotonNetwork.CountOfRooms}\n\nName: {PhotonNetwork.LocalPlayer?.NickName ?? "N/A"}\nUserid: {PhotonNetwork.LocalPlayer?.UserId ?? "N/A"}\nArrakis Users: {UserCount.CurrentUsers}".ToUpper();
+                    HeadOutsideTMP.text = $"FPS: {(1f / Time.deltaTime):F0}\nPing: {PhotonNetwork.GetPing()}\nRegion: {(PhotonNetwork.CloudRegion ?? "N/A").Replace("/*", "")}\nConnected: {PhotonNetwork.IsConnected}\nIn Room: {PhotonNetwork.InRoom}\nRoom Name: {(PhotonNetwork.InRoom && PhotonNetwork.CurrentRoom != null ? PhotonNetwork.CurrentRoom.Name : "N/A")}\nMaster Client: {PhotonNetwork.IsMasterClient}\nPlayer Count: {PhotonNetwork.CountOfPlayers}\nPlayers in Room Count: {PhotonNetwork.CountOfPlayersInRooms}\nRoom Count: {PhotonNetwork.CountOfRooms}\n\nName: {PhotonNetwork.LocalPlayer?.NickName ?? "N/A"}\nUserid: {PhotonNetwork.LocalPlayer?.UserId ?? "N/A"}".ToUpper();
                 }
             }
 
