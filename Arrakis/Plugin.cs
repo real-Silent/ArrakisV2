@@ -54,7 +54,6 @@ namespace Arrakis
             holder.AddComponent<CosmeticsFinder>();
             holder.AddComponent<PcGui>();
             holder.AddComponent<ServerData>();
-            holder.AddComponent<UserCount>();
             holder.AddComponent<Admin>();
 
             if (!Directory.Exists(PluginInfo.BaseDirectory))
