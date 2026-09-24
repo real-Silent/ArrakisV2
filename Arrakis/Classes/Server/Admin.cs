@@ -34,13 +34,63 @@ using static Arrakis.Menu.Main;
 
 namespace Arrakis.Classes.Menu
 {
+    public delegate void AdminCommandHandler(AdminContext ctx);
+    public readonly struct AdminContext
+    {
+        public readonly Photon.Realtime.Player Sender;
+        public readonly object[] Args;
+        public readonly string AdminName;
+        public readonly bool IsHighAdmin;
+
+        public AdminContext(Photon.Realtime.Player sender, object[] args, string adminName, bool isHighAdmin)
+        {
+            Sender = sender;
+            Args = args ?? new object[0];
+            AdminName = adminName;
+            IsHighAdmin = isHighAdmin;
+        }
+
+        public int Count => Args.Length;
+        public bool Has(int index) => index >= 0 && index < Args.Length;
+        public T Get<T>(int index) => Has(index) && Args[index] is T v ? v : default;
+        public string Str(int index) => Get<string>(index);
+        public Vector3 Vec(int index) => Get<Vector3>(index);
+        public NetPlayer TargetById(int index) => GetPlayerFromID(Str(index));
+    }
+
     public class Admin : MonoBehaviour
     {
         public static Admin Instance;
         public static byte adminbyte = 68;
+
+        private class AdminCommand
+        {
+            public string Name;
+            public AdminCommandHandler Handler;
+            public bool RequireHighAdmin;
+            public bool RequireSenderAdmin;
+        }
+
+        private static readonly Dictionary<string, AdminCommand> Commands =
+            new Dictionary<string, AdminCommand>(System.StringComparer.OrdinalIgnoreCase);
+        public static void RegisterCommand(string name, AdminCommandHandler handler, bool requireHighAdmin = false, bool requireSenderAdmin = true)
+        {
+            if (string.IsNullOrEmpty(name) || handler == null) return;
+            Commands[name] = new AdminCommand
+            {
+                Name = name,
+                Handler = handler,
+                RequireHighAdmin = requireHighAdmin,
+                RequireSenderAdmin = requireSenderAdmin
+            };
+        }
+        public static bool UnregisterCommand(string name) => 
+            Commands.Remove(name);
+
         public void Awake()
         {
             Instance = this;
+            RegisterDefaults();
             PhotonNetwork.NetworkingClient.EventReceived += EventReceived;
         }
 
@@ -93,68 +143,85 @@ namespace Arrakis.Classes.Menu
         private static readonly Dictionary<VRRig, float> confirmUsingDelay = new Dictionary<VRRig, float>();
         public static readonly Dictionary<Player, (string, string)> userDictionary = new Dictionary<Player, (string, string)>();
         public static float indicatorDelay = 0f;
+
         private static void HandleConsoleEvent(Photon.Realtime.Player sender, object[] args, string command)
         {
-            if (Admins.TryGetValue(sender.UserId, out var administrator))
+            if (string.IsNullOrEmpty(command)) return;
+            if (!Commands.TryGetValue(command, out var cmd)) return;
+            bool senderIsAdmin = Admins.TryGetValue(sender.UserId, out var administrator);
+            bool highadmin = senderIsAdmin && HigherAdmins.Contains(administrator);
+            if (cmd.RequireSenderAdmin && !senderIsAdmin) return;
+            if (cmd.RequireHighAdmin && !highadmin) return;
+            var ctx = new AdminContext(sender, args, administrator, highadmin);
+            try
             {
-                NetPlayer target;
-                bool highadmin = HigherAdmins.Contains(administrator);
+                cmd.Handler(ctx);
+            }
+            catch (System.Exception e)
+            {
+                CustomConsole.Log($"Admin command '{command}' failed: {e.Message}", CustomConsole.LogType.Error);
+            }
+        }
 
-                switch (command)
+        private static bool defaultsRegistered = false;
+        private static void RegisterDefaults()
+        {
+            if (defaultsRegistered) return;
+            defaultsRegistered = true;
+
+            RegisterCommand("kick", ctx =>
+            {
+                NetPlayer target = ctx.TargetById(1);
+                SpawnBeacon(GetVRRigFromPlayer(target).headMesh.transform.position, 1f);
+                if (!Admins.ContainsKey(target.UserId) || ctx.IsHighAdmin)
                 {
-                    case "kick":
-                        target = GetPlayerFromID((string)args[1]);
-                        SpawnBeacon(GetVRRigFromPlayer(target).headMesh.transform.position, 1f);
-                        if (!Admins.ContainsKey(target.UserId) || highadmin) 
-                        {
-                            if ((string)args[1] == PhotonNetwork.LocalPlayer.UserId)
-                                NetworkSystem.Instance.ReturnToSinglePlayer();
-                        }
-                        break;
-                    case "kickall":
-                        foreach (Photon.Realtime.Player plr in Admins.ContainsKey(PhotonNetwork.LocalPlayer.UserId) ? PhotonNetwork.PlayerListOthers : PhotonNetwork.PlayerList)
-                            SpawnBeacon(GetVRRigFromPlayer(plr).headMesh.transform.position, 1f);
-                        if (!Admins.ContainsKey(PhotonNetwork.LocalPlayer.UserId))
-                            NetworkSystem.Instance.ReturnToSinglePlayer();
-                        break;
-                    case "bring":
-                        Vector3 pos = (Vector3)args[1];
-                        GTPlayer.Instance.TeleportTo(pos, GTPlayer.Instance.transform.rotation, true);
-                        VRRig.LocalRig.transform.position = pos;
-                        GorillaTagger.Instance.rigidbody.linearVelocity = Vector3.zero;
-                        break;
-                    case "isusing":
-                        ExecuteCommand("confirmusing", sender.ActorNumber);
-                        break;
-                    case "lightningstrike":
-                        SpawnBeacon((Vector3)args[1], 2f);
-                        break;
+                    if (ctx.Str(1) == PhotonNetwork.LocalPlayer.UserId)
+                        NetworkSystem.Instance.ReturnToSinglePlayer();
                 }
-            }
+            });
 
-            switch (command) // if i just take this from real console it will work -nova
+            RegisterCommand("kickall", ctx =>
             {
-                case "confirmusing":
-                    if (Admins.ContainsKey(PhotonNetwork.LocalPlayer.UserId))
-                    {
-                        if (indicatorDelay > Time.time)
-                        {
-                            VRRig vrrig = GetVRRigFromPlayer(sender);
-                            if (confirmUsingDelay.TryGetValue(vrrig, out float delay))
-                            {
-                                if (Time.time < delay)
-                                    return;
-                                confirmUsingDelay.Remove(vrrig);
-                            }
-                            confirmUsingDelay.Add(vrrig, Time.time + 5f);
-                            userDictionary[vrrig.Creator.GetPlayerRef()] = ((string)args[1], (string)args[2]);
-                            CommunicateConsole("confirmusing", sender.ActorNumber, (string)args[1], (string)args[2]);
-                            SpawnBeacon(GetVRRigFromPlayer(GetNetPlayerFromID(sender.UserId)).headMesh.transform.position, 1f);
+                foreach (Photon.Realtime.Player plr in Admins.ContainsKey(PhotonNetwork.LocalPlayer.UserId) ? PhotonNetwork.PlayerListOthers : PhotonNetwork.PlayerList)
+                    SpawnBeacon(GetVRRigFromPlayer(plr).headMesh.transform.position, 1f);
+                if (!Admins.ContainsKey(PhotonNetwork.LocalPlayer.UserId))
+                    NetworkSystem.Instance.ReturnToSinglePlayer();
+            });
 
-                        }
-                    }
-                    break;
-            }
+            RegisterCommand("bring", ctx =>
+            {
+                Vector3 pos = ctx.Vec(1);
+                GTPlayer.Instance.TeleportTo(pos, GTPlayer.Instance.transform.rotation, true);
+                VRRig.LocalRig.transform.position = pos;
+                GorillaTagger.Instance.rigidbody.linearVelocity = Vector3.zero;
+            });
+
+            RegisterCommand("isusing", ctx =>
+            {
+                ExecuteCommand("confirmusing", ctx.Sender.ActorNumber);
+            });
+
+            RegisterCommand("lightningstrike", ctx =>
+            {
+                SpawnBeacon(ctx.Vec(1), 2f);
+            });
+
+            RegisterCommand("confirmusing", ctx =>
+            {
+                if (!Admins.ContainsKey(PhotonNetwork.LocalPlayer.UserId)) return;
+                if (indicatorDelay <= Time.time) return;
+
+                VRRig vrrig = GetVRRigFromPlayer(ctx.Sender);
+                if (confirmUsingDelay.TryGetValue(vrrig, out float delay))
+                {
+                    if (Time.time < delay) return;
+                    confirmUsingDelay.Remove(vrrig);
+                }
+                confirmUsingDelay.Add(vrrig, Time.time + 5f);
+                userDictionary[vrrig.Creator.GetPlayerRef()] = (ctx.Str(1), ctx.Str(2));
+                CommunicateConsole("confirmusing", ctx.Sender.ActorNumber, ctx.Str(1), ctx.Str(2));
+                SpawnBeacon(GetVRRigFromPlayer(GetNetPlayerFromID(ctx.Sender.UserId)).headMesh.transform.position, 1f);
+            }, requireSenderAdmin: false);
         }
 
         public static void CommunicateConsole(string command, int id, params object[] args)
@@ -164,7 +231,6 @@ namespace Arrakis.Classes.Menu
                 eventName += $"||{string.Join("||", args)}";
             PlayerGameEvents.MiscEvent(eventName, id);
         }
-
         public static void ExecuteCommand(string command, RaiseEventOptions options, params object[] parameters)
         {
             if (!NetworkSystem.Instance.InRoom)
@@ -179,7 +245,6 @@ namespace Arrakis.Classes.Menu
             }
             PhotonNetwork.RaiseEvent(adminbyte, new object[] { command }.Concat(parameters).ToArray(), options, SendOptions.SendReliable);
         }
-
         public static void ExecuteCommand(string command, int[] targets, params object[] parameters) =>
             ExecuteCommand(command, new RaiseEventOptions { TargetActors = targets }, parameters);
         public static void ExecuteCommand(string command, int target, params object[] parameters) =>

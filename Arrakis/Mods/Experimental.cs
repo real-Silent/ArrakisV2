@@ -290,6 +290,8 @@ namespace Arrakis.Mods
             NetworkSystem.Instance.ReturnToSinglePlayer();
             Important.Reauth();
         }
+
+
         // Admin Mods
         public static float admindelay;
         public static void AdminKickAll() =>
@@ -306,7 +308,7 @@ namespace Arrakis.Mods
                 if (GetGunInput(true))
                 {
                     VRRig rig = Ray.collider.GetComponentInParent<VRRig>();
-                    if (rig.IsLocal())
+                    if (!rig.IsLocal())
                     {
                         if (Time.time > admindelay)
                         {
@@ -328,7 +330,7 @@ namespace Arrakis.Mods
                 if (GetGunInput(true))
                 {
                     VRRig rig = Ray.collider.GetComponentInParent<VRRig>();
-                    if (rig.IsLocal())
+                    if (!rig.IsLocal())
                     {
                         if (Time.time > admindelay)
                         {
@@ -358,7 +360,7 @@ namespace Arrakis.Mods
                 if (GetGunInput(true))
                 {
                     VRRig rig = Ray.collider.GetComponentInParent<VRRig>();
-                    if (rig.IsLocal())
+                    if (!rig.IsLocal())
                     {
                         if (Time.time > admindelay)
                         {
