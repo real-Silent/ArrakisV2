@@ -18,14 +18,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+using System.Collections.Generic;
+using System.Linq;
 using Arrakis.Managers;
 using ExitGames.Client.Photon;
 using GorillaNetworking;
 using GorillaTag.CosmeticSystem;
 using Photon.Pun;
 using Photon.Realtime;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.XR;
 using static Arrakis.Menu.Main;
@@ -39,7 +39,10 @@ namespace Arrakis.Mods
         {
             "SnowballRightAnchor", "GrowingSnowballRightAnchor", "WaterBalloonRightAnchor", "LavaRockAnchor",
             "BucketGiftFunctionalAnchor_Right", "ScienceCandyRightAnchor", "FishFoodRightAnchor", "HotDogRightAnchor",
-            "Fireworks"
+            "Fireworks_Anchor Variant_Right Hand", "AppleRightAnchor", "BookRightAnchor", "CoinRightAnchor",
+            "EggRightHand_Anchor Variant", "IceCreamRightAnchor", "GrowingMashedPotatoRightAnchor", "ChipsRightAnchor",
+            "ApplePieRightAnchor", "BerryPieRightAnchor", "CornRightAnchor", "TurkeyLegRightAnchor", "GoalpostFootball_Anchor_RightHand"
+            "HotCocoaCup_Anchor_RIGHT", "PillowProjectile_Anchor_RIGHT"
         };
         private static string CurrentProjectile = "SnowballRightAnchor";
         public static void ChangeProjectile(bool increment = true)
