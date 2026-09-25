@@ -41,7 +41,7 @@ namespace Arrakis.Mods
             "BucketGiftFunctionalAnchor_Right", "ScienceCandyRightAnchor", "FishFoodRightAnchor", "HotDogRightAnchor",
             "Fireworks_Anchor Variant_Right Hand", "AppleRightAnchor", "BookRightAnchor", "CoinRightAnchor",
             "EggRightHand_Anchor Variant", "IceCreamRightAnchor", "GrowingMashedPotatoRightAnchor", "ChipsRightAnchor",
-            "ApplePieRightAnchor", "BerryPieRightAnchor", "CornRightAnchor", "TurkeyLegRightAnchor", "GoalpostFootball_Anchor_RightHand"
+            "ApplePieRightAnchor", "BerryPieRightAnchor", "CornRightAnchor", "TurkeyLegRightAnchor", "GoalpostFootball_Anchor_RightHand",
             "HotCocoaCup_Anchor_RIGHT", "PillowProjectile_Anchor_RIGHT"
         };
         private static string CurrentProjectile = "SnowballRightAnchor";
