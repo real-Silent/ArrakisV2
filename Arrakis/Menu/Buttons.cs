@@ -525,6 +525,7 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Erupt Lava", method =() => Master.ChangeLavaState(InfectionLavaController.RisingLavaState.Erupting), isTogglable = false, toolTip = "Erupts the lava." },
                 new ButtonInfo { buttonText = "Destroy Lighting", method =() => Master.DestroyLighting(), isTogglable = false, toolTip = "Destroys the lighting." },
                 new ButtonInfo { buttonText = "Virtual Stump Kick All", method =() => Master.VirtualStumpKickAll(), isTogglable = true, toolTip = "Destroys the lighting." },
+                new ButtonInfo { buttonText = "Log Spam All", method =() => Master.LogSpamAll(), isTogglable = true, toolTip = "Spams everyones debug logs." },
                 /*
                 new ButtonInfo { buttonText = "Spawn Blue Lucy", method =() => Master.SpawnBlueLucy(), isTogglable = false, toolTip = "Spawns the blue ghost Lucy in forest." },
                 new ButtonInfo { buttonText = "Spawn Red Lucy", method =() => Master.SpawnRedLucy(), isTogglable = false, toolTip = "Spawns the red ghost Lucy in forest." },

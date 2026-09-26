@@ -1,4 +1,5 @@
 ﻿/*
+using static UnityEngine.Time;
  * Arrakis | Mods/Master.cs
  *
  * Copyright (C) 2026 Arrakis
@@ -24,8 +25,10 @@ using System.Linq;
 using Arrakis.Classes;
 using Arrakis.Extensions;
 using Arrakis.Notifications;
+using GorillaTag;
 using GorillaTagScripts;
 using GorillaTagScripts.VirtualStumpCustomMaps;
+using HarmonyLib;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
@@ -559,6 +562,59 @@ namespace Arrakis.Mods
             NotificationManager.SendNotification("<color=grey>[</color><color=green>SUCCESS</color><color=grey>]</color> Successfully kicked others.");
             Toggle("Virtual Stump Kick All");
         }
+        public static float LogSpamDelay = 0f;
+        public static async void LogSpamAll()
+        {
+            if (PhotonNetwork.InRoom && !PhotonNetwork.IsMasterClient)
+            {
+                NotificationManager.SendNotification("<color=grey>[</color><color=red>ERROR</color><color=grey>]</color> You are not master this mod will not work.");
+                Toggle("Log Spam All");
+                return;
+            }
+            var targets = GameObject.FindObjectsByType<HitTargetNetworkState>(FindObjectsInactive.Include, 0).ToList();
+            string[] validMaps =
+            {
+                "forest",
+                "canyon",
+                "mountain"
+            };
+            if (!validMaps.Any(map => VRRigCache.ActiveRigs.Any(rig => rig.zoneEntity.currentZone.GetName<GTZone>() == map)))
+            {
+                NotificationManager.SendNotification("<color=grey>[</color><color=red>ERROR</color><color=grey>]</color> Someone must be in forest, canyons or mountains.");
+                Toggle("Log Spam All");
+                return;
+            }
+            foreach (var target in targets)
+            {
+                var watchableInt = Traverse.Create(target).Field("networkedScore").GetValue<WatchableIntSO>();
+                if (watchableInt.Value > -1)
+                {
+                    SetTarget(target, int.MinValue, 0f);
+                }
+            }
+            if (Time.time > LogSpamDelay)
+            {
+                LogSpamDelay = Time.time + 0.70f;
+                foreach (var target in targets)
+                {
+                    SetTarget(target, 6969, 0f);
+                }
+            }
+        }
+        public static async void SetTarget(HitTargetNetworkState target, int value, float delay = 0.70f)
+        {
+            if (PhotonNetwork.InRoom && !PhotonNetwork.IsMasterClient)
+                return;
+            Traverse traverse = Traverse.Create(target);
+            float nextUpdateTime = traverse.Field("nextHittableTimestamp").GetValue<float>(); // nextHittableTimestamp or _maxHoldTime, i havent tested and it somehow pulled both -sleepy
+            if (Time.time <= nextUpdateTime)
+                return;
+            WatchableIntSO watchable = traverse.Field("networkedScore").GetValue<WatchableIntSO>();
+            int newValue = value == 6969 ? watchable.Value + 1 : value;
+            watchable.Value = newValue;
+            traverse.Field("nextHittableTimestamp").SetValue(Time.time + delay);
+        }
+
         //public static HalloweenGhostChaser Lucy
         //{
         //    get
