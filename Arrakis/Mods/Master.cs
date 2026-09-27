@@ -290,6 +290,11 @@ namespace Arrakis.Mods
         public static float blockDebounce = 0.1f;
         private static float blockDelay;
         public static int pieceId = -1;
+        private static readonly List<BuilderPiece> pieceCache = new List<BuilderPiece>();
+        private static float pieceCacheExpiry;
+        private static readonly Dictionary<int, float> recentPieces = new Dictionary<int, float>();
+        private static int grabsThisWindow;
+
         public static void SpawnBlock(int pieceType, Vector3 position, Quaternion rotation, int materialType, object target = null, bool overrideFreeze = false, bool forceGravity = false, Vector3? velocity = null, Vector3? angVelocity = null)
         {
             BuilderTable table = BuilderTable;
@@ -356,31 +361,51 @@ namespace Arrakis.Mods
                 }
                 return;
             }
-            blockDelay = Time.time + blockDebounce;
-            Vector3 handPos = ServerLeftHandPos;
-            BuilderPiece piece = Resources.FindObjectsOfTypeAll<BuilderPiece>()
-                .Where(p => p.gameObject.activeInHierarchy)
-                .Where(p => p.pieceType == pieceType)
-                .Where(p => !p.isBuiltIntoTable)
-                .Where(p => p.CanPlayerGrabPiece(PhotonNetwork.LocalPlayer.ActorNumber, p.transform.position))
-                .Where(p => Vector3.Distance(p.transform.position, handPos) < 2.5f)
-                .OrderBy(p => Vector3.Distance(p.transform.position, handPos))
-                .FirstOrDefault();
-            if (piece == null)
+
+            if (Time.time >= pieceCacheExpiry)
             {
-                piece = Resources.FindObjectsOfTypeAll<BuilderPiece>()
-                    .Where(p => p.gameObject.activeInHierarchy)
-                    .Where(p => !p.isBuiltIntoTable)
-                    .Where(p => p.CanPlayerGrabPiece(PhotonNetwork.LocalPlayer.ActorNumber, p.transform.position))
-                    .Where(p => Vector3.Distance(p.transform.position, handPos) < 2.5f)
-                    .OrderBy(p => Vector3.Distance(p.transform.position, handPos))
-                    .FirstOrDefault();
+                pieceCacheExpiry = Time.time + 0.1f; // 0.5f
+                pieceCache.Clear();
+                pieceCache.AddRange(GameObject.FindObjectsByType<BuilderPiece>(FindObjectsSortMode.None));
             }
+            Vector3 handPos = ServerLeftHandPos;
+            int actor = PhotonNetwork.LocalPlayer.ActorNumber;
+            BuilderPiece piece = null, fallback = null;
+            float bestDist = 6.25f, fallbackDist = 6.25f;
+            foreach (BuilderPiece p in pieceCache)
+            {
+                if (p == null || !p.gameObject.activeInHierarchy || p.isBuiltIntoTable)
+                    continue;
+                if (recentPieces.TryGetValue(p.pieceId, out float until) && Time.time < until)
+                    continue;
+                float dist = (p.transform.position - handPos).sqrMagnitude;
+                if (dist >= fallbackDist && dist >= bestDist)
+                    continue;
+                if (!p.CanPlayerGrabPiece(actor, p.transform.position))
+                    continue;
+                if (p.pieceType == pieceType && dist < bestDist)
+                {
+                    piece = p;
+                    bestDist = dist;
+                }
+                if (dist < fallbackDist)
+                {
+                    fallback = p;
+                    fallbackDist = dist;
+                }
+            }
+            piece = piece ?? fallback;
             if (piece == null)
                 return;
-            if (Vector3.Distance(handPos, position) > 2.5f)
+            if (++grabsThisWindow >= 3)
+            {
+                grabsThisWindow = 0;
+                blockDelay = Time.time + blockDebounce;
+            }
+            if ((position - handPos).sqrMagnitude > 6.25f)
                 position = handPos + (position - handPos).normalized * 2.5f;
             pieceId = piece.pieceId;
+            recentPieces[piece.pieceId] = Time.time + 1f;
             network.RequestGrabPiece(piece, true, Vector3.zero, Quaternion.identity);
             network.RequestDropPiece(piece, position, rotation, velocity ?? Vector3.zero, angVelocity ?? Vector3.zero);
         }
