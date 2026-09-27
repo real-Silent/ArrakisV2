@@ -36,74 +36,216 @@ namespace Arrakis.Mods
 {
     public class Visual
     {
-        private static bool BehindStuff(VRRig rig)
+        private static int _occlusionMask;
+        private static int OcclusionMask => 
+            _occlusionMask != 0 ? _occlusionMask : (_occlusionMask = LayerMask.GetMask("Gorilla Object"));
+        private static Shader _textShader, 
+            _uberShader;
+        private static Shader TextShader => 
+            _textShader != null ? _textShader : (_textShader = Shader.Find("GUI/Text Shader"));
+        private static Shader UberShader => 
+            _uberShader != null ? _uberShader : (_uberShader = Shader.Find("GorillaTag/UberShader"));
+        private static readonly Vector3[] occlusionProbes = new Vector3[5];
+
+        private sealed class LimbChamState
         {
-            if (VRRig.LocalRig == null || rig == null) return false;
-            Vector3 local = VRRig.LocalRig.transform.position + Vector3.up * 0.5f;
-            Vector3[] points = new Vector3[]
+            public GameObject holder;
+            public LineRenderer[] lines;
+            public bool[] hidden;
+            public float nextCheck;
+        }
+        private static readonly Dictionary<VRRig, LimbChamState> limbChamPool = new Dictionary<VRRig, LimbChamState>();
+        private static readonly List<VRRig> limbChamStale = new List<VRRig>();
+        private static Material _limbChamMat;
+        private static Material LimbChamMat => 
+            _limbChamMat != null ? _limbChamMat : (_limbChamMat = new Material(TextShader));
+        private const int LimbSegments = 20;
+        private const float LimbCheckInterval = 0.05f;
+        private const float LimbWidth = 0.02f;
+        private static bool TryGetEye(out Vector3 eye)
+        {
+            Camera cam = Camera.main;
+            if (cam != null) { eye = cam.transform.position; return true; }
+            if (VRRig.LocalRig != null) { eye = VRRig.LocalRig.transform.position + Vector3.up * 0.5f; return true; }
+            eye = default;
+            return false;
+        }
+
+        private static bool Blocked(Vector3 eye, Vector3 target) =>
+            (target - eye).sqrMagnitude >= 0.25f && Physics.Linecast(eye, target, OcclusionMask, QueryTriggerInteraction.Ignore);
+        private static bool BehindStuff(VRRig rig, Vector3 eye)
+        {
+            Transform t = rig.transform;
+            Vector3 pos = t.position;
+            Vector3 chest = pos + Vector3.up * 0.5f;
+            Vector3 side = t.right * 0.3f;
+            occlusionProbes[0] = chest;
+            occlusionProbes[1] = pos + Vector3.up * 1.2f;
+            occlusionProbes[2] = pos;
+            occlusionProbes[3] = chest + side;
+            occlusionProbes[4] = chest - side;
+            int blocked = 0;
+            for (int i = 0; i < occlusionProbes.Length; i++)
             {
-                rig.transform.position + Vector3.up * 0.5f, rig.transform.position + Vector3.up * 1.2f, rig.transform.position,
-                rig.transform.position + Vector3.up * 0.5f + rig.transform.right * 0.3f, rig.transform.position + Vector3.up * 0.5f - rig.transform.right * 0.3f
-            };
-            int layerMask = 1 << LayerMask.NameToLayer("Gorilla Object");
-            int count = 0;
-            foreach (Vector3 target in points)
-            {
-                float distance = Vector3.Distance(local, target);
-                if (distance < 0.5f) continue;
-                Vector3 direction = (target - local).normalized;
-                RaycastHit hit;
-                if (Physics.Raycast(local, direction, out hit, distance, layerMask))
-                    count++;
+                if (Blocked(eye, occlusionProbes[i]) && ++blocked >= 3) return true;
+                if (blocked + (occlusionProbes.Length - 1 - i) < 3) return false;
             }
-            return count >= 3;
+            return false;
+        }
+        private static LimbChamState CreateLimbChams(VRRig rig)
+        {
+            var state = new LimbChamState
+            {
+                holder = new GameObject("Arrakis_LimbChams"),
+                lines = new LineRenderer[LimbSegments],
+                hidden = new bool[LimbSegments],
+                nextCheck = Time.time + UnityEngine.Random.Range(0f, LimbCheckInterval)
+            };
+            state.holder.transform.SetParent(rig.transform, false);
+            for (int s = 0; s < LimbSegments; s++)
+            {
+                GameObject go = new GameObject("seg");
+                go.transform.SetParent(state.holder.transform, false);
+                LineRenderer lr = go.AddComponent<LineRenderer>();
+                lr.useWorldSpace = true;
+                lr.positionCount = 2;
+                lr.startWidth = LimbWidth;
+                lr.endWidth = LimbWidth;
+                lr.numCapVertices = 4;
+                lr.sharedMaterial = LimbChamMat;
+                lr.enabled = false;
+                state.lines[s] = lr;
+            }
+            return state;
+        }
+
+        private static void DisableLimbChams()
+        {
+            foreach (LimbChamState state in limbChamPool.Values)
+            {
+                if (state.holder != null)
+                    Object.Destroy(state.holder);
+            }
+            limbChamPool.Clear();
         }
 
         public static void Chams(int type)
         {
-            if (NetworkSystem.Instance.InRoom)
+            if (type != 2 && limbChamPool.Count > 0)
+                DisableLimbChams();
+            if (!NetworkSystem.Instance.InRoom)
             {
-                foreach (VRRig rig in VRRigCache.ActiveRigs)
+                DisableLimbChams();
+                return;
+            }
+            bool hasEye = TryGetEye(out Vector3 eye);
+            float now = Time.time;
+            if (type == 2)
+            {
+                limbChamStale.Clear();
+                foreach (var pair in limbChamPool)
                 {
-                    if (!rig.IsLocal())
-                    {
-                        switch (type)
+                    if (pair.Key == null || !VRRigCache.ActiveRigs.Contains(pair.Key))
+                        limbChamStale.Add(pair.Key);
+                }
+                foreach (VRRig stale in limbChamStale)
+                {
+                    if (limbChamPool[stale].holder != null)
+                        Object.Destroy(limbChamPool[stale].holder);
+                    limbChamPool.Remove(stale);
+                }
+            }
+
+            foreach (VRRig rig in VRRigCache.ActiveRigs)
+            {
+                if (rig == null || rig.IsLocal())
+                    continue;
+                Material body = rig.mainSkin.material;
+                Color chamColor = followmenutheme ? backgroundColor.GetCurrentColor() : rig.IsTagged() ? new Color(0.6f, 0f, 0f, 0.6f) : new Color(0.46f, 0.6f, 0.6f, 0.6f);
+                switch (type)
+                {
+                    case 0:
+                        if (!followmenutheme && body.name.ToLower().Contains("it"))
+                            chamColor = new Color(0.6f, 0f, 0f, 0.6f);
+                        if (body.shader != TextShader)
+                            body.shader = TextShader;
+                        body.color = chamColor;
+                        break;
+
+                    case 1:
+                        if (hasEye && BehindStuff(rig, eye))
                         {
-                            case 0:
-                                rig.mainSkin.material.shader = Shader.Find("GUI/Text Shader");
-                                rig.mainSkin.material.color = followmenutheme ? backgroundColor.GetCurrentColor() : (rig.IsTagged() || 
-                                    rig.mainSkin.material.name.ToLower().Contains("it")) ? new Color(0.6f, 0f, 0f, 0.6f) : new Color(0.46f, 0.6f, 0.6f, 0.6f);
-                                break;
-                            case 1:
-                                if (BehindStuff(rig))
-                                {
-                                    rig.mainSkin.material.shader = Shader.Find("GUI/Text Shader");
-                                    rig.mainSkin.material.color = followmenutheme ? backgroundColor.GetCurrentColor() : 
-                                        (rig.IsTagged() ? new Color(0.6f, 0f, 0f, 0.6f) : new Color(0.46f, 0.6f, 0.6f, 0.6f));
-                                }
-                                else
-                                {
-                                    rig.mainSkin.material.shader = Shader.Find("GorillaTag/UberShader");
-                                    rig.mainSkin.material.color = rig.playerColor;
-                                }
-                                break;
+                            if (body.shader != TextShader)
+                                body.shader = TextShader;
+                            body.color = chamColor;
                         }
-                    }
+                        else
+                        {
+                            if (body.shader != UberShader)
+                                body.shader = UberShader;
+                            body.color = rig.playerColor;
+                        }
+                        break;
+
+                    case 2:
+                        if (body.shader != UberShader)
+                        {
+                            body.shader = UberShader;
+                            body.color = rig.playerColor;
+                        }
+                        if (!hasEye)
+                            break;
+                        if (!limbChamPool.TryGetValue(rig, out LimbChamState state) || state.holder == null)
+                        {
+                            state = CreateLimbChams(rig);
+                            limbChamPool[rig] = state;
+                        }
+                        Transform[] skinBones = rig.mainSkin.bones;
+                        bool recheck = now >= state.nextCheck;
+                        if (recheck)
+                            state.nextCheck = now + LimbCheckInterval;
+                        for (int s = 0; s < LimbSegments; s++)
+                        {
+                            Vector3 a, b;
+                            if (s == 0)
+                            {
+                                Vector3 head = rig.head.rigTarget.position;
+                                a = head + new Vector3(0f, 0.16f, 0f);
+                                b = head - new Vector3(0f, 0.4f, 0f);
+                            }
+                            else
+                            {
+                                a = skinBones[bones[(s - 1) * 2]].position;
+                                b = skinBones[bones[(s - 1) * 2 + 1]].position;
+                            }
+                            if (recheck)
+                                state.hidden[s] = Blocked(eye, (a + b) * 0.5f);
+                            LineRenderer lr = state.lines[s];
+                            if (lr.enabled != state.hidden[s])
+                                lr.enabled = state.hidden[s];
+                            if (!state.hidden[s])
+                                continue;
+                            lr.SetPosition(0, a);
+                            lr.SetPosition(1, b);
+                            lr.startColor = chamColor;
+                            lr.endColor = chamColor;
+                        }
+                        break;
                 }
             }
         }
+
         public static void DisableChams()
         {
-            if (NetworkSystem.Instance.InRoom)
+            DisableLimbChams();
+            if (!NetworkSystem.Instance.InRoom)
+                return;
+            foreach (VRRig rig in VRRigCache.ActiveRigs)
             {
-                foreach (VRRig rig in VRRigCache.ActiveRigs)
-                {
-                    if (!rig.IsLocal())
-                    {
-                        rig.mainSkin.material.shader = Shader.Find("GorillaTag/UberShader");
-                        rig.mainSkin.material.color = rig.playerColor;
-                    }
-                }
+                if (rig == null || rig.IsLocal())
+                    continue;
+                rig.mainSkin.material.shader = UberShader;
+                rig.mainSkin.material.color = rig.playerColor;
             }
         }
 
