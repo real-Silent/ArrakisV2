@@ -490,7 +490,11 @@ namespace Arrakis.Mods
                 Toggle("Destroy Lighting");
                 return;
             }
-            PhotonNetwork.Destroy(BetterDayNightManager.instance.photonView);
+            else
+            {
+                PhotonNetwork.Destroy(BetterDayNightManager.instance.photonView);
+                return;
+            }
         }
         private static long? mapid;
         private static float setMapDelay;
