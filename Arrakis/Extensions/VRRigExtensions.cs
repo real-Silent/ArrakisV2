@@ -84,7 +84,10 @@ namespace Arrakis.Extensions
                 {
                     case GameModeType.Infection:
                     case GameModeType.SuperInfect:
-                        return (GorillaGameManager.instance as GorillaTagManager).currentInfected.Contains(rig.Creator);
+                        if ((GorillaGameManager.instance as GorillaTagManager).currentIt != null)
+                            return (GorillaGameManager.instance as GorillaTagManager).currentIt == rig.Creator;
+                        else
+                            return (GorillaGameManager.instance as GorillaTagManager).currentInfected.Contains(rig.Creator);
                     case GameModeType.Ambush:
                     case GameModeType.Ghost:
                         return (GorillaGameManager.instance as GorillaAmbushManager).currentInfected.Contains(rig.Creator);
