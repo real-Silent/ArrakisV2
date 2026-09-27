@@ -384,6 +384,7 @@ namespace Arrakis.Mods
             network.RequestGrabPiece(piece, true, Vector3.zero, Quaternion.identity);
             network.RequestDropPiece(piece, position, rotation, velocity ?? Vector3.zero, angVelocity ?? Vector3.zero);
         }
+
         public static void SpawnBlockGun()
         {
             if (GetGunInput(false))
