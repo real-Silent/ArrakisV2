@@ -492,18 +492,6 @@ namespace Arrakis.Mods
             }
             PhotonNetwork.Destroy(BetterDayNightManager.instance.photonView);
         }
-        public static void BecomeController() // might be patched, or ss to others -sleepy
-        {
-            if (PhotonNetwork.IsMasterClient)
-                CustomMapsTerminal.instance.mapTerminalNetworkObject.SendRPC("SetTerminalControlStatus_RPC", true, true, PhotonNetwork.LocalPlayer.ActorNumber);
-            else
-            {
-                NotificationManager.SendNotification("<color=grey>[</color><color=red>ERROR</color><color=grey>]</color> You are not master this mod will not work.");
-                return;
-            }
-
-            CustomMapsTerminal.instance.mapTerminalNetworkObject.photonView.OwnerActorNr = PhotonNetwork.LocalPlayer.ActorNumber;
-        }
         private static long? mapid;
         private static float setMapDelay;
         public static void VirtualStumpKickAll()
@@ -525,7 +513,8 @@ namespace Arrakis.Mods
 
                 if (CustomMapsTerminal.GetDriverID() != PhotonNetwork.LocalPlayer.ActorNumber)
                 {
-                    BecomeController();
+                    NotificationManager.SendNotification("<color=grey>[</color><color=red>ERROR</color><color=grey>]</color> You are not the terminal controller.");
+                    Toggle("Virtual Stump Kick All");
                     return;
                 }
                 if (CustomMapManager.IsRemotePlayerInVirtualStump(NetworkSystem.Instance.LocalPlayer.UserId))

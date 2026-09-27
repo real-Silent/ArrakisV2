@@ -1,4 +1,5 @@
 ﻿/*
+using static UnityEngine.Color;
  * Arrakis | Mods/Projectiles.cs
  *
  * Copyright (C) 2026 Arrakis
@@ -20,11 +21,15 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
+using Arrakis.Extensions;
 using Arrakis.Managers;
+using Arrakis.Patches.Patchers;
 using ExitGames.Client.Photon;
 using GorillaNetworking;
 using GorillaTag.CosmeticSystem;
 using Photon.Pun;
+using Photon.Pun.UtilityScripts;
 using Photon.Realtime;
 using UnityEngine;
 using UnityEngine.XR;
@@ -96,6 +101,89 @@ namespace Arrakis.Mods
                 }
             }
         }
+        public static void ProjectileBlindGun()
+        {
+            if (GetGunInput(false))
+            {
+                var GunData = RenderGun();
+                GameObject NewPointer = GunData.NewPointer;
+                RaycastHit Ray = GunData.Ray;
+                if (lockTarget != null && gunLocked)
+                {
+                    ProjectileBlindPlayer(lockTarget);
+                }
+                if (GetGunInput(true))
+                {
+                    VRRig rig = Ray.collider.GetComponentInParent<VRRig>();
+                    if (rig.IsLocal())
+                    {
+                        lockTarget = rig;
+                        gunLocked = true;
+                    }
+                }
+            }
+            else
+            {
+                lockTarget = null;
+                gunLocked = false;
+            }
+        }
+        public static void ProjectileBlindAll()
+        {
+            EventPatches.Override = () =>
+            {
+                if (NetworkSystem.Instance.InRoom)
+                {
+                    Experimental.MultiSerialize(true, new[] { VRRig.LocalRig.GetPhotonView() });
+                    Vector3 arcpos = VRRig.LocalRig.transform.position;
+                    foreach (NetPlayer plr in NetworkSystem.Instance.PlayerListOthers)
+                    {
+                        VRRig rig = GorillaGameManager.StaticFindRigForPlayer(plr);
+                        VRRig.LocalRig.transform.position = rig.transform.position - Vector3.one * 3f;
+                        Experimental.SendSerialize(VRRig.LocalRig.GetPhotonView(), new RaiseEventOptions { TargetActors = new [] { plr.ActorNumber }});
+                        ProjectileBlindPlayer(rig);
+                    }
+                    Safety.RPCProc();
+                    VRRig.LocalRig.enabled = true;
+                    VRRig.LocalRig.transform.position = arcpos;
+                    return false;
+                }
+                return true;
+            };
+        }
+        public static Color BlindColor = Color.black;
+        public static readonly Color[] BlindColors =
+        {
+            Color.black, Color.white, Color.red, Color.green,
+            Color.blue, Color.yellow, Color.cyan,  Color.magenta,
+            Color.orange, Color.purple, Color.hotPink, Color.brown,
+            new Color(167, 167, 255) // the pan sexual furry ashley made me add this -sleepy
+        };
+
+        public static readonly string[] BlindColorNames =
+        {
+            "Black", "White", "Red", "Green",
+            "Blue", "Yellow", "Cyan", "Magenta",
+            "Orange",  "Purple", "Hot Pink", "Brown",
+            "Perano"
+        };
+        public static int BlindColorIndex = 0;
+        public static void ChangeBlindColor(bool increment = true)
+        {
+            if (increment)
+            {
+                BlindColorIndex = (BlindColorIndex + 1) % BlindColorNames.Length;
+            }
+            else
+            {
+                BlindColorIndex = (BlindColorIndex - 1 + BlindColorNames.Length) % BlindColorNames.Length;
+            }
+
+            CurrentProjectile = BlindColorNames[BlindColorIndex];
+            GetIndex("Change Blind Color").overlapText = $"Change Projectile <color=grey>[<color=cyan>{BlindColorNames[BlindColorIndex]}</color>]</color>";
+        }
+        public static void ProjectileBlindPlayer(VRRig rig) =>
+            SpawnProjectile("EggRightHand_Anchor Variant", rig.headMesh.transform.position + new Vector3(0f, 0.1f, 0f), new Vector3(0f, -15f, 0f), BlindColor);
 
         private static SnowballThrowable cachedThrow = null;
         private static GrowingSnowballThrowable cachedGThrow = null;

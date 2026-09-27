@@ -159,7 +159,8 @@ namespace Arrakis.Menu
 
                 new ButtonInfo { buttonText = "Change Projectile Color", enableMethod =() => ChangeProjectilesColor(), method =() => ChangeProjectilesColor(), disableMethod =() => ChangeProjectilesColor(false), isIncremental = true, isTogglable = false, toolTip = "Changes the color of the projectiles." },
                 new ButtonInfo { buttonText = "Allow Colored Big Snowballs", enableMethod =() => allowbigsnowballcolor = true, disableMethod =() => allowbigsnowballcolor = false, isTogglable = true, toolTip = "Allows the growing snowballs to have a color." },
-                new ButtonInfo { buttonText = "Change Projectile", overlapText = "Change Projectile <color=grey>[<color=cyan>Snowball</color>]</color>", isIncremental = true, enableMethod =() => Projectiles.ChangeProjectile(), method =() => Projectiles.ChangeProjectile(), disableMethod =() => Projectiles.ChangeProjectile(false), isTogglable = false, toolTip = "Changes the cxurrent projectile you use." },
+                new ButtonInfo { buttonText = "Change Projectile", overlapText = "Change Projectile <color=grey>[<color=cyan>Snowball</color>]</color>", isIncremental = true, enableMethod =() => Projectiles.ChangeProjectile(), method =() => Projectiles.ChangeProjectile(), disableMethod =() => Projectiles.ChangeProjectile(false), isTogglable = false, toolTip = "Changes the current projectile you use." },
+                new ButtonInfo { buttonText = "Change Blind Color", overlapText = "Change Blind Color <color=grey>[<color=cyan>Snowball</color>]</color>", isIncremental = true, enableMethod =() => Projectiles.ChangeBlindColor(), method =() => Projectiles.ChangeBlindColor(), disableMethod =() => Projectiles.ChangeBlindColor(false), isTogglable = false, toolTip = "Changes the current color you use to blind people." },
             },
             new ButtonInfo[] { // Gunlib Settings
                 new ButtonInfo { buttonText = "Exit Gunlib Settings", method =() => CurrentCategoryName = "Settings", isTogglable = false, toolTip = "Returns to the main settings page for the menu." },
@@ -472,7 +473,9 @@ namespace Arrakis.Menu
 
                 new ButtonInfo { buttonText = "Projectile Spammer <color=grey>[<color=cyan>G</color>]</color>", method =() => Projectiles.ProjectileSpammer(), isTogglable = true, toolTip = "Spams a projectile whne holding <color=grey>[<color=cyan>G</color>]</color>." },
                 new ButtonInfo { buttonText = "Projectile Launcher <color=grey>[<color=cyan>G</color>]</color>", method =() => Projectiles.ProjectileLauncher(), isTogglable = true, toolTip = "Lets you launch a projectile when holding <color=grey>[<color=cyan>G</color>]</color>." },
-                new ButtonInfo { buttonText = "Projectile Gun <color=grey>[<color=cyan>G</color>]</color>", method =() => Projectiles.ProjectileGun(), isTogglable = true, toolTip = "Lets you launch a projectile when holding <color=grey>[<color=cyan>G</color>]</color>." },
+                new ButtonInfo { buttonText = "Projectile Gun", method =() => Projectiles.ProjectileGun(), isTogglable = true, toolTip = "Lets you shoot a projectile where the gun is." },
+                new ButtonInfo { buttonText = "Projectile Blind Gun", method =() => Projectiles.ProjectileBlindGun(), isTogglable = true, toolTip = "Lets you blind a player with the egg projectile." },
+                new ButtonInfo { buttonText = "Projectile Blind All", method =() => Projectiles.ProjectileBlindAll(), isTogglable = true, toolTip = "Lets you blind everyone with the egg projectile." },
             },
 
             new ButtonInfo[] { // Overpowered
