@@ -55,7 +55,7 @@ namespace Arrakis.Menu
             Patches.Patchers.EventPatches.OnSerialize += OnSerialize;
             Patches.Patchers.PlrSerializePatch.OnPlayerSerialize += OnPlayerSerialize;
 
-            MenuNetwork.Initialize();
+            //MenuNetwork.Initialize();
             SceneMapLoader.Init();
             AudioManager.Init();
 
@@ -97,7 +97,7 @@ namespace Arrakis.Menu
                         if (menusounds)
                             AudioManager.MenuSound("menuopen");
                         CreateMenu();
-                        MenuNetwork.SetMenuOpen(true);
+                        //MenuNetwork.SetMenuOpen(true);
                         if (menuanimation)
                         {
                             CRunner.instance.StartCoroutine(OpenMenu());
@@ -117,7 +117,7 @@ namespace Arrakis.Menu
 
                         Rigidbody comp = menu.GetOrAddComponent<Rigidbody>();
 
-                        MenuNetwork.SetMenuOpen(false);
+                        //MenuNetwork.SetMenuOpen(false);
 
                         if (menusounds)
                             AudioManager.MenuSound("menuclose");
@@ -292,11 +292,11 @@ namespace Arrakis.Menu
                 CustomConsole.Log(string.Format("{0} // Error with executing mods at {1}: {2}", PluginInfo.Name, exc.StackTrace, exc.Message), CustomConsole.LogType.Error);
             }
 
-            try
+            /*try
             {
                 MenuNetwork.Update();
             }
-            catch { }
+            catch { }*/
 
             if (NetworkSystem.Instance.InRoom)
             {
@@ -1045,10 +1045,10 @@ namespace Arrakis.Menu
                 }
             }
 
-            if (menu != null)
+            /*if (menu != null)
             {
                 MenuNetwork.SendTransform(menu.transform.position, menu.transform.rotation);
-            }
+            }*/
         }
         public static GameObject leftReference;
         public static GameObject rightReference;
