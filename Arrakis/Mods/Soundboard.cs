@@ -1,4 +1,4 @@
-﻿ /*
+﻿/*
  * Arrakis | Mods/Soundboard.cs
  *
  * Copyright (C) 2026 Arrakis
@@ -23,6 +23,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using Arrakis.Classes;
 using Photon.Voice.Unity;
 using UnityEngine;
@@ -32,17 +33,23 @@ namespace Arrakis.Mods
 {
     public static class Soundboard
     {
-        private static readonly Dictionary<string, AudioClip> Cache = new Dictionary<string, AudioClip>();
+        private static readonly string[] SupportedExtensions = { ".mp3", ".wav", ".ogg" };
+        private static readonly Dictionary<string, AudioClip> Cache = new Dictionary<string, AudioClip>(StringComparer.OrdinalIgnoreCase);
+        private static readonly Dictionary<string, ButtonInfo> SoundButtons = new Dictionary<string, ButtonInfo>(StringComparer.OrdinalIgnoreCase);
+
         private static GameObject audioObject;
         private static AudioSource audioSource;
+        private static int playbackId;
+        private static bool mymic;
 
         public static bool LoopAudio = false;
         public static bool HearSelf = true;
         public static float LocalVolume = 0.2f;
         public static bool IsPlaying { get; private set; }
+        public static string CurrentFile { get; private set; }
 
         private static string SoundsPath =>
-            Path.Combine($"{PluginInfo.BaseDirectory}/Sounds");
+            Path.GetFullPath(Path.Combine(PluginInfo.BaseDirectory, "Sounds"));
 
         public static void Play(string fileName)
         {
@@ -54,88 +61,120 @@ namespace Arrakis.Mods
             string path = Path.Combine(SoundsPath, fileName);
             if (!File.Exists(path))
             {
-                CustomConsole.Log("Sound not found: " + path, CustomConsole.LogType.Error);
+                CustomConsole.Log("Cant find sound " + path, CustomConsole.LogType.Error);
+                SyncButtons(CurrentFile);
                 return;
             }
-            Stop();
+            int id = ++playbackId;
+            StopPlayback(restoreMicrophone: false);
+            CurrentFile = fileName;
+            SyncButtons(fileName);
             EnsureObject();
-            CRunner.instance.StartCoroutine(Load(path));
+            CRunner.instance.StartCoroutine(Load(path, id));
         }
-        private static IEnumerator Load(string path)
+
+        private static IEnumerator Load(string path, int id)
         {
             string fileName = Path.GetFileName(path);
-            if (Cache.TryGetValue(fileName, out AudioClip clip) && clip != null)
+            if (!Cache.TryGetValue(fileName, out AudioClip clip) || clip == null)
             {
-                PlayClip(clip);
+                string uri = new Uri(Path.GetFullPath(path)).AbsoluteUri;
+                using (UnityWebRequest request = UnityWebRequestMultimedia.GetAudioClip(uri, GetAudioType(path)))
+                {
+                    DownloadHandlerAudioClip handler = (DownloadHandlerAudioClip)request.downloadHandler;
+                    handler.streamAudio = false;
+                    handler.compressed = false;
+                    yield return request.SendWebRequest();
+                    if (request.result != UnityWebRequest.Result.Success)
+                    {
+                        CustomConsole.Log("Sound loading failed " + request.error, CustomConsole.LogType.Error);
+                        if (id == playbackId)
+                            Stop();
+                        yield break;
+                    }
+                    clip = DownloadHandlerAudioClip.GetContent(request);
+                    if (clip == null)
+                    {
+                        CustomConsole.Log("clip is null cant load.", CustomConsole.LogType.Error);
+                        if (id == playbackId)
+                            Stop();
+                        yield break;
+                    }
+                    clip.name = Path.GetFileNameWithoutExtension(fileName);
+                    Cache[fileName] = clip;
+                }
+            }
+
+            if (id != playbackId)
                 yield break;
-            }
-            string fullPath = Path.GetFullPath(path);
-            string uri = new Uri(fullPath).AbsoluteUri;
-            using (UnityWebRequest request = UnityWebRequestMultimedia.GetAudioClip(uri, GetAudioType(fullPath)))
-            {
-                yield return request.SendWebRequest();
-                if (request.result != UnityWebRequest.Result.Success)
-                {
-                    CustomConsole.Log("Failed to load sound: " + request.error, CustomConsole.LogType.Error);
-                    yield break;
-                }
-                clip = DownloadHandlerAudioClip.GetContent(request);
-                if (clip == null)
-                {
-                    CustomConsole.Log("Failed to load sound: AudioClip was null.", CustomConsole.LogType.Error);
-                    yield break;
-                }
-                clip.name = "ArrakisClip";
-                Cache[fileName] = clip;
-            }
+
             PlayClip(clip);
+
+            if (!LoopAudio)
+                CRunner.instance.StartCoroutine(WatchForEnd(clip.length, id));
         }
+
+        private static IEnumerator WatchForEnd(float length, int id)
+        {
+            yield return new WaitForSecondsRealtime(length + 0.25f);
+            if (id == playbackId && !LoopAudio)
+                Stop();
+        }
+
         private static void PlayClip(AudioClip clip)
         {
             if (clip == null)
                 return;
-            if (NetworkSystem.Instance.InRoom)
-            {
+
+            bool inRoom = InRoom();
+            if (inRoom)
                 PlayPhoton(clip);
-                if (HearSelf)
-                    PlayLocal(clip);
-            }
-            else
-            {
+            if (!inRoom || HearSelf)
                 PlayLocal(clip);
-            }
+
             IsPlaying = true;
         }
+
         private static void PlayPhoton(AudioClip clip)
         {
             try
             {
-                Recorder recorder = GorillaTagger.Instance.myRecorder;
+                Recorder recorder = GetRecorder();
                 if (recorder == null)
                 {
-                    CustomConsole.Log("Soundboard: Recorder is null. (fucking what)", CustomConsole.LogType.Error);
+                    CustomConsole.Log("Somehow the recorder is null 😭.", CustomConsole.LogType.Error);
                     return;
                 }
-                recorder.StopRecording();
                 recorder.AudioClip = clip;
                 recorder.LoopAudioClip = LoopAudio;
                 recorder.SourceType = Recorder.InputSourceType.AudioClip;
                 recorder.RestartRecording(true);
+                mymic = true;
             }
             catch (Exception e)
             {
                 CustomConsole.Log("Soundboard: Photon playback error: " + e, CustomConsole.LogType.Error);
             }
         }
+
         private static void PlayLocal(AudioClip clip)
         {
             EnsureObject();
             audioSource.clip = clip;
             audioSource.loop = LoopAudio;
-            audioSource.volume = Mathf.Clamp(LocalVolume, 0f, 5f);
+            audioSource.volume = Mathf.Clamp01(LocalVolume);
             audioSource.Play();
         }
+
         public static void Stop()
+        {
+            playbackId++;
+            StopPlayback(restoreMicrophone: true);
+            CurrentFile = null;
+            SyncButtons(null);
+        }
+
+        private static void StopPlayback(bool restoreMicrophone)
         {
             IsPlaying = false;
             if (audioSource != null)
@@ -143,106 +182,183 @@ namespace Arrakis.Mods
                 audioSource.Stop();
                 audioSource.clip = null;
             }
+            if (restoreMicrophone)
+                RestoreMicrophone();
+        }
+
+        private static void RestoreMicrophone()
+        {
+            if (!mymic)
+                return;
             try
             {
-                if (NetworkSystem.Instance.InRoom)
-                {
-                    Recorder recorder = GorillaTagger.Instance.myRecorder;
-                    if (recorder != null)
-                    {
-                        recorder.SourceType = Recorder.InputSourceType.Microphone;
-                        recorder.IsRecording = false;
-                        recorder.AudioClip = null;
-                        recorder.RestartRecording(true);
-                    }
-                }
+                Recorder recorder = GetRecorder();
+                if (recorder == null)
+                    return;
+                recorder.SourceType = Recorder.InputSourceType.Microphone;
+                recorder.AudioClip = null;
+                recorder.LoopAudioClip = false;
+                recorder.RestartRecording(true);
             }
-            catch { }
+            catch (Exception e)
+            {
+                CustomConsole.Log("Failed to restore mic " + e, CustomConsole.LogType.Error);
+            }
+            finally
+            {
+                mymic = false;
+            }
         }
-        private static bool IsSupportedFile(string fileName)
-        {
-            string extension = Path.GetExtension(fileName).ToLowerInvariant();
-            return extension == ".mp3" || extension == ".wav" || extension == ".ogg";
-        }
+
+        private static bool InRoom() =>
+            NetworkSystem.Instance != null && NetworkSystem.Instance.InRoom;
+
+        private static Recorder GetRecorder() =>
+            NetworkSystem.Instance != null ? NetworkSystem.Instance.LocalRecorder : null;
+
+        private static bool IsSupportedFile(string fileName) =>
+            Array.IndexOf(SupportedExtensions, Path.GetExtension(fileName).ToLowerInvariant()) >= 0;
+
         public static string GamePath() =>
             AppContext.BaseDirectory.TrimEnd(Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar;
+
+        private static void SyncButtons(string activeFile)
+        {
+            foreach (KeyValuePair<string, ButtonInfo> entry in SoundButtons)
+                entry.Value.enabled = activeFile != null && string.Equals(entry.Key, activeFile, StringComparison.OrdinalIgnoreCase);
+        }
+
+        private static void OpenSoundsFolder()
+        {
+            string path = SoundsPath;
+            Directory.CreateDirectory(path);
+            try
+            {
+                Process.Start(new ProcessStartInfo { FileName = path, UseShellExecute = true });
+            }
+            catch
+            {
+                Application.OpenURL(new Uri(path).AbsoluteUri);
+            }
+        }
+
         public static void StartSoundboard()
         {
-            Menu.Main.CurrentCategoryName = "Soundboard";
-            string soundsPath = Path.Combine($"{PluginInfo.BaseDirectory}/Sounds");
-            List<ButtonInfo> buttons = new List<ButtonInfo>();
-            buttons.Add(new ButtonInfo
+            int categoryIndex = Array.IndexOf(Menu.Buttons.categoryNames, "Soundboard");
+            if (categoryIndex < 0)
             {
-                buttonText = "Exit Soundboard",
-                method = () => Menu.Main.CurrentCategoryName = "Main",
-                isTogglable = false,
-                toolTip = "Returns to the main page for the menu."
-            });
-            buttons.Add(new ButtonInfo
+                CustomConsole.Log("Could not find soundboard category.", CustomConsole.LogType.Error);
+                return;
+            }
+            string soundsPath = SoundsPath;
+            Directory.CreateDirectory(soundsPath);
+            List<ButtonInfo> buttons = new List<ButtonInfo>
             {
-                buttonText = "Open Sound Folder", method =() => Process.Start($"{GamePath()}/{PluginInfo.BaseDirectory}/Sounds"),
-                isTogglable = false, toolTip = "Opens the sound folder."
-            });
-            buttons.Add(new ButtonInfo
+                new ButtonInfo
+                {
+                    buttonText = "Exit Soundboard",
+                    method = () => Menu.Main.CurrentCategoryName = "Main",
+                    isTogglable = false,
+                    toolTip = "Returns to the main page for the menu."
+                },
+                new ButtonInfo
+                {
+                    buttonText = "Reload Soundboard",
+                    method = () => StartSoundboard(),
+                    isTogglable = false,
+                    toolTip = "Reloads the soundboard page."
+                },
+                new ButtonInfo
+                {
+                    buttonText = "Open Sound Folder",
+                    method = OpenSoundsFolder,
+                    isTogglable = false,
+                    toolTip = "Opens the sound folder."
+                },
+                new ButtonInfo
+                {
+                    buttonText = "Hear Self",
+                    enableMethod = () => HearSelf = true,
+                    disableMethod = () =>
+                    {
+                        HearSelf = false;
+                        if (InRoom() && audioSource != null)
+                            audioSource.Stop();
+                    },
+                    isTogglable = true,
+                    enabled = HearSelf,
+                    toolTip = "Play sounds locally while in a room."
+                },
+                new ButtonInfo
+                {
+                    buttonText = "Loop Audio",
+                    enableMethod = () => LoopAudio = true,
+                    disableMethod = () => LoopAudio = false,
+                    isTogglable = true,
+                    enabled = LoopAudio,
+                    toolTip = "Loops the next sound you play."
+                },
+                new ButtonInfo
+                {
+                    buttonText = "Stop All Sounds",
+                    method = Stop,
+                    isTogglable = false,
+                    toolTip = "Stops all sounds currently playing."
+                }
+            };
+
+            SoundButtons.Clear();
+
+            IEnumerable<string> files = Directory.GetFiles(soundsPath).Where(IsSupportedFile).OrderBy(Path.GetFileName, StringComparer.OrdinalIgnoreCase);
+            foreach (string file in files)
             {
-                buttonText = "Hear Self",
-                enableMethod =() => HearSelf = true, disableMethod =() => HearSelf = false,
-                isTogglable = true, enabled = HearSelf,
-                toolTip = "Lets you enable or disabling the sound while in a room for local hearing."
-            });
-            buttons.Add(new ButtonInfo
-            {
-                buttonText = "Stop All Sounds",
-                method = () => Stop(),
-                isTogglable = false,
-                toolTip = "Stops all sounds currently playing."
-            });
-            if (!Directory.Exists(soundsPath))
-                Directory.CreateDirectory(soundsPath);
-            foreach (string file in Directory.GetFiles(soundsPath))
-            {
-                string extension = Path.GetExtension(file).ToLowerInvariant();
-                if (extension != ".mp3" && extension != ".wav" && extension != ".ogg")
-                    continue;
                 string fileName = Path.GetFileName(file);
+                string displayName = Path.GetFileNameWithoutExtension(file);
                 ButtonInfo soundButton = new ButtonInfo
                 {
-                    buttonText = Path.GetFileNameWithoutExtension(file),
-                    enableMethod =() => Soundboard.Play(fileName),
-                    disableMethod =() => Soundboard.Stop(),
+                    buttonText = displayName,
+                    enableMethod = () => Play(fileName),
+                    disableMethod = () =>
+                    {
+                        if (string.Equals(CurrentFile, fileName, StringComparison.OrdinalIgnoreCase))
+                            Stop();
+                    },
                     isTogglable = true,
-                    toolTip = "Play " + Path.GetFileNameWithoutExtension(file)
+                    enabled = string.Equals(CurrentFile, fileName, StringComparison.OrdinalIgnoreCase),
+                    toolTip = "Play " + displayName
                 };
+                SoundButtons[fileName] = soundButton;
                 buttons.Add(soundButton);
             }
-            Menu.Buttons.buttons[Array.IndexOf(Menu.Buttons.categoryNames, "Soundboard")] = buttons.ToArray();
+            Menu.Buttons.buttons[categoryIndex] = buttons.ToArray();
+            Menu.Main.CurrentCategoryName = "Soundboard";
         }
+
         private static AudioType GetAudioType(string path)
         {
-            string extension = Path.GetExtension(path).ToLowerInvariant();
-            switch (extension)
+            switch (Path.GetExtension(path).ToLowerInvariant())
             {
-                case ".wav":
-                    return AudioType.WAV;
-                case ".ogg":
-                    return AudioType.OGGVORBIS;
-                case ".mp3":
-                    return AudioType.MPEG;
-                default:
-                    return AudioType.UNKNOWN;
+                case ".wav": return AudioType.WAV;
+                case ".ogg": return AudioType.OGGVORBIS;
+                case ".mp3": return AudioType.MPEG;
+                default: return AudioType.UNKNOWN;
             }
         }
+
         private static void EnsureObject()
         {
             if (audioObject != null)
                 return;
+
             audioObject = new GameObject("Arrakis Soundboard");
             UnityEngine.Object.DontDestroyOnLoad(audioObject);
             audioSource = audioObject.AddComponent<AudioSource>();
             audioSource.playOnAwake = false;
         }
+
         public static void ClearCache()
         {
+            Stop();
             foreach (AudioClip clip in Cache.Values)
             {
                 if (clip != null)
