@@ -5,6 +5,7 @@
 **Arrakis is a** ***Gorilla Tag*** **mod menu with overpowered and fun features.**
 
 **Can Arrakis get you banned?, No Arrakis cannot and should not get you banned**
+
 **Is Arrakis undetected?, Yes Arrakis is and should always be fully undetected**
 
 | Features |
