@@ -490,22 +490,7 @@ namespace Arrakis.Mods
                 Toggle("Destroy Lighting");
                 return;
             }
-            CRunner.instance.StartCoroutine(DestroyLightingPerm());
-        }
-        public static IEnumerator DestroyLightingPerm()
-        {
             PhotonNetwork.Destroy(BetterDayNightManager.instance.photonView);
-            yield return new WaitForSeconds(0.2f);
-            PhotonNetwork.Destroy(BetterDayNightManager.instance.photonView);
-            yield return new WaitForSeconds(0.5f);
-            PhotonNetwork.Destroy(BetterDayNightManager.instance.photonView);
-            yield return new WaitForSeconds(0.3f);
-            PhotonNetwork.Destroy(BetterDayNightManager.instance.photonView);
-            yield return new WaitForSeconds(0.1f);
-            PhotonNetwork.Destroy(BetterDayNightManager.instance.photonView);
-            yield return new WaitForSeconds(0.31f);
-            PhotonNetwork.Destroy(BetterDayNightManager.instance.photonView);
-
         }
         public static void BecomeController() // might be patched, or ss to others -sleepy
         {
