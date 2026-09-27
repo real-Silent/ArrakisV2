@@ -889,6 +889,12 @@ namespace Arrakis.Mods
             }
         }
 
+        public static void RequestFortune()
+        {
+            PhotonView fortuneView = GameObject.Find("Environment Objects/05Maze_PersistentObjects/FortuneTeller_Persistent/FortuneTeller_Atrium").GetComponent<PhotonView>();
+            fortuneView.RPC("RequestFortuneRPC", RpcTarget.All, new object[] { });
+        }
+
         public static string name;
         public static void AnimatedName()
         {

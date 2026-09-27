@@ -484,6 +484,8 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Break Audio Gun", method =() => Fun.BreakAudioGun(), isTogglable = true, toolTip = "Attempts to break the persons audio who you shoot." },
                 new ButtonInfo { buttonText = "Break Audio All", method =() => Fun.BreakAudioAll(), isTogglable = true, toolTip = "Attempts to break everyones audio." },
 
+                new ButtonInfo { buttonText = "Get Fortune", method =() => Fun.RequestFortune(), isTogglable = false, toolTip = "Gets a fortune using the fortune teller in atrium." },
+
                 new ButtonInfo { buttonText = "Critter Spam <color=grey>[<color=cyan>G</color>]</color>", method =() => Fun.SpamCritters(), isTogglable = true, toolTip = "Lets you spam critters." },
             },
 
@@ -548,6 +550,7 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Destroy Lighting", method =() => Master.DestroyLighting(), isTogglable = false, toolTip = "Destroys the lighting." },
                 new ButtonInfo { buttonText = "Virtual Stump Kick All", method =() => Master.VirtualStumpKickAll(), isTogglable = true, toolTip = "Kicks everyone in vstump." },
                 new ButtonInfo { buttonText = "Log Spam All", method =() => Master.LogSpamAll(), isTogglable = true, toolTip = "Spams everyones debug logs." },
+
                 /*
                 new ButtonInfo { buttonText = "Spawn Blue Lucy", method =() => Master.SpawnBlueLucy(), isTogglable = false, toolTip = "Spawns the blue ghost Lucy in forest." },
                 new ButtonInfo { buttonText = "Spawn Red Lucy", method =() => Master.SpawnRedLucy(), isTogglable = false, toolTip = "Spawns the red ghost Lucy in forest." },
