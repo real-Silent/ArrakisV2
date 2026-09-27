@@ -574,9 +574,7 @@ namespace Arrakis.Mods
             var targets = GameObject.FindObjectsByType<HitTargetNetworkState>(FindObjectsInactive.Include, 0).ToList();
             string[] validMaps =
             {
-                "forest",
-                "canyon",
-                "mountain"
+                "forest", "canyon", "mountain"
             };
             if (!validMaps.Any(map => VRRigCache.ActiveRigs.Any(rig => rig.zoneEntity.currentZone.GetName<GTZone>() == map)))
             {
