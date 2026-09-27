@@ -411,40 +411,52 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Exit Fun", method =() => CurrentCategoryName = "Main", isTogglable = false, toolTip = "Returns to the main page for the menu." },
 
                 new ButtonInfo { buttonText = "Upsidedown Head", method =() => Fun.UpsidedownHead(), disableMethod =() => Fun.FixHead(), isTogglable = true, toolTip = "Makes your head go upsidedown." },
+
                 new ButtonInfo { buttonText = "Grab Bug", method =() => Fun.GrabBug(), isTogglable = true, toolTip = "Lets you grab the bug." },
                 new ButtonInfo { buttonText = "Grab Bat", method =() => Fun.GrabBat(), isTogglable = true, toolTip = "Lets you grab the bat." },
+
                 new ButtonInfo { buttonText = "Water Splash Self", method =() => Fun.WaterSplashSelf(), isTogglable = true, toolTip = "Lets you splash water at your self." },
                 new ButtonInfo { buttonText = "Water Splash Gun", method =() => Fun.WaterGun(), disableMethod =() => Movement.FixRig(), isTogglable = true, toolTip = "Lets you splash water where you shoot." },
                 new ButtonInfo { buttonText = "Water Helix Self", method =() => Fun.WaterHelixSplash(), disableMethod =() => Movement.FixRig(), isTogglable = true, toolTip = "Lets you splash a water helix." },
+
                 new ButtonInfo { buttonText = "Max Quest Score", method =() => Fun.MaxQuestScore(), isTogglable = false, toolTip = "Gives you the max quest score." },
+
                 new ButtonInfo { buttonText = "Open Basement Door", method =() => Fun.OpenBasementDoor(), isTogglable = false, toolTip = "Opens the basement door." },
                 new ButtonInfo { buttonText = "Close Basement Door", method =() => Fun.CloseBasementDoor(), isTogglable = false, toolTip = "Closes the basement door." },
                 new ButtonInfo { buttonText = "Open Elevator Door", method =() => Fun.OpenElevatorDoor(), isTogglable = false, toolTip = "Opens the elevator door." },
                 new ButtonInfo { buttonText = "Close Elevator Door", method =() => Fun.CloseElevatorDoor(), isTogglable = false, toolTip = "Close the elevator door." },
+
                 new ButtonInfo { buttonText = "Hold Gliders <color=grey>[<color=cyan>G</color>]</color>", method =() => Fun.HoldGlider(), isTogglable = true, toolTip = "Lets you hold the gliders when holding <color=grey>[<color=cyan>G</color>]</color>." },
                 new ButtonInfo { buttonText = "Glider Gun", method =() => Fun.GliderGun(), isTogglable = true, toolTip = "Brings all the gliders to where you shoot." },
+
                 new ButtonInfo { buttonText = "Board Spawn", method =() => Fun.SpawnHoverboard(), isTogglable = false, toolTip = "Spawns a hover board at you." },
                 new ButtonInfo { buttonText = "Board Spam <color=grey>[<color=cyan>G</color>]</color>", method =() => Fun.SpawnHoverboardSpam(), isTogglable = true, toolTip = "Spam spawns hoverboards at your hand pos when holding <color=grey>[<color=cyan>G</color>]</color>." },
                 new ButtonInfo { buttonText = "Board Gun", method =() => Fun.BoardGun(), isTogglable = true, toolTip = "Spawns a hover board to where you shoot." },
+
                 new ButtonInfo { buttonText = "Unlock All Cosmetics", method =() => Fun.UnlockAllCosmetics(), isTogglable = false, toolTip = "Unlocks every cosmetic." },
+
                 new ButtonInfo { buttonText = "Give All Resources [SI]", method =() => Fun.GiveAllResources(), isTogglable = true, toolTip = "Gives alot of every resource." },
                 new ButtonInfo { buttonText = "Unlock All [SI]", method =() => Fun.SIUnlockAll(), isTogglable = true, toolTip = "Unlocks every super item." },
                 new ButtonInfo { buttonText = "Flash VIM Name Tag", method =() => Fun.FlashVIMNameTag(), isTogglable = true, toolTip = "Flashes the golden nametag." },
                 new ButtonInfo { buttonText = "Unlock VIM Subscription", enableMethod =() => Fun.UnlockSubscription(true), disableMethod =() => Fun.UnlockSubscription(false), isTogglable = true, toolTip = "Unlocks VIM." },
                 new ButtonInfo { buttonText = "VIM Dig Gun", method =() => Fun.VIMDimGun(), isTogglable = true, toolTip = "Digs in the VIM dig map." },
+
                 new ButtonInfo { buttonText = "Sticky Holdables", method =() => Fun.StickyHoldables(), isTogglable = true, toolTip = "Makes holdables stick to your hands." },
                 new ButtonInfo { buttonText = "Spin Holdables", method =() => Fun.SpinHoldables(), isTogglable = true, toolTip = "Makes holdables spin in your hands." },
                 new ButtonInfo { buttonText = "Juggle Holdables", method =() => Fun.JuggleHoldables(), isTogglable = true, toolTip = "Juggles your holdables like tittys." },
                 new ButtonInfo { buttonText = "Orbit Holdables", method =() => Fun.OrbitHoldables(), isTogglable = true, toolTip = "Orbits your holdables around you." },
+
                 new ButtonInfo { buttonText = "Bug Tryon", method =() => CRunner.instance.StartCoroutine(Fun.ProcessCosmetics(0)), isTogglable = false, toolTip = "Bugs the tryon stations." },
                 new ButtonInfo { buttonText = "Fix Tryon", method =() => CRunner.instance.StartCoroutine(Fun.ProcessCosmetics(-1)), isTogglable = false, toolTip = "Fixes the tryon stations." },
                 new ButtonInfo { buttonText = "Remove All Tryon Cosmetics", method =() => CRunner.instance.StartCoroutine(Fun.ProcessCosmetics(2)), isTogglable = false, toolTip = "Removes All The Cometics In The Tryons." },
                 new ButtonInfo { buttonText = "Enable All Tryon Cosmetics", method =() => CRunner.instance.StartCoroutine(Fun.ProcessCosmetics(1)), isTogglable = false, toolTip = "Enables All The Cometics In The Tryons." },
                 new ButtonInfo { buttonText = "Enable All Holdable Tryon Cosmetics", method =() => CRunner.instance.StartCoroutine(Fun.ProcessCosmetics(3)), isTogglable = false, toolTip = "Enables All The Cometics In The Tryons." },
+
                 new ButtonInfo { buttonText = "Spaz Tryon Hats", method =() => Fun.SpazTryonHats(), isTogglable = true, toolTip = "Spazes the try on room with hats." },
                 new ButtonInfo { buttonText = "Spaz Tryon Face", method =() => Fun.SpazTryonFace(), isTogglable = true, toolTip = "Spazes the try on room with face." },
                 new ButtonInfo { buttonText = "Spaz Tryon Badges", method =() => Fun.SpazTryonBadges(), isTogglable = true, toolTip = "Spazes the try on room with badges." },
                 new ButtonInfo { buttonText = "Spaz Tryon Holdables", method =() => Fun.SpazTryonHoldables(), isTogglable = true, toolTip = "Spazes the try on room with holdables." },
+
                 new ButtonInfo { buttonText = "Grab Camera", method =() => Fun.GrabCamera(), isTogglable = true, toolTip = "Lets you grab a camera." },
                 new ButtonInfo { buttonText = "Orbit Camera", method =() => Fun.OrbitCamera(), isTogglable = true, toolTip = "Orbits the camera around you." },
                 new ButtonInfo { buttonText = "Destroy Camera", method =() => Fun.DestroyCamera(), isTogglable = false, toolTip = "Removes any spawned cameras." },
@@ -458,11 +470,15 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Get Right Bracelet", enableMethod =() => Fun.BraceletToggle(true, false),disableMethod  =() =>  Fun.BraceletToggle(false, false), isTogglable = true, toolTip = "Gives you a bracelet." },
                 new ButtonInfo { buttonText = "Get Left Bracelet", enableMethod =() => Fun.BraceletToggle(true, true),disableMethod  =() =>  Fun.BraceletToggle(false, true), isTogglable = true, toolTip = "Gives you a bracelet." },
                 new ButtonInfo { buttonText = "Rainbow Monkey <color=grey>[<color=cyan>Wardrobes</color>]</color>", method =() => Fun.RainbowMonkey(), isTogglable = true, toolTip = "Makes you server sided rainbow monkey at any of the wardrobes." },
+
+                new ButtonInfo { buttonText = "Spawn Block Gun", method =() => Master.SpawnBlockGun(), isTogglable = true, toolTip = "Spawns a random block where ever you shoot." },
                 new ButtonInfo { buttonText = "Overlap Blocks", enableMethod =() => OverlapPatch.enabled = true, disableMethod  =() => OverlapPatch.enabled = false, isTogglable = true, toolTip = "Lets you overlap blocks in monkey blocks." },
                 new ButtonInfo { buttonText = "Monkey Blocks Size Changer", method =() => Fun.MonkeyBlocksSizeChanger(), isTogglable = true, toolTip = "Lets you change your size in monkey blocks with your <color=cyan>TRIGGERS</color>." },
                 new ButtonInfo { buttonText = "Build While Small", enableMethod =() => BuildPatch.enabled = true, disableMethod =() => BuildPatch.enabled = false, isTogglable = true, toolTip = "Lets you build in monkey blocks while you're small." },
                 new ButtonInfo { buttonText = "Multi Block", method =() => Fun.MultiBlock(), isTogglable = true, toolTip = "Lets you put pick alot of blocks in your right hand." },
+
                 new ButtonInfo { buttonText = "Buy All Free Cosmetics", method =() => Fun.BuyAllFree(), isTogglable = false, toolTip = "Trys to buy every cosmetic if its free." },
+
                 new ButtonInfo { buttonText = "Animated Name", method =() => Fun.AnimatedName(), disableMethod =() => Fun.name = null, isTogglable = true, toolTip = "Makes your name animated." },
                 new ButtonInfo { buttonText = "Break Audio Gun", method =() => Fun.BreakAudioGun(), isTogglable = true, toolTip = "Attempts to break the persons audio who you shoot." },
                 new ButtonInfo { buttonText = "Break Audio All", method =() => Fun.BreakAudioAll(), isTogglable = true, toolTip = "Attempts to break everyones audio." },
@@ -516,7 +532,7 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Unguardian Gun", method =() => Master.UnGuardianGun(), isTogglable = true, toolTip = "Makes who you shoot not guardian." },
                 new ButtonInfo { buttonText = "Find PhotonViews", method =() => Master.GetAllPhotonViews(), disableMethod =() => Master.DisableViewTracers(), isTogglable = true, toolTip = "Shows everything with a photon view." },
                 new ButtonInfo { buttonText = "Destroy PhotonView Gun", method =() => Master.DestroyViewGun(), isTogglable = true, toolTip = "Lets you destroy a photon view." },
-                new ButtonInfo { buttonText = "Spawn Block Gun", method =() => Master.SpawnBlockGun(), isTogglable = true, toolTip = "Spawns a random block where ever you shoot." },
+                
                 new ButtonInfo { buttonText = "Block Crash All", method =() => Master.BlockCrashAll(), isTogglable = true, toolTip = "Crashes everyone with blocks." },
                 new ButtonInfo { buttonText = "Block Sphere", method =() => Master.BlockSphere(), isTogglable = false, toolTip = "Makes a sphere with blocks." },
                 new ButtonInfo { buttonText = "Block Freeze Gun", method =() => Master.BlockFreezeGun(), isTogglable = true, toolTip = "Freezes who ever you shoot with blocks." },
