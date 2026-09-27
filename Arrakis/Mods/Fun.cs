@@ -914,6 +914,38 @@ namespace Arrakis.Mods
         }
 
 
+        public static void SpamCritters()
+        {
+            if (InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Right, !XRSettings.isDeviceActive))
+            {
+                if (PhotonNetwork.LocalPlayer.IsMasterClient)
+                {
+                    List<CrittersPawn> critters = CrittersManager.instance.crittersPawns.Where(c => c != null).ToList();
+                    CrittersPawn target = critters[UnityEngine.Random.Range(0, critters.Count)];
+                    target.transform.position = GorillaTagger.Instance.rightHandTransform.position;
+                    target.transform.rotation = GorillaTagger.Instance.rightHandTransform.rotation;
+                }
+                else
+                {
+                    CrittersGrabber lg = GameObject.FindObjectsOfType<CrittersGrabber>().FirstOrDefault(g => g.rigPlayerId == PhotonNetwork.LocalPlayer.ActorNumber && g.isLeft);
+                    var bodyPos = GorillaTagger.Instance.bodyCollider.transform.position;
+                    List<CrittersPawn> critters = CrittersManager.instance.crittersPawns.Where(c => c != null).OrderBy(c => Vector3.Distance(c.transform.position, bodyPos) switch
+                    {
+                        float d when d > 3f && d < 25f => 0,
+                        float d when d < 25f => 1,
+                        _ => 2
+                    }).ToList();
+                    if (critters.Count == 0) return;
+                    CrittersPawn critter = critters[UnityEngine.Random.Range(0, critters.Count)];
+                    critter.transform.position = GorillaTagger.Instance.rightHandTransform.position;
+                    critter.transform.rotation = GorillaTagger.Instance.rightHandTransform.rotation;
+                    if (lg != null)
+                        CrittersManager.instance.SendRPC("RemoteCrittersActorGrabbedby", CrittersManager.instance.guard.currentOwner, critter.actorId, lg.actorId, Quaternion.identity, Vector3.zero, false);
+                    CrittersManager.instance.SendRPC("RemoteCritterActorReleased", CrittersManager.instance.guard.currentOwner, critter.actorId, false, critter.transform.rotation, critter.transform.position, Vector3.zero, Vector3.zero);
+                }
+            }
+        }
+
         public static void BreakAudioGun()
         {
             if (GetGunInput(false))

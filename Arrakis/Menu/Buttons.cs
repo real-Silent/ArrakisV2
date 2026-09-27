@@ -482,6 +482,8 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Animated Name", method =() => Fun.AnimatedName(), disableMethod =() => Fun.name = null, isTogglable = true, toolTip = "Makes your name animated." },
                 new ButtonInfo { buttonText = "Break Audio Gun", method =() => Fun.BreakAudioGun(), isTogglable = true, toolTip = "Attempts to break the persons audio who you shoot." },
                 new ButtonInfo { buttonText = "Break Audio All", method =() => Fun.BreakAudioAll(), isTogglable = true, toolTip = "Attempts to break everyones audio." },
+
+                new ButtonInfo { buttonText = "Critter Spam <color=grey>[<color=cyan>G</color>]</color>", method =() => Fun.SpamCritters(), isTogglable = true, toolTip = "Lets you spam critters." },
             },
 
             new ButtonInfo[] { // Projectiles
