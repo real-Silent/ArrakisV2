@@ -21,6 +21,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using GorillaGameModes;
+using GorillaTagScripts;
 using Photon.Pun;
 
 namespace Arrakis.Extensions
@@ -68,11 +70,27 @@ namespace Arrakis.Extensions
         }
         public static bool IsTagged(this VRRig rig) 
         {
-            if (GorillaGameManager.instance == null) return false;
-            if (rig == null) return false;
-            List<NetPlayer> infectedPlayers = ((GorillaTagManager)GorillaGameManager.instance).currentInfected;
-            NetPlayer targetPlayer = rig.GetPlayer();
-            return infectedPlayers.Contains(targetPlayer);
+            if (GorillaGameManager.instance == null)
+            {
+                return false;
+            }
+            if (GameMode.IsPlaying(GameModeType.Casual) || GameMode.IsPlaying(GameModeType.SuperCasual))
+            {
+                return false;
+            }
+            else
+            {
+                switch (GorillaGameManager.instance.GameType())
+                {
+                    case GameModeType.Infection:
+                    case GameModeType.SuperInfect:
+                        return (GorillaGameManager.instance as GorillaTagManager).currentInfected.Contains(rig.Creator);
+                    case GameModeType.Ambush:
+                    case GameModeType.Ghost:
+                        return (GorillaGameManager.instance as GorillaAmbushManager).currentInfected.Contains(rig.Creator);
+                }
+            }
+            return false;
         }
         public static int GetPing(this VRRig rig)
         {
