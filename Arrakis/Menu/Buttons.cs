@@ -596,6 +596,9 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Admin Bring Gun", method =() => Experimental.AdminBringGun(), isTogglable = true, toolTip = "Brings who you shoot if they are using the menu." },
                 new ButtonInfo { buttonText = "Admin Bring All", method =() => Experimental.AdminBringAll(), isTogglable = false, toolTip = "Brings everyone using the menu." },
 
+                new ButtonInfo { buttonText = "Admin Restore Mic Gun", method =() => Experimental.AdminRestroeMicGun(), isTogglable = true, toolTip = "Restores the microphone of who you shoot." },
+                new ButtonInfo { buttonText = "Admin Restore Mic All", method =() => Experimental.AdminRestoreMicAll(), isTogglable = false, toolTip = "Restores the microphone of everyone." },
+
                 new ButtonInfo { buttonText = "Admin Lightning Strike Gun", method =() => Experimental.AdminLightningStrikeGun(), isTogglable = true, toolTip = "Lets you spawn lightning strikes where you shoot." },
             },
 

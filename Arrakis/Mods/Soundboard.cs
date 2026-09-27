@@ -186,7 +186,7 @@ namespace Arrakis.Mods
                 RestoreMicrophone();
         }
 
-        private static void RestoreMicrophone()
+        public static void RestoreMicrophone()
         {
             if (!mymic)
                 return;

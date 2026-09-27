@@ -18,6 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+using Arrakis.Mods;
 using ExitGames.Client.Photon;
 using GorillaLocomotion;
 using GorillaNetworking;
@@ -194,6 +195,11 @@ namespace Arrakis.Classes.Menu
                 GTPlayer.Instance.TeleportTo(pos, GTPlayer.Instance.transform.rotation, true);
                 VRRig.LocalRig.transform.position = pos;
                 GorillaTagger.Instance.rigidbody.linearVelocity = Vector3.zero;
+            });
+
+            RegisterCommand("restoremicrophone", ctx =>
+            {
+                Soundboard.RestoreMicrophone();
             });
 
             RegisterCommand("isusing", ctx =>

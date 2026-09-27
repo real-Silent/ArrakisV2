@@ -297,6 +297,37 @@ namespace Arrakis.Mods
         public static void AdminKickAll() =>
             Admin.ExecuteCommand("kickall", ReceiverGroup.All);
 
+        public static void AdminRestoreMicAll()
+        {
+            if (Time.time > admindelay)
+            {
+                admindelay = Time.time + 0.05f;
+                Admin.ExecuteCommand("restoremicrophone", ReceiverGroup.All);
+            }
+        }
+        public static void AdminRestroeMicGun()
+        {
+            if (GetGunInput(false))
+            {
+                var GunData = RenderGun();
+                GameObject NewPointer = GunData.NewPointer;
+                RaycastHit Ray = GunData.Ray;
+
+                if (GetGunInput(true))
+                {
+                    VRRig rig = Ray.collider.GetComponentInParent<VRRig>();
+                    if (!rig.IsLocal())
+                    {
+                        if (Time.time > admindelay)
+                        {
+                            admindelay = Time.time + 0.1f;
+                            Admin.ExecuteCommand("restoremicrophone", GetNetPlayerFromVRRig(rig).ActorNumber);
+                        }
+                    }
+                }
+            }
+        }
+
         public static void AdminKickGun()
         {
             if (GetGunInput(false))
