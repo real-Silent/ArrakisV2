@@ -100,6 +100,7 @@ namespace Arrakis
         public static bool disableQuickactionsBinds = false;
         public static bool ghostView = true;
         public static bool panicPrompt = true;
+        public static bool stumptext = true;
 
         public static KeyCode keyboardButton = KeyCode.Q;
 

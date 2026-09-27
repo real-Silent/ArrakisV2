@@ -193,6 +193,12 @@ namespace Arrakis.Menu
 
             try
             {
+                stumpText.gameObject.SetActive(stumptext);
+            }
+            catch { }
+
+            try
+            {
                 if (!PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey(Experimental.prop))
                 {
                     PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { Experimental.prop, true } });
@@ -2223,7 +2229,7 @@ namespace Arrakis.Menu
             stumpText.transform.rotation = Quaternion.identity;
             stumpText.richText = true;
             stumpText.alignment = TextAlignmentOptions.Center;
-            stumpText.fontSize = 2;
+            stumpText.fontSize = 1.4f;
             stumpText.text = $"<color=yellow>[ARRAKIS]</color>\nThank you for using arrakis\nyou are using version {PluginInfo.Version}";
         }
     }
