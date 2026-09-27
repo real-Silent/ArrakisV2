@@ -492,8 +492,13 @@ namespace Arrakis.Mods
             }
             else
             {
+                if (BetterDayNightManager.instance.photonView == null)
+                {
+                    NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> BetterDayNightManager.instance.photonView is null.");
+                    Toggle("Destroy Lighting");
+                    return;
+                }
                 PhotonNetwork.Destroy(BetterDayNightManager.instance.photonView);
-                return;
             }
         }
         private static long? mapid;
