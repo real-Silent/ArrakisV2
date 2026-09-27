@@ -1099,7 +1099,7 @@ namespace Arrakis.Menu
             }
 
             int lastPage = ((buttons[currentCategoryIndex].Length + buttonsPerPage - 1) / buttonsPerPage) - 1;
-            if (CurrentCategoryName == "Enabled") // Credits to Seralyth
+            if (CurrentCategoryName == "Enabled")
             {
                 List<string> enabledMods = new List<string>() { "Exit Enabled" };
                 foreach (ButtonInfo[] buttonlist in Buttons.buttons)
