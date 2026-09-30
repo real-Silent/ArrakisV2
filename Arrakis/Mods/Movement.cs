@@ -383,7 +383,7 @@ namespace Arrakis.Mods
         static bool DoOnce2;
         static float maxD2;
         public static float WallWalkPower = 8.8f;
-        public static void WallWalk() // hey nova you retard this dosnt fucking work -sleepy
+        public static void WallWalk() // sleepys stupid and doesnt understand how awll walk works this does work -nova
         {
             if (InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Right, !XRSettings.isDeviceActive))
             {
