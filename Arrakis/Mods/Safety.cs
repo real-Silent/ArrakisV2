@@ -227,7 +227,7 @@ namespace Arrakis.Mods
             {
                 foreach (VRRig rig in VRRigCache.ActiveRigs)
                 {
-                    if (rig.IsLocal())
+                    if (!rig.IsLocal())
                     {
                         if (rig._playerOwnedCosmetics.Concat().Contains("LBAAK.") || rig._playerOwnedCosmetics.Concat().Contains("LMAPY.") || rig._playerOwnedCosmetics.Concat().Contains("LBAAD."))
                         {
@@ -248,7 +248,7 @@ namespace Arrakis.Mods
             {
                 foreach (VRRig rig in VRRigCache.ActiveRigs)
                 {
-                    if (rig.IsLocal())
+                    if (!rig.IsLocal())
                     {
                         if (rig._playerOwnedCosmetics.Concat().Contains("LBADE.") || rig._playerOwnedCosmetics.Concat().Contains("LBAGS.") || rig._playerOwnedCosmetics.Concat().Contains("LBANI."))
                         {

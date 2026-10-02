@@ -50,7 +50,7 @@ namespace Arrakis.Mods
                 if (GetGunInput(true))
                 {
                     VRRig rig = Ray.collider.GetComponentInParent<VRRig>();
-                    if (rig.IsLocal())
+                    if (!rig.IsLocal())
                     {
                         GorillaGuardianManager guard = (GorillaGuardianManager)GorillaGameManager.instance;
                         if (guard.IsPlayerGuardian(NetworkSystem.Instance.LocalPlayer))
@@ -92,7 +92,7 @@ namespace Arrakis.Mods
                 if (GetGunInput(true))
                 {
                     VRRig rig = Ray.collider.GetComponentInParent<VRRig>();
-                    if (rig.IsLocal())
+                    if (!rig.IsLocal())
                     {
                         lockTarget = rig;
                         gunLocked = true;
@@ -115,7 +115,7 @@ namespace Arrakis.Mods
             {
                 foreach (VRRig rig in VRRigCache.ActiveRigs)
                 {
-                    if (rig.IsLocal())
+                    if (!rig.IsLocal())
                     {
                         if (Time.time > delaytimething)
                         {
@@ -141,7 +141,7 @@ namespace Arrakis.Mods
             {
                 foreach (VRRig rig in VRRigCache.ActiveRigs)
                 {
-                    if (rig.IsLocal())
+                    if (!rig.IsLocal())
                     {
                         GetNetworkViewFromVRRig(rig).SendRPC("GrabbedByPlayer", rig.Creator, true, false, false);
                         GetNetworkViewFromVRRig(rig).SendRPC("DroppedByPlayer", rig.Creator, new Vector3(0f, 25f, 0f));
@@ -164,7 +164,7 @@ namespace Arrakis.Mods
                 if (GetGunInput(true))
                 {
                     VRRig rig = Ray.collider.GetComponentInParent<VRRig>();
-                    if (rig.IsLocal())
+                    if (!rig.IsLocal())
                     {
                         GorillaGuardianManager guard = (GorillaGuardianManager)GorillaGameManager.instance;
                         if (guard.IsPlayerGuardian(NetworkSystem.Instance.LocalPlayer))
@@ -188,7 +188,7 @@ namespace Arrakis.Mods
             {
                 foreach (VRRig rig in VRRigCache.ActiveRigs)
                 {
-                    if (rig.IsLocal())
+                    if (!rig.IsLocal())
                     {
                         GetNetworkViewFromVRRig(rig).SendRPC("GrabbedByPlayer", rig.Creator, true, false, false);
                         GetNetworkViewFromVRRig(rig).SendRPC("DroppedByPlayer", rig.Creator, (GorillaTagger.Instance.bodyCollider.transform.position - lockTarget.transform.position).normalized * 50f);
@@ -238,7 +238,7 @@ namespace Arrakis.Mods
                 if (GetGunInput(true))
                 {
                     VRRig rig = Ray.collider.GetComponentInParent<VRRig>();
-                    if (rig.IsLocal())
+                    if (!rig.IsLocal())
                     {
                         GorillaGuardianManager guard = (GorillaGuardianManager)GorillaGameManager.instance;
                         if (guard.IsPlayerGuardian(NetworkSystem.Instance.LocalPlayer))
@@ -262,7 +262,7 @@ namespace Arrakis.Mods
             {
                 foreach (VRRig rig in VRRigCache.ActiveRigs)
                 {
-                    if (rig.IsLocal())
+                    if (!rig.IsLocal())
                     {
                         float theonefloatidkwhattonameit = UnityEngine.Random.Range(-1f, 1f);
                         GetNetworkViewFromVRRig(rig).SendRPC("GrabbedByPlayer", rig.Creator, true, false, false);
@@ -432,7 +432,7 @@ namespace Arrakis.Mods
                 if (GetGunInput(true))
                 {
                     VRRig rig = Ray.collider.GetComponentInParent<VRRig>();
-                    if (rig.IsLocal())
+                    if (!rig.IsLocal())
                     {
                         lockTarget = rig;
                         gunLocked = true;

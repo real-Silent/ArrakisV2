@@ -125,7 +125,7 @@ namespace Arrakis.Mods
                     if (PhotonNetwork.LocalPlayer.IsMasterClient)
                     {
                         VRRig rig = Ray.collider.GetComponentInParent<VRRig>();
-                        if (rig.IsLocal())
+                        if (!rig.IsLocal())
                         {
                             foreach (TappableGuardianIdol t in GetAllTappables())
                             {
@@ -213,7 +213,7 @@ namespace Arrakis.Mods
                     if (PhotonNetwork.LocalPlayer.IsMasterClient)
                     {
                         VRRig rig = Ray.collider.GetComponentInParent<VRRig>();
-                        if (rig.IsLocal())
+                        if (!rig.IsLocal())
                         {
                             foreach (GorillaGuardianZoneManager zone in GuardianZMan())
                             {
@@ -242,7 +242,7 @@ namespace Arrakis.Mods
                     if (PhotonNetwork.LocalPlayer.IsMasterClient)
                     {
                         VRRig rig = Ray.collider.GetComponentInParent<VRRig>();
-                        if (rig.IsLocal())
+                        if (!rig.IsLocal())
                         {
                             foreach (GorillaTagManager tag in GameObject.FindObjectsByType<GorillaTagManager>(FindObjectsSortMode.None))
                             {
@@ -443,7 +443,7 @@ namespace Arrakis.Mods
                 if (GetGunInput(true))
                 {
                     VRRig rig = Ray.collider.GetComponentInParent<VRRig>();
-                    if (rig.IsLocal())
+                    if (!rig.IsLocal())
                     {
                         lockTarget = rig;
                         gunLocked = true;
