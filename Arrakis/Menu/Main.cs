@@ -59,8 +59,6 @@ namespace Arrakis.Menu
             SceneMapLoader.Init();
             AudioManager.Init();
 
-            CreateStumpText();
-
             try
             {
                 PluginManager.LoadPlugins();
@@ -193,6 +191,12 @@ namespace Arrakis.Menu
 
             try
             {
+                if (!stumptextonce)
+                {
+                    CreateStumpText();
+                    stumptextonce = true;
+                }
+
                 stumpText.gameObject.SetActive(stumptext);
             }
             catch { }
@@ -2221,6 +2225,7 @@ namespace Arrakis.Menu
             ServerSyncRightHandPos = VRRig.LocalRig?.rightHand?.rigTarget?.transform.position ?? ServerSyncRightHandPos;
         }
 
+        private static bool stumptextonce = false;
         private static TextMeshPro stumpText;
         public static void CreateStumpText()
         {
