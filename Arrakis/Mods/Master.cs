@@ -19,11 +19,9 @@ using static UnityEngine.Time;
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using Arrakis.Classes;
 using Arrakis.Extensions;
+using Arrakis.Managers;
 using Arrakis.Notifications;
 using GorillaTag;
 using GorillaTagScripts;
@@ -31,7 +29,13 @@ using GorillaTagScripts.VirtualStumpCustomMaps;
 using HarmonyLib;
 using Photon.Pun;
 using Photon.Realtime;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
+using UnityEngine.Rendering;
+using UnityEngine.XR;
 using static Arrakis.Menu.Main;
 
 namespace Arrakis.Mods
@@ -555,7 +559,7 @@ namespace Arrakis.Mods
                 if (CustomMapManager.IsRemotePlayerInVirtualStump(NetworkSystem.Instance.LocalPlayer.UserId))
                 {
                     mapid =  Arrakis.Managers.CustomMaps.Manager.currentMapId == 4977315 ? 5024157 : 4977315;
-                    CustomMapsTerminal.instance.mapTerminalNetworkObject.photonView.RPC("UpdateScreen_RPC", RpcTarget.Others, new object[]
+                    CustomMapsTerminal.instance.gameObject.GetComponentInChildren<PhotonView>().RPC("UpdateScreen_RPC", RpcTarget.Others, new object[]
                     {
                         6,
                         mapid,
@@ -566,13 +570,13 @@ namespace Arrakis.Mods
                     NotificationManager.SendNotification("<color=grey>[</color><color=red>ERROR</color><color=grey>]</color> Please enter the Virtual Stump.");
             }
 
-            CustomMapsTerminal.instance.mapTerminalNetworkObject.photonView.RPC("SetRoomMap_RPC", RpcTarget.Others, mapid.Value);
+            CustomMapsTerminal.instance.gameObject.GetComponentInChildren<PhotonView>().RPC("SetRoomMap_RPC", RpcTarget.Others, mapid.Value);
 
             NotificationManager.SendNotification("<color=grey>[</color><color=green>SUCCESS</color><color=grey>]</color> Successfully kicked others.");
             Toggle("Virtual Stump Kick All");
         }
         public static float LogSpamDelay = 0f;
-        public static async void LogSpamAll()
+        public static void LogSpamAll()
         {
             if (PhotonNetwork.InRoom && !PhotonNetwork.IsMasterClient)
             {
@@ -622,152 +626,198 @@ namespace Arrakis.Mods
             traverse.Field("nextHittableTimestamp").SetValue(Time.time + delay);
         }
 
-        //public static HalloweenGhostChaser Lucy
-        //{
-        //    get
-        //    {   // yup a note in a note, but im gessing this -sleepy
-        //        return GameObject.Find("Environment Objects/05Maze_PersistentObjects/2026_Halloween1_PersistentObjects/Halloween Ghosts/Lucy/Halloween Ghost/FloatingChaseSkeleton").GetComponent<HalloweenGhostChaser>();
-        //    }
-        //}
-        //
-        //public static void SpawnBlueLucy()
-        //{
-        //    if (Lucy.IsMine)
-        //    {
-        //        Lucy.timeGongStarted = 0f;
-        //        Lucy.isSummoned = false;
-        //        Lucy.currentState = HalloweenGhostChaser.ChaseState.Gong;
-        //    }
-        //    else
-        //    {
-        //        NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> You are not master client this mod wont work.");
-        //    }
-        //}
-        //public static void SpawnRedLucy()
-        //{
-        //    if (Lucy.IsMine)
-        //    {
-        //        Lucy.timeGongStarted = 0f;
-        //        Lucy.isSummoned = true;
-        //        Lucy.currentState = HalloweenGhostChaser.ChaseState.Gong;
-        //    }
-        //    else
-        //    {
-        //        NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> You are not master client this mod wont work.");
-        //    }
-        //}
-        //public static void DespawnLucy()
-        //{
-        //    if (Lucy.IsMine)
-        //    {
-        //        Lucy.isSummoned = false;
-        //        Lucy.currentState = HalloweenGhostChaser.ChaseState.Dormant;
-        //    }
-        //    else
-        //    {
-        //        NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> You are not master client this mod wont work.");
-        //    }
-        //}
-        //public static void FastLucy()
-        //{
-        //    if (Lucy.IsMine)
-        //    {
-        //        Lucy.currentSpeed = 3f;
-        //    }
-        //    else
-        //    {
-        //        NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> You are not master client this mod wont work.");
-        //    }
-        //}
-        //public static void SlowLucy()
-        //{
-        //    if (Lucy.IsMine)
-        //    {
-        //        Lucy.currentSpeed = 0.1f;
-        //    }
-        //    else
-        //    {
-        //        NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> You are not master client this mod wont work.");
-        //    }
-        //}
-        //
-        //private static float lucyspaztimething = 0f;
-        //public static void SpazLucy()
-        //{
-        //    if (Lucy.IsMine)
-        //    {
-        //        if (Time.time > lucyspaztimething)
-        //        {
-        //            Lucy.currentState = Lucy.currentState == HalloweenGhostChaser.ChaseState.InitialRise ? HalloweenGhostChaser.ChaseState.Gong : HalloweenGhostChaser.ChaseState.InitialRise;
-        //            lucyspaztimething = Time.time + 0.5f;
-        //        }
-        //    }
-        //    else
-        //    {
-        //        NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> You are not master client this mod wont work.");
-        //    }
-        //}
-        //
-        //private static float lucyspaztarget = 0f;
-        //public static void SpazLucyTarget()
-        //{
-        //    if (Lucy.IsMine)
-        //    {
-        //        if (Time.time > lucyspaztarget)
-        //        {
-        //            Lucy.currentState = HalloweenGhostChaser.ChaseState.Chasing;
-        //            Lucy.targetPlayer = RigManager.GetRandomVRRig(true).Creator;
-        //            lucyspaztarget = Time.time + 0.5f;
-        //        }
-        //    }
-        //    else
-        //    {
-        //        NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> You are not master client this mod wont work.");
-        //    }
-        //}
-        //
-        //public static void MoveLucyGun()
-        //{
-        //    if (GetGunInput(false))
-        //    {
-        //        var GunData = RenderGun();
-        //        GameObject NewPointer = GunData.NewPointer;
-        //        RaycastHit Ray = GunData.Ray;
-        //        if (GetGunInput(true))
-        //        {
-        //            if (Lucy.IsMine)
-        //            {
-        //                Lucy.transform.position = NewPointer.transform.position;
-        //            }
-        //            else
-        //            {
-        //                NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> You are not master client this mod wont work.");
-        //            }
-        //        }
-        //    }
-        //}
-        //
-        //public static void GrabLucy()
-        //{
-        //    if (Lucy.IsMine)
-        //    {
-        //        if (InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Right, !XRSettings.isDeviceActive))
-        //        {
-        //            Lucy.targetPlayer = null;
-        //            Lucy.currentState = HalloweenGhostChaser.ChaseState.Chasing;
-        //            Lucy.transform.position = VRRig.LocalRig.rightHandTransform.position;
-        //        }
-        //        if (InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Right, !XRSettings.isDeviceActive))
-        //        {
-        //            Lucy.targetPlayer = null;
-        //            Lucy.currentState = HalloweenGhostChaser.ChaseState.Chasing;
-        //            Lucy.transform.position = VRRig.LocalRig.leftHandTransform.position;
-        //        }
-        //    }
-        //    else
-        //    {
-        //        NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> You are not master client this mod wont work.");
-        //    }
-        //}
+        private static HalloweenGhostChaser _lucy;
+        public static HalloweenGhostChaser Lucy
+        {
+            get
+            {
+                if (_lucy == null)
+                    _lucy =  GameObject.FindObjectsOfType<HalloweenGhostChaser>()[0]; // Ez who needs a fucking path -nova
+                return _lucy;
+            }
+        }
+        
+        public static void SpawnBlueLucy()
+        {
+            if (Lucy.IsMine)
+            {
+                Lucy.timeGongStarted = 0f;
+                Lucy.timeRiseStarted = 0f;
+                Lucy.isSummoned = false;
+                Lucy.currentState = HalloweenGhostChaser.ChaseState.Gong;
+            }
+            else
+            {
+                NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> You are not master client this mod wont work.");
+            }
+        }
+        public static void SpawnRedLucy()
+        {
+            if (Lucy.IsMine)
+            {
+                Lucy.timeGongStarted = 0f;
+                Lucy.timeRiseStarted = 0f;
+                Lucy.isSummoned = true;
+                Lucy.currentState = HalloweenGhostChaser.ChaseState.Gong;
+            }
+            else
+            {
+                NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> You are not master client this mod wont work.");
+            }
+        }
+        public static void DespawnLucy()
+        {
+            if (Lucy.IsMine)
+            {
+                Lucy.isSummoned = false;
+                Lucy.currentState = HalloweenGhostChaser.ChaseState.Dormant;
+            }
+            else
+            {
+                NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> You are not master client this mod wont work.");
+            }
+        }
+        public static void FastLucy()
+        {
+            if (Lucy.IsMine)
+            {
+                Lucy.currentSpeed = 3f;
+            }
+            else
+            {
+                NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> You are not master client this mod wont work.");
+            }
+        }
+        public static void SlowLucy()
+        {
+            if (Lucy.IsMine)
+            {
+                Lucy.currentSpeed = 0.1f;
+            }
+            else
+            {
+                NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> You are not master client this mod wont work.");
+            }
+        }
+        
+        private static float lucyspaztimething = 0f;
+        public static void SpazLucy()
+        {
+            if (Lucy.IsMine)
+            {
+                if (Time.time < lucyspaztimething)
+                {
+                    Lucy.currentState = Lucy.currentState == HalloweenGhostChaser.ChaseState.Dormant ? HalloweenGhostChaser.ChaseState.Gong : HalloweenGhostChaser.ChaseState.Dormant;
+                    lucyspaztimething = Time.time + 0.5f;
+                }
+            }
+            else
+            {
+                NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> You are not master client this mod wont work.");
+            }
+        }
+        
+        private static float lucyspaztarget = 0f;
+        public static void SpazLucyTarget()
+        {
+            if (Lucy.IsMine)
+            {
+                if (Time.time < lucyspaztarget)
+                {
+                    Lucy.currentState = HalloweenGhostChaser.ChaseState.Chasing;
+                    Lucy.targetPlayer = RigManager.GetRandomVRRig(true).Creator;
+                    lucyspaztarget = Time.time + 0.5f;
+                }
+            }
+            else
+            {
+                NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> You are not master client this mod wont work.");
+            }
+        }
+        
+        public static void MoveLucyGun()
+        {
+            if (GetGunInput(false))
+            {
+                var GunData = RenderGun();
+                GameObject NewPointer = GunData.NewPointer;
+                RaycastHit Ray = GunData.Ray;
+                if (GetGunInput(true))
+                {
+                    if (Lucy.IsMine)
+                    {
+                        Lucy.transform.position = NewPointer.transform.position;
+                    }
+                    else
+                    {
+                        NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> You are not master client this mod wont work.");
+                    }
+                }
+            }
+        }
+        
+        public static void GrabLucy()
+        {
+            if (Lucy.IsMine)
+            {
+                if (InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Right, !XRSettings.isDeviceActive))
+                {
+                    Lucy.targetPlayer = null;
+                    Lucy.currentState = HalloweenGhostChaser.ChaseState.Chasing;
+                    Lucy.transform.position = VRRig.LocalRig.rightHandTransform.position;
+                }
+                if (InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Right, !XRSettings.isDeviceActive))
+                {
+                    Lucy.targetPlayer = null;
+                    Lucy.currentState = HalloweenGhostChaser.ChaseState.Chasing;
+                    Lucy.transform.position = VRRig.LocalRig.leftHandTransform.position;
+                }
+            }
+            else
+            {
+                NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> You are not master client this mod wont work.");
+            }
+        }
+
+        public static void LucyFloatGun()
+        {
+            if (GetGunInput(false))
+            {
+                var GunData = RenderGun();
+                GameObject NewPointer = GunData.NewPointer;
+                RaycastHit Ray = GunData.Ray;
+
+                if (gunLocked && lockTarget != null)
+                {
+                    if (Lucy.IsMine)
+                    {
+                        Lucy.targetPlayer = lockTarget.Creator;
+                        Lucy.grabbedPlayer = lockTarget.Creator;
+                        Lucy.currentState = HalloweenGhostChaser.ChaseState.Grabbing;
+                        Lucy.grabTime = Time.time;
+                        Lucy.totalTimeToRise = Time.time;
+                    }
+                    else
+                    {
+                        NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> You are not master client this mod wont work.");
+                    }
+                }
+
+                if (GetGunInput(true))
+                {
+                    VRRig rig = Ray.collider.GetComponentInParent<VRRig>();
+                    if (rig != null && rig != VRRig.LocalRig)
+                    {
+                        lockTarget = rig;
+                        gunLocked = true;
+                    }
+                }
+                else
+                {
+                    lockTarget = null;
+                    gunLocked = false;
+                }
+            }
+        }
     }
 }

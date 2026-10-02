@@ -1374,10 +1374,10 @@ namespace Arrakis.Menu
         public static bool gunTargetESP = false;
         public static bool gunPointerTrail = false;
 
-        public static bool GetGunInput(bool isShooting) =>
-            GetGunHand(swapgunhand, isShooting);
-        private static bool GetGunHand(bool lefthand, bool shoot) =>
-            shoot ? InputManager.GetInput(InputManager.InputType.Trigger, lefthand ? InputManager.Hand.Left : InputManager.Hand.Right, !XRSettings.isDeviceActive, true) : InputManager.GetInput(InputManager.InputType.Grip, lefthand ? InputManager.Hand.Left : InputManager.Hand.Right, !XRSettings.isDeviceActive, true);
+        public static bool GetGunInput(bool isShooting)
+        {
+            return isShooting ? ControllerInputPoller.instance.rightControllerTriggerButton || Mouse.current.leftButton.isPressed : ControllerInputPoller.instance.rightGrab || Mouse.current.rightButton.isPressed;
+        }
 
         public static Vector3 MidPosition;
         public static Vector3 MidVelocity;
