@@ -68,32 +68,24 @@ namespace Arrakis.Extensions
             if (suspiciouslyQuest > suspiciouslySteam && suspiciouslyQuest > suspiciouslyPC) return "Standalone";
             return "Standalone";
         }
-        public static bool IsTagged(this VRRig rig) 
+        public static bool IsTagged(this VRRig rig)
         {
-            if (GorillaGameManager.instance == null)
-            {
+            if (rig == null || rig.Creator == null)
                 return false;
-            }
+            if (!(GorillaGameManager.instance is GorillaTagManager tagManager))
+                return false;
             if (GameMode.IsPlaying(GameModeType.Casual) || GameMode.IsPlaying(GameModeType.SuperCasual))
-            {
                 return false;
-            }
-            else
+            switch (tagManager.GameType())
             {
-                switch (GorillaGameManager.instance.GameType())
-                {
-                    case GameModeType.Infection:
-                    case GameModeType.SuperInfect:
-                        if ((GorillaGameManager.instance as GorillaTagManager).currentIt != null)
-                            return (GorillaGameManager.instance as GorillaTagManager).currentIt == rig.Creator;
-                        else
-                            return (GorillaGameManager.instance as GorillaTagManager).currentInfected.Contains(rig.Creator);
-                    case GameModeType.Ambush:
-                    case GameModeType.Ghost:
-                        return (GorillaGameManager.instance as GorillaAmbushManager).currentInfected.Contains(rig.Creator);
-                }
+                case GameModeType.Infection:
+                case GameModeType.SuperInfect:
+                case GameModeType.Ambush:
+                case GameModeType.Ghost:
+                    return tagManager.isCurrentlyTag ? tagManager.currentIt == rig.Creator : tagManager.currentInfected.Contains(rig.Creator);
+                default:
+                    return false;
             }
-            return false;
         }
         public static int GetPing(this VRRig rig)
         {
