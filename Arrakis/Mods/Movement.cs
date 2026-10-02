@@ -536,7 +536,10 @@ namespace Arrakis.Mods
                 if (lockTarget != null && gunLocked)
                 {
                     if (!VRRig.LocalRig.enabled)
+                    {
                         VRRig.LocalRig.transform.position = Vector3.Lerp(VRRig.LocalRig.transform.position, lockTarget.transform.position, Time.deltaTime * 2f);
+                        VRRig.LocalRig.headMesh.transform.LookAt(lockTarget.headMesh.transform.position);
+                    }
                 }
 
                 if (GetGunInput(true))
