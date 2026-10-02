@@ -296,21 +296,26 @@ namespace Arrakis.Mods
                 }
             }
         }
+
         public static float LagDelay;
         public static void LagAll()
         {
             if (PhotonNetwork.InRoom && Time.time > LagDelay)
             {
-                LagDelay = Time.time + 3f;
-                for (int i = 0; i < 425; i++)
+                LagDelay = Time.time + 1.64f;
+                for (int i = 0; i < 730; i++)
                 {
-                    PhotonNetwork.NetworkingClient.OpRaiseEvent(186, new object[] {float.NaN}, new RaiseEventOptions
+                    object[] data = new object[] { float.NaN };
+                    object[] evData = new object[] { float.NaN, float.NaN, data };
+                    PhotonNetwork.NetworkingClient.OpRaiseEvent(186, evData, new RaiseEventOptions
                     {
                         Receivers = ReceiverGroup.Others
                     }, SendOptions.SendUnreliable);
                 }
             }
         }
+
+
         public static void SetRoomStatus(bool status) // this might've gotten patched it dosnt seem to work. -sleepy
         {
             var roomProperties = new Hashtable();
