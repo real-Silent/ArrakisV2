@@ -793,9 +793,9 @@ namespace Arrakis.Mods
                     {
                         Lucy.targetPlayer = lockTarget.Creator;
                         Lucy.grabbedPlayer = lockTarget.Creator;
+                        Lucy.followTarget = lockTarget.head.rigTarget;
                         Lucy.currentState = HalloweenGhostChaser.ChaseState.Grabbing;
                         Lucy.grabTime = Time.time;
-                        Lucy.totalTimeToRise = Time.time;
                     }
                     else
                     {
