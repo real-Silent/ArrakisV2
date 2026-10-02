@@ -488,7 +488,10 @@ namespace Arrakis.Mods
         public static void HollowBoxESP()
         {
             if (!NetworkSystem.Instance.InRoom)
+            {
+                DisableHollowBoxESP();
                 return;
+            }
             foreach (VRRig rig in VRRigCache.ActiveRigs)
             {
                 List<VRRig> remove = null;
