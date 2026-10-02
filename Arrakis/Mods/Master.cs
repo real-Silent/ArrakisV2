@@ -812,11 +812,11 @@ namespace Arrakis.Mods
                         gunLocked = true;
                     }
                 }
-                else
-                {
-                    lockTarget = null;
-                    gunLocked = false;
-                }
+            }
+            else
+            {
+                lockTarget = null;
+                gunLocked = false;
             }
         }
     }
