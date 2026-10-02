@@ -2229,8 +2229,8 @@ namespace Arrakis.Menu
             stumpText.transform.rotation = Quaternion.identity;
             stumpText.richText = true;
             stumpText.alignment = TextAlignmentOptions.Center;
-            stumpText.fontSize = 1.4f;
-            stumpText.text = $"<color=yellow>[ARRAKIS]</color>\nThank you for using arrakis\nyou are using version {PluginInfo.Version}";
+            stumpText.fontSize = 1.2f;
+            stumpText.text = $"<color=yellow>[ARRAKIS]</color>\nThank you for using arrakis\nVersion: <color=#00ffff>[{PluginInfo.Version}]</color> | Status: <color=#00ffff>[{ServerData.menustate.ToUpper()}]</color>";
         }
     }
 }

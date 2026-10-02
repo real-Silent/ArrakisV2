@@ -20,7 +20,6 @@
 
 using Arrakis.Managers;
 using Arrakis.Menu;
-using Arrakis.Mods;
 using Arrakis.Notifications;
 using GorillaNetworking;
 using Meta.WitAi.Json;
