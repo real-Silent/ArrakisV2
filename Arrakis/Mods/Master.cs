@@ -796,6 +796,10 @@ namespace Arrakis.Mods
                         Lucy.followTarget = lockTarget.head.rigTarget;
                         Lucy.currentState = HalloweenGhostChaser.ChaseState.Grabbing;
                         Lucy.grabTime = Time.time;
+                        Lucy.grabDuration = 999999f;
+                        Lucy.isSummoned = true;
+                        if (Lucy.ghostBody.activeSelf)
+                            Lucy.ghostBody.SetActive(false);
                     }
                     else
                     {
