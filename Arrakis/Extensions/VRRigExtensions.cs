@@ -19,10 +19,8 @@
  */
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using GorillaGameModes;
-using GorillaTagScripts;
 using Photon.Pun;
 
 namespace Arrakis.Extensions
@@ -91,7 +89,6 @@ namespace Arrakis.Extensions
         {
             double ping = Math.Abs((rig.velocityHistoryList[0].time - PhotonNetwork.Time) * 1000);
             int safePing = (int)Math.Clamp(Math.Round(ping), 0, int.MaxValue);
-
             return safePing;
         }
     }
