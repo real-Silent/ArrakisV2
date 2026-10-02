@@ -383,7 +383,7 @@ namespace Arrakis.Mods
         static bool DoOnce2;
         static float maxD2;
         public static float WallWalkPower = 8.8f;
-        public static void WallWalk() // fuck you, i will record a video if it not working -sleepy
+        public static void WallWalk() // this works i sent sleper a vid -nova
         {
             if (InputManager.GetInput(InputManager.InputType.Grip, InputManager.Hand.Right, !XRSettings.isDeviceActive))
             {
