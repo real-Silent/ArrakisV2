@@ -520,6 +520,7 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Stump Kick All <color=grey>[<color=cyan>Private</color>]</color>", method =() => Overpowered.StumpKickAll(), isTogglable = false, toolTip = "Kicks everyone in stump to a public lobby." },
                 new ButtonInfo { buttonText = "Destroy Cache All", method =() => Overpowered.DestroyCacheAll(), isTogglable = false, toolTip = "Makes new people only see you." },
                 new ButtonInfo { buttonText = "Lag All", method =() => Overpowered.LagAll(), isTogglable = true, toolTip = "Lags everyone." },
+                new ButtonInfo { buttonText = "Lag Gun", method =() => Overpowered.LagGun(), isTogglable = true, toolTip = "Lags who you shoot." },
                 new ButtonInfo { buttonText = "Schizophrenic Gun", method =() => Overpowered.SchizophrenicGun(), isTogglable = true, toolTip = "Makes who ever you shoot only see you (also might make you untaggable)." },
             },
             new ButtonInfo[] { // Custom Maps

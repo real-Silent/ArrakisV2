@@ -315,6 +315,47 @@ namespace Arrakis.Mods
             }
         }
 
+        public static float LagGunDelay;
+        public static void LagGun()
+        {
+            if (GetGunInput(false))
+            {
+                var GunData = RenderGun();
+                GameObject NewPointer = GunData.NewPointer;
+                RaycastHit Ray = GunData.Ray;
+                if (lockTarget != null && gunLocked)
+                {
+                    if (Time.time > LagGunDelay)
+                    {
+                        LagGunDelay = Time.time + 1.64f;
+                        for (int i = 0; i < 730; i++)
+                        {
+                            object[] data = new object[] { float.NaN };
+                            object[] evData = new object[] { float.NaN, float.NaN, data };
+                            PhotonNetwork.NetworkingClient.OpRaiseEvent(186, evData, new RaiseEventOptions
+                            {
+                                TargetActors = new int[] { lockTarget.Creator.ActorNumber }
+                            }, SendOptions.SendUnreliable);
+                        }
+                    }
+                }
+                if (GetGunInput(true))
+                {
+                    VRRig rig = Ray.collider.GetComponentInParent<VRRig>();
+                    if (!rig.IsLocal())
+                    {
+                        lockTarget = rig;
+                        gunLocked = true;
+                    }
+                }
+            }
+            else
+            {
+                lockTarget = null;
+                gunLocked = false;
+            }
+        }
+
 
         public static void SetRoomStatus(bool status) // this might've gotten patched it dosnt seem to work. -sleepy
         {
