@@ -538,7 +538,7 @@ namespace Arrakis.Mods
                     if (!VRRig.LocalRig.enabled)
                     {
                         VRRig.LocalRig.transform.position = Vector3.Lerp(VRRig.LocalRig.transform.position, lockTarget.transform.position, Time.deltaTime * 2f);
-                        VRRig.LocalRig.headMesh.transform.LookAt(lockTarget.headMesh.transform.position);
+                        VRRig.LocalRig.head.rigTarget.transform.LookAt(lockTarget.headMesh.transform.position);
                     }
                 }
 
