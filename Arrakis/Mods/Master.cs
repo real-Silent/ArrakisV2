@@ -632,7 +632,7 @@ namespace Arrakis.Mods
             get
             {
                 if (_lucy == null)
-                    _lucy =  GameObject.FindObjectsOfType<HalloweenGhostChaser>()[0]; // Ez who needs a fucking path -nova
+                    _lucy = GameObject.FindObjectsOfType<HalloweenGhostChaser>()[0]; // Ez who needs a fucking path -nova
                 return _lucy;
             }
         }
