@@ -283,6 +283,7 @@ namespace Arrakis.Menu
                 new ButtonInfo { buttonText = "Anti Stump Kick", enableMethod =() => GroupPatch.enabled = true, disableMethod =() => GroupPatch.enabled = false, toolTip = "Dosnt let you get kicked from group kick." },
                 new ButtonInfo { buttonText = "Board Spoof", method =() => Safety.BoardSpoof(), toolTip = "Spoofs your name and color every 30 secounds." },
                 new ButtonInfo { buttonText = "Nuke Mod Checkers", enableMethod =() => Safety.NukeModCheckers(), disableMethod =() => FPSPatch.enabled = false, toolTip = "Tells mod checkers that you have a high fps and alot of mods." },
+                new ButtonInfo { buttonText = "Anti Overlay", method =() => Safety.AntiOverlay(), toolTip = "Makes it so you dont go invis when you open your steam dashboard." },
             },
 
             new ButtonInfo[] { // Movement

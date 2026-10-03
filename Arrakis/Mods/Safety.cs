@@ -24,6 +24,7 @@ using Arrakis.Menu;
 using Arrakis.Notifications;
 using Arrakis.Patches.Patchers;
 using ExitGames.Client.Photon;
+using GorillaLocomotion;
 using GorillaNetworking;
 using Photon.Pun;
 using System;
@@ -443,5 +444,7 @@ namespace Arrakis.Mods
             { "Atlas", "Atlas" },
             { "𓂀𓆣𓋹𓏏𓇋⚚⚛⚡☯☢☣☠♛♚♜♞♟✶✷✸✹✺✻✼✽✾✿❀❁❂❃❄❅❆❇❈❉❊❋⟁⟆⟐⟡⟢⟣⟤⟥⟦⟧⟨⟩⟪⟫⟬⟭⟮⟯⟰⟱⟲⟳⟴⟵⟶", "𓂀𓆣𓋹𓏏𓇋⚚⚛⚡☯☢☣☠♛♚♜♞♟✶✷✸✹✺✻✼✽✾✿❀❁❂❃❄❅❆❇❈❉❊❋⟁⟆⟐⟡⟢⟣⟤⟥⟦⟧⟨⟩⟪⟫⟬⟭⟮⟯⟰⟱⟲⟳⟴⟵⟶" }
         };
+        public static void AntiOverlay() =>
+            GTPlayer.Instance.inOverlay = false;
     }
 }
