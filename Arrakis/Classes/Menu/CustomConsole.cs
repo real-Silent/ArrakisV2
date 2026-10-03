@@ -45,7 +45,7 @@ namespace Arrakis
         public static void LogNoType(string message) =>
             Debug.Log(message);
 
-        private static string ascii = @$"
+        private static readonly string ascii = @$"
               ___                 _    _     
              / _ \               | |  (_)    
             / /_\ \_ __ _ __ __ _| | ___ ___ 
