@@ -85,7 +85,7 @@ namespace Arrakis.Classes.Menu
                 RequireSenderAdmin = requireSenderAdmin
             };
         }
-        public static bool UnregisterCommand(string name) => 
+        public static bool UnregisterCommand(string name) =>
             Commands.Remove(name);
 
         public void Awake()

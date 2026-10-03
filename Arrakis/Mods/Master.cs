@@ -460,7 +460,7 @@ namespace Arrakis.Mods
         {
             if (!PhotonNetwork.LocalPlayer.IsMasterClient)
             {
-                NotificationManager.SendNotification("<color=grey>[</color><color=cyan>ARRAKIS</color><color=grey>]</color> You are not master client this mod will not work."); 
+                NotificationManager.SendNotification("<color=grey>[</color><color=cyan>ARRAKIS</color><color=grey>]</color> You are not master client this mod will not work.");
                 return;
             }
             var lava = InfectionLavaController.ActiveControllers.FirstOrDefault();
@@ -770,7 +770,7 @@ namespace Arrakis.Mods
                     Lucy.targetPlayer = null;
                     Lucy.currentState = HalloweenGhostChaser.ChaseState.Chasing;
                     Lucy.transform.position = VRRig.LocalRig.leftHandTransform.position;
-                }        
+                }
             }
             else
             {

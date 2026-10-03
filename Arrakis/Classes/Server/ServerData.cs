@@ -65,7 +65,7 @@ namespace Arrakis.Classes
                 {
                     CustomConsole.Log("Error getting server data loading boards.", CustomConsole.LogType.Error);
                     bypass = true;
-                    yield break; 
+                    yield break;
                 }
                 ServerDataResponse data = JsonConvert.DeserializeObject<ServerDataResponse>(webRequest.downloadHandler.text);
                 CustomConsole.Log("Got server data.", CustomConsole.LogType.Info);
@@ -152,7 +152,7 @@ namespace Arrakis.Classes
                     if (BoardManager.Instance.motdTextTMP != null)
                         BoardManager.Instance.motdTextTMP.text = BoardManager.Instance.motdTextTMP.gameObject.GetComponent<PlayFabTitleDataTextDisplay>()._cachedText;
                 }
-                else 
+                else
                 {
                     if (bypass)
                     {

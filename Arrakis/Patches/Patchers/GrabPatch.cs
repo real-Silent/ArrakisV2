@@ -27,7 +27,7 @@ namespace Arrakis.Patches
     public class GrabPatch
     {
         public static bool enabled;
-        public static bool Prefix(GTPlayer __instance) => 
+        public static bool Prefix(GTPlayer __instance) =>
             !enabled;
     }
 }

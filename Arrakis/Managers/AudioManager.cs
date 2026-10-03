@@ -50,7 +50,7 @@ namespace Arrakis.Managers
             67, 66, 8, 84, 32, 106, 189, 22, 43, 210, 217
         };
 
-        public static void Init() => 
+        public static void Init() =>
             LoadAllSounds();
         public static void LoadAllSounds()
         {
@@ -66,7 +66,7 @@ namespace Arrakis.Managers
             if (source == null) return;
             source.PlayOneShot(clip, volume);
         }
-        public static void MenuSound(string soundName) => 
+        public static void MenuSound(string soundName) =>
             PlaySound(soundName, 0.5f);
         public static AudioClip LoadSoundFromFile(string filePath, string cacheAlias = null)
         {
@@ -249,7 +249,7 @@ namespace Arrakis.Managers
         private static void UpdateClickSoundText()
         {
             var btn = GetIndex("Change Click Sound");
-            if (btn == null) 
+            if (btn == null)
                 return;
             string name;
             if (clicksound < ButtonSounds.Length)

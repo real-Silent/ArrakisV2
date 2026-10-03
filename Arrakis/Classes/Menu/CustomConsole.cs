@@ -42,7 +42,7 @@ namespace Arrakis
             }
             Debug.Log($"[{prefix}] {type}: {message}");
         }
-        public static void LogNoType(string message) => 
+        public static void LogNoType(string message) =>
             Debug.Log(message);
 
         private static string ascii = @$"

@@ -24,7 +24,7 @@ using HarmonyLib;
 using UnityEngine;
 
 namespace Arrakis.Patches.Patchers
-{    
+{
     [HarmonyPatch(typeof(VRRig), nameof(VRRig.SerializeReadShared))]
     public class PlrSerializePatch
     {

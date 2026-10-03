@@ -212,7 +212,7 @@ namespace Arrakis.Mods
                         if (idol.manager != null && !idol.isChangingPositions)
                         {
                             GorillaGuardianZoneManager zoneManager = idol.zoneManager;
-                            if (zoneManager.IsZoneValid() && idol.manager != null && zoneManager.CurrentGuardian != null && 
+                            if (zoneManager.IsZoneValid() && idol.manager != null && zoneManager.CurrentGuardian != null &&
                                 zoneManager.CurrentGuardian == NetworkSystem.Instance.LocalPlayer)
                             {
                                 float DR = Vector3.Distance(idol.transform.position, rig.rightHandTransform.position);
@@ -419,7 +419,7 @@ namespace Arrakis.Mods
             Velocity = Velocity.ClampMagnitudeSafe(15f);
             if (RopeSwingManager.instance.ropes.TryGetValue(RopeId, out GorillaRopeSwing Rope))
             {
-                var rope = Rope.nodes.Skip(1).Select((v, i) => new { index = i, transform = v, 
+                var rope = Rope.nodes.Skip(1).Select((v, i) => new { index = i, transform = v,
                     distance = Vector3.Distance(GorillaTagger.Instance.bodyCollider.transform.position, v.transform.position) }).OrderBy(x => x.distance).First();
                 if (rope.distance > 5f)
                 {
