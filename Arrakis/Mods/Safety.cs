@@ -302,12 +302,12 @@ namespace Arrakis.Mods
         }
 
         private static float spoofdelay = 0f;
-        public static void SpoofSupportPage() 
+        public static void SpoofSupportPage()
         {
             if (Time.time > spoofdelay)
             {
                 GorillaComputer.instance.screenText.Set(GorillaComputer.instance.screenText.stringBuilder.ToString().Replace("STEAM", "QUEST").Replace(GorillaComputer.instance.buildDate, $"{GorillaComputer.instance.buildDate}\nBUILD CODE 4893\nMANAGED ACCOUNT: NO"));
-                spoofdelay = Time.time + 0.1f;   
+                spoofdelay = Time.time + 0.1f;
             }
         }
 
