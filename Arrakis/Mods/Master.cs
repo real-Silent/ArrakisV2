@@ -636,7 +636,7 @@ namespace Arrakis.Mods
                 return _lucy;
             }
         }
-        
+
         public static void SpawnBlueLucy()
         {
             if (Lucy.IsMine)
@@ -699,7 +699,7 @@ namespace Arrakis.Mods
                 NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> You are not master client this mod wont work.");
             }
         }
-        
+
         private static float lucyspaztimething = 0f;
         public static void SpazLucy()
         {
@@ -716,7 +716,6 @@ namespace Arrakis.Mods
                 NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> You are not master client this mod wont work.");
             }
         }
-        
         private static float lucyspaztarget = 0f;
         public static void SpazLucyTarget()
         {
@@ -734,7 +733,7 @@ namespace Arrakis.Mods
                 NotificationManager.SendNotification("<color=grey>[</color><color=yellow>ARRAKIS</color><color=grey>]</color> You are not master client this mod wont work.");
             }
         }
-        
+
         public static void MoveLucyGun()
         {
             if (GetGunInput(false))
@@ -755,7 +754,7 @@ namespace Arrakis.Mods
                 }
             }
         }
-        
+
         public static void GrabLucy()
         {
             if (Lucy.IsMine)
@@ -771,7 +770,7 @@ namespace Arrakis.Mods
                     Lucy.targetPlayer = null;
                     Lucy.currentState = HalloweenGhostChaser.ChaseState.Chasing;
                     Lucy.transform.position = VRRig.LocalRig.leftHandTransform.position;
-                }
+                }        
             }
             else
             {
